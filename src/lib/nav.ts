@@ -58,6 +58,28 @@ export const SECONDARY_NAV: NavItem[] = [
 
 export const RFQ_HREF = "/request-a-quote";
 
+/**
+ * The header's own arrangement. PRIMARY_NAV and SECONDARY_NAV stay the site's
+ * full list (footer, sitemap); the header shows five top-level links and
+ * keeps the remaining pages one click away in a Services dropdown, so no page
+ * loses its link from the header.
+ */
+export const HEADER_HOME: NavItem = { href: "/", label: "Home" };
+
+/** The header links that follow Home and the Services dropdown. */
+export const HEADER_NAV: NavItem[] = [
+  { href: "/mice", label: "MICE Services", blurb: "Meetings, incentives, events" },
+  { href: "/destinations", label: "Destinations", blurb: "Where we operate" },
+  { href: "/about", label: "About Us", blurb: "Who we are" },
+  { href: "/contact", label: "Contact Us", blurb: "Reach the operations desk" },
+];
+
+const HEADER_SERVICE_HREFS = ["/morocco-dmc", "/b2b", "/routes", "/how-we-work"];
+
+export const HEADER_SERVICES: NavItem[] = PRIMARY_NAV.filter((item) =>
+  HEADER_SERVICE_HREFS.includes(item.href)
+);
+
 /** Every public route, used by the sitemap. Keep in sync with src/app. */
 export const ALL_ROUTES: string[] = [
   "/",

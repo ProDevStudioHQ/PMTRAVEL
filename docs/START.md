@@ -94,7 +94,7 @@ AI-generated Morocco imagery or AI-generated people presented as staff.
 
 ```
 src/app/           pages, layout, globals.css, sitemap, robots, /api/health
-src/components/    Container Button Card StatusChip Evidence SiteHeader SiteFooter PageIntro FaqSection
+src/components/    Container Button Card StatusChip Evidence BrandLogo SiteHeader SiteFooter PageIntro FaqSection
 src/lib/nav.ts     COMPANY facts + navigation (single source of truth)
 src/features/      rfq/ routes/ (more to follow: venues, destinations, ...)
 docs/
@@ -102,9 +102,11 @@ docs/
 
 Server Components by default. A Client Component needs a comment explaining
 why. There are exactly two: `RfqForm` (progressive form, errors linked to
-fields) and `SiteHeader` (marks the current page, closes the mobile panel on
-navigation, and is transparent over the home hero photograph until the page
-scrolls - clear, never frosted). Together they cost about 7KB gzipped over a pure-static page.
+fields) and `SiteHeader` (marks the current page, closes the mobile panel and
+the Services dropdown on navigation, and is transparent over the home hero
+photograph until the page scrolls - clear, never frosted). The header's links
+come from `HEADER_HOME`, `HEADER_NAV` and `HEADER_SERVICES` in `src/lib/nav.ts`; the logo is
+`BrandLogo`, a stroked PM monogram that inherits `currentColor`. Together they cost about 7KB gzipped over a pure-static page.
 
 ## Milestones
 
