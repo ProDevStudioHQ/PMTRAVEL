@@ -13,6 +13,12 @@ type SiteImageProps = {
    * whole evidence proposition cannot survive.
    */
   operational?: boolean;
+  /**
+   * Fill the positioned parent instead of using the record's intrinsic size.
+   * For full-bleed areas like the hero, where the crop is decided by the
+   * container rather than the file.
+   */
+  fill?: boolean;
 };
 
 /**
@@ -27,6 +33,7 @@ export function SiteImage({
   className = "",
   sizes = "(min-width: 1024px) 50vw, 100vw",
   operational = false,
+  fill = false,
 }: SiteImageProps) {
   const record = imageByKey(imageKey);
 
@@ -44,6 +51,20 @@ export function SiteImage({
   if (operational && !OPERATIONAL_SOURCES.includes(record.source)) {
     throw new Error(
       `Image "${imageKey}" is sourced from ${record.source} and cannot be used to depict PM Travel's own operation. Operational photography must be original.`
+    );
+  }
+
+  if (fill) {
+    return (
+      <Image
+        src={record.src}
+        alt={record.alt}
+        fill
+        sizes={sizes}
+        priority={record.priority ?? false}
+        loading={record.priority ? undefined : "lazy"}
+        className={className}
+      />
     );
   }
 

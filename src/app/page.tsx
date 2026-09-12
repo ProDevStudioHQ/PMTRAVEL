@@ -6,6 +6,7 @@ import { Card } from "@/components/Card";
 import { StatusChip } from "@/components/StatusChip";
 import { Evidence } from "@/components/Evidence";
 import { RouteTable } from "@/features/routes/RouteTable";
+import { HomeHero } from "@/features/images/HomeHero";
 import { COMPANY, RFQ_HREF } from "@/lib/nav";
 
 export const metadata: Metadata = {
@@ -84,25 +85,7 @@ const CAPABILITY_STATUS = [
 export default function HomePage() {
   return (
     <>
-      <Container as="section" className="py-20 lg:py-28">
-        <p className="text-2xs font-medium uppercase tracking-[0.16em] text-meta">
-          {COMPANY.brandLine}
-        </p>
-        <h1 className="mt-5 max-w-[16ch] text-3xl font-semibold tracking-tight text-ink lg:text-4xl">
-          {COMPANY.positioning}
-        </h1>
-        <p className="measure mt-6 text-lg text-meta">{COMPANY.proofLine}</p>
-        <p className="measure mt-4 text-sm text-meta">
-          DMC &middot; Ground operations &middot; Groups &middot; FIT &middot; MICE
-          &middot; Luxury
-        </p>
-        <div className="mt-10 flex flex-wrap gap-4">
-          <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
-          <ButtonLink href={RFQ_HREF} variant="secondary">
-            Send us your itinerary
-          </ButtonLink>
-        </div>
-      </Container>
+      <HomeHero />
 
       <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
         <h2 className="text-xl font-semibold tracking-tight text-ink">

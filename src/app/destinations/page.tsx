@@ -3,10 +3,10 @@ import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
 import { ButtonLink } from "@/components/Button";
-import { Card } from "@/components/Card";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
-import { DESTINATIONS, PLANNED_DESTINATIONS } from "@/features/destinations/registry";
+import { PLANNED_DESTINATIONS } from "@/features/destinations/registry";
+import { DestinationRail } from "@/features/images/DestinationRail";
 import { RFQ_HREF } from "@/lib/nav";
 
 export const metadata: Metadata = {
@@ -50,16 +50,8 @@ export default function DestinationsPage() {
         <p className="measure mt-4 text-base text-meta">
           Written from how we operate them, not from what they look like.
         </p>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {DESTINATIONS.map((destination) => (
-            <Card
-              key={destination.slug}
-              title={destination.name}
-              href={`/destinations/${destination.slug}`}
-            >
-              {destination.summary}
-            </Card>
-          ))}
+        <div className="mt-10">
+          <DestinationRail />
         </div>
       </Container>
 
