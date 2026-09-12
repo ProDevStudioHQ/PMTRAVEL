@@ -46,7 +46,7 @@ export function HomeHero() {
   }
 
   return (
-    <section className="surface-deep relative isolate overflow-hidden bg-petrol-deep">
+    <section className="surface-deep relative isolate flex min-h-[100svh] items-center overflow-hidden bg-petrol-deep">
       <SiteImage
         imageKey={IMAGE_SLOTS.homeHero}
         fill
@@ -63,19 +63,25 @@ export function HomeHero() {
         className="absolute inset-0 bg-petrol-deep/65"
       />
       {/* Extra top padding: the transparent header (72px) sits over this section. */}
-      <Container className="relative pb-28 pt-[calc(7rem+72px)] lg:pb-40 lg:pt-[calc(10rem+72px)]">
-        <p className="text-2xs font-medium uppercase tracking-[0.16em] text-hamada">
-          {COMPANY.brandLine}
+      <Container className="relative flex w-full flex-col items-center pb-20 pt-[calc(4rem+72px)] text-center">
+        {/*
+          The pill is a solid chalk surface, so its text is ink on chalk
+          (15.24:1) regardless of the photograph behind it.
+        */}
+        <p className="rounded-full bg-chalk px-4 py-2 text-2xs font-medium uppercase tracking-[0.14em] text-ink">
+          B2B only &middot; For travel agencies &amp; tour operators
         </p>
-        <h1 className="mt-5 max-w-[16ch] text-3xl font-semibold tracking-tight text-chalk lg:text-4xl">
+        <h1 className="mt-6 max-w-[20ch] text-2xl font-semibold tracking-tight text-chalk sm:text-3xl lg:text-4xl">
           {COMPANY.positioning}
         </h1>
-        <p className="measure mt-6 text-lg text-chalk">{COMPANY.proofLine}</p>
-        <p className="measure mt-4 text-sm text-hamada">
+        <p className="mt-5 max-w-[40ch] text-lg font-medium text-chalk lg:text-xl">
+          {COMPANY.proofLine}
+        </p>
+        <p className="mt-4 max-w-[60ch] text-sm text-hamada">
           DMC &middot; Ground operations &middot; Groups &middot; FIT &middot; MICE
           &middot; Luxury
         </p>
-        <div className="mt-10 flex flex-wrap gap-4">
+        <div className="mt-10 flex flex-wrap justify-center gap-4">
           <ButtonLink href={RFQ_HREF} variant="accent">
             Request a B2B quote
           </ButtonLink>

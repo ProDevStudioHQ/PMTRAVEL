@@ -124,12 +124,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
           </nav>
 
           <div className="hidden shrink-0 lg:block">
-            <ButtonLink
-              href={RFQ_HREF}
-              className={
-                transparent ? "border border-chalk/60 !bg-transparent hover:!bg-chalk/10" : ""
-              }
-            >
+            <ButtonLink href={RFQ_HREF} variant={transparent ? "accent" : "primary"}>
               Request a B2B quote
             </ButtonLink>
           </div>
