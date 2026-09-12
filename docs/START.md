@@ -54,61 +54,75 @@ at best. `unverified` is the default for anything AI-generated.
 They live in exactly one place: `src/lib/nav.ts`, exported as `COMPANY`.
 Import them. Never retype them into a page.
 
-## Design system (locked)
+## Design system
+
+The full specification is `docs/REDESIGN-SOP.md`, adopted in
+`docs/decisions.md` D4. `/styleguide` (noindex, not in the sitemap) shows every
+token and component on one page. `src/app/globals.css` is the only file where a
+hex value may appear.
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `chalk` | `#F2F1EE` | page background |
-| `hamada` | `#D9D5CC` | secondary background |
-| `petrol` | `#8C1C2C` | brand (garnet red), buttons, links |
-| `petrol-deep` | `#1F0A0D` | dark surfaces (near-black burgundy) |
-| `oxide` | `#B8182B` | accent red, sparingly |
+| `red-900` | `#6E0F14` | oxblood: footer, dark sections, nav on scroll |
+| `red-600` | `#C1272D` | primary: things you can click |
+| `red-050` | `#FBEDEC` | tint: table headers, quiet backgrounds |
+| `ink-900` | `#1B1517` | body text and headings |
+| `ink-500` | `#6E6560` | secondary text, captions, meta |
+| `paper` | `#FFFFFF` | default surface |
+| `paper-2` | `#F5F2F0` | alternating section surface |
+| `status-verified` | `#23704A` | verified status mark |
+| `status-progress` | `#9A5B00` | in-progress status mark |
+| `rule` | ink-900 at 10% | hairline borders |
 
-Decision, 2026-09-12: the brand moved from petrol to garnet red. The token
-names `petrol`, `petrol-deep` and `oxide` are kept as role names (brand, dark
-surface, accent) - renaming would touch 29 files for no visual change. Read
-them as roles, not as colours.
+Measured contrast: ink-900/paper 18.01, ink-900/paper-2 16.16, ink-500/paper
+5.69, ink-500/paper-2 5.10, ink-500/red-050 4.99, red-600/paper 5.84,
+red-600/paper-2 5.24, paper/red-600 5.84, paper/red-900 12.06, paper at
+90%/red-900 9.95, status-verified/paper 6.02, status-progress/paper 5.43 — all
+pass AA for normal text.
 
-Capability card tones (home page only, set per card in `src/app/page.tsx`):
-garnet `#8C1C2C`, terracotta `#9A3B1B`, ochre `#7A5212`, olive `#4F5B1E`,
-teal `#0F5C5C`, blue `#1F4E8C`, plum `#5E2A5E`, charcoal `#2F2D2A`. Each
-measured: chalk on tone 6.11–12.15, hamada on tone 4.71–9.37, tone on chalk
-6.11–12.15. Ochre is kept dark and brown, because gold is forbidden. Any new
-tone needs the same three measurements.
-| `ink` | `#1C1B19` | body text |
-| `meta` | `#5C5852` | secondary text |
-| `line` | `#8C887E` | lines only |
-| `line-soft` | `#C9C4B8` | soft lines |
+Forbidden: **red-600 text or marks on red-900 (2.07 — never)**. The status
+green and amber do not go on red-900 either; `StatusChip` takes an `onDark`
+prop that switches the marks to paper and keeps their shapes.
 
-Measured contrast: ink/chalk 15.24, petrol/chalk 8.02, hamada/petrol 6.19,
-meta/chalk 6.25, meta/hamada 4.82, oxide/chalk 5.80, chalk/petrol-deep 16.79 —
-all pass.
+Legacy token names (`chalk`, `hamada`, `petrol`, `petrol-deep`, `oxide`,
+`ink`, `meta`, `line`, `line-soft`, `text-2xs`, `radius-data`, button variant
+`accent`) are aliases onto the tokens above, kept only so pages render while
+they are rebuilt phase by phase. They are deleted in Phase 8. Never use them in
+new code.
 
-Forbidden: **oxide on petrol-deep (2.89 — never)**; oxide on hamada (4.48 —
-24px and above only); `line` as a text colour at any size. `StatusChip` takes
-an `onDark` prop precisely so the oxide variant never lands on petrol-deep.
+Fonts: Archivo (variable) for headings, IBM Plex Sans 400/500 for body and UI.
+Newsreader italic **only** inside `<Evidence>` — sources, verification dates,
+confidence, methodology. The serif is the signal that information is verified.
+That third family is a recorded exception to the SOP's two-family rule (D4).
 
-Fonts: Schibsted Grotesk for everything. Newsreader **only** inside
-`<Evidence>` — sources, verification dates, confidence, methodology. The serif
-is the signal that information is verified. Using it decoratively destroys it.
+Type scale (rem): 0.8125 / 0.9375 / 1 / 1.25 / 1.625 / 2.25 / 3.25 / 4.5 as
+`text-xs` … `text-4xl`. Body line-height 1.6, headings 1.05–1.15, text blocks
+under 68ch. Figures use `.tabular` (tabular, lining numerals), never a mono face.
 
-Radius carries meaning: `--radius-data` (2px) on data surfaces,
-`--radius-card` (8px) on interactive cards. Do not make it uniform.
+Radius: `rounded-control` (4px) on buttons and inputs, `rounded-card` (8px) on
+cards and panels, square full-bleed sections. Shadows: `shadow-raised` and
+`shadow-overlay` only, for dropdown panels and the sticky bar — static cards
+get a `border-rule` hairline instead.
 
-Motion budget: one reveal on the route data block (`.pm-reveal`), one CSS
-scroll reveal on the home capability grid (`.pm-rise`, no JavaScript, off
-under reduced motion), plus state changes on interaction. Nothing else. Reduced motion is respected globally.
+Motion budget: the nav transition on scroll, dropdown open and close, and at
+most one orchestrated moment per page (the route table's `.pm-reveal`).
+Nothing else animates. Reduced motion removes all of it.
 
-Forbidden visual patterns: glassmorphism, gradient decoration, bento grids,
-heavy shadows, animation libraries, icon libraries, scroll animation on every
-section, gold, lanterns, spice-market clichés, stock photos of people, and any
-AI-generated Morocco imagery or AI-generated people presented as staff.
+Forbidden typographic patterns: tracked-out ALL-CAPS eyebrow labels, one word
+of a headline accented in red, `→` appended to button or link text, meta
+strings joined with middle dots.
+
+Forbidden visual patterns: glassmorphism, gradients, red glows or red shadows,
+bento grids, lift-and-scale card hovers, heavy shadows, animation libraries,
+any icon set other than `lucide-react`, scroll animation on sections, gold,
+lanterns, spice-market clichés, stock photos of people, and any AI-generated
+Morocco imagery or AI-generated people presented as staff.
 
 ## Structure
 
 ```
 src/app/           pages, layout, globals.css, sitemap, robots, /api/health
-src/components/    Container Button Card StatusChip Evidence BrandLogo SiteHeader SiteFooter PageIntro FaqSection
+src/components/    Container Button Card Field StatusChip Evidence BrandLogo SiteHeader SiteFooter PageIntro FaqSection
 src/lib/nav.ts     COMPANY facts + navigation (single source of truth)
 src/features/      rfq/ routes/ (more to follow: venues, destinations, ...)
 docs/

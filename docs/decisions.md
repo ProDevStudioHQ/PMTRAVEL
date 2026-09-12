@@ -5,6 +5,42 @@ six months otherwise. Newest first.
 
 ---
 
+## D4 — The redesign SOP replaces the earlier design system
+
+**Date:** 2026-09-12 · **Status:** accepted by the business ("use your
+recommendations")
+
+`docs/REDESIGN-SOP.md` is now the design specification. It supersedes the
+mineral palette of D1, the garnet interim palette, and the per-card tones and
+scroll reveal added to the home page just before it. Where the SOP and the
+standing rules in `AGENT-PROMPTS.md` disagreed, these calls were made:
+
+1. **Palette.** The SOP tokens (`red-900`, `red-600`, `red-050`, `ink-900`,
+   `ink-500`, `paper`, `paper-2`) plus two status colours the SOP's table spec
+   implies but does not define: `status-verified #23704A` (6.02:1 on paper)
+   and `status-progress #9A5B00` (5.43:1). Every pair measured; figures in
+   `START.md`. One disagreement with the SOP: it says red-600 on white passes
+   for large text only. Measured at 5.84:1 it passes AA for normal text too.
+2. **Fonts.** Archivo and IBM Plex Sans as specified, plus Newsreader italic
+   kept inside `<Evidence>` only. The serif is the site's marker of verified
+   information (AGENT-PROMPTS hard stop 5); dropping it to satisfy a
+   two-family rule would remove a signal the business depends on.
+3. **Icons.** `lucide-react` is allowed, as the SOP lists it. It is the only
+   icon set; the standing "no icon library" default is amended to say so.
+4. **Phone, WhatsApp, licence number, ICE, operating hours.** Still
+   unconfirmed, so still never published (hard stops 2 and 3). Where the SOP
+   asks for them, the code carries a `CONTENT NEEDED` comment and **nothing
+   renders** — no visible empty slot, no placeholder text. The "which channel
+   is fastest" line is omitted as a response-time promise (hard stop 10).
+5. **Contact map.** An "Open in maps" link rather than an embedded map. An
+   embed would need `frame-src` opened in the CSP and a third-party request on
+   a page that currently makes none.
+6. **Token migration.** Old token names are kept as aliases onto the new
+   tokens while pages are rebuilt phase by phase, so every intermediate commit
+   builds and renders. The aliases are deleted in Phase 8.
+
+---
+
 ## D3 — The home-page JavaScript budget cannot be met on this stack
 
 **Date:** 2026-09-12 · **Status:** open, needs a call from the business

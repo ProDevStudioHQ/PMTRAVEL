@@ -1,57 +1,83 @@
 @import "tailwindcss";
 
 /*
-  PM Travel design system - LOCKED.
-  Philosophy: mineral, not sand. Any change here needs a written decision
-  and a fresh contrast check. See docs/START.md section "Design system".
+  PM Travel design system.
+  Source of truth: docs/REDESIGN-SOP.md, adopted in docs/decisions.md D4.
+  This file is the ONLY place a hex value may appear. Every text pair below
+  was measured before use; the figures are recorded in docs/START.md.
 */
 @theme {
-  /*
-    Colours. Measured contrast ratios are recorded in docs/START.md.
-    2026-09-12: the brand moved from petrol to garnet red. The token names
-    petrol / petrol-deep / oxide are kept - they are roles (brand, dark
-    surface, accent), and renaming them would touch 29 files for no visual
-    change.
-  */
-  --color-chalk: #f2f1ee;
-  --color-hamada: #d9d5cc;
-  --color-petrol: #8c1c2c;
-  --color-petrol-deep: #1f0a0d;
-  --color-oxide: #b8182b;
-  --color-ink: #1c1b19;
-  --color-meta: #5c5852;
-  --color-line: #8c887e;
-  --color-line-soft: #c9c4b8;
+  /* Tailwind's default reds are removed so only the brand reds exist. */
+  --color-red-*: initial;
 
-  /* Fonts. The serif is reserved for evidence. Nothing else. */
-  --font-sans: var(--font-schibsted), ui-sans-serif, system-ui, -apple-system,
+  /* Brand. Red is structural: actions, active state, one deep section. */
+  --color-red-900: #6e0f14; /* oxblood - footer, dark sections, nav on scroll */
+  --color-red-600: #c1272d; /* primary - things you can click */
+  --color-red-050: #fbedec; /* tint - table headers, quiet backgrounds */
+  --color-ink-900: #1b1517; /* body text and headings */
+  --color-ink-500: #6e6560; /* secondary text, captions, meta */
+  --color-paper: #ffffff; /* default surface */
+  --color-paper-2: #f5f2f0; /* alternating section surface */
+
+  /* Data status. Always paired with a shape and a word, never colour alone. */
+  --color-status-verified: #23704a; /* 6.02 on paper, 5.40 on paper-2 */
+  --color-status-progress: #9a5b00; /* 5.43 on paper, 4.87 on paper-2 */
+
+  /* Hairlines: ink at 10%, the static card and section border. */
+  --color-rule: rgb(27 21 23 / 0.1);
+
+  /*
+    Legacy aliases, kept only so pages not yet rebuilt keep rendering between
+    phases. Each page moves to the tokens above as it is rebuilt; the aliases
+    are deleted in Phase 8. Do not use them in new code.
+  */
+  --color-chalk: var(--color-paper);
+  --color-hamada: var(--color-paper-2);
+  --color-petrol: var(--color-red-600);
+  --color-petrol-deep: var(--color-red-900);
+  --color-oxide: var(--color-red-600);
+  --color-ink: var(--color-ink-900);
+  --color-meta: var(--color-ink-500);
+  --color-line: var(--color-ink-500);
+  --color-line-soft: var(--color-rule);
+
+  /* Fonts. Display for headings, sans for everything else, serif for evidence only. */
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-evidence: var(--font-newsreader), ui-serif, Georgia, "Times New Roman",
     serif;
 
-  /* Type scale: 12 14 16 18 22 28 35 44 55 */
-  --text-2xs: 0.75rem;
-  --text-2xs--line-height: 1.4;
-  --text-xs: 0.875rem;
+  /* Type scale (rem): 0.8125 0.9375 1 1.25 1.625 2.25 3.25 4.5 */
+  --text-xs: 0.8125rem;
   --text-xs--line-height: 1.5;
-  --text-sm: 1rem;
-  --text-sm--line-height: 1.55;
-  --text-base: 1.125rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.6;
+  --text-base: 1rem;
   --text-base--line-height: 1.6;
-  --text-lg: 1.375rem;
+  --text-lg: 1.25rem;
   --text-lg--line-height: 1.45;
-  --text-xl: 1.75rem;
-  --text-xl--line-height: 1.3;
-  --text-2xl: 2.1875rem;
-  --text-2xl--line-height: 1.2;
-  --text-3xl: 2.75rem;
-  --text-3xl--line-height: 1.12;
-  --text-4xl: 3.4375rem;
+  --text-xl: 1.625rem;
+  --text-xl--line-height: 1.15;
+  --text-2xl: 2.25rem;
+  --text-2xl--line-height: 1.1;
+  --text-3xl: 3.25rem;
+  --text-3xl--line-height: 1.05;
+  --text-4xl: 4.5rem;
   --text-4xl--line-height: 1.05;
+  /* Legacy alias: the old 12px step now renders at the scale's smallest size. */
+  --text-2xs: 0.8125rem;
+  --text-2xs--line-height: 1.5;
 
-  /* Radius carries meaning: 2px = data surface, 8px = interactive. */
-  --radius-data: 2px;
-  --radius-card: 8px;
+  /* Radius: one value per element class. Full-bleed sections are square. */
+  --radius-control: 4px; /* buttons and inputs */
+  --radius-card: 8px; /* cards and panels */
+  --radius-data: 4px; /* legacy alias */
+
+  /* Shadows: two levels, warm-tinted, only where elevation means something. */
+  --shadow-raised: 0 1px 2px rgb(27 21 23 / 0.08), 0 2px 8px rgb(27 21 23 / 0.08);
+  --shadow-overlay: 0 4px 12px rgb(27 21 23 / 0.08), 0 16px 40px rgb(27 21 23 / 0.08);
 
   --container-site: 1200px;
 }
@@ -65,33 +91,42 @@ html {
 }
 
 body {
-  background-color: var(--color-chalk);
-  color: var(--color-ink);
+  background-color: var(--color-paper);
+  color: var(--color-ink-900);
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Measure cap: 72 characters. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Text-only blocks stay under 72 characters. */
 .measure {
-  max-width: 66ch;
+  max-width: 68ch;
 }
 
-/* Tabular figures for every published operational number. */
+/* Every published operational number: tabular, lining figures. */
 .tabular {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
+/* Focus: 2px brand red at 2px offset; inverted on dark surfaces. */
 :focus-visible {
-  outline: 2px solid var(--color-oxide);
+  outline: 2px solid var(--color-red-600);
   outline-offset: 2px;
 }
 
-/* Dark surfaces invert the focus ring so it stays visible. */
 .surface-deep :focus-visible {
-  outline-color: var(--color-chalk);
+  outline-color: var(--color-paper);
 }
 
 .skip-link {
@@ -105,14 +140,15 @@ body {
   left: 1rem;
   top: 1rem;
   padding: 0.75rem 1rem;
-  background: var(--color-petrol-deep);
-  color: var(--color-chalk);
-  border-radius: var(--radius-data);
+  background: var(--color-red-900);
+  color: var(--color-paper);
+  border-radius: var(--radius-control);
 }
 
 /*
-  Motion budget: one reveal on the route data block, one scroll reveal on the
-  home capability grid, and state changes on interaction. Nothing else.
+  Motion budget (SOP 2.4): the nav transition on scroll, dropdown open and
+  close, and at most one orchestrated moment per page - the route table reveal.
+  Nothing else animates. Reduced motion removes all of it.
 */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -138,32 +174,4 @@ body {
 
 .pm-reveal {
   animation: pm-reveal 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-/*
-  Scroll reveal for the home capability grid. CSS scroll-driven animation, so
-  it costs no JavaScript and no Client Component. Progressive: browsers
-  without animation-timeline simply show the cards, and reduced motion opts
-  out entirely rather than relying on the global duration override, which a
-  scroll timeline would ignore.
-*/
-@keyframes pm-rise {
-  from {
-    opacity: 0;
-    transform: translateY(28px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .pm-rise {
-      animation: pm-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 5% cover 25%;
-    }
-  }
 }

@@ -1,33 +1,54 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
-type Variant = "primary" | "secondary" | "accent";
+/**
+ * Three variants only (SOP 3.3). "accent" is a legacy alias for primary, kept
+ * so pages not yet rebuilt keep compiling; it is removed in Phase 8.
+ */
+type Variant = "primary" | "secondary" | "ghost" | "accent";
+
+/** "dark" for buttons that sit on red-900 or over a photograph. */
+type Tone = "light" | "dark";
 
 const base =
-  "inline-flex min-h-[44px] items-center justify-center gap-2 rounded-[var(--radius-card)] px-5 py-3 text-sm font-medium transition-colors";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-control text-sm font-medium transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50";
 
-const variants: Record<Variant, string> = {
-  // chalk on petrol (garnet): 8.02:1
-  primary: "bg-petrol text-chalk hover:bg-petrol-deep",
-  // petrol (garnet) on chalk: 8.02:1
-  secondary: "border border-line text-petrol hover:bg-hamada",
-  // chalk on oxide (accent red): 5.80:1 - reserved for the single strongest action
-  accent: "bg-oxide text-chalk hover:brightness-90",
+const variants: Record<Exclude<Variant, "accent">, Record<Tone, string>> = {
+  // paper on red-600: 5.84:1. Hover deepens to red-900 (12.06:1).
+  primary: {
+    light: "bg-red-600 px-6 text-paper hover:bg-red-900",
+    dark: "bg-red-600 px-6 text-paper hover:bg-paper hover:text-red-900",
+  },
+  // ink-900 on paper: 18.01:1. On dark: paper border and text.
+  secondary: {
+    light: "border border-ink-900 px-6 text-ink-900 hover:bg-paper-2",
+    dark: "border border-paper px-6 text-paper hover:bg-paper hover:text-ink-900",
+  },
+  // Text action; the underline appears on hover.
+  ghost: {
+    light: "px-1 text-red-600 underline-offset-4 hover:underline",
+    dark: "px-1 text-paper underline-offset-4 hover:underline",
+  },
 };
+
+const classesFor = (variant: Variant, tone: Tone) =>
+  variants[variant === "accent" ? "primary" : variant][tone];
 
 type ButtonLinkProps = ComponentProps<typeof Link> & {
   variant?: Variant;
+  tone?: Tone;
   children: ReactNode;
 };
 
 export function ButtonLink({
   variant = "primary",
+  tone = "light",
   className = "",
   children,
   ...props
 }: ButtonLinkProps) {
   return (
-    <Link className={`${base} ${variants[variant]} ${className}`} {...props}>
+    <Link className={`${base} ${classesFor(variant, tone)} ${className}`} {...props}>
       {children}
     </Link>
   );
@@ -35,8 +56,14 @@ export function ButtonLink({
 
 type ButtonProps = ComponentProps<"button"> & {
   variant?: Variant;
+  tone?: Tone;
 };
 
-export function Button({ variant = "primary", className = "", ...props }: ButtonProps) {
-  return <button className={`${base} ${variants[variant]} ${className}`} {...props} />;
+export function Button({
+  variant = "primary",
+  tone = "light",
+  className = "",
+  ...props
+}: ButtonProps) {
+  return <button className={`${base} ${classesFor(variant, tone)} ${className}`} {...props} />;
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk, Newsreader } from "next/font/google";
+import { Archivo, IBM_Plex_Sans, Newsreader } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -7,12 +7,23 @@ import { COMPANY, SITE_URL } from "@/lib/nav";
 import { imageByKey } from "@/features/images/registry";
 import { IMAGE_SLOTS } from "@/features/images/keys";
 
-const schibsted = Schibsted_Grotesk({
+/**
+ * Display face for headings (SOP 2.2). Variable, so 600-700 costs one file.
+ * next/font generates a metric-matched fallback, which keeps the swap from
+ * shifting layout.
+ */
+const archivo = Archivo({
   subsets: ["latin"],
-  // Only the weights the design system actually uses.
-  weight: ["400", "500", "600"],
   display: "swap",
-  variable: "--font-schibsted",
+  variable: "--font-archivo",
+});
+
+/** Body and UI. Only the two weights the SOP specifies. */
+const plex = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-plex",
 });
 
 /**
@@ -69,7 +80,7 @@ const organizationSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${schibsted.variable} ${newsreader.variable}`}>
+    <html lang="en" className={`${archivo.variable} ${plex.variable} ${newsreader.variable}`}>
       <body>
         <a href="#main" className="skip-link">
           Skip to content

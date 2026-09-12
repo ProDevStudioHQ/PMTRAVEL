@@ -21,8 +21,8 @@ These are not style preferences. Breaking one damages the business.
    section. Do not create them.
 5. **Never use the serif font outside `<Evidence>`.** Newsreader marks
    verified information. Decorative use destroys the signal.
-6. **Never put oxide text on petrol-deep.** It measures 2.43:1. Use the
-   `onDark` variants.
+6. **Never put red-600 text or marks on red-900.** It measures 2.07:1. Use
+   the `onDark` / `tone="dark"` variants.
 7. **Never generate pages in bulk from a list.** A page earns a URL only with
    400+ words of unique operational content, a verified data point where
    applicable, a distinct buyer intent and a path to the RFQ. Otherwise it is
@@ -38,10 +38,12 @@ These are not style preferences. Breaking one damages the business.
 
 - Server Components. A Client Component needs a comment saying why.
 - Company facts come from `COMPANY` in `src/lib/nav.ts`. Never retyped.
-- Reuse `Container`, `Button`/`ButtonLink`, `Card`, `StatusChip`,
+- Reuse `Container`, `Button`/`ButtonLink`, `Card`, `Field`, `StatusChip`,
   `Evidence`, `SiteHeader`, `SiteFooter`, `PageIntro`. Do not rebuild them.
-- No icon library, no animation library, no third-party script without a
-  documented reason.
+- Design follows `docs/REDESIGN-SOP.md` (decision D4). No hex value outside
+  `src/app/globals.css`.
+- Icons from `lucide-react` only (D4). No other icon set, no animation
+  library, no third-party script without a documented reason.
 - Every page: unique title ≤60 chars **as rendered**, i.e. including the
   " | PM Travel Agency" suffix the layout template appends — do not repeat the
   brand in a page title. Description ≤155 chars, a self-referencing canonical,
