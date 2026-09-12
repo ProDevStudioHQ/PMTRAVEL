@@ -1,10 +1,11 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
-import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
+import { Section } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { RfqForm } from "@/features/rfq/RfqForm";
+import { RFQ_NEXT_STEPS } from "@/features/rfq/next-steps";
 import { COMPANY } from "@/lib/nav";
 
 export const metadata = pageMetadata({
@@ -45,41 +46,38 @@ export default function RequestAQuotePage() {
         standfirst="Step one takes a company name, dates, destinations, traveller numbers and a brief. Everything after that is optional, and can follow later."
       />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="grid gap-16 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-          <div>
+      <Section tone="paper-2">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-16">
+          <div className="rounded-card border border-rule bg-paper p-6 sm:p-8">
             <RfqForm />
           </div>
 
-          <aside className="flex flex-col gap-8">
-            <div className="rounded-[var(--radius-data)] border border-line-soft p-6">
-              <h2 className="text-lg font-medium text-ink">What comes back</h2>
-              <ol className="mt-4 flex flex-col gap-3 text-sm text-meta">
-                <li>1. We qualify the brief and come back on anything unclear.</li>
-                <li>2. We match it against suppliers and venues we have verified.</li>
-                <li>
-                  3. We cost it, with every line marked requested, on option, held
-                  or confirmed.
-                </li>
+          <aside className="flex flex-col gap-10">
+            <div>
+              <h2 className="text-lg font-semibold text-ink-900">What comes back</h2>
+              {/* A genuine sequence, so it is numbered. The same list closes the form. */}
+              <ol className="mt-4 border-t border-rule">
+                {RFQ_NEXT_STEPS.map((item, index) => (
+                  <li key={item} className="flex gap-4 border-b border-rule py-3 text-base text-ink-500">
+                    <span className="tabular font-display font-bold text-ink-900">{index + 1}</span>
+                    {item}
+                  </li>
+                ))}
               </ol>
-              <p className="mt-4 text-sm text-meta">
+              <p className="mt-4 text-base text-ink-500">
                 Nothing unconfirmed is ever presented to you as confirmed. More on
-                that in{" "}
-                <Link href="/how-we-work" className="text-petrol underline">
-                  how we work
-                </Link>
-                .
+                that in <TextLink href="/how-we-work">how we work</TextLink>.
               </p>
             </div>
 
-            <div className="rounded-[var(--radius-data)] border border-line-soft p-6">
-              <h2 className="text-lg font-medium text-ink">Rather email?</h2>
-              <p className="mt-3 text-sm text-meta">
+            <div>
+              <h2 className="text-lg font-semibold text-ink-900">Rather email?</h2>
+              <p className="mt-3 text-base text-ink-500">
                 A plain email enters the same workflow and is logged the same way.
               </p>
-              <p className="mt-4 text-sm">
+              <p className="mt-4 text-base">
                 <a
-                  className="text-petrol underline"
+                  className="wrap-anywhere text-red-600 underline underline-offset-4 transition-colors duration-200 hover:text-red-900"
                   href={`mailto:${COMPANY.email.b2b}`}
                 >
                   {COMPANY.email.b2b}
@@ -90,7 +88,7 @@ export default function RequestAQuotePage() {
             <Evidence note="No response-time promise appears on this page. We are measuring our own from real requests and will publish the median once there is enough data to mean something." />
           </aside>
         </div>
-      </Container>
+      </Section>
 
       <FaqSection heading="Before you send it" faqs={FAQS} />
     </>

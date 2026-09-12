@@ -57,8 +57,9 @@ export function Field({ id, label, required = false, hint, error, children }: Fi
 const control =
   "w-full rounded-control border bg-paper px-3 py-3 text-base text-ink-900 transition-colors duration-200 focus:outline-2 focus:outline-offset-2 focus:outline-red-600 disabled:cursor-not-allowed disabled:bg-paper-2 disabled:text-ink-500";
 
-const controlState = (invalid: boolean) =>
-  invalid ? "border-red-600" : "border-ink-500";
+/** The shared control styling, also used by forms that render their own inputs (RfqForm). */
+export const controlClass = (invalid = false) =>
+  `${control} ${invalid ? "border-red-600" : "border-ink-500"}`;
 
 type ControlExtras = {
   /** Marks the control invalid for both styling and assistive technology. */
@@ -76,7 +77,7 @@ export function Input({
     <input
       aria-invalid={invalid || undefined}
       aria-describedby={describedBy}
-      className={`${control} ${controlState(invalid)} ${className}`}
+      className={`${controlClass(invalid)} ${className}`}
       {...props}
     />
   );
@@ -92,7 +93,7 @@ export function Textarea({
     <textarea
       aria-invalid={invalid || undefined}
       aria-describedby={describedBy}
-      className={`${control} ${controlState(invalid)} min-h-32 ${className}`}
+      className={`${controlClass(invalid)} min-h-32 ${className}`}
       {...props}
     />
   );
@@ -109,7 +110,7 @@ export function Select({
     <select
       aria-invalid={invalid || undefined}
       aria-describedby={describedBy}
-      className={`${control} ${controlState(invalid)} ${className}`}
+      className={`${controlClass(invalid)} ${className}`}
       {...props}
     >
       {children}

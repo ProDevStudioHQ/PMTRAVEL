@@ -5,6 +5,33 @@ six months otherwise. Newest first.
 
 ---
 
+## D6 — No contact form, and no "by when" in the RFQ confirmation
+
+**Date:** 2026-09-12 · **Status:** accepted; the contact form is a separate
+backend task if the business wants it
+
+1. **No contact form on /contact.** SOP Phase 7 asks for one. The site has a
+   single storage path for enquiries, the RFQ record. A general message form
+   would either rely on email alone - silently lost whenever SMTP is not
+   configured, which the RFQ action deliberately refuses to do - or need a new
+   table, migration and server action, which is backend work outside a design
+   pass. /contact routes buyers to the two email addresses and the RFQ form.
+2. **No "by when".** SOP 3.6 asks the confirmation to say what happens next
+   and by when. What happens next is shown, from the same three-step list as
+   the page aside (`RFQ_NEXT_STEPS`). By when would be a response-time promise
+   we have not measured (AGENT-PROMPTS hard stop 10).
+3. **Entries survive a failed submission.** React resets a `<form action>`
+   after every submission, which wiped a buyer's entries when validation
+   failed. The RFQ form now dispatches from `onSubmit` and keeps `action` on
+   the form for submission without JavaScript. An error reopens the step it
+   belongs to. The server action and its validation are unchanged.
+4. **Required fields say "(required)"** in the label text instead of a bare
+   asterisk, and schema error wording is replaced with plain instructions.
+5. **Time zone.** /contact states Morocco time - GMT+1, GMT+0 during Ramadan -
+   a public fact about the country. Operating hours remain unpublished.
+
+---
+
 ## D5 — The active nav link is underlined in paper, not red-600
 
 **Date:** 2026-09-12 · **Status:** accepted
