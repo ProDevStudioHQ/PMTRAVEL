@@ -33,9 +33,18 @@ const securityHeaders = [
        * to dynamic rendering for another reason. See docs/decisions.md.
        */
       "script-src 'self' 'unsafe-inline'",
-      // No inline <style> blocks and no style attributes are rendered, so
-      // styles are locked to same-origin files. Verified by npm run check:a11y.
-      "style-src 'self'",
+      /*
+       * style-src allows inline styles because next/image sets positioning
+       * and object-fit through a style attribute on every rendered image.
+       * Locking this to 'self' silently breaks every photograph on the site -
+       * they load, but unpositioned.
+       *
+       * The exposure is small and bounded: no user-supplied content is ever
+       * rendered, and `npm run verify:data` fails the build if our own JSX
+       * hand-writes a style attribute, so the only inline styles that reach a
+       * page are the framework's own. See docs/decisions.md, D2.
+       */
+      "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data:",
       "font-src 'self'",
       "connect-src 'self'",

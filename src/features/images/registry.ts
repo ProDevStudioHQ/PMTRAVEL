@@ -71,7 +71,77 @@ export type ImageRecord = {
   priority?: boolean;
 };
 
-export const IMAGES: ImageRecord[] = [];
+export const IMAGES: ImageRecord[] = [
+  {
+    key: "b1-marrakech-hero",
+    src: "/images/b1-marrakech-hero.jpg",
+    width: 2400,
+    height: 1596,
+    alt: "The Koutoubia minaret rising above the rooftops of Marrakech, with the snow-covered peaks of the High Atlas behind the city.",
+    source: "unsplash",
+    creator: "Paul Macallan (@pemacallan)",
+    licence: "Unsplash Licence",
+    licenceProof:
+      "https://unsplash.com/photos/koutoubia-mosque-minaret-in-marrakesh-CFKksjYRSQ8",
+    acquiredOn: "2026-09-12",
+    commercialUse: true,
+    restrictions:
+      "Free commercial use, no attribution required under the Unsplash Licence. Credit given anyway on /about. Destination scenery only - never usable for anything depicting PM Travel's own operation.",
+    location: "Marrakech, Morocco",
+    priority: true,
+  },
+  {
+    key: "b2-marrakech-medersa",
+    src: "/images/b2-marrakech-medersa.jpg",
+    width: 1100,
+    height: 1650,
+    alt: "The courtyard of the Ben Youssef Medersa in Marrakech, seen through a carved archway, with zellige tilework and a still central pool.",
+    source: "unsplash",
+    creator: "Alex Azabache",
+    licence: "Unsplash Licence",
+    licenceProof:
+      "https://unsplash.com/photos/medersa-ben-youssef-during-daytime-YSabBvW1aR4",
+    acquiredOn: "2026-09-12",
+    commercialUse: true,
+    restrictions:
+      "Destination scenery only. Never usable for anything depicting PM Travel's own operation.",
+    location: "Marrakech, Morocco",
+  },
+  {
+    key: "b4-atlas-imlil",
+    src: "/images/b4-atlas-imlil.jpg",
+    width: 1600,
+    height: 1067,
+    alt: "A High Atlas village of earth-built houses on a mountainside above a wooded valley, with the access road visible cut into the slope.",
+    source: "unsplash",
+    creator: "Louis Hansel",
+    licence: "Unsplash Licence",
+    licenceProof:
+      "https://unsplash.com/photos/photo-of-brown-houses-surrounded-by-green-trees-erg9zCloOgs",
+    acquiredOn: "2026-09-12",
+    commercialUse: true,
+    restrictions:
+      "Destination scenery only. Never usable for anything depicting PM Travel's own operation.",
+    location: "High Atlas, Morocco",
+  },
+  {
+    key: "b6-merzouga",
+    src: "/images/b6-merzouga.jpg",
+    width: 1600,
+    height: 1200,
+    alt: "Wind-rippled orange sand of the Erg Chebbi dunes near Merzouga, rising to a clean horizon under a clear sky.",
+    source: "unsplash",
+    creator: "Mark Kuiper",
+    licence: "Unsplash Licence",
+    licenceProof:
+      "https://unsplash.com/photos/brown-sand-under-blue-and-white-sky-_UJTBae6whA",
+    acquiredOn: "2026-09-12",
+    commercialUse: true,
+    restrictions:
+      "Destination scenery only. Never usable for anything depicting PM Travel's own operation.",
+    location: "Erg Chebbi, Merzouga, Morocco",
+  },
+];
 
 export const imageByKey = (key: string): ImageRecord | undefined =>
   IMAGES.find((image) => image.key === key);

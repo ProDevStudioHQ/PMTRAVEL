@@ -248,6 +248,20 @@ if (priorityCount > 1) {
   );
 }
 
+// 10a. No hand-written style attributes in our own JSX.
+//      The CSP allows inline styles because next/image requires them; this
+//      keeps that allowance scoped to the framework rather than becoming a
+//      general licence to style inline.
+for (const file of sourceFiles) {
+  const contents = readFileSync(file, "utf8").replace(
+    /\/\*[\s\S]*?\*\/|\/\/.*$/gm,
+    ""
+  );
+  if (/\sstyle=\{|\sstyle="/.test(contents)) {
+    fail(file, "hand-writes a style attribute; use a class");
+  }
+}
+
 // 10. No plain <img> tags. Images go through SiteImage, which supplies width,
 //     height and alt from the record - so nothing can ship without them.
 for (const file of sourceFiles) {

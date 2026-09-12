@@ -23,7 +23,7 @@ export const IMAGE_SLOTS = {
 
 /** B2-B9, keyed by destination slug so the rail fills itself in. */
 export const DESTINATION_IMAGE_KEYS: Record<string, string> = {
-  marrakech: "b2-marrakech-medina",
+  marrakech: "b2-marrakech-medersa",
   agafay: "b3-agafay",
   atlas: "b4-atlas-imlil",
   essaouira: "b5-essaouira",

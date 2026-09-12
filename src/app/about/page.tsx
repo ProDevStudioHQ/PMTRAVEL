@@ -6,6 +6,7 @@ import { ButtonLink } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
+import { ImageCredits } from "@/features/images/ImageCredits";
 import { COMPANY, RFQ_HREF } from "@/lib/nav";
 
 export const metadata: Metadata = {
@@ -148,6 +149,8 @@ export default function AboutPage() {
           <Evidence note="Named team members appear here only once a real person has agreed to be named." />
         </div>
       </Container>
+
+      <ImageCredits />
 
       <FaqSection heading="Questions we get asked first" faqs={FAQS} />
 

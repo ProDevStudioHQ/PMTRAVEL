@@ -36,8 +36,15 @@ rather than hiding it.
 
 **Date:** 2026-09-12 · **Status:** accepted
 
-`style-src` is now `'self'`: the site renders no inline `<style>` block and no
-`style` attribute, verified on every page by `npm run check:a11y`.
+**Amended 2026-09-12, when photography was added.** `style-src` now allows
+inline styles again. `next/image` sets positioning and object-fit through a
+`style` attribute on every rendered image, so `'self'` alone silently broke
+every photograph on the site — they loaded, but unpositioned. The a11y gate
+caught it on the first run after the images landed.
+
+The allowance is kept narrow: no user-supplied content is ever rendered, and
+`verify:data` fails the build if our own JSX hand-writes a `style` attribute,
+so the only inline styles reaching a page are the framework's own.
 
 `script-src` keeps `'unsafe-inline'`. Next injects inline bootstrap and
 RSC-payload scripts whose content differs per page, so no hash list covers
