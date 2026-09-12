@@ -35,10 +35,10 @@ RUN test -n "$NEXT_PUBLIC_SITE_URL" || { \
       echo "is not enough - it must be set as a build argument."; \
       echo ""; \
       echo "  Dokploy: application -> Build -> Build Arguments, add"; \
-      echo "           NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com"; \
+      echo "           NEXT_PUBLIC_SITE_URL=https://pmtravel.digitalstudiolf.online"; \
       echo ""; \
       echo "  Docker:  docker build \\"; \
-      echo "             --build-arg NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com \\"; \
+      echo "             --build-arg NEXT_PUBLIC_SITE_URL=https://pmtravel.digitalstudiolf.online \\"; \
       echo "             -t pm-travel:local ."; \
       echo ""; \
       exit 1; \

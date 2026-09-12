@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          NEXT_PUBLIC_SITE_URL: https://pm-travelagency.com
+          NEXT_PUBLIC_SITE_URL: https://pmtravel.digitalstudiolf.online
 
       - name: Accessibility and markup
         run: npm run check:a11y
