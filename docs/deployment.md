@@ -4,11 +4,27 @@ Path: VS Code → Git → GitHub → Dokploy → Dockerfile → Hostinger VPS �
 
 The Dockerfile is the only production build method. Not Nixpacks. Not Railpack.
 
+## The site origin
+
+The public origin is **https://pmtravel.digitalstudiolf.online**.
+
+It is baked in at build time, so it must reach the build as a **build
+argument** — a runtime environment variable cannot reach the client bundle. It
+is defaulted in the Dockerfile (`ARG NEXT_PUBLIC_SITE_URL=...`) so a deployment
+needs no extra configuration.
+
+Set it in the runtime environment too: `sitemap.xml` and `robots.txt` read it
+server-side.
+
+**When the domain changes**, change it in both places at once — the Dockerfile
+default and Dokploy's Build Arguments — or the two will drift and you will ship
+canonicals pointing at the old host.
+
 ## 1. Build locally first
 
 ```
-docker build --build-arg NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com -t pm-travel:local .
-docker run --rm -p 3000:3000 -e NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com pm-travel:local
+docker build --build-arg NEXT_PUBLIC_SITE_URL=https://pmtravel.digitalstudiolf.online -t pm-travel:local .
+docker run --rm -p 3000:3000 -e NEXT_PUBLIC_SITE_URL=https://pmtravel.digitalstudiolf.online pm-travel:local
 ```
 
 Check `http://localhost:3000/api/health` returns `{"status":"ok"}`.
@@ -83,7 +99,7 @@ stores the request, and logs that the attachment could not be kept.
 Build argument and environment variables:
 
 ```
-NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com
+NEXT_PUBLIC_SITE_URL=https://pmtravel.digitalstudiolf.online
 DATABASE_URL=<from step 3>
 B2B_EMAIL=b2b@pm-travelagency.com
 CONTACT_EMAIL=contact@pm-travelagency.com

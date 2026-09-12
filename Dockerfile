@@ -14,7 +14,12 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Baked into the client bundle at build time, so it must be a build arg.
-ARG NEXT_PUBLIC_SITE_URL
+# The public origin, baked into the client bundle, every canonical URL, the
+# sitemap and robots.txt. Defaulted so a deployment needs no extra build
+# configuration; override with --build-arg (or Dokploy's Build Arguments) when
+# the site moves to another domain, and change the default here at the same
+# time so the two cannot drift apart.
+ARG NEXT_PUBLIC_SITE_URL=https://pmtravel.digitalstudiolf.online
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 
