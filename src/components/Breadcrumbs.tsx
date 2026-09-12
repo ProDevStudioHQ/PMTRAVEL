@@ -23,19 +23,23 @@ export function Breadcrumbs({ trail }: { trail: Crumb[] }) {
   };
 
   return (
-    <Container as="nav" className="pt-6">
-      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-2xs text-meta">
+    <nav aria-label="Breadcrumb">
+      <Container className="pt-6">
+      <ol className="flex flex-wrap items-center gap-x-2 text-sm text-ink-500">
         {items.map((crumb, index) => {
           const isLast = index === items.length - 1;
           return (
             <li key={crumb.href} className="flex items-center gap-2">
               {isLast ? (
-                <span aria-current="page" className="text-ink">
+                <span aria-current="page" className="flex min-h-11 items-center text-ink-900">
                   {crumb.label}
                 </span>
               ) : (
                 <>
-                  <Link href={crumb.href} className="hover:text-petrol">
+                  <Link
+                    href={crumb.href}
+                    className="flex min-h-11 items-center underline-offset-4 transition-colors duration-200 hover:text-red-600 hover:underline"
+                  >
                     {crumb.label}
                   </Link>
                   <span aria-hidden="true">/</span>
@@ -50,6 +54,7 @@ export function Breadcrumbs({ trail }: { trail: Crumb[] }) {
         // Built from the same array rendered above.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-    </Container>
+      </Container>
+    </nav>
   );
 }
