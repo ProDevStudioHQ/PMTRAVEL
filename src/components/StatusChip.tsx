@@ -6,6 +6,8 @@ type StatusChipProps = {
   label?: string;
   /** For red-900 surfaces: the marks switch to paper, keeping their shapes. */
   onDark?: boolean;
+  /** "lg" when the status is itself a row heading. */
+  size?: "sm" | "lg";
 };
 
 /**
@@ -50,17 +52,17 @@ const CONFIG: Record<
   },
 };
 
-export function StatusChip({ status, label, onDark = false }: StatusChipProps) {
+export function StatusChip({ status, label, onDark = false, size = "sm" }: StatusChipProps) {
   const config = CONFIG[status];
   return (
     <span
-      className={`inline-flex items-center gap-2 text-sm font-medium ${
-        onDark ? "text-paper" : config.text
-      }`}
+      className={`inline-flex items-center gap-2 font-medium ${
+        size === "lg" ? "text-lg" : "text-sm"
+      } ${onDark ? "text-paper" : config.text}`}
     >
       <span
         aria-hidden="true"
-        className={`inline-block size-2.5 shrink-0 ${config.shape} ${
+        className={`inline-block shrink-0 ${size === "lg" ? "size-3" : "size-2.5"} ${config.shape} ${
           onDark ? config.dark : config.light
         }`}
       />

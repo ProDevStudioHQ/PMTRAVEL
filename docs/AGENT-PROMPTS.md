@@ -38,8 +38,10 @@ These are not style preferences. Breaking one damages the business.
 
 - Server Components. A Client Component needs a comment saying why.
 - Company facts come from `COMPANY` in `src/lib/nav.ts`. Never retyped.
-- Reuse `Container`, `Button`/`ButtonLink`, `Card`, `Field`, `StatusChip`,
-  `Evidence`, `SiteHeader`, `SiteFooter`, `PageIntro`. Do not rebuild them.
+- Reuse `Container`, `Section`/`SectionIntro`, `TextLink`, `Button`/`ButtonLink`,
+  `Card`, `Field`, `StatusChip`, `Evidence`, `SiteHeader`, `SiteFooter`,
+  `PageIntro`. Do not rebuild them. Pages are built from `Section`, so the
+  vertical rhythm is the same everywhere.
 - Design follows `docs/REDESIGN-SOP.md` (decision D4). No hex value outside
   `src/app/globals.css`.
 - Icons from `lucide-react` only (D4). No other icon set, no animation

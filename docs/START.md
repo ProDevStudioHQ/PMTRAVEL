@@ -122,7 +122,7 @@ Morocco imagery or AI-generated people presented as staff.
 
 ```
 src/app/           pages, layout, globals.css, sitemap, robots, /api/health
-src/components/    Container Button Card Field StatusChip Evidence BrandLogo SiteHeader SiteFooter PageIntro FaqSection
+src/components/    Container Section TextLink Button Card Field StatusChip Evidence BrandLogo SiteHeader SiteFooter PageIntro FaqSection
 src/lib/nav.ts     COMPANY facts + navigation (single source of truth)
 src/features/      rfq/ routes/ (more to follow: venues, destinations, ...)
 docs/

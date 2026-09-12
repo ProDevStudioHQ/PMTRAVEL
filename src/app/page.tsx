@@ -16,30 +16,27 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-/*
- * Four of these point at /morocco-dmc. Phase 4 gives that page anchor
- * sections for them, or the card count comes down (SOP Phase 4).
- */
+/** The first four land on their own section of /morocco-dmc, not the top of the page. */
 const CAPABILITIES = [
   {
     title: "Transport and transfers",
     body: "Vehicle class matched to group size and route, drivers briefed to the day plan, and a stated backup for every movement.",
-    href: "/morocco-dmc",
+    href: "/morocco-dmc#transport",
   },
   {
     title: "Airport operations",
     body: "Arrival manifests, flight monitoring, meet and greet, and a clean handover into the ground programme.",
-    href: "/morocco-dmc",
+    href: "/morocco-dmc#airport",
   },
   {
     title: "Hotels and riads",
     body: "Sourcing, rooming lists and check-in coordination across Marrakech and the wider circuit.",
-    href: "/morocco-dmc",
+    href: "/morocco-dmc#accommodation",
   },
   {
     title: "Guiding",
     body: "Licensed guides briefed to your itinerary, working in the languages we actually operate in.",
-    href: "/morocco-dmc",
+    href: "/morocco-dmc#guiding",
   },
   {
     title: "Dining and gala",

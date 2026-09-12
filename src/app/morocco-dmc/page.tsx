@@ -1,11 +1,10 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
 import { Container } from "@/components/Container";
-import { PageIntro } from "@/components/PageIntro";
 import { ButtonLink } from "@/components/Button";
-import { Card } from "@/components/Card";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
+import { Section, SectionIntro } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { COMPANY, RFQ_HREF, SITE_URL } from "@/lib/nav";
 
 export const metadata = pageMetadata({
@@ -59,52 +58,106 @@ const FAQS = [
   },
 ];
 
+/**
+ * Each service is its own anchor, so the home page's operations cards land on
+ * the service they name instead of the top of this page.
+ */
 const SERVICES = [
   {
+    id: "transport",
     title: "Transport and transfers",
     body: "Vehicle class matched to group size and to the specific road, with drivers briefed to the day plan and a stated backup for every movement.",
   },
   {
+    id: "airport",
     title: "Airport operations",
     body: "Manifest-led arrivals, flight monitoring, meet and greet, and a clean handover into the programme. Split arrivals are planned as separate movements.",
   },
   {
+    id: "accommodation",
     title: "Accommodation",
     body: "Hotel and riad sourcing, rooming lists, check-in coordination, and vehicle access established per address rather than per district.",
   },
   {
+    id: "guiding",
     title: "Guiding",
     body: "Licensed guides briefed on your itinerary, your client's history and what to drop if the day runs long — not on a standard tour.",
   },
   {
+    id: "dining",
     title: "Dining and events",
     body: "Restaurants, gala dinners and dietary handling, timed against the rest of the day rather than booked in isolation.",
   },
   {
+    id: "excursions",
     title: "Excursions and activities",
     body: "Scheduled against real drive times and real daylight. Where we have not measured a leg, we say so rather than guessing.",
   },
   {
+    id: "groups",
     title: "Groups, FIT and series",
     body: "One-off groups, repeating series and individual travellers, run under the same operational file and the same standards.",
   },
   {
+    id: "white-label",
     title: "White-label execution",
     body: "Meet boards, vehicles and briefings carry your brand. Our staff introduce themselves on your behalf, including at the arrivals hall.",
   },
 ];
 
+const LIMITS = [
+  "We do not own a fleet. We select, brief and take responsibility for suppliers.",
+  "We do not operate in German. Five working languages, and that is not one of them.",
+  "We do not publish drive times we have not driven, including on routes everybody quotes.",
+  "We do not publish venue capacities we have not measured, including ones suppliers publish themselves.",
+  "We do not have published response-time figures yet, because we have not measured our own.",
+];
+
 export default function MoroccoDmcPage() {
   return (
     <>
-      <PageIntro
-        eyebrow="Morocco DMC"
-        title="What we operate on the ground"
-        standfirst="You sell Morocco. We run the ground programme: the vehicles, the drivers, the arrivals, the hotels, the guides, and the decisions at eleven at night when something has changed."
-      />
+      {/*
+        Hero treatment: an index. The headline sits beside a ruled jump list of
+        the eight services, because this page is the reference the rest of the
+        site links into.
+      */}
+      <section className="border-b border-rule bg-paper">
+        <Container className="grid gap-12 py-16 lg:grid-cols-12 lg:py-24">
+          <div className="lg:col-span-7">
+            <h1 className="max-w-[16ch] text-3xl font-bold tracking-tight text-ink-900 lg:text-4xl">
+              What we operate on the ground
+            </h1>
+            <p className="measure mt-6 text-lg text-ink-500">
+              You sell Morocco. We run the ground programme: the vehicles, the
+              drivers, the arrivals, the hotels, the guides, and the decisions at
+              eleven at night when something has changed.
+            </p>
+            <div className="mt-8">
+              <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
+            </div>
+          </div>
+          <nav aria-labelledby="dmc-index" className="lg:col-span-4 lg:col-start-9">
+            <h2 id="dmc-index" className="text-sm font-medium text-ink-500">
+              On this page
+            </h2>
+            <ul className="mt-4 border-t border-rule">
+              {SERVICES.map((service) => (
+                <li key={service.id}>
+                  <a
+                    href={`#${service.id}`}
+                    className="flex min-h-11 items-center border-b border-rule py-2 text-base text-ink-900 underline-offset-4 transition-colors duration-200 hover:text-red-600 hover:underline"
+                  >
+                    {service.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </Container>
+      </section>
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="measure flex flex-col gap-6 text-base text-meta">
+      <Section tone="paper-2">
+        <div className="measure flex flex-col gap-6 text-base text-ink-900">
           <p>
             Most DMC pages are a list of services, and the list is always the
             same, because every operator in the market offers the same things.
@@ -131,86 +184,71 @@ export default function MoroccoDmcPage() {
           <p>
             We answer those in the same way each time: with a named backup for
             every movement, with{" "}
-            <Link href="/routes" className="text-petrol underline">
-              drive data we measured ourselves
-            </Link>{" "}
+            <TextLink href="/routes">drive data we measured ourselves</TextLink>{" "}
             or an honest statement that we have not measured it yet, and with a
             quote where every line states whether it is requested, on option,
             held or confirmed. The service list below is real, but it is not the
             argument.
           </p>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          What we operate
-        </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <Section>
+        <SectionIntro title="What we operate" />
+        <ul className="mt-12 grid border-t border-rule md:grid-cols-2 md:gap-x-12">
           {SERVICES.map((service) => (
-            <Card key={service.title} title={service.title}>
-              {service.body}
-            </Card>
+            <li key={service.id} id={service.id} className="scroll-mt-16 border-b border-rule py-8">
+              <h3 className="text-lg font-semibold text-ink-900">{service.title}</h3>
+              <p className="mt-3 text-base text-ink-500">{service.body}</p>
+            </li>
           ))}
-        </div>
-      </Container>
+        </ul>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          What we do not claim
-        </h2>
-        <p className="measure mt-4 text-base text-meta">
-          Being specific about the limits is more useful to you than another
-          paragraph about passion for the destination.
-        </p>
-        <ul className="measure mt-8 flex flex-col gap-3">
-          {[
-            "We do not own a fleet. We select, brief and take responsibility for suppliers.",
-            "We do not operate in German. Five working languages, and that is not one of them.",
-            "We do not publish drive times we have not driven, including on routes everybody quotes.",
-            "We do not publish venue capacities we have not measured, including ones suppliers publish themselves.",
-            "We do not have published response-time figures yet, because we have not measured our own.",
-          ].map((item) => (
+      {/* The page's one deep section: the limits, stated plainly. */}
+      <Section tone="deep">
+        <SectionIntro title="What we do not claim" onDark>
+          <p>
+            Being specific about the limits is more useful to you than another
+            paragraph about passion for the destination.
+          </p>
+        </SectionIntro>
+        <ul className="mt-12 grid border-t border-paper/15 md:grid-cols-2 md:gap-x-12">
+          {LIMITS.map((item) => (
             <li
               key={item}
-              className="flex gap-3 rounded-[var(--radius-data)] border border-line-soft px-4 py-3 text-sm text-ink"
+              className="flex gap-4 border-b border-paper/15 py-5 text-base text-paper"
             >
-              <span aria-hidden="true" className="text-meta">
+              <span aria-hidden="true" className="text-paper/60">
                 &mdash;
               </span>
               {item}
             </li>
           ))}
         </ul>
-        <div className="mt-8">
-          <Evidence note="Capability statements on this page describe what PM Travel operates directly from its Marrakech office. Nothing here carries a figure that has not been measured and logged by us." />
+        <div className="measure mt-8">
+          <Evidence
+            onDark
+            note="Capability statements on this page describe what PM Travel operates directly from its Marrakech office. Nothing here carries a figure that has not been measured and logged by us."
+          />
         </div>
-      </Container>
+      </Section>
 
       <FaqSection heading="What buyers ask first" faqs={FAQS} />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Send us a programme
-        </h2>
-        <p className="measure mt-4 text-base text-meta">
-          The quickest way to judge a ground partner is to send a real
-          requirement and read what comes back. More on how we handle it in{" "}
-          <Link href="/how-we-work" className="text-petrol underline">
-            how we work
-          </Link>
-          , and on trade terms in{" "}
-          <Link href="/b2b" className="text-petrol underline">
-            for travel trade
-          </Link>
-          .
-        </p>
+      <Section tone="paper-2">
+        <SectionIntro title="Send us a programme">
+          <p>
+            The quickest way to judge a ground partner is to send a real
+            requirement and read what comes back. More on how we handle it in{" "}
+            <TextLink href="/how-we-work">how we work</TextLink>, and on trade
+            terms in <TextLink href="/b2b">for travel trade</TextLink>.
+          </p>
+        </SectionIntro>
         <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
-            Request a B2B quote
-          </ButtonLink>
+          <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
         </div>
-      </Container>
+      </Section>
 
       <script
         type="application/ld+json"

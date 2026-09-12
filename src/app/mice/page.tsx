@@ -1,11 +1,11 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
 import { Container } from "@/components/Container";
-import { PageIntro } from "@/components/PageIntro";
 import { ButtonLink } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
+import { Section, SectionIntro } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { VenueDisclosure } from "@/features/venues/VenueDisclosure";
 import { VENUES } from "@/features/venues/data";
 import { toPublicVenue } from "@/features/venues/disclosure";
@@ -18,6 +18,34 @@ export const metadata = pageMetadata({
   path: "/mice",
 });
 
+const HANDLED = [
+  {
+    title: "Venue sourcing",
+    body: "Matched against what we have inspected, with the gaps named rather than filled in.",
+  },
+  {
+    title: "Arrival and transfer logistics",
+    body: "Manifests, coach movements and timings built against measured drive data where we have it.",
+  },
+  {
+    title: "Gala and dining",
+    body: "Timing, dietary handling and service flow against the rest of the programme.",
+  },
+  {
+    title: "Group movement",
+    body: "Coach access, turning space, parking and marshalling.",
+  },
+  {
+    title: "On-site coordination",
+    body: "Our people on the ground for the duration, not a phone number.",
+  },
+  {
+    title: "Backup planning",
+    body: "A stated fallback for the venue, the weather and the vehicles.",
+  },
+];
+
+/** Three levels in increasing order of access: a genuine sequence, so it is numbered. */
 const DISCLOSURE = [
   {
     title: "Published here",
@@ -63,14 +91,33 @@ export default function MicePage() {
 
   return (
     <>
-      <PageIntro
-        eyebrow="MICE and events"
-        title="Events planned on venue data we measured"
-        standfirst="Researching venue specifications is the hardest single stage of sourcing an event. We are building a venue record from our own inspections instead of repeating what supplier websites claim."
-      />
+      {/*
+        Hero treatment: a deep band. This page's one red-900 section, running
+        straight on from the solid site bar, for the page that sells events.
+      */}
+      <section className="surface-deep bg-red-900 text-paper">
+        <Container className="py-24 lg:py-32">
+          <h1 className="max-w-[18ch] text-3xl font-bold tracking-tight lg:text-4xl">
+            Events planned on venue data we measured
+          </h1>
+          <p className="measure mt-6 text-lg text-paper/90">
+            Researching venue specifications is the hardest single stage of
+            sourcing an event. We are building a venue record from our own
+            inspections instead of repeating what supplier websites claim.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-4">
+            <ButtonLink href={RFQ_HREF} tone="dark">
+              Request a B2B quote
+            </ButtonLink>
+            <ButtonLink href="#venues" variant="secondary" tone="dark">
+              Inspected venues
+            </ButtonLink>
+          </div>
+        </Container>
+      </section>
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="measure flex flex-col gap-6 text-base text-meta">
+      <Section>
+        <div className="measure flex flex-col gap-6 text-base text-ink-900">
           <p>
             Ask three Morocco suppliers for a capacity and you will get three
             numbers, all of them theatre-style, none of them accounting for the
@@ -92,92 +139,72 @@ export default function MicePage() {
             can tell you who measured it and when.
           </p>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          What we handle
-        </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <Card title="Venue sourcing">
-            Matched against what we have inspected, with the gaps named rather
-            than filled in.
-          </Card>
-          <Card title="Arrival and transfer logistics">
-            Manifests, coach movements and timings built against measured drive
-            data where we have it.
-          </Card>
-          <Card title="Gala and dining">
-            Timing, dietary handling and service flow against the rest of the
-            programme.
-          </Card>
-          <Card title="Group movement">
-            Coach access, turning space, parking and marshalling.
-          </Card>
-          <Card title="On-site coordination">
-            Our people on the ground for the duration, not a phone number.
-          </Card>
-          <Card title="Backup planning">
-            A stated fallback for the venue, the weather and the vehicles.
-          </Card>
-        </div>
-      </Container>
-
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          What we publish, and what we do not
-        </h2>
-        <p className="measure mt-4 text-base text-meta">
-          Being explicit about this is fairer than letting you assume. Three
-          levels, and we will tell you which one any answer comes from.
-        </p>
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {DISCLOSURE.map((level) => (
-            <Card key={level.title} title={level.title}>
-              {level.body}
-            </Card>
+      <Section tone="paper-2">
+        <SectionIntro title="What we handle" />
+        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {HANDLED.map((item) => (
+            <li key={item.title}>
+              <Card title={item.title} className="h-full">
+                {item.body}
+              </Card>
+            </li>
           ))}
-        </div>
-      </Container>
+        </ul>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Inspected venues
-        </h2>
-        <p className="measure mt-4 text-base text-meta">
-          The public level, as described above: enough to judge whether a venue
-          type suits your brief, without handing our supplier research to the
-          next operator who visits this page.
-        </p>
-        <div className="mt-10">
+      <Section>
+        <SectionIntro title="What we publish, and what we do not">
+          <p>
+            Being explicit about this is fairer than letting you assume. Three
+            levels, and we will tell you which one any answer comes from.
+          </p>
+        </SectionIntro>
+        <ol className="mt-12 grid gap-x-12 border-t border-rule lg:grid-cols-3">
+          {DISCLOSURE.map((level, index) => (
+            <li key={level.title} className="border-b border-rule py-8 lg:border-b-0">
+              <span className="tabular font-display text-2xl font-bold text-ink-500">
+                {index + 1}
+              </span>
+              <h3 className="mt-4 text-lg font-semibold text-ink-900">{level.title}</h3>
+              <p className="mt-3 text-base text-ink-500">{level.body}</p>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      <Section tone="paper-2" id="venues">
+        <SectionIntro title="Inspected venues">
+          <p>
+            The public level, as described above: enough to judge whether a venue
+            type suits your brief, without handing our supplier research to the
+            next operator who visits this page.
+          </p>
+        </SectionIntro>
+        <div className="mt-12">
           <VenueDisclosure venues={publicVenues} />
         </div>
-      </Container>
+      </Section>
 
       <FaqSection heading="What planners ask us" faqs={FAQS} />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Send us the brief
-        </h2>
-        <p className="measure mt-4 text-base text-meta">
-          Tell us the group size, the layout you need and the month. We will
-          tell you what we have inspected, what we have not, and what we would
-          need to go and check. More on the method in{" "}
-          <Link href="/how-we-work" className="text-petrol underline">
-            how we work
-          </Link>
-          .
-        </p>
+      <Section tone="paper-2">
+        <SectionIntro title="Send us the brief">
+          <p>
+            Tell us the group size, the layout you need and the month. We will
+            tell you what we have inspected, what we have not, and what we would
+            need to go and check. More on the method in{" "}
+            <TextLink href="/how-we-work">how we work</TextLink>.
+          </p>
+        </SectionIntro>
         <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
-            Request a B2B quote
-          </ButtonLink>
+          <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
         </div>
-        <div className="mt-8">
+        <div className="measure mt-8">
           <Evidence note="No venue capacity, floor plan or availability appears anywhere on this site that PM Travel has not measured on site. Where we have not inspected, we say so." />
         </div>
-      </Container>
+      </Section>
     </>
   );
 }

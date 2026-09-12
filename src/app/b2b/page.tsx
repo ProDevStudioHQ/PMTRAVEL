@@ -1,12 +1,12 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
 import { Container } from "@/components/Container";
-import { PageIntro } from "@/components/PageIntro";
 import { ButtonLink } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
+import { Section, SectionIntro } from "@/components/Section";
 import { StatusChip } from "@/components/StatusChip";
+import { TextLink } from "@/components/TextLink";
 import { RFQ_HREF } from "@/lib/nav";
 
 export const metadata = pageMetadata({
@@ -48,17 +48,62 @@ const SERVICE_STATUSES = [
   { label: "Cancelled or expired", body: "Stated explicitly, never quietly dropped from a revision.", status: "unverified" as const },
 ];
 
+const TRADE_TERMS = [
+  {
+    title: "White label",
+    body: "Your brand on the meet board, the vehicle and the briefing. We do not introduce ourselves to your clients.",
+  },
+  {
+    title: "Overflow capacity",
+    body: "For Morocco specialists whose own ground capacity is committed. A working relationship, not a competitive one.",
+  },
+  {
+    title: "Series programmes",
+    body: "Repeating departures run against the same file, so the second operation benefits from the first.",
+  },
+  {
+    title: "Backup planning",
+    body: "A named fallback for every movement: vehicle, venue or route.",
+  },
+  {
+    title: "One point of contact",
+    body: "The person who qualified your brief is the person who answers when something changes.",
+  },
+  {
+    title: "Honest limits",
+    body: "Where we cannot staff something properly we say so rather than taking the booking.",
+  },
+];
+
 export default function B2bPage() {
   return (
     <>
-      <PageIntro
-        eyebrow="For travel trade"
-        title="Built for people who resell Morocco"
-        standfirst="This is a trade operation. Every workflow here assumes you have your own client, your own margin and your own reputation on the line."
-      />
+      {/*
+        Hero treatment: a statement. One large claim on paper-2, held by a
+        red-600 rule - a key rule, which the SOP allows red to carry.
+      */}
+      <section className="border-b border-rule bg-paper-2">
+        <Container className="py-24 lg:py-32">
+          <div className="border-l-4 border-red-600 pl-6 lg:pl-12">
+            <h1 className="max-w-[16ch] text-3xl font-bold tracking-tight text-ink-900 lg:text-4xl">
+              Built for people who resell Morocco
+            </h1>
+            <p className="measure mt-6 text-lg text-ink-500">
+              This is a trade operation. Every workflow here assumes you have your
+              own client, your own margin and your own reputation on the line.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
+              <ButtonLink href="#statuses" variant="secondary">
+                What a service status means
+              </ButtonLink>
+            </div>
+          </div>
+        </Container>
+      </section>
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="measure flex flex-col gap-6 text-base text-meta">
+      <Section>
+        <div className="measure flex flex-col gap-6 text-base text-ink-900">
           <p>
             The uncomfortable part of using a ground partner is that you carry
             the relationship and they carry the execution. Your client does not
@@ -82,83 +127,56 @@ export default function B2bPage() {
             selling as certain, whoever prepared the quote.
           </p>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          What a service status means on our quotes
-        </h2>
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+      {/* The page's one deep section: the six statuses every quote line carries. */}
+      <Section tone="deep" id="statuses">
+        <SectionIntro title="What a service status means on our quotes" onDark />
+        <dl className="mt-12 grid border-t border-paper/15 sm:grid-cols-2 sm:gap-x-12">
           {SERVICE_STATUSES.map((item) => (
-            <li
-              key={item.label}
-              className="rounded-[var(--radius-data)] border border-line-soft px-4 py-4"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="text-sm font-medium text-ink">{item.label}</span>
-                <StatusChip status={item.status} label={item.label} />
-              </div>
-              <p className="mt-2 text-sm text-meta">{item.body}</p>
+            <div key={item.label} className="border-b border-paper/15 py-6">
+              <dt>
+                <StatusChip status={item.status} label={item.label} size="lg" onDark />
+              </dt>
+              <dd className="mt-2 text-base text-paper/90">{item.body}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="measure mt-8">
+          <Evidence
+            onDark
+            note="These statuses are enforced in our own systems rather than left to whoever writes the quote. A service cannot be presented as confirmed unless it has been recorded as confirmed."
+          />
+        </div>
+      </Section>
+
+      <Section tone="paper-2">
+        <SectionIntro title="How we work with the trade" />
+        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {TRADE_TERMS.map((term) => (
+            <li key={term.title}>
+              <Card title={term.title} className="h-full">
+                {term.body}
+              </Card>
             </li>
           ))}
         </ul>
-        <div className="mt-8">
-          <Evidence note="These statuses are enforced in our own systems rather than left to whoever writes the quote. A service cannot be presented as confirmed unless it has been recorded as confirmed." />
-        </div>
-      </Container>
-
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          How we work with the trade
-        </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <Card title="White label">
-            Your brand on the meet board, the vehicle and the briefing. We do
-            not introduce ourselves to your clients.
-          </Card>
-          <Card title="Overflow capacity">
-            For Morocco specialists whose own ground capacity is committed. A
-            working relationship, not a competitive one.
-          </Card>
-          <Card title="Series programmes">
-            Repeating departures run against the same file, so the second
-            operation benefits from the first.
-          </Card>
-          <Card title="Backup planning">
-            A named fallback for every movement: vehicle, venue or route.
-          </Card>
-          <Card title="One point of contact">
-            The person who qualified your brief is the person who answers when
-            something changes.
-          </Card>
-          <Card title="Honest limits">
-            Where we cannot staff something properly we say so rather than
-            taking the booking.
-          </Card>
-        </div>
-      </Container>
+      </Section>
 
       <FaqSection heading="Trade questions" faqs={FAQS} />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Start with something real
-        </h2>
-        <p className="measure mt-4 text-base text-meta">
-          Send a live requirement rather than a general enquiry. You will learn
-          more from the quote than from anything on this site. The method behind
-          it is in{" "}
-          <Link href="/how-we-work" className="text-petrol underline">
-            how we work
-          </Link>
-          .
-        </p>
+      <Section tone="paper-2">
+        <SectionIntro title="Start with something real">
+          <p>
+            Send a live requirement rather than a general enquiry. You will learn
+            more from the quote than from anything on this site. The method behind
+            it is in <TextLink href="/how-we-work">how we work</TextLink>.
+          </p>
+        </SectionIntro>
         <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
-            Request a B2B quote
-          </ButtonLink>
+          <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
         </div>
-      </Container>
+      </Section>
     </>
   );
 }
