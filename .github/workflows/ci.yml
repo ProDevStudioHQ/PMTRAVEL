@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Data integrity
+        run: npm run verify:data
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://pm-travelagency.com
+
+      - name: Accessibility and markup
+        run: npm run check:a11y
+
+      - name: Performance budget
+        run: npm run check:budget
+
+      - name: Fail if an .env file was committed
+        run: |
+          if git ls-files --error-unmatch .env .env.local >/dev/null 2>&1; then
+            echo "An environment file is committed to the repository."
+            exit 1
+          fi
