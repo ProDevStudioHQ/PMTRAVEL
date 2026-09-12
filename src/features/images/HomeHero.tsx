@@ -18,6 +18,8 @@ import { COMPANY, RFQ_HREF } from "@/lib/nav";
  * saturated blue. Those read as a consumer booking site to a buyer who is not
  * a consumer.
  */
+const SERVICES = ["DMC", "Ground operations", "Groups", "FIT", "MICE", "Luxury"];
+
 export function HomeHero() {
   const hero = imageByKey(IMAGE_SLOTS.homeHero);
 
@@ -61,34 +63,54 @@ export function HomeHero() {
       */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-petrol-deep/65"
+        className="absolute inset-0 bg-petrol-deep/70"
       />
       {/* Extra top padding: the transparent header (72px) sits over this section. */}
-      <Container className="relative flex w-full flex-col items-center pb-20 pt-[calc(4rem+72px)] text-center">
+      <Container className="relative flex w-full flex-col items-center pb-24 pt-[calc(5rem+72px)] text-center">
         {/*
-          The pill is a solid chalk surface, so its text is ink on chalk
-          (15.24:1) regardless of the photograph behind it.
+          Luxury carried by restraint rather than ornament: hairline rules,
+          wide letter-spacing, scale and space. No gold, no gradient, no glass.
         */}
-        <p className="rounded-full bg-chalk px-4 py-2 text-2xs font-medium uppercase tracking-[0.14em] text-ink">
-          B2B only &middot; For travel agencies &amp; tour operators
+        <p className="flex items-center gap-4 text-2xs font-medium uppercase tracking-[0.32em] text-hamada">
+          <span aria-hidden="true" className="h-px w-8 bg-chalk/50 sm:w-14" />
+          B2B only &middot; Travel trade
+          <span aria-hidden="true" className="h-px w-8 bg-chalk/50 sm:w-14" />
         </p>
-        <h1 className="mt-6 max-w-[20ch] text-2xl font-semibold tracking-tight text-chalk sm:text-3xl lg:text-4xl">
+
+        <h1 className="mt-8 max-w-[14ch] text-[clamp(2.5rem,7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.03em] text-chalk">
           {COMPANY.positioning}
         </h1>
-        <p className="mt-5 max-w-[40ch] text-lg font-medium text-chalk lg:text-xl">
+
+        <p className="mt-8 max-w-[46ch] text-balance text-lg text-chalk/90 lg:text-xl">
           {COMPANY.proofLine}
         </p>
-        <p className="mt-4 max-w-[60ch] text-sm text-hamada">
-          DMC &middot; Ground operations &middot; Groups &middot; FIT &middot; MICE
-          &middot; Luxury
-        </p>
-        <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <ButtonLink href={RFQ_HREF} variant="accent">
+
+        {/*
+          Hairline dividers only from lg up, where the row fits on one line.
+          Narrower, it wraps - and a divider would start the second line.
+        */}
+        <ul className="mt-10 flex max-w-[34rem] flex-wrap items-center justify-center gap-x-5 gap-y-3 text-2xs font-medium uppercase tracking-[0.22em] text-hamada lg:max-w-none lg:gap-x-0">
+          {SERVICES.map((service, index) => (
+            <li key={service} className="flex items-center">
+              {index > 0 ? (
+                <span aria-hidden="true" className="mx-5 hidden h-3 w-px bg-chalk/40 lg:block" />
+              ) : null}
+              {service}
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-12 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row">
+          {/* ink on chalk: 15.24:1 */}
+          <ButtonLink
+            href={RFQ_HREF}
+            className="!min-h-[56px] w-full !rounded-[var(--radius-data)] !bg-chalk !px-9 !text-xs !font-semibold uppercase tracking-[0.16em] !text-ink hover:!bg-hamada sm:w-auto"
+          >
             Request a B2B quote
           </ButtonLink>
           <ButtonLink
             href={RFQ_HREF}
-            className="border border-chalk/60 bg-transparent text-chalk hover:bg-chalk/10"
+            className="!min-h-[56px] w-full !rounded-[var(--radius-data)] border border-chalk/50 bg-transparent !px-9 !text-xs !font-semibold uppercase tracking-[0.16em] text-chalk hover:border-chalk hover:bg-chalk/10 sm:w-auto"
           >
             Send us your itinerary
           </ButtonLink>
