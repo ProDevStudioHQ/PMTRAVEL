@@ -140,6 +140,22 @@ export const IMAGES: ImageRecord[] = [
       "Destination scenery only. Never usable for anything depicting PM Travel's own operation.",
     location: "Erg Chebbi, Merzouga, Morocco",
   },
+  {
+    key: "b9-erg-chebbi-camels",
+    src: "/images/b9-erg-chebbi-camels.jpg",
+    width: 2400,
+    height: 1800,
+    alt: "A line of camels walking along the crest of the orange Erg Chebbi dunes near Merzouga in early morning light, under a deep blue sky.",
+    source: "unsplash",
+    creator: "Carlos Leret (@leret)",
+    licence: "Unsplash Licence",
+    licenceProof: "https://unsplash.com/photos/camels-in-a-desert-kiYzznir-uo",
+    acquiredOn: "2026-09-12",
+    commercialUse: true,
+    restrictions:
+      "Destination scenery only, no people in frame. Resized from the 4060x3045 original. Never usable for anything depicting PM Travel's own operation.",
+    location: "Erg Chebbi, Merzouga, Morocco",
+  },
 ];
 
 export const imageByKey = (key: string): ImageRecord | undefined =>

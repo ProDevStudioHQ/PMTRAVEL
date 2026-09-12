@@ -11,10 +11,10 @@
 export const IMAGE_SLOTS = {
   /**
    * The home hero - the single priority-loaded image on the site. Currently
-   * the licensed Erg Chebbi dunes (B6), which HomeHero loads eagerly itself;
-   * the B1 Marrakech record stays registered for reuse.
+   * camels crossing Erg Chebbi (B9, Unsplash), which HomeHero loads eagerly
+   * itself; the B1 Marrakech record stays registered for reuse.
    */
-  homeHero: "b6-merzouga",
+  homeHero: "b9-erg-chebbi-camels",
   /** A1 - office, Gueliz. The most important trust image. */
   office: "a1-office-gueliz",
   /** A3 - vehicle at a hotel entrance. */
