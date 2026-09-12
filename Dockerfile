@@ -13,6 +13,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Guarantee public/ exists for the runner stage to copy. See the note there.
+RUN mkdir -p /app/public
+
 # Baked into the client bundle at build time, so it must be a build arg.
 # The public origin, baked into the client bundle, every canonical URL, the
 # sitemap and robots.txt. Defaulted so a deployment needs no extra build
@@ -61,6 +64,10 @@ ENV HOSTNAME=0.0.0.0
 RUN addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 nextjs
 
+# public/ is tracked via a .gitkeep, but the build must not depend on that:
+# git does not track empty directories, so the folder can vanish from a clone
+# the moment its last file is removed, and this COPY would fail a deployment
+# for a reason nothing in the application explains.
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static

@@ -1,0 +1,8 @@
+Static assets served from the site root.
+
+Empty for now, deliberately: no stock photography and no generated imagery is
+used on this site. The office, vehicle and operations photographs go here once
+they have been taken - see the Blockers section of docs/START.md.
+
+This file exists because git does not track empty directories, and the
+production image copies public/ into the runtime stage.
