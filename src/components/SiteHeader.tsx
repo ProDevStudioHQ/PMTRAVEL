@@ -70,7 +70,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
         <div className={`flex items-center justify-between gap-6 ${HEADER_HEIGHT}`}>
           <Link href="/" className="group block shrink-0">
             <span
-              className={`block text-sm font-semibold tracking-tight transition-colors ${
+              className={`block text-lg font-semibold leading-tight tracking-tight transition-colors ${
                 transparent ? "text-chalk" : "text-petrol"
               }`}
             >
@@ -85,23 +85,21 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
             </span>
           </Link>
 
-          <nav aria-label="Primary" className="hidden lg:block">
-            <ul className="flex items-center gap-7">
+          <nav aria-label="Primary" className="ml-auto hidden lg:block">
+            <ul className="flex items-center gap-6 xl:gap-8">
               {PRIMARY_NAV.map((item) => {
                 const current = isCurrent(item.href);
                 const tone = transparent
-                  ? current
-                    ? "text-chalk"
-                    : "text-hamada hover:text-chalk"
+                  ? "text-chalk hover:text-hamada"
                   : current
                     ? "text-petrol"
-                    : "text-meta hover:text-ink";
+                    : "text-ink hover:text-petrol";
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
                       aria-current={current ? "page" : undefined}
-                      className={`relative block py-2 text-xs transition-colors ${tone}`}
+                      className={`relative block whitespace-nowrap py-2 text-xs font-medium transition-colors ${tone}`}
                     >
                       {item.label}
                       {/*
@@ -123,8 +121,16 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
             </ul>
           </nav>
 
-          <div className="hidden shrink-0 lg:block">
-            <ButtonLink href={RFQ_HREF} variant={transparent ? "accent" : "primary"}>
+          <div className="hidden shrink-0 items-center gap-6 lg:flex">
+            <span
+              aria-hidden="true"
+              className={`h-8 w-px transition-colors ${transparent ? "bg-chalk/40" : "bg-line-soft"}`}
+            />
+            <ButtonLink
+              href={RFQ_HREF}
+              variant="accent"
+              className="!min-h-[40px] !rounded-full !px-5 !py-2 !text-xs !font-semibold"
+            >
               Request a B2B quote
             </ButtonLink>
           </div>

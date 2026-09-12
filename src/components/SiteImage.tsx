@@ -19,6 +19,12 @@ type SiteImageProps = {
    * container rather than the file.
    */
   fill?: boolean;
+  /**
+   * Load eagerly as the page's LCP image. Set by the slot, not the record,
+   * because the same photograph can be the hero on one page and a lazy card
+   * on another. Falls back to the record's flag.
+   */
+  priority?: boolean;
 };
 
 /**
@@ -34,8 +40,10 @@ export function SiteImage({
   sizes = "(min-width: 1024px) 50vw, 100vw",
   operational = false,
   fill = false,
+  priority,
 }: SiteImageProps) {
   const record = imageByKey(imageKey);
+  const eager = priority ?? record?.priority ?? false;
 
   if (!record) {
     // An unrecorded image is a licensing risk, so it is never rendered. In
@@ -61,8 +69,8 @@ export function SiteImage({
         alt={record.alt}
         fill
         sizes={sizes}
-        priority={record.priority ?? false}
-        loading={record.priority ? undefined : "lazy"}
+        priority={eager}
+        loading={eager ? undefined : "lazy"}
         className={className}
       />
     );
@@ -75,8 +83,8 @@ export function SiteImage({
       width={record.width}
       height={record.height}
       sizes={sizes}
-      priority={record.priority ?? false}
-      loading={record.priority ? undefined : "lazy"}
+      priority={eager}
+      loading={eager ? undefined : "lazy"}
       className={className}
     />
   );

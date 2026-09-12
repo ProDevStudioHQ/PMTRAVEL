@@ -9,8 +9,12 @@
  * photographer's delivery maps straight onto the site.
  */
 export const IMAGE_SLOTS = {
-  /** B1 - the single priority-loaded image on the site. */
-  homeHero: "b1-marrakech-hero",
+  /**
+   * The home hero - the single priority-loaded image on the site. Currently
+   * the licensed Erg Chebbi dunes (B6), which HomeHero loads eagerly itself;
+   * the B1 Marrakech record stays registered for reuse.
+   */
+  homeHero: "b6-merzouga",
   /** A1 - office, Gueliz. The most important trust image. */
   office: "a1-office-gueliz",
   /** A3 - vehicle at a hotel entrance. */

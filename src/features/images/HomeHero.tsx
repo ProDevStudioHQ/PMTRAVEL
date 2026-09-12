@@ -50,6 +50,7 @@ export function HomeHero() {
       <SiteImage
         imageKey={IMAGE_SLOTS.homeHero}
         fill
+        priority
         sizes="100vw"
         className="object-cover"
       />

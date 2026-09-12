@@ -88,7 +88,6 @@ export const IMAGES: ImageRecord[] = [
     restrictions:
       "Free commercial use, no attribution required under the Unsplash Licence. Credit given anyway on /about. Destination scenery only - never usable for anything depicting PM Travel's own operation.",
     location: "Marrakech, Morocco",
-    priority: true,
   },
   {
     key: "b2-marrakech-medersa",
