@@ -6,12 +6,18 @@
   and a fresh contrast check. See docs/START.md section "Design system".
 */
 @theme {
-  /* Colours. Measured contrast ratios are recorded in docs/START.md. */
+  /*
+    Colours. Measured contrast ratios are recorded in docs/START.md.
+    2026-09-12: the brand moved from petrol to garnet red. The token names
+    petrol / petrol-deep / oxide are kept - they are roles (brand, dark
+    surface, accent), and renaming them would touch 29 files for no visual
+    change.
+  */
   --color-chalk: #f2f1ee;
   --color-hamada: #d9d5cc;
-  --color-petrol: #12414a;
-  --color-petrol-deep: #0b2c33;
-  --color-oxide: #a8412a;
+  --color-petrol: #8c1c2c;
+  --color-petrol-deep: #1f0a0d;
+  --color-oxide: #b8182b;
   --color-ink: #1c1b19;
   --color-meta: #5c5852;
   --color-line: #8c887e;
@@ -104,7 +110,10 @@ body {
   border-radius: var(--radius-data);
 }
 
-/* Motion budget: one reveal on the route data block, state changes only. */
+/*
+  Motion budget: one reveal on the route data block, one scroll reveal on the
+  home capability grid, and state changes on interaction. Nothing else.
+*/
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -129,4 +138,32 @@ body {
 
 .pm-reveal {
   animation: pm-reveal 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/*
+  Scroll reveal for the home capability grid. CSS scroll-driven animation, so
+  it costs no JavaScript and no Client Component. Progressive: browsers
+  without animation-timeline simply show the cards, and reduced motion opts
+  out entirely rather than relying on the global duration override, which a
+  scroll timeline would ignore.
+*/
+@keyframes pm-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .pm-rise {
+      animation: pm-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 25%;
+    }
+  }
 }

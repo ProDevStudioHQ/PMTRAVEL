@@ -61,9 +61,14 @@ export function HomeHero() {
         4.5:1 over an unpredictable photograph, which is a legibility
         requirement rather than decoration.
       */}
+      {/*
+        Neutral ink, not the burgundy petrol-deep: a red-tinted scrim turned
+        the blue sky purple. At 70% even a pure-white pixel lands near
+        luminance 0.12, which keeps chalk text above 5:1.
+      */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-petrol-deep/70"
+        className="absolute inset-0 bg-ink/70"
       />
       {/* Extra top padding: the transparent header (72px) sits over this section. */}
       <Container className="relative flex w-full flex-col items-center pb-24 pt-[calc(5rem+72px)] text-center">

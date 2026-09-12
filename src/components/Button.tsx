@@ -7,11 +7,11 @@ const base =
   "inline-flex min-h-[44px] items-center justify-center gap-2 rounded-[var(--radius-card)] px-5 py-3 text-sm font-medium transition-colors";
 
 const variants: Record<Variant, string> = {
-  // chalk on petrol: 12.3:1
+  // chalk on petrol (garnet): 8.02:1
   primary: "bg-petrol text-chalk hover:bg-petrol-deep",
-  // petrol on chalk: 9.89:1
+  // petrol (garnet) on chalk: 8.02:1
   secondary: "border border-line text-petrol hover:bg-hamada",
-  // chalk on oxide: 5.6:1 - reserved for the single strongest action
+  // chalk on oxide (accent red): 5.80:1 - reserved for the single strongest action
   accent: "bg-oxide text-chalk hover:brightness-90",
 };
 

@@ -60,18 +60,31 @@ Import them. Never retype them into a page.
 | --- | --- | --- |
 | `chalk` | `#F2F1EE` | page background |
 | `hamada` | `#D9D5CC` | secondary background |
-| `petrol` | `#12414A` | brand, buttons, links |
-| `petrol-deep` | `#0B2C33` | dark data surfaces |
-| `oxide` | `#A8412A` | accent, sparingly |
+| `petrol` | `#8C1C2C` | brand (garnet red), buttons, links |
+| `petrol-deep` | `#1F0A0D` | dark surfaces (near-black burgundy) |
+| `oxide` | `#B8182B` | accent red, sparingly |
+
+Decision, 2026-09-12: the brand moved from petrol to garnet red. The token
+names `petrol`, `petrol-deep` and `oxide` are kept as role names (brand, dark
+surface, accent) - renaming would touch 29 files for no visual change. Read
+them as roles, not as colours.
+
+Capability card tones (home page only, set per card in `src/app/page.tsx`):
+garnet `#8C1C2C`, terracotta `#9A3B1B`, ochre `#7A5212`, olive `#4F5B1E`,
+teal `#0F5C5C`, blue `#1F4E8C`, plum `#5E2A5E`, charcoal `#2F2D2A`. Each
+measured: chalk on tone 6.11–12.15, hamada on tone 4.71–9.37, tone on chalk
+6.11–12.15. Ochre is kept dark and brown, because gold is forbidden. Any new
+tone needs the same three measurements.
 | `ink` | `#1C1B19` | body text |
 | `meta` | `#5C5852` | secondary text |
 | `line` | `#8C887E` | lines only |
 | `line-soft` | `#C9C4B8` | soft lines |
 
-Measured contrast: ink/chalk 15.24, petrol/chalk 9.89, meta/chalk 6.25,
-meta/hamada 4.82, oxide/chalk 5.38, chalk/petrol-deep 13.07 — all pass.
+Measured contrast: ink/chalk 15.24, petrol/chalk 8.02, hamada/petrol 6.19,
+meta/chalk 6.25, meta/hamada 4.82, oxide/chalk 5.80, chalk/petrol-deep 16.79 —
+all pass.
 
-Forbidden: **oxide on petrol-deep (2.43 — never)**; oxide on hamada (4.15 —
+Forbidden: **oxide on petrol-deep (2.89 — never)**; oxide on hamada (4.48 —
 24px and above only); `line` as a text colour at any size. `StatusChip` takes
 an `onDark` prop precisely so the oxide variant never lands on petrol-deep.
 
@@ -82,8 +95,9 @@ is the signal that information is verified. Using it decoratively destroys it.
 Radius carries meaning: `--radius-data` (2px) on data surfaces,
 `--radius-card` (8px) on interactive cards. Do not make it uniform.
 
-Motion budget: one reveal on the route data block (`.pm-reveal`), plus state
-changes on interaction. Nothing else. Reduced motion is respected globally.
+Motion budget: one reveal on the route data block (`.pm-reveal`), one CSS
+scroll reveal on the home capability grid (`.pm-rise`, no JavaScript, off
+under reduced motion), plus state changes on interaction. Nothing else. Reduced motion is respected globally.
 
 Forbidden visual patterns: glassmorphism, gradient decoration, bento grids,
 heavy shadows, animation libraries, icon libraries, scroll animation on every

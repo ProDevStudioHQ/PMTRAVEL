@@ -6,7 +6,7 @@ type StatusChipProps = {
   label?: string;
   /**
    * Chips on the dark petrol surfaces use a restricted palette: oxide on
-   * petrol-deep measures 2.43:1 and is never permitted.
+   * petrol-deep measures 2.89:1 and is never permitted.
    */
   onDark?: boolean;
 };
