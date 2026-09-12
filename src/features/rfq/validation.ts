@@ -1,35 +1,17 @@
 import { z } from "zod";
+import { DESTINATIONS, PROGRAMME_TYPES } from "./options";
 
 /**
  * Server-side validation for the RFQ. The client form mirrors these rules for
  * usability only - nothing is trusted until it has been through here.
  */
 
-export const DESTINATIONS = [
-  "Marrakech",
-  "Agafay",
-  "Atlas",
-  "Essaouira",
-  "Merzouga",
-  "Fes",
-  "Ouarzazate",
-  "Casablanca",
-  "Rabat",
-  "Tangier",
-  "Chefchaouen",
-  "Agadir",
-  "Other",
-] as const;
-
-export const PROGRAMME_TYPES = [
-  { value: "leisure_group", label: "Leisure group" },
-  { value: "leisure_fit", label: "Leisure FIT" },
-  { value: "incentive", label: "Incentive" },
-  { value: "conference_event", label: "Conference or event" },
-  { value: "educational", label: "Educational" },
-  { value: "special_interest", label: "Special interest" },
-  { value: "other", label: "Other" },
-] as const;
+/*
+ * The option lists live in ./options, a module with no zod import, so the
+ * client form can use them without shipping zod to the browser. Re-exported
+ * here so server code that already imports them from this file is unchanged.
+ */
+export { DESTINATIONS, PROGRAMME_TYPES };
 
 const trimmed = (min: number, max: number) =>
   z.string().trim().min(min).max(max);

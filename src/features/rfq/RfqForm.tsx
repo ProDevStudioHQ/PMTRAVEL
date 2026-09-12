@@ -17,11 +17,9 @@ import {
 } from "react";
 import { submitRfq } from "@/features/rfq/actions";
 import { RFQ_NEXT_STEPS } from "@/features/rfq/next-steps";
-import {
-  DESTINATIONS,
-  PROGRAMME_TYPES,
-  type RfqFormState,
-} from "@/features/rfq/validation";
+// Types only from ./validation, so zod never reaches the browser bundle.
+import type { RfqFormState } from "@/features/rfq/validation";
+import { DESTINATIONS, PROGRAMME_TYPES } from "@/features/rfq/options";
 import { Button } from "@/components/Button";
 import { Evidence } from "@/components/Evidence";
 import { controlClass } from "@/components/Field";
@@ -98,6 +96,7 @@ function plainError(name: string, errors?: string[]): string | undefined {
 type ControlProps = {
   id: string;
   name: string;
+  autoComplete: string | undefined;
   required: boolean;
   "aria-describedby": string | undefined;
   "aria-invalid": true | undefined;
@@ -107,6 +106,8 @@ type ControlProps = {
 type FormFieldProps = {
   name: string;
   label: string;
+  /** An HTML autocomplete token, so browsers can fill the field (WCAG 1.3.5). */
+  autoComplete?: string;
   errors?: string[];
   required?: boolean;
   type?: string;
@@ -125,6 +126,7 @@ type FormFieldProps = {
 function FormField({
   name,
   label,
+  autoComplete,
   errors,
   required = false,
   type = "text",
@@ -143,6 +145,7 @@ function FormField({
   const shared: ControlProps = {
     id,
     name,
+    autoComplete,
     required,
     "aria-describedby": describedBy,
     "aria-invalid": error ? true : undefined,
@@ -340,11 +343,11 @@ export function RfqForm() {
         </p>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          <FormField name="company" label="Company" required errors={errors.company} />
-          <FormField name="country" label="Country you sell from" required errors={errors.country} />
-          <FormField name="contactName" label="Your name" required errors={errors.contactName} />
-          <FormField name="role" label="Your role" required errors={errors.role} />
-          <FormField name="email" label="Email" type="email" required errors={errors.email} />
+          <FormField name="company" label="Company" autoComplete="organization" required errors={errors.company} />
+          <FormField name="country" label="Country you sell from" autoComplete="country-name" required errors={errors.country} />
+          <FormField name="contactName" label="Your name" autoComplete="name" required errors={errors.contactName} />
+          <FormField name="role" label="Your role" autoComplete="organization-title" required errors={errors.role} />
+          <FormField name="email" label="Email" type="email" autoComplete="email" required errors={errors.email} />
           <FormField
             name="travellers"
             label="Number of travellers"
