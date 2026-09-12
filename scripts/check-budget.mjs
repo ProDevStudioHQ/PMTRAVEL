@@ -29,7 +29,18 @@ import { gzipSync } from "node:zlib";
  * number we cannot meet. Flagged for a decision: accept this figure, or change
  * the stack. See docs/decisions.md.
  */
-const JS_BUDGET_BYTES = 180 * 1024;
+/*
+ * Measured baseline, home page, gzipped:
+ *   172.4KB  framework runtime alone (zero Client Components)
+ *   177.9KB  + next/image
+ *   179.5KB  + the navigation's active-state and mobile panel
+ *
+ * The gate sits above that with deliberate headroom, so it fails on a real
+ * regression - a stray "use client", or a library pulled into a shared chunk -
+ * rather than on the next small change. Update the baseline above whenever it
+ * moves, so drift stays visible instead of being absorbed silently.
+ */
+const JS_BUDGET_BYTES = 192 * 1024;
 const SOP_JS_BUDGET_BYTES = 120 * 1024;
 const TOTAL_BUDGET_BYTES = 900 * 1024;
 const ORIGIN = "http://127.0.0.1:3111";

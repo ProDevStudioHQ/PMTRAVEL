@@ -101,8 +101,9 @@ docs/
 ```
 
 Server Components by default. A Client Component needs a comment explaining
-why. The header's mobile menu is a native `<details>` element so the whole
-header ships zero JavaScript.
+why. There are exactly two: `RfqForm` (progressive form, errors linked to
+fields) and `SiteHeader` (marks the current page, and closes the mobile panel
+on navigation). Together they cost about 7KB gzipped over a pure-static page.
 
 ## Milestones
 
@@ -288,7 +289,7 @@ Lives in `src/features/rfq/`.
 | `email.ts` | Internal notification + sender acknowledgement |
 | `rate-limit.ts` | Fixed-window limiter, IP hashing |
 | `actions.ts` | The server action that ties it together |
-| `RfqForm.tsx` | The only Client Component in the project |
+| `RfqForm.tsx` | One of only two Client Components in the project |
 
 Order of operations in `submitRfq`: honeypot → rate limit → Zod → magic-byte
 file checks → database insert → status event → attachment upload → emails.
