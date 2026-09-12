@@ -66,5 +66,29 @@ export const ALL_ROUTES: string[] = [
   RFQ_HREF,
 ];
 
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
+const SITE_URL_FALLBACK = "http://localhost:3000";
+
+/**
+ * The canonical origin, used by metadataBase, the sitemap and robots.txt.
+ *
+ * Must never throw. `??` alone is not enough: Docker's `ARG` with no
+ * `--build-arg` sets an empty *string*, which passes a nullish check and then
+ * crashes `new URL("")` during the build. An unparseable value is treated the
+ * same way, so a typo degrades to localhost rather than failing the build in
+ * a page it has nothing to do with.
+ *
+ * A missing value in a production build is caught explicitly by the Dockerfile,
+ * which would otherwise bake localhost canonicals into the deployed site.
+ */
+function resolveSiteUrl(): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!configured) return SITE_URL_FALLBACK;
+  try {
+    new URL(configured);
+  } catch {
+    return SITE_URL_FALLBACK;
+  }
+  return configured.replace(/\/+$/, "");
+}
+
+export const SITE_URL = resolveSiteUrl();

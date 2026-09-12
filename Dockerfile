@@ -18,6 +18,27 @@ ARG NEXT_PUBLIC_SITE_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# NEXT_PUBLIC_SITE_URL is baked into the client bundle and into every canonical
+# URL, the sitemap and robots.txt. A missing build argument is an empty string,
+# not an unset variable, so it would silently bake localhost into the deployed
+# site. Fail here, with instructions, rather than deploying wrong canonicals.
+RUN test -n "$NEXT_PUBLIC_SITE_URL" || { \
+      echo ""; \
+      echo "ERROR: the NEXT_PUBLIC_SITE_URL build argument is missing."; \
+      echo ""; \
+      echo "It is baked in at BUILD time, so a runtime environment variable"; \
+      echo "is not enough - it must be set as a build argument."; \
+      echo ""; \
+      echo "  Dokploy: application -> Build -> Build Arguments, add"; \
+      echo "           NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com"; \
+      echo ""; \
+      echo "  Docker:  docker build \\"; \
+      echo "             --build-arg NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com \\"; \
+      echo "             -t pm-travel:local ."; \
+      echo ""; \
+      exit 1; \
+    }
+
 # NOTE: next/font downloads Schibsted Grotesk and Newsreader from Google Fonts
 # during this step, so the build machine needs outbound internet access.
 # If the build fails with "Failed to fetch from Google Fonts", see
