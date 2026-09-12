@@ -41,7 +41,6 @@ export default function RequestAQuotePage() {
   return (
     <>
       <PageIntro
-        eyebrow="Request a quote"
         title="Send us your requirement"
         standfirst="Step one takes a company name, dates, destinations, traveller numbers and a brief. Everything after that is optional, and can follow later."
       />

@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
-import { Container } from "@/components/Container";
+import { Section } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { PageIntro } from "@/components/PageIntro";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ButtonLink } from "@/components/Button";
@@ -50,13 +50,12 @@ export default function AgafayPage() {
         ]}
       />
       <PageIntro
-        eyebrow="Destination"
         title="Agafay"
         standfirst="Close enough to Marrakech to work as an evening, which is exactly why it gets sold without being planned. Three things decide whether it works."
       />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="measure flex flex-col gap-6 text-base text-meta">
+      <Section tone="paper-2">
+        <div className="measure flex flex-col gap-6 text-base text-ink-900">
           <p>
             Agafay has become the standard answer when a Marrakech programme
             needs a desert evening without the drive south. That popularity is
@@ -97,22 +96,22 @@ export default function AgafayPage() {
             band takes.
           </p>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           The leg from Marrakech
         </h2>
-        <div className="mt-8 max-w-2xl">
+        <div className="mt-12 max-w-2xl">
           <RouteStatus slug="marrakech-agafay" />
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section tone="paper-2">
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we operate here
         </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <Card title="Transfers and waves">
             Vehicle mix matched to the site&rsquo;s actual access, with the
             evening timed around the arrival pattern.
@@ -137,13 +136,13 @@ export default function AgafayPage() {
             A named fallback for the venue, the weather and the vehicles.
           </Card>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we verify before recommending a site
         </h2>
-        <ul className="measure mt-8 flex flex-col gap-3">
+        <ul className="measure mt-8 border-t border-rule">
           {[
             "Whether a coach can complete the journey, or where it stops",
             "How many vehicles the transfer actually needs at your group size",
@@ -154,42 +153,42 @@ export default function AgafayPage() {
           ].map((item) => (
             <li
               key={item}
-              className="flex gap-3 rounded-[var(--radius-data)] border border-line-soft px-4 py-3 text-sm text-ink"
+              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
             >
-              <span aria-hidden="true" className="text-meta">
+              <span aria-hidden="true" className="text-ink-500">
                 &mdash;
               </span>
               {item}
             </li>
           ))}
         </ul>
-        <div className="mt-8">
+        <div className="measure mt-8">
           <Evidence note="No Agafay distance, drive time or camp capacity appears on this page, because none has been measured and logged by PM Travel yet. Inspections and route logging are under way, and the figures will be published with their dates when they exist." />
         </div>
-      </Container>
+      </Section>
 
-      <FaqSection heading="What operators ask about Agafay" faqs={FAQS} />
+      <FaqSection tone="paper-2" heading="What operators ask about Agafay" faqs={FAQS} />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           Planning an Agafay evening
         </h2>
-        <p className="measure mt-4 text-base text-meta">
+        <p className="measure mt-6 text-lg text-ink-500">
           Tell us the group size, the month and what the evening has to achieve.
           We will tell you what we have inspected, what we have not, and what we
           would go and check before recommending anything. The measured position
           on every leg is on{" "}
-          <Link href="/routes" className="text-petrol underline">
+          <TextLink href="/routes">
             route intelligence
-          </Link>
+          </TextLink>
           .
         </p>
-        <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
+        <div className="measure mt-8">
+          <ButtonLink href={RFQ_HREF}>
             Request a B2B quote
           </ButtonLink>
         </div>
-      </Container>
+      </Section>
     </>
   );
 }

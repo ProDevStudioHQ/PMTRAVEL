@@ -1,11 +1,11 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
-import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
 import { ButtonLink } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
+import { Section, SectionIntro } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { ImageCredits } from "@/features/images/ImageCredits";
 import { COMPANY, RFQ_HREF } from "@/lib/nav";
 
@@ -29,6 +29,16 @@ const FACTS = [
     title: "Languages we operate in",
     body: `${COMPANY.languages.join(", ")}. We do not currently operate in German, and we say so rather than take the booking.`,
   },
+];
+
+/**
+ * What is deliberately absent, stated rather than left as a gap. None of these
+ * renders a placeholder value (decisions.md D4).
+ */
+const NOT_YET = [
+  "Registered entity name, tourism licence and tax identifiers are being confirmed with our accountant and will be published here in full, not selectively.",
+  "Photographs of the office, the vehicles and live operations are being taken. No stock photography and no generated imagery will be used on this site, and no generated person will ever be presented as a member of staff.",
+  "Named team members appear here only once a real person has agreed to be named.",
 ];
 
 const FAQS = [
@@ -58,13 +68,12 @@ export default function AboutPage() {
   return (
     <>
       <PageIntro
-        eyebrow="About"
         title="A Morocco ground operator, built for the trade"
         standfirst="PM Travel Agency runs ground programmes in Morocco on behalf of the companies that sell them. We are based in Gueliz, Marrakech, and we operate from there."
       />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="measure flex flex-col gap-6 text-base text-meta">
+      <Section tone="paper-2">
+        <div className="measure flex flex-col gap-6 text-base text-ink-900">
           <p>
             Most of what goes wrong on a Morocco programme goes wrong on the
             ground, and it goes wrong in ways the selling agency cannot see from
@@ -81,7 +90,7 @@ export default function AboutPage() {
             drivers, the arrivals, the hotels, the guides and the decisions that
             have to be made at eleven at night when something has changed. The
             company operates as{" "}
-            <span className="text-ink">{COMPANY.brandLine}</span>.
+            <span className="font-medium">{COMPANY.brandLine}</span>.
           </p>
           <p>
             What we are trying to be different at is narrow and deliberate.
@@ -95,20 +104,16 @@ export default function AboutPage() {
           </p>
           <p>
             The practical form of that commitment is the{" "}
-            <Link href="/how-we-work" className="text-petrol underline">
-              verification standard
-            </Link>{" "}
-            we hold ourselves to. An operational figure is published only with a
-            source, a method, a date and a named verifier. A supplier&rsquo;s own
-            website is never treated as proof. If a camp&rsquo;s site says it has
-            fifty-two tents, that is a claim we record as unconfirmed until
-            someone from PM Travel has been there and counted. The same applies
-            to every distance and drive time on our{" "}
-            <Link href="/routes" className="text-petrol underline">
-              route intelligence
-            </Link>{" "}
-            page: a route publishes figures only after one of our drivers has
-            driven it and logged it.
+            <TextLink href="/how-we-work">verification standard</TextLink> we hold
+            ourselves to. An operational figure is published only with a source, a
+            method, a date and a named verifier. A supplier&rsquo;s own website is
+            never treated as proof. If a camp&rsquo;s site says it has fifty-two
+            tents, that is a claim we record as unconfirmed until someone from PM
+            Travel has been there and counted. The same applies to every distance
+            and drive time on our{" "}
+            <TextLink href="/routes">route intelligence</TextLink> page: a route
+            publishes figures only after one of our drivers has driven it and
+            logged it.
           </p>
           <p>
             We are a young operation and the site reflects that honestly. There
@@ -120,54 +125,52 @@ export default function AboutPage() {
             competitor cannot copy off a page in an afternoon.
           </p>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          The essentials
-        </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <Section>
+        <SectionIntro title="The essentials" />
+        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {FACTS.map((fact) => (
-            <Card key={fact.title} title={fact.title}>
-              {fact.body}
-            </Card>
+            <li key={fact.title}>
+              <Card title={fact.title} className="h-full">
+                {fact.body}
+              </Card>
+            </li>
           ))}
-        </div>
-      </Container>
+        </ul>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          What is not on this page yet
-        </h2>
-        <p className="measure mt-4 text-sm text-meta">
-          Listing these is deliberate. A buyer checking us out will look for
-          them, and we would rather say where they are than leave a gap.
-        </p>
-        <div className="measure mt-8 flex flex-col gap-4 rounded-[var(--radius-data)] border border-line-soft p-6">
-          <Evidence note="Registered entity name, tourism licence and tax identifiers are being confirmed with our accountant and will be published here in full, not selectively." />
-          <Evidence note="Photographs of the office, the vehicles and live operations are being taken. No stock photography and no generated imagery will be used on this site, and no generated person will ever be presented as a member of staff." />
-          <Evidence note="Named team members appear here only once a real person has agreed to be named." />
-        </div>
-      </Container>
+      <Section tone="paper-2">
+        <SectionIntro title="What is not on this page yet">
+          <p>
+            Listing these is deliberate. A buyer checking us out will look for
+            them, and we would rather say where they are than leave a gap.
+          </p>
+        </SectionIntro>
+        <ul className="measure mt-8 border-t border-rule">
+          {NOT_YET.map((note) => (
+            <li key={note} className="border-b border-rule py-5">
+              <Evidence note={note} />
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       <ImageCredits />
 
-      <FaqSection heading="Questions we get asked first" faqs={FAQS} />
+      <FaqSection heading="Questions we get asked first" faqs={FAQS} tone="paper-2" />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Send us something to operate
-        </h2>
-        <p className="measure mt-4 text-base text-meta">
-          The fastest way to find out whether we are useful to you is to send a
-          real requirement and see what comes back.
-        </p>
+      <Section>
+        <SectionIntro title="Send us something to operate">
+          <p>
+            The fastest way to find out whether we are useful to you is to send a
+            real requirement and see what comes back.
+          </p>
+        </SectionIntro>
         <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
-            Request a B2B quote
-          </ButtonLink>
+          <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
         </div>
-      </Container>
+      </Section>
     </>
   );
 }

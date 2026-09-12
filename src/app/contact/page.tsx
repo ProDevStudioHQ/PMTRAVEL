@@ -50,7 +50,6 @@ export default function ContactPage() {
   return (
     <>
       <PageIntro
-        eyebrow="Contact"
         title="Reach the operations desk"
         standfirst="Email reaches the operations desk in Marrakech directly. Trade enquiries go to the B2B address so they enter the quote workflow rather than a general inbox."
       />

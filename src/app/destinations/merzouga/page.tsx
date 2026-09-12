@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
-import { Container } from "@/components/Container";
+import { Section } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { PageIntro } from "@/components/PageIntro";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ButtonLink } from "@/components/Button";
@@ -50,13 +50,12 @@ export default function MerzougaPage() {
         ]}
       />
       <PageIntro
-        eyebrow="Destination"
         title="Merzouga"
         standfirst="The longest standard leg we run, and the one where the real question is not how to operate it but whether the itinerary has allowed enough days for it."
       />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="measure flex flex-col gap-6 text-base text-meta">
+      <Section tone="paper-2">
+        <div className="measure flex flex-col gap-6 text-base text-ink-900">
           <p>
             Merzouga is the destination most likely to appear in an itinerary
             that has not allowed enough time for it. It is a long way from
@@ -97,22 +96,22 @@ export default function MerzougaPage() {
             activities an hour.
           </p>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           The leg from Marrakech
         </h2>
-        <div className="mt-8 max-w-2xl">
+        <div className="mt-12 max-w-2xl">
           <RouteStatus slug="marrakech-merzouga" />
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section tone="paper-2">
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we operate here
         </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <Card title="Multi-day southern circuits">
             Built around where the group sleeps each night rather than around a
             list of sights.
@@ -135,13 +134,13 @@ export default function MerzougaPage() {
             A stated fallback for vehicles and for the camp itself.
           </Card>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we establish before quoting Merzouga
         </h2>
-        <ul className="measure mt-8 flex flex-col gap-3">
+        <ul className="measure mt-8 border-t border-rule">
           {[
             "Whether the itinerary has allowed two days or three, and which it needs",
             "Where the group sleeps each night, which governs everything else",
@@ -152,41 +151,41 @@ export default function MerzougaPage() {
           ].map((item) => (
             <li
               key={item}
-              className="flex gap-3 rounded-[var(--radius-data)] border border-line-soft px-4 py-3 text-sm text-ink"
+              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
             >
-              <span aria-hidden="true" className="text-meta">
+              <span aria-hidden="true" className="text-ink-500">
                 &mdash;
               </span>
               {item}
             </li>
           ))}
         </ul>
-        <div className="mt-8">
+        <div className="measure mt-8">
           <Evidence note="No drive time, distance or camp capacity for Merzouga appears on this page. This is the longest leg in the measurement programme and the figures will be published once it has been driven and logged, with the number of runs behind them." />
         </div>
-      </Container>
+      </Section>
 
-      <FaqSection heading="What operators ask about Merzouga" faqs={FAQS} />
+      <FaqSection tone="paper-2" heading="What operators ask about Merzouga" faqs={FAQS} />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           Planning a southern circuit
         </h2>
-        <p className="measure mt-4 text-base text-meta">
+        <p className="measure mt-6 text-lg text-ink-500">
           Send the whole circuit rather than the Merzouga night. Where the group
           sleeps on each of the other nights is what determines whether this one
           works. The measured position on each leg is on{" "}
-          <Link href="/routes" className="text-petrol underline">
+          <TextLink href="/routes">
             route intelligence
-          </Link>
+          </TextLink>
           .
         </p>
-        <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
+        <div className="measure mt-8">
+          <ButtonLink href={RFQ_HREF}>
             Request a B2B quote
           </ButtonLink>
         </div>
-      </Container>
+      </Section>
     </>
   );
 }

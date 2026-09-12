@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
-import { Container } from "@/components/Container";
+import { Section } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { PageIntro } from "@/components/PageIntro";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ButtonLink } from "@/components/Button";
@@ -45,13 +45,12 @@ export default function EssaouiraPage() {
         ]}
       />
       <PageIntro
-        eyebrow="Destination"
         title="Essaouira"
         standfirst="The most commonly sold single day out of Marrakech. The driving is the easy part, which is exactly why it catches people out."
       />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="measure flex flex-col gap-6 text-base text-meta">
+      <Section tone="paper-2">
+        <div className="measure flex flex-col gap-6 text-base text-ink-900">
           <p>
             Essaouira is usually the first day trip an operator adds to a
             Marrakech week, and for good reason: it changes the register of the
@@ -92,22 +91,22 @@ export default function EssaouiraPage() {
             though the day trip is the simpler thing for us to operate.
           </p>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           The leg from Marrakech
         </h2>
-        <div className="mt-8 max-w-2xl">
+        <div className="mt-12 max-w-2xl">
           <RouteStatus slug="marrakech-essaouira" />
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section tone="paper-2">
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we operate here
         </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <Card title="Day trips from Marrakech">
             Planned as two movements plus a destination, with the return timed
             deliberately.
@@ -131,13 +130,13 @@ export default function EssaouiraPage() {
             group.
           </Card>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we establish before confirming a day
         </h2>
-        <ul className="measure mt-8 flex flex-col gap-3">
+        <ul className="measure mt-8 border-t border-rule">
           {[
             "Where the coach stops, and the walking stretch from there",
             "Mobility across the group, and the version that keeps it together",
@@ -148,41 +147,41 @@ export default function EssaouiraPage() {
           ].map((item) => (
             <li
               key={item}
-              className="flex gap-3 rounded-[var(--radius-data)] border border-line-soft px-4 py-3 text-sm text-ink"
+              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
             >
-              <span aria-hidden="true" className="text-meta">
+              <span aria-hidden="true" className="text-ink-500">
                 &mdash;
               </span>
               {item}
             </li>
           ))}
         </ul>
-        <div className="mt-8">
+        <div className="measure mt-8">
           <Evidence note="No distance or drive time for this leg is published, because it has not been driven and logged by us yet. It is one of the nine routes in the measurement programme." />
         </div>
-      </Container>
+      </Section>
 
-      <FaqSection heading="What operators ask about Essaouira" faqs={FAQS} />
+      <FaqSection tone="paper-2" heading="What operators ask about Essaouira" faqs={FAQS} />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           Planning an Essaouira day
         </h2>
-        <p className="measure mt-4 text-base text-meta">
+        <p className="measure mt-6 text-lg text-ink-500">
           Send us the week the day sits in, not just the day. Where it falls in
           the programme changes whether it should be there at all. Other
           destinations are on the{" "}
-          <Link href="/destinations" className="text-petrol underline">
+          <TextLink href="/destinations">
             hub
-          </Link>
+          </TextLink>
           .
         </p>
-        <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
+        <div className="measure mt-8">
+          <ButtonLink href={RFQ_HREF}>
             Request a B2B quote
           </ButtonLink>
         </div>
-      </Container>
+      </Section>
     </>
   );
 }

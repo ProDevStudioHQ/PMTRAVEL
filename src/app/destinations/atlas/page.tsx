@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
-import { Container } from "@/components/Container";
+import { Section } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { PageIntro } from "@/components/PageIntro";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ButtonLink } from "@/components/Button";
@@ -49,13 +49,12 @@ export default function AtlasPage() {
         ]}
       />
       <PageIntro
-        eyebrow="Destination"
         title="Atlas Mountains"
         standfirst="A day out of Marrakech and a crossing to the south are sold in similar language and operated completely differently. Getting that distinction right is most of the job."
       />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="measure flex flex-col gap-6 text-base text-meta">
+      <Section tone="paper-2">
+        <div className="measure flex flex-col gap-6 text-base text-ink-900">
           <p>
             The Atlas appears in almost every Morocco itinerary, in two quite
             different roles. In one it is a day: leave Marrakech, spend time in
@@ -97,13 +96,13 @@ export default function AtlasPage() {
             briefing stage, because on the day the options have narrowed to one.
           </p>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we operate here
         </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <Card title="Day programmes">
             Valley days from Marrakech with the walking graded to the group
             rather than to the itinerary title.
@@ -127,13 +126,13 @@ export default function AtlasPage() {
             A stated alternative route or day that does not depend on the pass.
           </Card>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section tone="paper-2">
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we establish before quoting an Atlas day
         </h2>
-        <ul className="measure mt-8 flex flex-col gap-3">
+        <ul className="measure mt-8 border-t border-rule">
           {[
             "Whether the day returns to Marrakech or commits to arriving elsewhere",
             "The mobility range in the group, and the version that keeps it together",
@@ -144,44 +143,44 @@ export default function AtlasPage() {
           ].map((item) => (
             <li
               key={item}
-              className="flex gap-3 rounded-[var(--radius-data)] border border-line-soft px-4 py-3 text-sm text-ink"
+              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
             >
-              <span aria-hidden="true" className="text-meta">
+              <span aria-hidden="true" className="text-ink-500">
                 &mdash;
               </span>
               {item}
             </li>
           ))}
         </ul>
-        <div className="mt-8">
+        <div className="measure mt-8">
           <Evidence note="No Atlas distances, drive times or pass conditions are published on this page. Route measurement is under way; the southern crossings appear on route intelligence as they are driven and logged." />
         </div>
-      </Container>
+      </Section>
 
       <FaqSection heading="What operators ask about the Atlas" faqs={FAQS} />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section tone="paper-2">
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           Planning an Atlas day or crossing
         </h2>
-        <p className="measure mt-4 text-base text-meta">
+        <p className="measure mt-6 text-lg text-ink-500">
           Send the itinerary and tell us where the group sleeps that night. That
           single fact changes how the day should be planned. Related legs are on{" "}
-          <Link href="/routes" className="text-petrol underline">
+          <TextLink href="/routes">
             route intelligence
-          </Link>
+          </TextLink>
           , and the other destinations on the{" "}
-          <Link href="/destinations" className="text-petrol underline">
+          <TextLink href="/destinations">
             hub
-          </Link>
+          </TextLink>
           .
         </p>
-        <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
+        <div className="measure mt-8">
+          <ButtonLink href={RFQ_HREF}>
             Request a B2B quote
           </ButtonLink>
         </div>
-      </Container>
+      </Section>
     </>
   );
 }

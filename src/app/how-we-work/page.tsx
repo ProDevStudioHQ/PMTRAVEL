@@ -1,10 +1,10 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
-import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
 import { ButtonLink } from "@/components/Button";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
+import { Section, SectionIntro } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { RFQ_HREF } from "@/lib/nav";
 
 export const metadata = pageMetadata({
@@ -14,6 +14,7 @@ export const metadata = pageMetadata({
   path: "/how-we-work",
 });
 
+/** A genuine sequence, so the steps are numbered (SOP 2.3). */
 const STEPS = [
   {
     number: "1",
@@ -88,38 +89,37 @@ export default function HowWeWorkPage() {
   return (
     <>
       <PageIntro
-        eyebrow="How we work"
         title="Our workflow, and how we verify"
         standfirst="Two things decide whether a Morocco programme runs well: how the brief becomes a plan, and whether the numbers behind that plan are real."
       />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          From brief to operation
-        </h2>
-        <ol className="mt-10 flex flex-col gap-5">
+      <Section tone="paper-2">
+        <SectionIntro title="From brief to operation" />
+        <ol className="mt-12 border-t border-rule">
           {STEPS.map((step) => (
             <li
               key={step.number}
-              className="rounded-[var(--radius-card)] border border-line-soft p-6"
+              className="grid gap-3 border-b border-rule py-8 sm:grid-cols-12 sm:gap-6"
             >
-              <div className="flex items-baseline gap-4">
-                <span className="tabular text-lg font-medium text-petrol">
-                  {step.number}
-                </span>
-                <h3 className="text-lg font-medium text-ink">{step.title}</h3>
-              </div>
-              <p className="measure mt-3 text-sm text-meta">{step.body}</p>
+              <span
+                aria-hidden="true"
+                className="tabular font-display text-3xl font-bold text-ink-900 sm:col-span-1"
+              >
+                {step.number}
+              </span>
+              <h3 className="text-lg font-semibold text-ink-900 sm:col-span-4 lg:col-span-3">
+                {step.title}
+              </h3>
+              <p className="text-base text-ink-500 sm:col-span-7 lg:col-span-8">{step.body}</p>
             </li>
           ))}
         </ol>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          The verification standard
-        </h2>
-        <div className="measure mt-6 flex flex-col gap-6 text-base text-meta">
+      {/* The page's one deep section: the standard itself. */}
+      <Section tone="deep">
+        <SectionIntro title="The verification standard" onDark />
+        <div className="measure mt-8 flex flex-col gap-6 text-base text-paper/90">
           <p>
             Every operational claim we publish records eight things: the claim,
             the source, the source type, the source URL where there is one, the
@@ -139,50 +139,42 @@ export default function HowWeWorkPage() {
           </p>
         </div>
 
-        <dl className="mt-10 grid gap-5 sm:grid-cols-2">
+        <dl className="mt-12 grid border-t border-paper/15 sm:grid-cols-2 sm:gap-x-12">
           {CONFIDENCE.map((item) => (
-            <div
-              key={item.level}
-              className="rounded-[var(--radius-data)] border border-line-soft p-6"
-            >
-              <dt className="text-sm font-medium text-ink">{item.level}</dt>
-              <dd className="mt-2 text-sm text-meta">{item.body}</dd>
+            <div key={item.level} className="border-b border-paper/15 py-6">
+              <dt className="font-display text-lg font-semibold text-paper">{item.level}</dt>
+              <dd className="mt-2 text-base text-paper/90">{item.body}</dd>
             </div>
           ))}
         </dl>
 
-        <div className="mt-8">
-          <Evidence note="This standard is applied to route data, venue data and capability statements alike. Where a page on this site shows no figure, it is because no figure has been verified — not because the page is unfinished." />
+        <div className="measure mt-8">
+          <Evidence
+            onDark
+            note="This standard is applied to route data, venue data and capability statements alike. Where a page on this site shows no figure, it is because no figure has been verified — not because the page is unfinished."
+          />
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Where you can see it working
-        </h2>
-        <p className="measure mt-4 text-base text-meta">
-          The standard is easy to claim, so the useful thing is to look at what
-          it has cost us. On{" "}
-          <Link href="/routes" className="text-petrol underline">
-            route intelligence
-          </Link>{" "}
-          every row currently reads &ldquo;verification in progress&rdquo;,
-          because we have not finished driving them. On{" "}
-          <Link href="/mice" className="text-petrol underline">
-            MICE and events
-          </Link>{" "}
-          there are no venue capacities, because we have not finished inspecting
-          them. We could fill both pages this afternoon from public sources, and
-          every competitor&rsquo;s page suggests they have.
-        </p>
+      <Section>
+        <SectionIntro title="Where you can see it working">
+          <p>
+            The standard is easy to claim, so the useful thing is to look at what
+            it has cost us. On <TextLink href="/routes">route intelligence</TextLink>{" "}
+            every row currently reads &ldquo;verification in progress&rdquo;,
+            because we have not finished driving them. On{" "}
+            <TextLink href="/mice">MICE and events</TextLink> there are no venue
+            capacities, because we have not finished inspecting them. We could
+            fill both pages this afternoon from public sources, and every
+            competitor&rsquo;s page suggests they have.
+          </p>
+        </SectionIntro>
         <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
-            Request a B2B quote
-          </ButtonLink>
+          <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
         </div>
-      </Container>
+      </Section>
 
-      <FaqSection heading="Questions about the method" faqs={FAQS} />
+      <FaqSection heading="Questions about the method" faqs={FAQS} tone="paper-2" />
     </>
   );
 }

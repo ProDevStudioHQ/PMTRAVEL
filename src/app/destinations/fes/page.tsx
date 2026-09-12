@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
-import { Container } from "@/components/Container";
+import { Section } from "@/components/Section";
+import { TextLink } from "@/components/TextLink";
 import { PageIntro } from "@/components/PageIntro";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ButtonLink } from "@/components/Button";
@@ -50,13 +50,12 @@ export default function FesPage() {
         ]}
       />
       <PageIntro
-        eyebrow="Destination"
         title="Fes"
         standfirst="Usually reached as a crossing rather than a transfer, and usually given less time than it needs. The medina is the operational problem, and it is a serious one."
       />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <div className="measure flex flex-col gap-6 text-base text-meta">
+      <Section tone="paper-2">
+        <div className="measure flex flex-col gap-6 text-base text-ink-900">
           <p>
             Fes is the destination where the gap between how a programme is sold
             and how it is operated tends to be widest. It arrives in most
@@ -98,22 +97,22 @@ export default function FesPage() {
             defaulting to the road because road is what ground operators do.
           </p>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           The leg from Marrakech
         </h2>
-        <div className="mt-8 max-w-2xl">
+        <div className="mt-12 max-w-2xl">
           <RouteStatus slug="marrakech-fes" />
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section tone="paper-2">
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we operate here
         </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <Card title="Arrival and luggage">
             Planned as a distinct operation, with the handover point and the
             carry agreed before the day.
@@ -135,13 +134,13 @@ export default function FesPage() {
             Including telling you when a day and a half is not enough.
           </Card>
         </div>
-      </Container>
+      </Section>
 
-      <Container as="section" className="border-t border-line-soft py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           What we establish before confirming Fes
         </h2>
-        <ul className="measure mt-8 flex flex-col gap-3">
+        <ul className="measure mt-8 border-t border-rule">
           {[
             "How the group arrives, and what state they arrive in",
             "Vehicle access to each specific address, and where luggage is handed over",
@@ -152,41 +151,41 @@ export default function FesPage() {
           ].map((item) => (
             <li
               key={item}
-              className="flex gap-3 rounded-[var(--radius-data)] border border-line-soft px-4 py-3 text-sm text-ink"
+              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
             >
-              <span aria-hidden="true" className="text-meta">
+              <span aria-hidden="true" className="text-ink-500">
                 &mdash;
               </span>
               {item}
             </li>
           ))}
         </ul>
-        <div className="mt-8">
+        <div className="measure mt-8">
           <Evidence note="No distance or drive time from Marrakech to Fes is published here. It is one of the nine routes being logged, and the figures will appear with the number of runs behind them." />
         </div>
-      </Container>
+      </Section>
 
-      <FaqSection heading="What operators ask about Fes" faqs={FAQS} />
+      <FaqSection tone="paper-2" heading="What operators ask about Fes" faqs={FAQS} />
 
-      <Container as="section" className="py-16 lg:py-24">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+      <Section>
+        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
           Planning a Fes section
         </h2>
-        <p className="measure mt-4 text-base text-meta">
+        <p className="measure mt-6 text-lg text-ink-500">
           Send the itinerary with the arrival and departure times as they
           currently stand. That is usually enough for us to tell you whether the
           city has been given enough of the week. Other destinations are on the{" "}
-          <Link href="/destinations" className="text-petrol underline">
+          <TextLink href="/destinations">
             hub
-          </Link>
+          </TextLink>
           .
         </p>
-        <div className="mt-8">
-          <ButtonLink href={RFQ_HREF} variant="accent">
+        <div className="measure mt-8">
+          <ButtonLink href={RFQ_HREF}>
             Request a B2B quote
           </ButtonLink>
         </div>
-      </Container>
+      </Section>
     </>
   );
 }
