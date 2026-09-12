@@ -38,6 +38,16 @@ export function pageMetadata({
       url: path,
       title,
       description,
+      // Named explicitly: a page's openGraph object replaces the root one, so
+      // the file-based src/app/opengraph-image.png never reached any page.
+      images: [
+        {
+          url: "/opengraph-image.png",
+          width: 1200,
+          height: 630,
+          alt: `${COMPANY.name}: ${COMPANY.positioning}. ${COMPANY.proofLine}`,
+        },
+      ],
     },
     ...(noindex ? { robots: { index: false, follow: false } } : {}),
   };

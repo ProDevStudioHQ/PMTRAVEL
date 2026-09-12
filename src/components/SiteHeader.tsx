@@ -246,7 +246,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
     >
       <Container>
         <div className="flex h-16 items-center justify-between gap-6">
-          <Link href="/" aria-label={`${COMPANY.name}, home`} className="shrink-0">
+          <Link href="/" aria-label={`${COMPANY.name}, home`} className="flex min-h-11 shrink-0 items-center">
             <BrandLogo onDark />
           </Link>
 

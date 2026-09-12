@@ -54,8 +54,9 @@ const FAQS = [
   },
 ];
 
+/** A standalone link, so it gets the full 44px tap target rather than its line height. */
 const EMAIL_LINK =
-  "wrap-anywhere text-red-600 underline underline-offset-4 transition-colors duration-200 hover:text-red-900";
+  "inline-flex min-h-11 items-center wrap-anywhere text-red-600 underline underline-offset-4 transition-colors duration-200 hover:text-red-900";
 
 /** One contact channel: an icon beside its own label, so the icon is decorative. */
 function Channel({ icon: Icon, label, children }: { icon: LucideIcon; label: string; children: ReactNode }) {

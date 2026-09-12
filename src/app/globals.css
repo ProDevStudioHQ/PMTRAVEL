@@ -26,21 +26,6 @@
   /* Hairlines: ink at 10%, the static card and section border. */
   --color-rule: rgb(27 21 23 / 0.1);
 
-  /*
-    Legacy aliases, kept only so pages not yet rebuilt keep rendering between
-    phases. Each page moves to the tokens above as it is rebuilt; the aliases
-    are deleted in Phase 8. Do not use them in new code.
-  */
-  --color-chalk: var(--color-paper);
-  --color-hamada: var(--color-paper-2);
-  --color-petrol: var(--color-red-600);
-  --color-petrol-deep: var(--color-red-900);
-  --color-oxide: var(--color-red-600);
-  --color-ink: var(--color-ink-900);
-  --color-meta: var(--color-ink-500);
-  --color-line: var(--color-ink-500);
-  --color-line-soft: var(--color-rule);
-
   /* Fonts. Display for headings, sans for everything else, serif for evidence only. */
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -66,14 +51,10 @@
   --text-3xl--line-height: 1.05;
   --text-4xl: 4.5rem;
   --text-4xl--line-height: 1.05;
-  /* Legacy alias: the old 12px step now renders at the scale's smallest size. */
-  --text-2xs: 0.8125rem;
-  --text-2xs--line-height: 1.5;
 
   /* Radius: one value per element class. Full-bleed sections are square. */
   --radius-control: 4px; /* buttons and inputs */
   --radius-card: 8px; /* cards and panels */
-  --radius-data: 4px; /* legacy alias */
 
   /* Shadows: two levels, warm-tinted, only where elevation means something. */
   --shadow-raised: 0 1px 2px rgb(27 21 23 / 0.08), 0 2px 8px rgb(27 21 23 / 0.08);
@@ -142,6 +123,9 @@ body {
 }
 
 .skip-link:focus {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   left: 1rem;
   top: 1rem;
   padding: 0.75rem 1rem;

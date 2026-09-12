@@ -79,7 +79,8 @@ standing rules in `AGENT-PROMPTS.md` disagreed, these calls were made:
    a page that currently makes none.
 6. **Token migration.** Old token names are kept as aliases onto the new
    tokens while pages are rebuilt phase by phase, so every intermediate commit
-   builds and renders. The aliases are deleted in Phase 8.
+   builds and renders. The aliases were deleted in Phase 8, after a search found no
+   remaining use.
 
 ---
 

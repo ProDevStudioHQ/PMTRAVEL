@@ -84,11 +84,11 @@ Forbidden: **red-600 text or marks on red-900 (2.07 — never)**. The status
 green and amber do not go on red-900 either; `StatusChip` takes an `onDark`
 prop that switches the marks to paper and keeps their shapes.
 
-Legacy token names (`chalk`, `hamada`, `petrol`, `petrol-deep`, `oxide`,
-`ink`, `meta`, `line`, `line-soft`, `text-2xs`, `radius-data`, button variant
-`accent`) are aliases onto the tokens above, kept only so pages render while
-they are rebuilt phase by phase. They are deleted in Phase 8. Never use them in
-new code.
+The interim token names from before the redesign (`chalk`, `hamada`, `petrol`,
+`petrol-deep`, `oxide`, `ink`, `meta`, `line`, `line-soft`, `text-2xs`,
+`radius-data`, and the button variant `accent`) were removed in Phase 8, once a
+search found no page still using them. A class built on one of them now
+renders nothing, so check new code against the table above.
 
 Fonts: Archivo (variable) for headings, IBM Plex Sans 400/500 for body and UI.
 Newsreader italic **only** inside `<Evidence>` — sources, verification dates,
@@ -286,6 +286,18 @@ data — no analytics, no cookies, no third-party embeds, and exactly one place
 where personal data is collected — so the lawyer reviews facts rather than
 inventing them. The largest open question in there is retention: nothing
 currently deletes RFQ data.
+
+## Brand assets
+
+`src/app/icon.png` (96px), `apple-icon.png` (180px), `favicon.ico` (32px) and
+`opengraph-image.png` / `twitter-image.png` (1200 x 630) are Next.js file
+conventions, served at those paths and declared in every page's head.
+`pageMetadata()` names the Open Graph image explicitly, because a page's
+`openGraph` object replaces the root one. They were rendered in headless Chrome
+from the `BrandLogo` monogram in paper on red-900, with the site's own fonts,
+and exported as PNG so no colour value lives outside `globals.css`. To change
+them, re-render at the same sizes; the ICO must embed an RGBA PNG or the build
+fails.
 
 ## Images
 

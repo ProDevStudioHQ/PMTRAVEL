@@ -77,7 +77,7 @@ export default function RequestAQuotePage() {
               </p>
               <p className="mt-4 text-base">
                 <a
-                  className="wrap-anywhere text-red-600 underline underline-offset-4 transition-colors duration-200 hover:text-red-900"
+                  className="inline-flex min-h-11 items-center wrap-anywhere text-red-600 underline underline-offset-4 transition-colors duration-200 hover:text-red-900"
                   href={`mailto:${COMPANY.email.b2b}`}
                 >
                   {COMPANY.email.b2b}

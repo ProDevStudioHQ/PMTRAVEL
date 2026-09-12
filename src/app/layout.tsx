@@ -59,14 +59,19 @@ export const metadata: Metadata = {
 };
 
 /**
- * Organization schema only. No Review, AggregateRating, Offer or Event - and
- * no telephone or legal identifier, because neither is confirmed.
+ * Organization and TravelAgency, as one entity (SOP Phase 8). No Review,
+ * AggregateRating, Offer or Event - and no telephone or legal identifier,
+ * because neither is confirmed. The logo and image are the generated brand
+ * assets in src/app, served by Next.js at these paths.
  */
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "TravelAgency",
+  "@type": ["Organization", "TravelAgency"],
+  "@id": `${SITE_URL}/#organization`,
   name: COMPANY.name,
   url: SITE_URL,
+  logo: `${SITE_URL}/apple-icon.png`,
+  image: `${SITE_URL}/opengraph-image.png`,
   email: COMPANY.email.b2b,
   address: {
     "@type": "PostalAddress",
