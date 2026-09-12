@@ -5,6 +5,21 @@ six months otherwise. Newest first.
 
 ---
 
+## D5 — The active nav link is underlined in paper, not red-600
+
+**Date:** 2026-09-12 · **Status:** accepted
+
+SOP 3.1 marks the active route with a 2px red-600 underline. The bar that
+underline sits on is red-900 once the page scrolls, and a darkened photograph
+over the hero. red-600 on red-900 measures 2.07:1, under the 3:1 minimum for a
+non-text indicator, so the active state would all but vanish in exactly the
+place it is needed. The header underlines the active link in paper instead,
+still 2px and still paired with `aria-current="page"`. In the mobile drawer,
+which is a paper surface, the active link keeps the red-600 underline the SOP
+asks for (5.84:1).
+
+---
+
 ## D4 — The redesign SOP replaces the earlier design system
 
 **Date:** 2026-09-12 · **Status:** accepted by the business ("use your

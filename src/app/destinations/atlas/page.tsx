@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -9,12 +9,12 @@ import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Atlas Mountains Ground Operations",
   description:
     "Operating the Atlas from Marrakech: day trips versus crossings, vehicle class on the passes, winter conditions and group mobility.",
-  alternates: { canonical: "/destinations/atlas" },
-};
+  path: "/destinations/atlas",
+});
 
 const FAQS = [
   {

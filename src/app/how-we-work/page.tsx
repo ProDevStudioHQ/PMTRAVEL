@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -7,12 +7,12 @@ import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "How We Work and How We Verify",
   description:
     "PM Travel's workflow from brief to operation, and the verification standard behind every operational figure we publish.",
-  alternates: { canonical: "/how-we-work" },
-};
+  path: "/how-we-work",
+});
 
 const STEPS = [
   {

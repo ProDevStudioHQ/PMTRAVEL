@@ -131,9 +131,9 @@ docs/
 Server Components by default. A Client Component needs a comment explaining
 why. There are exactly two: `RfqForm` (progressive form, errors linked to
 fields) and `SiteHeader` (marks the current page, closes the mobile panel and
-the Services dropdown on navigation, and is transparent over the home hero
+the Operations and Destinations dropdowns on navigation, and is transparent over the home hero
 photograph until the page scrolls - clear, never frosted). The header's links
-come from `HEADER_HOME`, `HEADER_NAV` and `HEADER_SERVICES` in `src/lib/nav.ts`; the logo is
+come from `NAV_GROUPS` and `NAV_LINKS` in `src/lib/nav.ts`; the logo is
 `BrandLogo`, a stroked PM monogram that inherits `currentColor`. Together they cost about 7KB gzipped over a pure-static page.
 
 ## Milestones

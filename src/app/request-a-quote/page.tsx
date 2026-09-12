@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -7,12 +7,12 @@ import { FaqSection } from "@/components/FaqSection";
 import { RfqForm } from "@/features/rfq/RfqForm";
 import { COMPANY } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Request a B2B Quote",
   description:
     "Send PM Travel a Morocco ground requirement: company, dates, destinations, traveller numbers and a brief. The rest can follow.",
-  alternates: { canonical: "/request-a-quote" },
-};
+  path: "/request-a-quote",
+});
 
 const FAQS = [
   {

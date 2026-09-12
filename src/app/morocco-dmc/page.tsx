@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -8,12 +8,12 @@ import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
 import { COMPANY, RFQ_HREF, SITE_URL } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Morocco DMC and Ground Handling",
   description:
     "What a Morocco DMC does, what ground handling includes, and what PM Travel operates for tour operators and agencies from Marrakech.",
-  alternates: { canonical: "/morocco-dmc" },
-};
+  path: "/morocco-dmc",
+});
 
 /**
  * Service schema. Only the services we actually operate, with no price, no

@@ -161,8 +161,14 @@ const pageFiles = sourceFiles.filter((file) => file.endsWith("page.tsx"));
 
 for (const file of pageFiles) {
   const contents = readFileSync(file, "utf8");
-  const metadataBlock = contents.match(/export const metadata[\s\S]*?^\};/m)?.[0];
+  const metadataBlock = contents.match(/export const metadata[\s\S]*?^\}\)?;/m)?.[0];
   if (!metadataBlock) continue; // generateMetadata pages are checked at build
+
+  // og:url must come from the same path as the canonical. pageMetadata() sets
+  // both; a hand-built metadata object inherits the layout's and gets it wrong.
+  if (!metadataBlock.includes("pageMetadata(")) {
+    fail(file, "builds metadata by hand; use pageMetadata() so og:url matches the canonical");
+  }
 
   const rawTitle = metadataBlock.match(/title:\s*["`]([^"`]+)["`]/)?.[1];
   const title = rawTitle ? resolveTitle(rawTitle) : undefined;
@@ -189,7 +195,7 @@ for (const file of pageFiles) {
     fail(file, `description is ${description.length} chars, over ${DESCRIPTION_MAX}`);
   }
 
-  if (!metadataBlock.includes("alternates")) {
+  if (!/alternates|path:/.test(metadataBlock)) {
     fail(file, "has no self-referencing canonical");
   }
 }

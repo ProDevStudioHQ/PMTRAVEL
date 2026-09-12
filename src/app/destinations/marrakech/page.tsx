@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -9,12 +9,12 @@ import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Marrakech Ground Operations",
   description:
     "Marrakech ground handling for travel trade: arrivals, riad access, medina logistics, guiding and group movement, run from our Gueliz office.",
-  alternates: { canonical: "/destinations/marrakech" },
-};
+  path: "/destinations/marrakech",
+});
 
 const FAQS = [
   {

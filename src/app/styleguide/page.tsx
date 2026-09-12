@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { Container } from "@/components/Container";
 import { Button, ButtonLink } from "@/components/Button";
 import { Card } from "@/components/Card";
@@ -11,12 +11,12 @@ import { StatusChip } from "@/components/StatusChip";
  * from the site, not in the sitemap (ALL_ROUTES does not list it), and
  * noindex so it never appears in results.
  */
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Style guide",
   description: "Internal review page for the PM Travel design tokens and components.",
-  alternates: { canonical: "/styleguide" },
-  robots: { index: false, follow: false },
-};
+  path: "/styleguide",
+  noindex: true,
+});
 
 const COLOURS = [
   { token: "red-900", swatch: "bg-red-900", use: "Footer, dark sections, nav on scroll", pair: "paper on it 12.06:1" },

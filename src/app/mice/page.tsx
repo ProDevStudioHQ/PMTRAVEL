@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -11,12 +11,12 @@ import { VENUES } from "@/features/venues/data";
 import { toPublicVenue } from "@/features/venues/disclosure";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Morocco MICE and Events Operations",
   description:
     "Meetings, incentives and events in Morocco, planned on venue data PM Travel has measured on site rather than copied from suppliers.",
-  alternates: { canonical: "/mice" },
-};
+  path: "/mice",
+});
 
 const DISCLOSURE = [
   {

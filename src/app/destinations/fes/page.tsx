@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -10,12 +10,12 @@ import { FaqSection } from "@/components/FaqSection";
 import { RouteStatus } from "@/features/destinations/RouteStatus";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Fes Ground Operations",
   description:
     "Operating Fes for travel trade: medina access and luggage handling, guiding that holds a group together, and arriving by road from Marrakech.",
-  alternates: { canonical: "/destinations/fes" },
-};
+  path: "/destinations/fes",
+});
 
 const FAQS = [
   {

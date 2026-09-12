@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -9,12 +9,12 @@ import { PLANNED_DESTINATIONS } from "@/features/destinations/registry";
 import { DestinationRail } from "@/features/images/DestinationRail";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Morocco Destinations We Operate",
   description:
     "The Moroccan destinations PM Travel operates from Marrakech, described in operational terms: access, timing, vehicles and what we verify.",
-  alternates: { canonical: "/destinations" },
-};
+  path: "/destinations",
+});
 
 const FAQS = [
   {

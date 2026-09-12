@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { ButtonLink } from "@/components/Button";
@@ -8,12 +8,12 @@ import { RouteTable } from "@/features/routes/RouteTable";
 import { HomeHero } from "@/features/images/HomeHero";
 import { COMPANY, RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: `${COMPANY.positioning} | ${COMPANY.name}`,
   description:
     "B2B Morocco ground operations: transfers, airport handling, hotels, guiding, groups, FIT and events, planned on verified operational data.",
-  alternates: { canonical: "/" },
-};
+  path: "/",
+});
 
 /**
  * Each capability card carries its own tone: the number, the link, the top

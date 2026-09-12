@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -9,12 +9,12 @@ import { FaqSection } from "@/components/FaqSection";
 import { ImageCredits } from "@/features/images/ImageCredits";
 import { COMPANY, RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "About Our Morocco Operation",
   description:
     "A Morocco ground-operations company in Gueliz, Marrakech, working for tour operators, agencies and destination specialists.",
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 const FACTS = [
   {

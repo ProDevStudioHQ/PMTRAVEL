@@ -1,24 +1,30 @@
 "use client";
 
-// Client Component for four reasons, all behavioural rather than decorative:
-// the current page has to be marked in the navigation, which needs the
-// pathname; the mobile panel and the Services dropdown have to close
-// themselves on navigation, which a <details> element does not do; and over
-// the home hero photograph the header is transparent until the page scrolls,
-// which needs the scroll position.
+// Client Component for behavioural reasons only: the current page is marked,
+// which needs the pathname; the bar changes state on scroll; the dropdowns
+// open on hover, click and keyboard with arrow-key navigation; and the mobile
+// drawer locks page scroll, manages focus and closes itself on navigation.
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type FocusEvent,
+  type KeyboardEvent,
+} from "react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { Container } from "@/components/Container";
 import { ButtonLink } from "@/components/Button";
 import { BrandLogo } from "@/components/BrandLogo";
-import { HEADER_HOME, HEADER_NAV, HEADER_SERVICES, RFQ_HREF } from "@/lib/nav";
-import type { NavItem } from "@/lib/nav";
+import { COMPANY, NAV_GROUPS, NAV_LINKS, RFQ_HREF, type NavGroup } from "@/lib/nav";
 
-/** Fixed row height, so the hero can sit exactly underneath the header. */
-const HEADER_HEIGHT = "h-[72px]";
-const SCROLL_THRESHOLD = 16;
+/** SOP 3.1: the bar turns solid once the page has scrolled past 80px. */
+const SCROLL_THRESHOLD = 80;
+/** Grace period for the pointer to cross from a trigger into its panel. */
+const HOVER_CLOSE_DELAY = 150;
 
 function subscribeToScroll(onChange: () => void) {
   window.addEventListener("scroll", onChange, { passive: true });
@@ -28,168 +34,278 @@ function subscribeToScroll(onChange: () => void) {
 const isScrolled = () => window.scrollY > SCROLL_THRESHOLD;
 const isScrolledOnServer = () => false;
 
+/**
+ * Active route: a 2px underline. SOP 3.1 asks for red-600, but the bar is
+ * red-900 or a darkened photograph, where red-600 measures 2.07:1 and all but
+ * disappears. The underline is paper instead; see docs/decisions.md D5.
+ */
+const ACTIVE_UNDERLINE =
+  "after:absolute after:inset-x-0 after:bottom-1.5 after:h-0.5 after:bg-paper after:content-['']";
+
 type SiteHeaderProps = {
   /**
    * True when the home page renders its photographic hero. Decided on the
-   * server from the image registry, so the header never guesses and never
-   * goes transparent over a page with no photograph behind it.
+   * server from the image registry, so the bar never goes transparent over a
+   * page with no photograph behind it.
    */
   overlayOnHome?: boolean;
 };
 
 export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [openedAt, setOpenedAt] = useState(pathname);
-  const servicesRef = useRef<HTMLLIElement>(null);
   const scrolled = useSyncExternalStore(subscribeToScroll, isScrolled, isScrolledOnServer);
 
-  // Close both menus whenever the route changes, so a tap on a link does not
-  // leave a menu covering the page it just opened. Adjusted during render
-  // rather than in an effect: an effect would render the stale open menu
-  // first, then close it, which is a visible flash and a cascading render.
-  if (openedAt !== pathname) {
-    setOpenedAt(pathname);
-    setOpen(false);
-    setServicesOpen(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [seenPath, setSeenPath] = useState(pathname);
+
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const panelRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const drawerToggleRef = useRef<HTMLButtonElement>(null);
+  const drawerCloseRef = useRef<HTMLButtonElement>(null);
+  /** Item to focus once a panel opened from the keyboard has rendered. */
+  const pendingFocus = useRef<{ group: string; index: number } | null>(null);
+
+  // Close everything when the route changes, so a menu never covers the page
+  // it just opened. Adjusted during render rather than in an effect, which
+  // would paint the stale open menu for a frame first.
+  if (seenPath !== pathname) {
+    setSeenPath(pathname);
+    setOpenGroup(null);
+    setDrawerOpen(false);
   }
 
-  // The dropdown also closes on Escape and on a click outside it.
-  useEffect(() => {
-    if (!servicesOpen) return;
-    const onPointerDown = (event: PointerEvent) => {
-      if (!servicesRef.current?.contains(event.target as Node)) setServicesOpen(false);
-    };
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setServicesOpen(false);
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [servicesOpen]);
-
   const isCurrent = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
-  const servicesCurrent = HEADER_SERVICES.some((item) => isCurrent(item.href));
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+  const groupIsCurrent = (group: NavGroup) => group.items.some((item) => isCurrent(item.href));
 
   const overlayPage = overlayOnHome && pathname === "/";
-  // Transparent only while the photograph is actually behind it. No blur and
-  // no frosted fill - that would be glassmorphism, which the design system
-  // forbids. It is either fully clear over the scrim, or solid chalk.
-  const transparent = overlayPage && !scrolled && !open;
+  const solid = !overlayPage || scrolled || openGroup !== null;
 
-  // The current page is marked by weight as well as colour, so the state is
-  // never carried by colour alone, and carries aria-current for assistive tech.
-  const linkTone = (current: boolean) =>
-    `${current ? "font-semibold" : "font-normal"} ${
-      transparent
-        ? current
-          ? "text-chalk"
-          : "text-chalk/85 hover:text-chalk"
-        : current
-          ? "text-petrol"
-          : "text-ink hover:text-petrol"
-    }`;
+  // --- Dropdowns ---------------------------------------------------------
+
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setOpenGroup(null), HOVER_CLOSE_DELAY);
+  };
+
+  useEffect(() => {
+    const timer = closeTimer;
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, []);
+
+  // While a dropdown is open: Escape closes it, and so does a click outside
+  // the header.
+  useEffect(() => {
+    if (!openGroup) return;
+    const group = openGroup;
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      const focusWasInPanel = panelRefs.current[group]?.contains(document.activeElement);
+      setOpenGroup(null);
+      if (focusWasInPanel) triggerRefs.current[group]?.focus();
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setOpenGroup(null);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [openGroup]);
+
+  // An arrow key on a closed trigger opens its panel; focus can only move into
+  // the panel after it has rendered visible, so it happens here rather than in
+  // the key handler. Focusing too early silently left focus on the trigger.
+  useEffect(() => {
+    const pending = pendingFocus.current;
+    if (!pending || pending.group !== openGroup) return;
+    pendingFocus.current = null;
+    const items = Array.from(
+      panelRefs.current[pending.group]?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? []
+    );
+    if (items.length === 0) return;
+    items[(pending.index + items.length) % items.length]?.focus();
+  }, [openGroup]);
+
+  const menuItems = (groupId: string) =>
+    Array.from(
+      panelRefs.current[groupId]?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? []
+    );
+
+  const focusItem = (groupId: string, index: number) => {
+    const items = menuItems(groupId);
+    if (items.length === 0) return;
+    items[(index + items.length) % items.length]?.focus();
+  };
+
+  const onTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>, groupId: string) => {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const index = event.key === "ArrowUp" ? -1 : 0;
+      if (openGroup === groupId) {
+        focusItem(groupId, index);
+      } else {
+        pendingFocus.current = { group: groupId, index };
+        setOpenGroup(groupId);
+      }
+    }
+  };
+
+  const onMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>, groupId: string) => {
+    const items = menuItems(groupId);
+    const index = items.indexOf(document.activeElement as HTMLElement);
+    switch (event.key) {
+      case "ArrowDown":
+      case "ArrowRight":
+        event.preventDefault();
+        focusItem(groupId, index + 1);
+        break;
+      case "ArrowUp":
+      case "ArrowLeft":
+        event.preventDefault();
+        focusItem(groupId, index - 1);
+        break;
+      case "Home":
+        event.preventDefault();
+        focusItem(groupId, 0);
+        break;
+      case "End":
+        event.preventDefault();
+        focusItem(groupId, -1);
+        break;
+      case "Escape":
+        event.preventDefault();
+        setOpenGroup(null);
+        triggerRefs.current[groupId]?.focus();
+        break;
+    }
+  };
+
+  // Close when focus leaves both the trigger and its panel.
+  const onGroupBlur = (event: FocusEvent, groupId: string) => {
+    const next = event.relatedTarget as Node | null;
+    const inside =
+      triggerRefs.current[groupId]?.contains(next) || panelRefs.current[groupId]?.contains(next);
+    if (!inside) setOpenGroup((current) => (current === groupId ? null : current));
+  };
+
+  // --- Mobile drawer -----------------------------------------------------
+
+  // While the drawer is open: page scroll is locked, focus moves to Close,
+  // and Escape closes it and returns focus to the Menu button.
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = "hidden";
+    drawerCloseRef.current?.focus();
+    const toggle = drawerToggleRef.current;
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setDrawerOpen(false);
+      toggle?.focus();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      root.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [drawerOpen]);
+
+  const openDrawer = () => {
+    setExpanded(NAV_GROUPS.find(groupIsCurrent)?.id ?? null);
+    setDrawerOpen(true);
+  };
+
+  const closeDrawer = () => {
+    setDrawerOpen(false);
+    drawerToggleRef.current?.focus();
+  };
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-colors duration-200 ${
-        transparent ? "surface-deep bg-transparent" : "bg-chalk"
-      } ${overlayPage ? "-mb-[72px]" : ""}`}
+      ref={headerRef}
+      className={`surface-deep sticky top-0 z-50 w-full border-b text-paper transition-[background-color,border-color] duration-200 ease-out ${
+        solid ? "border-paper/15 bg-red-900" : "border-transparent bg-transparent"
+      } ${overlayPage ? "-mb-16" : ""}`}
     >
-      {/* Tighter side padding from xl, so the full bar fits the 1200px frame. */}
-      <Container className="xl:px-8">
-        <div className={`flex items-center justify-between gap-6 ${HEADER_HEIGHT}`}>
-          <Link href="/" aria-label="PM Travel Agency, home" className="shrink-0">
-            <BrandLogo onDark={transparent} />
+      <Container>
+        <div className="flex h-16 items-center justify-between gap-6">
+          <Link href="/" aria-label={`${COMPANY.name}, home`} className="shrink-0">
+            <BrandLogo onDark />
           </Link>
 
-          {/*
-            The full bar appears from xl (1280px). Below that the Menu button
-            takes over - at 1024px the bar ran 177px past the edge of the
-            screen.
-          */}
-          <nav aria-label="Primary" className="ml-auto hidden xl:block">
-            <ul className="flex items-center gap-5 2xl:gap-8">
-              <li>
-                <Link
-                  href={HEADER_HOME.href}
-                  aria-current={isCurrent(HEADER_HOME.href) ? "page" : undefined}
-                  className={`block whitespace-nowrap py-2 text-xs transition-colors ${linkTone(
-                    isCurrent(HEADER_HOME.href)
-                  )}`}
-                >
-                  {HEADER_HOME.label}
-                </Link>
-              </li>
-
-              <li ref={servicesRef} className="relative">
-                <button
-                  type="button"
-                  onClick={() => setServicesOpen((value) => !value)}
-                  aria-expanded={servicesOpen}
-                  aria-controls="services-menu"
-                  className={`flex items-center gap-1.5 whitespace-nowrap py-2 text-xs transition-colors ${linkTone(
-                    servicesCurrent
-                  )}`}
-                >
-                  Services
-                  <svg
-                    viewBox="0 0 10 6"
-                    aria-hidden="true"
-                    className={`h-1.5 w-2.5 transition-transform ${servicesOpen ? "rotate-180" : ""}`}
+          {/* The full bar needs about 1000px, so it appears from xl (1280px). */}
+          <nav aria-label="Primary" className="hidden xl:block">
+            <ul className="flex items-center gap-8">
+              {NAV_GROUPS.map((group) => {
+                const open = openGroup === group.id;
+                const current = groupIsCurrent(group);
+                return (
+                  <li
+                    key={group.id}
+                    onPointerEnter={(event) => {
+                      if (event.pointerType !== "mouse") return;
+                      cancelClose();
+                      setOpenGroup(group.id);
+                    }}
+                    onPointerLeave={(event) => {
+                      if (event.pointerType === "mouse") scheduleClose();
+                    }}
                   >
-                    <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-                </button>
+                    <button
+                      ref={(element) => {
+                        triggerRefs.current[group.id] = element;
+                      }}
+                      id={`${group.id}-trigger`}
+                      type="button"
+                      aria-haspopup="menu"
+                      aria-expanded={open}
+                      aria-controls={`${group.id}-menu`}
+                      onClick={() => setOpenGroup(open ? null : group.id)}
+                      onKeyDown={(event) => onTriggerKeyDown(event, group.id)}
+                      onBlur={(event) => onGroupBlur(event, group.id)}
+                      className={`relative flex min-h-11 items-center gap-1 text-sm font-medium transition-colors duration-200 ${
+                        current || open ? "text-paper" : "text-paper/85 hover:text-paper"
+                      } ${current ? ACTIVE_UNDERLINE : ""}`}
+                    >
+                      {group.label}
+                      <ChevronDown
+                        aria-hidden="true"
+                        size={16}
+                        strokeWidth={1.5}
+                        className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                  </li>
+                );
+              })}
 
-                <div
-                  id="services-menu"
-                  hidden={!servicesOpen}
-                  className="absolute left-1/2 top-full w-72 -translate-x-1/2 pt-3"
-                >
-                  <ul className="rounded-[var(--radius-card)] border border-line-soft bg-chalk p-2 shadow-[0_16px_40px_-16px_rgba(11,44,51,0.35)]">
-                    {HEADER_SERVICES.map((item) => {
-                      const current = isCurrent(item.href);
-                      return (
-                        <li key={item.href}>
-                          <Link
-                            href={item.href}
-                            aria-current={current ? "page" : undefined}
-                            className="block rounded-[var(--radius-data)] px-3 py-2.5 transition-colors hover:bg-hamada/60"
-                          >
-                            <span
-                              className={`block text-xs ${
-                                current ? "font-semibold text-petrol" : "font-medium text-ink"
-                              }`}
-                            >
-                              {item.label}
-                            </span>
-                            {item.blurb ? (
-                              <span className="block text-2xs text-meta">{item.blurb}</span>
-                            ) : null}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </li>
-
-              {HEADER_NAV.map((item) => {
+              {NAV_LINKS.map((item) => {
                 const current = isCurrent(item.href);
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
                       aria-current={current ? "page" : undefined}
-                      className={`block whitespace-nowrap py-2 text-xs transition-colors ${linkTone(
-                        current
-                      )}`}
+                      className={`relative flex min-h-11 items-center text-sm font-medium transition-colors duration-200 ${
+                        current ? `text-paper ${ACTIVE_UNDERLINE}` : "text-paper/85 hover:text-paper"
+                      }`}
                     >
                       {item.label}
                     </Link>
@@ -199,90 +315,194 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
             </ul>
           </nav>
 
-          <div className="hidden shrink-0 items-center gap-6 xl:flex">
-            <span
-              aria-hidden="true"
-              className={`h-8 w-px transition-colors ${transparent ? "bg-chalk/40" : "bg-line-soft"}`}
-            />
-            <ButtonLink
-              href={RFQ_HREF}
-              variant="accent"
-              className="!min-h-[44px] !rounded-[var(--radius-data)] !px-5 !py-2 !text-2xs !font-semibold uppercase tracking-[0.14em]"
-            >
+          <div className="hidden shrink-0 xl:block">
+            <ButtonLink href={RFQ_HREF} tone="dark">
               Request a quote
             </ButtonLink>
           </div>
 
           <button
+            ref={drawerToggleRef}
             type="button"
-            onClick={() => setOpen((value) => !value)}
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            className={`flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-[var(--radius-data)] border px-3 text-xs transition-colors xl:hidden ${
-              transparent ? "border-chalk/60 text-chalk" : "border-line text-petrol"
-            }`}
+            onClick={openDrawer}
+            aria-expanded={drawerOpen}
+            aria-controls="mobile-drawer"
+            className="flex min-h-11 items-center gap-2 rounded-control border border-paper/60 px-3 text-sm font-medium text-paper xl:hidden"
           >
-            <span className="flex flex-col gap-[3px]" aria-hidden="true">
-              <span className="block h-px w-4 bg-current" />
-              <span className="block h-px w-4 bg-current" />
-              <span className="block h-px w-4 bg-current" />
-            </span>
-            {open ? "Close" : "Menu"}
+            <Menu aria-hidden="true" size={18} strokeWidth={1.5} />
+            Menu
           </button>
         </div>
       </Container>
 
-      <nav
-        id="mobile-nav"
-        aria-label="Primary (mobile)"
-        hidden={!open}
-        className="bg-chalk xl:hidden"
-      >
-        <Container>
-          <ul className="flex flex-col py-2">
-            {[HEADER_HOME, ...HEADER_NAV].map((item) => (
-              <MobileLink key={item.href} item={item} current={isCurrent(item.href)} />
-            ))}
-          </ul>
-          <p className="pt-3 text-2xs font-medium uppercase tracking-[0.18em] text-meta">
-            Services
-          </p>
-          <ul className="flex flex-col pb-2">
-            {HEADER_SERVICES.map((item) => (
-              <MobileLink key={item.href} item={item} current={isCurrent(item.href)} />
-            ))}
-          </ul>
-          <div className="pb-5">
-            <ButtonLink href={RFQ_HREF} className="w-full">
-              Request a B2B quote
-            </ButtonLink>
+      {/* Dropdown panels: full width, anchored under the bar. */}
+      {NAV_GROUPS.map((group) => {
+        const open = openGroup === group.id;
+        return (
+          <div
+            key={group.id}
+            ref={(element) => {
+              panelRefs.current[group.id] = element;
+            }}
+            id={`${group.id}-menu`}
+            role="menu"
+            aria-labelledby={`${group.id}-trigger`}
+            onKeyDown={(event) => onMenuKeyDown(event, group.id)}
+            onBlur={(event) => onGroupBlur(event, group.id)}
+            onPointerEnter={(event) => {
+              if (event.pointerType === "mouse") cancelClose();
+            }}
+            onPointerLeave={(event) => {
+              if (event.pointerType === "mouse") scheduleClose();
+            }}
+            className={`surface-light absolute inset-x-0 top-full hidden border-t border-rule bg-paper text-ink-900 shadow-overlay duration-150 ease-out xl:block ${
+              // Opening: visibility flips at once so the items are focusable
+              // immediately. Closing: visibility waits for the fade to finish.
+              open
+                ? "visible opacity-100 transition-opacity"
+                : "invisible opacity-0 transition-[opacity,visibility]"
+            }`}
+          >
+            <Container className="py-6">
+              <ul
+                role="none"
+                className={`grid gap-2 ${group.items.length > 4 ? "grid-cols-3" : "grid-cols-2"}`}
+              >
+                {group.items.map((item) => {
+                  const current = isCurrent(item.href);
+                  return (
+                    <li key={item.href} role="none">
+                      <Link
+                        href={item.href}
+                        role="menuitem"
+                        tabIndex={open ? 0 : -1}
+                        aria-current={current ? "page" : undefined}
+                        className="block rounded-card p-3 transition-colors duration-150 hover:bg-paper-2 focus-visible:bg-paper-2"
+                      >
+                        <span
+                          className={`block text-base font-medium ${
+                            current ? "text-red-600" : "text-ink-900"
+                          }`}
+                        >
+                          {item.label}
+                        </span>
+                        {item.blurb ? (
+                          <span className="mt-1 block text-sm text-ink-500">{item.blurb}</span>
+                        ) : null}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Container>
           </div>
-        </Container>
-      </nav>
-    </header>
-  );
-}
+        );
+      })}
 
-function MobileLink({
-  item,
-  current,
-}: {
-  item: NavItem;
-  current: boolean;
-}) {
-  return (
-    <li className="border-b border-line-soft last:border-0">
-      <Link
-        href={item.href}
-        aria-current={current ? "page" : undefined}
-        className="flex min-h-[52px] flex-col justify-center py-2"
+      {/* Mobile drawer: full screen, sliding in from the right. */}
+      <div
+        id="mobile-drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site menu"
+        inert={!drawerOpen}
+        className={`surface-light fixed inset-0 z-50 flex flex-col bg-paper text-ink-900 transition-transform duration-200 ease-out xl:hidden ${
+          drawerOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
-        <span className={`text-sm ${current ? "font-semibold text-petrol" : "text-ink"}`}>
-          {item.label}
-          {current ? <span className="ml-2 text-2xs text-oxide">&mdash; current</span> : null}
-        </span>
-        {item.blurb ? <span className="text-2xs text-meta">{item.blurb}</span> : null}
-      </Link>
-    </li>
+        <div className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-rule px-5">
+          <BrandLogo />
+          <button
+            ref={drawerCloseRef}
+            type="button"
+            onClick={closeDrawer}
+            className="flex min-h-11 items-center gap-2 rounded-control border border-ink-500 px-3 text-sm font-medium text-ink-900"
+          >
+            <X aria-hidden="true" size={18} strokeWidth={1.5} />
+            Close
+          </button>
+        </div>
+
+        <nav aria-label="Primary (mobile)" className="flex-1 overflow-y-auto px-5 py-2">
+          <ul className="flex flex-col">
+            {NAV_GROUPS.map((group) => {
+              const open = expanded === group.id;
+              return (
+                <li key={group.id} className="border-b border-rule">
+                  <button
+                    type="button"
+                    aria-expanded={open}
+                    aria-controls={`${group.id}-drawer-list`}
+                    onClick={() => setExpanded(open ? null : group.id)}
+                    className="flex min-h-12 w-full items-center justify-between text-left text-lg font-medium text-ink-900"
+                  >
+                    {group.label}
+                    <ChevronDown
+                      aria-hidden="true"
+                      size={20}
+                      strokeWidth={1.5}
+                      className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  <ul id={`${group.id}-drawer-list`} hidden={!open} className="pb-3">
+                    {group.items.map((item) => {
+                      const current = isCurrent(item.href);
+                      return (
+                        <li key={item.href}>
+                          <Link
+                            href={item.href}
+                            aria-current={current ? "page" : undefined}
+                            className="flex min-h-11 flex-col justify-center py-2"
+                          >
+                            <span
+                              className={`text-base ${
+                                current
+                                  ? "font-medium text-red-600 underline decoration-2 underline-offset-4"
+                                  : "text-ink-900"
+                              }`}
+                            >
+                              {item.label}
+                            </span>
+                            {item.blurb ? (
+                              <span className="text-sm text-ink-500">{item.blurb}</span>
+                            ) : null}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </li>
+              );
+            })}
+
+            {NAV_LINKS.map((item) => {
+              const current = isCurrent(item.href);
+              return (
+                <li key={item.href} className="border-b border-rule">
+                  <Link
+                    href={item.href}
+                    aria-current={current ? "page" : undefined}
+                    className={`flex min-h-12 items-center text-lg font-medium ${
+                      current
+                        ? "text-red-600 underline decoration-2 underline-offset-4"
+                        : "text-ink-900"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* The quote action stays pinned to the bottom of the drawer. */}
+        <div className="shrink-0 border-t border-rule p-5">
+          <ButtonLink href={RFQ_HREF} className="w-full">
+            Request a quote
+          </ButtonLink>
+        </div>
+      </div>
+    </header>
   );
 }

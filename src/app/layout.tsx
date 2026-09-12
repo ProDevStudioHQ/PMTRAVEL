@@ -47,12 +47,13 @@ export const metadata: Metadata = {
   },
   description:
     "Morocco ground operations for travel trade. Transfers, guiding, hotels, groups, FIT and events, planned with verified operational data.",
-  alternates: { canonical: "/" },
+  // No canonical and no og:url here: every page sets both from its own path
+  // through pageMetadata(). Set here, they were inherited by every page and
+  // pointed all of them at the home page.
   openGraph: {
     type: "website",
     siteName: COMPANY.name,
     locale: "en",
-    url: SITE_URL,
   },
   robots: { index: true, follow: true },
 };

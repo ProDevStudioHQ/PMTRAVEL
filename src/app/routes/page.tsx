@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -11,12 +11,12 @@ import { isPublished } from "@/features/routes/publish";
 import { ROUTES_PAGE_THRESHOLD, MIN_LOGS_TO_PUBLISH } from "@/features/routes/types";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Morocco Route Intelligence",
   description:
     "Drive distances and times from Marrakech, published only after PM Travel drivers have driven and logged the route.",
-  alternates: { canonical: "/routes" },
-};
+  path: "/routes",
+});
 
 const FAQS = [
   {

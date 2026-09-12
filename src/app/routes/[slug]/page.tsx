@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Container } from "@/components/Container";
@@ -34,11 +35,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const route = routeBySlug(slug);
   if (!route) return {};
-  return {
+  return pageMetadata({
     title: `${route.origin} to ${route.destination} by Road`,
     description: `Measured driving distance and time from ${route.origin} to ${route.destination}, logged by PM Travel drivers.`,
-    alternates: { canonical: `/routes/${route.slug}` },
-  };
+    path: `/routes/${route.slug}`,
+  });
 }
 
 export default async function RoutePage({ params }: Props) {

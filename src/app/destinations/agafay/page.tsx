@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -10,12 +10,12 @@ import { FaqSection } from "@/components/FaqSection";
 import { RouteStatus } from "@/features/destinations/RouteStatus";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Agafay Ground Operations and Events",
   description:
     "Operating Agafay from Marrakech: transfer waves, coach limits, wind and wet-weather planning, and what to verify before booking a camp.",
-  alternates: { canonical: "/destinations/agafay" },
-};
+  path: "/destinations/agafay",
+});
 
 const FAQS = [
   {

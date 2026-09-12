@@ -1,3 +1,5 @@
+import { DESTINATIONS } from "@/features/destinations/registry";
+
 /**
  * The single source of truth for company facts and navigation.
  *
@@ -58,27 +60,50 @@ export const SECONDARY_NAV: NavItem[] = [
 
 export const RFQ_HREF = "/request-a-quote";
 
-/**
- * The header's own arrangement. PRIMARY_NAV and SECONDARY_NAV stay the site's
- * full list (footer, sitemap); the header shows five top-level links and
- * keeps the remaining pages one click away in a Services dropdown, so no page
- * loses its link from the header.
- */
-export const HEADER_HOME: NavItem = { href: "/", label: "Home" };
+/** A dropdown group in the header (SOP 3.1). */
+export type NavGroup = {
+  id: string;
+  label: string;
+  items: NavItem[];
+};
 
-/** The header links that follow Home and the Services dropdown. */
-export const HEADER_NAV: NavItem[] = [
-  { href: "/mice", label: "MICE Services", blurb: "Meetings, incentives, events" },
-  { href: "/destinations", label: "Destinations", blurb: "Where we operate" },
-  { href: "/about", label: "About Us", blurb: "Who we are" },
-  { href: "/contact", label: "Contact Us", blurb: "Reach the operations desk" },
+/** Look a page up in the full list, so labels and blurbs are never retyped. */
+const byHref = (href: string): NavItem => {
+  const item = [...PRIMARY_NAV, ...SECONDARY_NAV].find((entry) => entry.href === href);
+  if (!item) throw new Error(`No navigation entry for ${href}`);
+  return item;
+};
+
+/** A destination's one-line description: the first sentence of its summary. */
+const firstSentence = (text: string) => text.split(/(?<=\.)\s/)[0] ?? text;
+
+/**
+ * The header's arrangement. PRIMARY_NAV and SECONDARY_NAV stay the full list
+ * for the footer and sitemap. The header groups them into two dropdowns and
+ * three top-level links, so every page stays reachable from the header.
+ */
+export const NAV_GROUPS: NavGroup[] = [
+  {
+    id: "operations",
+    label: "Operations",
+    items: ["/morocco-dmc", "/mice", "/b2b", "/routes"].map(byHref),
+  },
+  {
+    id: "destinations",
+    label: "Destinations",
+    items: [
+      ...DESTINATIONS.map((destination) => ({
+        href: `/destinations/${destination.slug}`,
+        label: destination.name,
+        blurb: firstSentence(destination.summary),
+      })),
+      { ...byHref("/destinations"), label: "All destinations" },
+    ],
+  },
 ];
 
-const HEADER_SERVICE_HREFS = ["/morocco-dmc", "/b2b", "/routes", "/how-we-work"];
-
-export const HEADER_SERVICES: NavItem[] = PRIMARY_NAV.filter((item) =>
-  HEADER_SERVICE_HREFS.includes(item.href)
-);
+/** Top-level header links after the dropdowns. */
+export const NAV_LINKS: NavItem[] = ["/how-we-work", "/about", "/contact"].map(byHref);
 
 /** Every public route, used by the sitemap. Keep in sync with src/app. */
 export const ALL_ROUTES: string[] = [

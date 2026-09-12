@@ -1,17 +1,18 @@
 import { COMPANY } from "@/lib/nav";
 
 type BrandLogoProps = {
-  /** Light artwork for dark surfaces (the header over the hero photograph). */
+  /** Paper artwork for dark surfaces: the header, the footer, the hero. */
   onDark?: boolean;
 };
 
 /**
- * The PM Travel Agency logo: a monogram mark and the wordmark.
+ * The PM Travel Agency wordmark: a monogram mark beside the name and brand
+ * line.
  *
- * The monogram is drawn as strokes rather than set as text, so it renders
- * identically before the web font loads and at any size. It inherits
- * currentColor, which lets one component serve light and dark surfaces.
- * Colour-only by design - no gold, no gradient, no ornament.
+ * The monogram is drawn with strokes rather than set as text, so it renders
+ * the same before the web font loads and at any size. It inherits
+ * currentColor, so one component serves light and dark surfaces. The brand
+ * line is sentence case: tracked capitals are forbidden (SOP 2.2).
  */
 export function BrandLogo({ onDark = false }: BrandLogoProps) {
   return (
@@ -19,7 +20,7 @@ export function BrandLogo({ onDark = false }: BrandLogoProps) {
       <svg
         viewBox="0 0 40 40"
         aria-hidden="true"
-        className={`h-10 w-10 shrink-0 transition-colors ${onDark ? "text-chalk" : "text-petrol"}`}
+        className={`size-10 shrink-0 ${onDark ? "text-paper" : "text-red-600"}`}
       >
         <rect
           x="1"
@@ -50,17 +51,16 @@ export function BrandLogo({ onDark = false }: BrandLogoProps) {
       </svg>
       <span className="block">
         <span
-          className={`block text-base font-semibold leading-tight tracking-tight transition-colors ${
-            onDark ? "text-chalk" : "text-petrol"
+          className={`block font-display text-base font-semibold leading-tight ${
+            onDark ? "text-paper" : "text-ink-900"
           }`}
         >
           {COMPANY.name}
         </span>
+        {/* Hidden on the narrowest phones, where it pushed the menu button off-screen. */}
         <span
-          // Hidden on the narrowest phones: at 390px the tracked brand line
-          // pushed the Menu button off-screen.
-          className={`mt-0.5 hidden text-[0.6875rem] uppercase leading-tight tracking-[0.08em] transition-colors sm:block ${
-            onDark ? "text-hamada" : "text-meta"
+          className={`mt-0.5 hidden text-xs leading-tight sm:block ${
+            onDark ? "text-paper/80" : "text-ink-500"
           }`}
         >
           {COMPANY.brandLine}

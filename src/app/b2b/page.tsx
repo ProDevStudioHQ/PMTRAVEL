@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -9,12 +9,12 @@ import { FaqSection } from "@/components/FaqSection";
 import { StatusChip } from "@/components/StatusChip";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "For Travel Trade and Tour Operators",
   description:
     "White-label Morocco ground operations for tour operators, agencies and destination specialists, with clear service status on every quote.",
-  alternates: { canonical: "/b2b" },
-};
+  path: "/b2b",
+});
 
 const FAQS = [
   {

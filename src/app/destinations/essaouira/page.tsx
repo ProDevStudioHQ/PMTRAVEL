@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -10,12 +10,12 @@ import { FaqSection } from "@/components/FaqSection";
 import { RouteStatus } from "@/features/destinations/RouteStatus";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Essaouira Ground Operations",
   description:
     "Operating Essaouira from Marrakech: coach parking and drop-off, medina access on foot, wind, and whether a day trip is the right call.",
-  alternates: { canonical: "/destinations/essaouira" },
-};
+  path: "/destinations/essaouira",
+});
 
 const FAQS = [
   {

@@ -1,81 +1,129 @@
 import Link from "next/link";
+import { Globe, Mail, MapPin } from "lucide-react";
 import { Container } from "@/components/Container";
-import { COMPANY, PRIMARY_NAV, SECONDARY_NAV, RFQ_HREF } from "@/lib/nav";
+import { COMPANY, PRIMARY_NAV, SECONDARY_NAV, RFQ_HREF, type NavItem } from "@/lib/nav";
+
+const COMPANY_HREFS = ["/about", "/how-we-work", "/contact"];
+
+const ALL_PAGES = [...PRIMARY_NAV, ...SECONDARY_NAV];
+
+/** Operations: the existing link list, less the company pages, plus the quote. */
+const OPERATIONS_LINKS: NavItem[] = [
+  ...PRIMARY_NAV.filter((item) => !COMPANY_HREFS.includes(item.href)),
+  { href: RFQ_HREF, label: "Request a quote" },
+];
+
+const COMPANY_LINKS: NavItem[] = COMPANY_HREFS.flatMap(
+  (href) => ALL_PAGES.find((item) => item.href === href) ?? []
+);
+
+/** lucide-react at 18px and 1.5 stroke; decorative, since each sits beside its own label. */
+const ICON = { size: 18, strokeWidth: 1.5, "aria-hidden": true, className: "mt-0.5 shrink-0" } as const;
+
+function FooterLinks({ heading, links }: { heading: string; links: NavItem[] }) {
+  return (
+    <div>
+      <h2 className="text-base font-semibold text-paper">{heading}</h2>
+      <ul className="mt-4 flex flex-col">
+        {links.map((item) => (
+          <li key={item.href}>
+            <Link
+              href={item.href}
+              className="flex min-h-11 items-center text-sm text-paper/90 underline-offset-4 hover:text-paper hover:underline"
+            >
+              {item.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 /**
- * No telephone number and no legal identity block appear here. Both are
- * unconfirmed. See docs/START.md, "Blockers".
+ * Site footer (SOP 3.2): red-900, four columns on desktop, stacked on mobile.
+ * paper at 90% on red-900 measures 9.95:1.
+ *
+ * Nothing unconfirmed renders here. The phone number, WhatsApp, operating
+ * hours, licence number and ICE are held back until confirmed (AGENT-PROMPTS
+ * hard stops 2 and 3, decisions.md D4), and there are no social links because
+ * no account has been confirmed.
  */
 export function SiteFooter() {
   return (
-    <footer className="surface-deep mt-24 bg-petrol-deep text-chalk">
+    <footer className="surface-deep mt-24 bg-red-900 text-paper/90">
       <Container>
-        <div className="grid gap-10 py-14 md:grid-cols-3">
-          <div>
-            <p className="text-sm font-semibold">{COMPANY.name}</p>
-            <p className="mt-1 text-xs text-hamada">{COMPANY.brandLine}</p>
-            <address className="mt-5 text-xs not-italic leading-relaxed text-hamada">
-              {COMPANY.address.line1}
-              <br />
-              {COMPANY.address.district}
-              <br />
-              {COMPANY.address.city} {COMPANY.address.postalCode}
-              <br />
-              {COMPANY.address.country}
-            </address>
-          </div>
+        <div className="grid gap-x-8 gap-y-12 py-16 md:grid-cols-2 lg:grid-cols-4">
+          <FooterLinks heading="Operations" links={OPERATIONS_LINKS} />
+          <FooterLinks heading="Company" links={COMPANY_LINKS} />
 
           <div>
-            <h2 className="text-2xs font-medium uppercase tracking-[0.12em] text-hamada">
-              Operations
-            </h2>
-            <ul className="mt-4 flex flex-col gap-2">
-              {[...PRIMARY_NAV, ...SECONDARY_NAV].map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-xs text-chalk hover:underline">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link href={RFQ_HREF} className="text-xs text-chalk hover:underline">
-                  Request a quote
-                </Link>
+            <h2 className="text-base font-semibold text-paper">Contact</h2>
+            <ul className="mt-4 flex flex-col gap-4 text-sm">
+              <li className="flex gap-3">
+                <MapPin {...ICON} />
+                <address className="not-italic">
+                  {COMPANY.address.line1}
+                  <br />
+                  {COMPANY.address.district}, {COMPANY.address.city} {COMPANY.address.postalCode}
+                  <br />
+                  {COMPANY.address.country}
+                </address>
               </li>
+              <li className="flex gap-3">
+                <Mail {...ICON} />
+                <span>
+                  Travel trade
+                  <br />
+                  <a
+                    href={`mailto:${COMPANY.email.b2b}`}
+                    className="wrap-anywhere text-paper underline underline-offset-4"
+                  >
+                    {COMPANY.email.b2b}
+                  </a>
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <Mail {...ICON} />
+                <span>
+                  General
+                  <br />
+                  <a
+                    href={`mailto:${COMPANY.email.general}`}
+                    className="wrap-anywhere text-paper underline underline-offset-4"
+                  >
+                    {COMPANY.email.general}
+                  </a>
+                </span>
+              </li>
+              {/* CONTENT NEEDED: telephone (lucide Phone) and WhatsApp (lucide MessageCircle).
+                  Two conflicting numbers were supplied; nothing renders until one is
+                  confirmed. See docs/START.md "Blockers" and decisions.md D4. */}
+              {/* CONTENT NEEDED: operating hours and time zone, GMT+1 (lucide Clock).
+                  Not confirmed; nothing renders. */}
             </ul>
           </div>
 
           <div>
-            <h2 className="text-2xs font-medium uppercase tracking-[0.12em] text-hamada">
-              Contact
-            </h2>
-            <ul className="mt-4 flex flex-col gap-2 text-xs">
-              <li>
-                Travel trade:{" "}
-                <a href={`mailto:${COMPANY.email.b2b}`} className="underline">
-                  {COMPANY.email.b2b}
-                </a>
-              </li>
-              <li>
-                General:{" "}
-                <a href={`mailto:${COMPANY.email.general}`} className="underline">
-                  {COMPANY.email.general}
-                </a>
-              </li>
-            </ul>
-            <h2 className="mt-8 text-2xs font-medium uppercase tracking-[0.12em] text-hamada">
-              Working languages
-            </h2>
-            <p className="mt-3 text-xs text-hamada">
-              {COMPANY.languages.join(" \u00B7 ")}
-            </p>
+            <h2 className="text-base font-semibold text-paper">Working languages</h2>
+            <div className="mt-4 flex gap-3 text-sm">
+              <Globe {...ICON} />
+              <ul className="flex flex-col gap-1">
+                {COMPANY.languages.map((language) => (
+                  <li key={language}>{language}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-chalk/15 py-6">
-          <p className="text-2xs text-hamada">
-            &copy; {new Date().getFullYear()} {COMPANY.name}. {COMPANY.brandLine}.
+        <div className="flex flex-col gap-2 border-t border-paper/15 py-6 text-sm sm:flex-row sm:justify-between">
+          <p>
+            &copy; {new Date().getFullYear()} {COMPANY.name}
           </p>
+          <p>{COMPANY.brandLine}</p>
+          {/* CONTENT NEEDED: Moroccan travel agency licence number and ICE.
+              Not confirmed (AGENT-PROMPTS hard stop 3); nothing renders. */}
         </div>
       </Container>
     </footer>

@@ -129,6 +129,11 @@ body {
   outline-color: var(--color-paper);
 }
 
+/* A light panel inside a dark surface (dropdown, drawer) restores the red ring. */
+.surface-deep .surface-light :focus-visible {
+  outline-color: var(--color-red-600);
+}
+
 .skip-link {
   position: absolute;
   left: -9999px;

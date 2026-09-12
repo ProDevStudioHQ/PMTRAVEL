@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { PageIntro } from "@/components/PageIntro";
@@ -7,12 +7,12 @@ import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
 import { COMPANY, RFQ_HREF } from "@/lib/nav";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Contact the Operations Desk",
   description:
     "Reach PM Travel Agency's operations desk in Gueliz, Marrakech, by email. Trade enquiries go straight into the quote workflow.",
-  alternates: { canonical: "/contact" },
-};
+  path: "/contact",
+});
 
 const BRIEF_CHECKLIST = [
   "Your company and the country you sell from",
