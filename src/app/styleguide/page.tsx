@@ -97,7 +97,9 @@ export default function StyleguidePage() {
         <p className="measure mt-10 text-base text-ink-900">
           Body copy is IBM Plex Sans at 1rem with a 1.6 line height, held under
           72 characters. Headings are Archivo. Operational figures use tabular,
-          lining numerals: <span className="tabular">128 km, 2 h 05</span>.
+          lining numerals: <span className="tabular">0123456789</span>. No sample
+          distance or drive time appears here, because none may be invented,
+          even in a mockup.
         </p>
         <div className="mt-6">
           <Evidence note="Evidence notes keep the Newsreader italic, the one signal that a statement is sourced and verified." />

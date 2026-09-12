@@ -51,7 +51,8 @@ function FooterLinks({ heading, links }: { heading: string; links: NavItem[] }) 
  */
 export function SiteFooter() {
   return (
-    <footer className="surface-deep mt-24 bg-red-900 text-paper/90">
+    // No top margin: every page ends in a padded section that meets the footer directly.
+    <footer className="surface-deep bg-red-900 text-paper/90">
       <Container>
         <div className="grid gap-x-8 gap-y-12 py-16 md:grid-cols-2 lg:grid-cols-4">
           <FooterLinks heading="Operations" links={OPERATIONS_LINKS} />
