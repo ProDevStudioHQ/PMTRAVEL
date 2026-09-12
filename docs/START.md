@@ -102,8 +102,9 @@ docs/
 
 Server Components by default. A Client Component needs a comment explaining
 why. There are exactly two: `RfqForm` (progressive form, errors linked to
-fields) and `SiteHeader` (marks the current page, and closes the mobile panel
-on navigation). Together they cost about 7KB gzipped over a pure-static page.
+fields) and `SiteHeader` (marks the current page, closes the mobile panel on
+navigation, and is transparent over the home hero photograph until the page
+scrolls - clear, never frosted). Together they cost about 7KB gzipped over a pure-static page.
 
 ## Milestones
 

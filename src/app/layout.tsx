@@ -4,6 +4,8 @@ import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { COMPANY, SITE_URL } from "@/lib/nav";
+import { imageByKey } from "@/features/images/registry";
+import { IMAGE_SLOTS } from "@/features/images/keys";
 
 const schibsted = Schibsted_Grotesk({
   subsets: ["latin"],
@@ -72,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <SiteHeader />
+        <SiteHeader overlayOnHome={Boolean(imageByKey(IMAGE_SLOTS.homeHero))} />
         <main id="main">{children}</main>
         <SiteFooter />
         <script

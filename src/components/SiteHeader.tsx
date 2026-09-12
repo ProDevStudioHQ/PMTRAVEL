@@ -1,22 +1,44 @@
 "use client";
 
-// Client Component for two reasons, both behavioural rather than decorative:
+// Client Component for three reasons, all behavioural rather than decorative:
 // the current page has to be marked in the navigation, which needs the
-// pathname; and the mobile panel has to close itself on navigation, which a
-// <details> element does not do. The cost is about 1KB gzipped on top of a
-// runtime already being loaded.
+// pathname; the mobile panel has to close itself on navigation, which a
+// <details> element does not do; and over the home hero photograph the header
+// is transparent until the page scrolls, which needs the scroll position.
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Container } from "@/components/Container";
 import { ButtonLink } from "@/components/Button";
 import { COMPANY, PRIMARY_NAV, SECONDARY_NAV, RFQ_HREF } from "@/lib/nav";
 
-export function SiteHeader() {
+/** Fixed row height, so the hero can sit exactly underneath the header. */
+const HEADER_HEIGHT = "h-[72px]";
+const SCROLL_THRESHOLD = 16;
+
+function subscribeToScroll(onChange: () => void) {
+  window.addEventListener("scroll", onChange, { passive: true });
+  return () => window.removeEventListener("scroll", onChange);
+}
+
+const isScrolled = () => window.scrollY > SCROLL_THRESHOLD;
+const isScrolledOnServer = () => false;
+
+type SiteHeaderProps = {
+  /**
+   * True when the home page renders its photographic hero. Decided on the
+   * server from the image registry, so the header never guesses and never
+   * goes transparent over a page with no photograph behind it.
+   */
+  overlayOnHome?: boolean;
+};
+
+export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [openedAt, setOpenedAt] = useState(pathname);
+  const scrolled = useSyncExternalStore(subscribeToScroll, isScrolled, isScrolledOnServer);
 
   // Close the panel whenever the route changes, so a tap on a link does not
   // leave the menu covering the page it just opened. Adjusted during render
@@ -30,40 +52,68 @@ export function SiteHeader() {
   const isCurrent = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  const overlayPage = overlayOnHome && pathname === "/";
+  // Transparent only while the photograph is actually behind it. No blur and
+  // no frosted fill - that would be glassmorphism, which the design system
+  // forbids. It is either fully clear over the scrim, or solid chalk.
+  const transparent = overlayPage && !scrolled && !open;
+
   return (
-    <header className="sticky top-0 z-40 border-b border-line-soft bg-chalk">
+    <header
+      className={`sticky top-0 z-40 border-b transition-colors duration-200 ${
+        transparent
+          ? "surface-deep border-chalk/15 bg-transparent"
+          : "border-line-soft bg-chalk"
+      } ${overlayPage ? "-mb-[72px]" : ""}`}
+    >
       <Container>
-        <div className="flex items-center justify-between gap-6 py-4">
+        <div className={`flex items-center justify-between gap-6 ${HEADER_HEIGHT}`}>
           <Link href="/" className="group block shrink-0">
-            <span className="block text-sm font-semibold tracking-tight text-petrol">
+            <span
+              className={`block text-sm font-semibold tracking-tight transition-colors ${
+                transparent ? "text-chalk" : "text-petrol"
+              }`}
+            >
               {COMPANY.name}
             </span>
-            <span className="block text-2xs text-meta">{COMPANY.brandLine}</span>
+            <span
+              className={`block text-2xs transition-colors ${
+                transparent ? "text-hamada" : "text-meta"
+              }`}
+            >
+              {COMPANY.brandLine}
+            </span>
           </Link>
 
           <nav aria-label="Primary" className="hidden lg:block">
             <ul className="flex items-center gap-7">
               {PRIMARY_NAV.map((item) => {
                 const current = isCurrent(item.href);
+                const tone = transparent
+                  ? current
+                    ? "text-chalk"
+                    : "text-hamada hover:text-chalk"
+                  : current
+                    ? "text-petrol"
+                    : "text-meta hover:text-ink";
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
                       aria-current={current ? "page" : undefined}
-                      className={`relative block py-2 text-xs transition-colors ${
-                        current ? "text-petrol" : "text-meta hover:text-ink"
-                      }`}
+                      className={`relative block py-2 text-xs transition-colors ${tone}`}
                     >
                       {item.label}
                       {/*
                         The current page is marked by a rule as well as a
                         colour change, so the state is never carried by colour
-                        alone.
+                        alone. Chalk over the photograph: oxide on petrol-deep
+                        is 2.43:1 and forbidden.
                       */}
                       <span
                         aria-hidden="true"
                         className={`absolute inset-x-0 -bottom-px h-px transition-colors ${
-                          current ? "bg-oxide" : "bg-transparent"
+                          current ? (transparent ? "bg-chalk" : "bg-oxide") : "bg-transparent"
                         }`}
                       />
                     </Link>
@@ -74,7 +124,14 @@ export function SiteHeader() {
           </nav>
 
           <div className="hidden shrink-0 lg:block">
-            <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
+            <ButtonLink
+              href={RFQ_HREF}
+              className={
+                transparent ? "border border-chalk/60 !bg-transparent hover:!bg-chalk/10" : ""
+              }
+            >
+              Request a B2B quote
+            </ButtonLink>
           </div>
 
           <button
@@ -82,12 +139,14 @@ export function SiteHeader() {
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-[var(--radius-data)] border border-line px-3 text-xs text-petrol lg:hidden"
+            className={`flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-[var(--radius-data)] border px-3 text-xs transition-colors lg:hidden ${
+              transparent ? "border-chalk/60 text-chalk" : "border-line text-petrol"
+            }`}
           >
             <span className="flex flex-col gap-[3px]" aria-hidden="true">
-              <span className="block h-px w-4 bg-petrol" />
-              <span className="block h-px w-4 bg-petrol" />
-              <span className="block h-px w-4 bg-petrol" />
+              <span className="block h-px w-4 bg-current" />
+              <span className="block h-px w-4 bg-current" />
+              <span className="block h-px w-4 bg-current" />
             </span>
             {open ? "Close" : "Menu"}
           </button>

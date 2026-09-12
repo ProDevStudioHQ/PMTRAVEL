@@ -14,7 +14,7 @@ import { COMPANY, RFQ_HREF } from "@/lib/nav";
  * has no photography yet, not a broken one.
  *
  * What it deliberately does NOT copy from consumer travel templates: no
- * translucent glass nav, no gradient decoration, no social icon row, no
+ * frosted glass nav (the header is clear over the scrim, then solid), no gradient decoration, no social icon row, no
  * saturated blue. Those read as a consumer booking site to a buyer who is not
  * a consumer.
  */
@@ -62,7 +62,8 @@ export function HomeHero() {
         aria-hidden="true"
         className="absolute inset-0 bg-petrol-deep/65"
       />
-      <Container className="relative py-28 lg:py-40">
+      {/* Extra top padding: the transparent header (72px) sits over this section. */}
+      <Container className="relative pb-28 pt-[calc(7rem+72px)] lg:pb-40 lg:pt-[calc(10rem+72px)]">
         <p className="text-2xs font-medium uppercase tracking-[0.16em] text-hamada">
           {COMPANY.brandLine}
         </p>
