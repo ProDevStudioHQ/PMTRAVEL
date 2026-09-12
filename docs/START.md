@@ -255,6 +255,17 @@ where personal data is collected — so the lawyer reviews facts rather than
 inventing them. The largest open question in there is retention: nothing
 currently deletes RFQ data.
 
+## Images
+
+The site carries no photographs yet, which is the largest single visual gap.
+The plumbing is built and empty, the same way routes and venues are:
+`src/features/images/registry.ts` is the record, `SiteImage` is the only way an
+image reaches a page, and `verify:data` fails the build on an unrecorded image,
+a plain `<img>`, or more than one priority image.
+
+`pm-travel-photo-layout.html` is the brief to send a photographer. See
+`docs/images.md`.
+
 ## Blockers (not code problems)
 
 1. **Phone number** — two conflicting values supplied; one has 11 digits and

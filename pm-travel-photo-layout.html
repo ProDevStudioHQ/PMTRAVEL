@@ -1,0 +1,476 @@
+<title>PM Travel Photography Brief</title>
+<style>
+  :root {
+    --chalk: #f2f1ee;
+    --hamada: #d9d5cc;
+    --petrol: #12414a;
+    --petrol-deep: #0b2c33;
+    --oxide: #a8412a;
+    --ink: #1c1b19;
+    --meta: #5c5852;
+    --line: #8c887e;
+    --line-soft: #c9c4b8;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--chalk);
+    color: var(--ink);
+    font-family: "Schibsted Grotesk", ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  @media (min-width: 1024px) { .wrap { padding: 0 72px; } }
+
+  header.masthead {
+    background: var(--petrol-deep);
+    color: var(--chalk);
+    padding-block: 56px;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--hamada);
+    margin: 0;
+  }
+  h1 { font-size: 44px; line-height: 1.05; margin: 16px 0 0; font-weight: 600; }
+  @media (max-width: 700px) { h1 { font-size: 32px; } }
+  .standfirst { max-width: 60ch; color: var(--hamada); margin: 20px 0 0; }
+
+  section { padding-block: 56px; border-bottom: 1px solid var(--line-soft); }
+  h2 { font-size: 28px; line-height: 1.2; margin: 0 0 8px; font-weight: 600; }
+  h3 { font-size: 22px; margin: 0 0 4px; font-weight: 500; }
+  p.lede { max-width: 66ch; color: var(--meta); margin: 0 0 32px; }
+
+  .group-label {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 4px 10px;
+    color: var(--petrol);
+    margin-bottom: 16px;
+  }
+  .group-label.priority { border-color: var(--oxide); color: var(--oxide); }
+
+  .grid { display: grid; gap: 24px; }
+  @media (min-width: 700px) { .grid.two { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .grid.three { grid-template-columns: repeat(3, 1fr); } }
+
+  /* The hatched area IS the photograph. The brief sits inside it. */
+  .shot {
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 20px;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(140, 136, 126, 0.13) 0 10px,
+      transparent 10px 20px
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 260px;
+  }
+  .shot.hero { min-height: 380px; aspect-ratio: 16 / 9; }
+  .shot.portrait { min-height: 300px; aspect-ratio: 4 / 5; }
+  .shot.card { min-height: 220px; aspect-ratio: 4 / 3; }
+
+  .ref {
+    font-weight: 600;
+    color: var(--petrol);
+    font-size: 14px;
+    letter-spacing: 0.06em;
+  }
+  .shot h3 { margin-top: 6px; }
+  .shot p { margin: 8px 0 0; font-size: 16px; color: var(--meta); }
+  .spec {
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--ink);
+    border-top: 1px solid var(--line-soft);
+    padding-top: 10px;
+  }
+  .spec b { font-weight: 600; }
+
+  .note {
+    font-family: Newsreader, ui-serif, Georgia, "Times New Roman", serif;
+    font-style: italic;
+    color: var(--meta);
+    font-size: 16px;
+    max-width: 66ch;
+  }
+
+  ul.plain { margin: 0; padding-left: 20px; color: var(--meta); max-width: 66ch; }
+  ul.plain li { margin-bottom: 8px; }
+
+  .two-col { display: grid; gap: 32px; }
+  @media (min-width: 900px) { .two-col { grid-template-columns: 1fr 1fr; } }
+
+  .panel {
+    border: 1px solid var(--line-soft);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .panel.warn { border-color: var(--oxide); }
+  .panel h3 { color: var(--ink); }
+
+  .swatches { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .swatch { width: 72px; }
+  .swatch span { display: block; height: 48px; border-radius: 2px; border: 1px solid var(--line-soft); }
+  .swatch small { font-size: 12px; color: var(--meta); display: block; margin-top: 6px; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 16px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line-soft); }
+  th { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--meta); font-weight: 500; }
+
+  footer { padding-block: 48px; color: var(--meta); font-size: 16px; }
+  .scroll { overflow-x: auto; }
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">PM Travel Agency &middot; Photography brief</p>
+    <h1>The shot list</h1>
+    <p class="standfirst">
+      Every hatched area on this page is one photograph. The brief for that
+      exact shot is written inside it. Shoot from the top down: Group A is
+      worth more than Groups B and C combined, because nobody else can take it.
+    </p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>What this is for</h2>
+    <p class="lede">
+      This is a business-to-business website. The audience is travel
+      professionals deciding whether to trust us with their own clients — not
+      holidaymakers choosing a destination. They already know Morocco is
+      beautiful; they sell it. What they do not know is whether we can move
+      forty people from Marrakech airport to a hotel without a problem.
+    </p>
+    <p class="lede">
+      So the brief is unusual: <b>the unglamorous operational photographs
+      matter more than the scenery.</b> One picture of our own minibus at a
+      hotel entrance, with the driver beside it, does more for this site than
+      ten sunset dunes.
+    </p>
+    <div class="two-col">
+      <div class="panel">
+        <h3>Style</h3>
+        <ul class="plain">
+          <li>Editorial, not advertising. Travel journalism, not brochure.</li>
+          <li>Natural light. Real situations, real people working.</li>
+          <li>Restrained colour. Architecture and depth over close-up detail.</li>
+          <li>People small in frame and incidental, never posed at camera —
+            except the team portraits, where they look straight down the lens.</li>
+          <li>Leave empty space in wide shots for headline text to sit.</li>
+        </ul>
+      </div>
+      <div class="panel warn">
+        <h3>Please avoid</h3>
+        <ul class="plain">
+          <li>Heavy filters, oversaturation, unrealistic grading.</li>
+          <li>Golden-hour overuse. Fisheye. Heavy vignettes.</li>
+          <li>Posed smiling at camera in operational shots.</li>
+          <li>Clichés: lantern walls, spice pyramids, posed camel silhouettes,
+            tagine close-ups, snake charmers.</li>
+          <li>Jemaa el-Fna at sunset. Every competitor has it.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:24px">
+      <h3>Colour</h3>
+      <p class="lede" style="margin-bottom:0">
+        The site palette is stone, deep teal and burnt oxide. Warm neutral tones
+        and muted colour sit well against it. Very blue or very green images
+        will fight the design.
+      </p>
+      <div class="swatches">
+        <div class="swatch"><span style="background:#f2f1ee"></span><small>chalk</small></div>
+        <div class="swatch"><span style="background:#d9d5cc"></span><small>hamada</small></div>
+        <div class="swatch"><span style="background:#12414a"></span><small>petrol</small></div>
+        <div class="swatch"><span style="background:#0b2c33"></span><small>deep</small></div>
+        <div class="swatch"><span style="background:#a8412a"></span><small>oxide</small></div>
+        <div class="swatch"><span style="background:#1c1b19"></span><small>ink</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="group-label priority">Group A &middot; shoot first</span>
+    <h2>Operational and team</h2>
+    <p class="lede">
+      These cannot be bought at any price, which is exactly why they are worth
+      the most. If the budget covers only one half day, shoot A1, A2, A3 and A5
+      — office, team, a vehicle, and an airport meet.
+    </p>
+
+    <div class="grid two">
+      <div class="shot hero">
+        <span class="ref">A1</span>
+        <h3>Office, Gueliz — exterior and interior</h3>
+        <p>
+          The real space, real people working, natural light. Not staged, not
+          tidied into a showroom. This is the single most important trust image
+          on the site.
+        </p>
+        <div class="spec"><b>Use:</b> About page lead &middot; <b>Ratio:</b> 16:9 and a 3:2 alternate</div>
+      </div>
+
+      <div class="shot hero">
+        <span class="ref">A3</span>
+        <h3>Vehicle at a hotel entrance</h3>
+        <p>
+          Our actual vehicle, clean, plate visible, driver standing beside it.
+          Not moving, not artful — the buyer wants to see that it exists and
+          that it looks presentable outside their client's hotel.
+        </p>
+        <div class="spec"><b>Use:</b> Morocco DMC, home &middot; <b>Ratio:</b> 16:9</div>
+      </div>
+    </div>
+
+    <div class="grid three" style="margin-top:24px">
+      <div class="shot portrait">
+        <span class="ref">A2</span>
+        <h3>Team portraits</h3>
+        <p>
+          Consistent lighting, neutral background. Professional but not
+          corporate-glossy. Looking at camera, natural expression. One frame per
+          person, same setup throughout.
+        </p>
+        <div class="spec"><b>Ratio:</b> 1:1 or 4:5</div>
+      </div>
+
+      <div class="shot card">
+        <span class="ref">A4</span>
+        <h3>Vehicle fleet</h3>
+        <p>Two or three vehicles together if available. Shows capacity at a glance.</p>
+        <div class="spec"><b>Ratio:</b> 4:3</div>
+      </div>
+
+      <div class="shot card">
+        <span class="ref">A5</span>
+        <h3>Airport meet and assist</h3>
+        <p>
+          Staff member holding a meet board at arrivals. Shot from the side or
+          behind, so no arriving passenger is identifiable.
+        </p>
+        <div class="spec"><b>Ratio:</b> 4:3</div>
+      </div>
+
+      <div class="shot card">
+        <span class="ref">A6</span>
+        <h3>Guide working with a group</h3>
+        <p>Guide mid-explanation, small group listening. Candid. Nobody posing.</p>
+        <div class="spec"><b>Ratio:</b> 4:3 &middot; needs model releases</div>
+      </div>
+
+      <div class="shot card">
+        <span class="ref">A7</span>
+        <h3>Briefing or planning</h3>
+        <p>
+          Team around a table with a map or itinerary. Working, not smiling at
+          the camera.
+        </p>
+        <div class="spec"><b>Ratio:</b> 4:3</div>
+      </div>
+
+      <div class="shot card">
+        <span class="ref">A8</span>
+        <h3>Table set for a group dinner</h3>
+        <p>Before guests arrive. Process, not a food close-up.</p>
+        <div class="spec"><b>Ratio:</b> 4:3</div>
+      </div>
+
+      <div class="shot card">
+        <span class="ref">A9</span>
+        <h3>Loading luggage / group departure</h3>
+        <p>
+          The unglamorous reality of ground operations. This is exactly the
+          image the buyer wants to see and exactly the one nobody publishes.
+          Do not tidy it.
+        </p>
+        <div class="spec"><b>Ratio:</b> 3:2</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="group-label">Group B</span>
+    <h2>Destinations</h2>
+    <p class="lede">
+      Commission where possible; licence where not. These carry the destination
+      pages, so they need to look like the place on a working day rather than
+      on a postcard.
+    </p>
+
+    <div class="shot hero" style="margin-bottom:24px">
+      <span class="ref">B1</span>
+      <h3>Marrakech hero</h3>
+      <p>
+        Wide architectural, human scale, warm side light. Empty space on the
+        left third for the headline. <b>Not</b> Jemaa el-Fna at sunset.
+      </p>
+      <div class="spec"><b>Use:</b> home hero, the one priority-loaded image &middot; <b>Ratio:</b> 21:9 or 16:9 &middot; <b>2400px wide</b></div>
+    </div>
+
+    <div class="grid three">
+      <div class="shot card">
+        <span class="ref">B2</span>
+        <h3>Marrakech medina street</h3>
+        <p>Morning light, working street, real life rather than a tourist route.</p>
+      </div>
+      <div class="shot card">
+        <span class="ref">B3</span>
+        <h3>Agafay</h3>
+        <p>
+          <b>Grey-brown hamada stone, as it actually is.</b> Minimal camp, a
+          person for scale. See the warning below — this one matters.
+        </p>
+      </div>
+      <div class="shot card">
+        <span class="ref">B4</span>
+        <h3>Atlas / Imlil</h3>
+        <p>Village and terrain, mid-morning. Real scale, real distance.</p>
+      </div>
+      <div class="shot card">
+        <span class="ref">B5</span>
+        <h3>Essaouira</h3>
+        <p>Harbour or ramparts. Atlantic light is different from inland — show it.</p>
+      </div>
+      <div class="shot card">
+        <span class="ref">B6</span>
+        <h3>Merzouga</h3>
+        <p>Erg Chebbi. Here golden dunes <b>are</b> correct.</p>
+      </div>
+      <div class="shot card">
+        <span class="ref">B7</span>
+        <h3>Fes</h3>
+        <p>Medina architecture, or a working craft workshop.</p>
+      </div>
+      <div class="shot card">
+        <span class="ref">B8</span>
+        <h3>Riad courtyard</h3>
+        <p>Calm, architectural. No people needed.</p>
+      </div>
+      <div class="shot card">
+        <span class="ref">B9</span>
+        <h3>Hotel or camp interior</h3>
+        <p>Restrained. Quiet luxury, not gold overload.</p>
+      </div>
+    </div>
+
+    <div class="panel warn" style="margin-top:32px">
+      <h3>Agafay is not sand</h3>
+      <p class="lede" style="margin-bottom:0">
+        Agafay is grey-brown stone desert. Most images labelled "Agafay" online
+        are actually Merzouga or Erg Chebbi. If we publish a dune photograph
+        labelled Agafay, any buyer who knows Morocco spots it immediately — and
+        the entire verification story this site is built on dies with it.
+        Check every desert frame against what Agafay actually looks like.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="group-label">Group C</span>
+    <h2>MICE and events</h2>
+    <p class="lede">
+      Original only, and only when there is a real event. A staged banquet
+      photograph fools nobody in this audience.
+    </p>
+    <div class="grid three">
+      <div class="shot card">
+        <span class="ref">C1</span>
+        <h3>Event build or teardown</h3>
+        <p>Process, not a finished banquet. This is the honest MICE image.</p>
+      </div>
+      <div class="shot card">
+        <span class="ref">C2</span>
+        <h3>Meeting room set up</h3>
+        <p>Empty room, correctly laid out. Shows we understand layouts.</p>
+      </div>
+      <div class="shot card">
+        <span class="ref">C3</span>
+        <h3>Outdoor dinner setup</h3>
+        <p>Agafay or a garden venue, before guests arrive.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:24px">
+      Never photograph a real client event and publish it without written
+      permission from that client. No exceptions.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Delivery</h2>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Item</th><th>Requirement</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Capture</td><td>RAW, minimum 3000px on the long edge</td></tr>
+          <tr><td>Delivery</td><td>RAW plus edited JPEG</td></tr>
+          <tr><td>Hero images</td><td>2400px wide, delivered full quality — we compress</td></tr>
+          <tr><td>Card images</td><td>800px wide equivalent framing</td></tr>
+          <tr><td>Portraits</td><td>1:1 or 4:5</td></tr>
+          <tr><td>Model releases</td><td>Signed, for every recognisable person</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-col" style="margin-top:32px">
+      <div class="panel warn">
+        <h3>Rights — please read</h3>
+        <p class="lede" style="margin-bottom:0">
+          The contract must assign PM Travel <b>unlimited commercial usage
+          rights</b> for website, print, social media and advertising, with no
+          time limit. A photographer retaining rights while we build a brand on
+          their images is a problem we do not want later. This needs to be in
+          writing before the shoot, not after.
+        </p>
+      </div>
+      <div class="panel">
+        <h3>People in frame</h3>
+        <p class="lede" style="margin-bottom:0">
+          A signed model release is needed from anyone recognisable — staff,
+          guides, drivers, clients. A simple one-page form. No release, no
+          publication, so please track who appears in which frame as you shoot.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="note">
+      PM Travel Agency &middot; Prestige Majestic Project &amp; Events &middot;
+      Gueliz, Marrakech. Every hatched block above is one photograph. Group A
+      first.
+    </p>
+  </div>
+</footer>

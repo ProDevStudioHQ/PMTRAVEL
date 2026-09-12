@@ -54,6 +54,10 @@ These are not style preferences. Breaking one damages the business.
 - Status is never carried by colour alone.
 - Run `npm run verify:data && npm run typecheck && npm run lint && npm run build`
   before reporting anything as done.
+- Images go through `SiteImage` with a record in
+  `src/features/images/registry.ts`. Never a plain `<img>`, never an image
+  without a licence you can produce, never stock or generated imagery for
+  anything depicting PM Travel's own operation, staff or premises.
 - Destination pages are written one at a time, by hand, and registered in
   `src/features/destinations/registry.ts`. A page needs 400+ words of genuine
   operational content before it gets a URL.

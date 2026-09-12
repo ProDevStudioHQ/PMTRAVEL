@@ -8,7 +8,7 @@
  *
  *   npm run verify:data
  */
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, extname } from "node:path";
 
 const failures = [];
@@ -191,6 +191,73 @@ for (const file of pageFiles) {
 
   if (!metadataBlock.includes("alternates")) {
     fail(file, "has no self-referencing canonical");
+  }
+}
+
+// 9. The image record.
+//    "If an image has no row in this sheet, it does not go on the website."
+//    An unlicensed image is not a style problem - stock agencies scan for
+//    unlicensed use and invoice for it.
+const registrySource = readFileSync("src/features/images/registry.ts", "utf8");
+const recordedSrcs = [...registrySource.matchAll(/src:\s*"([^"]+)"/g)].map(
+  (match) => match[1]
+);
+
+const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif", ".svg"];
+
+function imagesOnDisk(dir, found = []) {
+  if (!existsSync(dir)) return found;
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    if (statSync(full).isDirectory()) imagesOnDisk(full, found);
+    else if (IMAGE_EXTENSIONS.includes(extname(entry).toLowerCase())) found.push(full);
+  }
+  return found;
+}
+
+for (const file of imagesOnDisk(join("public", "images"))) {
+  // public/images/foo.jpg is served at /images/foo.jpg
+  const servedPath = "/" + file.split(/[\\/]/).slice(1).join("/");
+  if (!recordedSrcs.includes(servedPath)) {
+    fail(
+      file,
+      `is on disk with no entry in the image record. Add one with its licence, or delete the file. See docs/images.md`
+    );
+  }
+}
+
+// Every record needs a licence you could actually produce.
+const recordBlocks = registrySource.split(/\n\s*\{/).slice(1);
+for (const block of recordBlocks) {
+  const key = block.match(/key:\s*"([^"]+)"/)?.[1];
+  if (!key) continue;
+  for (const field of ["licence", "licenceProof", "creator", "alt"]) {
+    const value = block.match(new RegExp(`${field}:\\s*"([^"]*)"`))?.[1];
+    if (value !== undefined && value.trim().length === 0) {
+      fail("src/features/images/registry.ts", `image "${key}" has an empty ${field}`);
+    }
+  }
+}
+
+// Only the single hero image may be priority-loaded.
+const priorityCount = (registrySource.match(/priority:\s*true/g) ?? []).length;
+if (priorityCount > 1) {
+  fail(
+    "src/features/images/registry.ts",
+    `${priorityCount} images are marked priority; only the single hero image may be`
+  );
+}
+
+// 10. No plain <img> tags. Images go through SiteImage, which supplies width,
+//     height and alt from the record - so nothing can ship without them.
+for (const file of sourceFiles) {
+  if (file.endsWith(join("components", "SiteImage.tsx"))) continue;
+  const contents = readFileSync(file, "utf8").replace(
+    /\/\*[\s\S]*?\*\/|\/\/.*$/gm,
+    ""
+  );
+  if (/<img[\s>]/.test(contents)) {
+    fail(file, "uses a plain <img> tag; use the SiteImage component");
   }
 }
 
