@@ -1,4 +1,5 @@
 import {
+  Binoculars,
   Castle,
   ChefHat,
   Compass,
@@ -29,6 +30,7 @@ const ICONS: Record<string, LucideIcon> = {
   "/morocco-dmc": Compass,
   "/mice": Presentation,
   "/programmes": Package,
+  "/excursions": Binoculars,
   "/programmes/taste-of-marrakech": ChefHat,
   "/b2b": Handshake,
   "/routes": Route,
@@ -46,4 +48,5 @@ const ICONS: Record<string, LucideIcon> = {
 };
 
 export const iconFor = (href: string): LucideIcon =>
-  ICONS[href] ?? (href.startsWith("/programmes/") ? Package : MapPin);
+  ICONS[href] ??
+  (href.startsWith("/programmes/") ? Package : href.startsWith("/excursions/") ? Binoculars : MapPin);

@@ -1,5 +1,6 @@
 import { DESTINATIONS } from "@/features/destinations/registry";
 import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
+import { EXCURSIONS, excursionHref } from "@/features/excursions/data";
 
 /**
  * The single source of truth for company facts and navigation.
@@ -49,6 +50,7 @@ export const PRIMARY_NAV: NavItem[] = [
   { href: "/morocco-dmc", label: "Morocco DMC", blurb: "What we operate" },
   { href: "/mice", label: "MICE & Events", blurb: "Meetings, incentives, events" },
   { href: "/programmes", label: "B2B Programmes", blurb: "Ready-to-contract packages" },
+  { href: "/excursions", label: "B2B Excursions", blurb: "Day trips around Marrakech" },
   {
     href: "/programmes/taste-of-marrakech",
     label: "Taste of Marrakech",
@@ -111,6 +113,19 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    id: "excursions",
+    label: "B2B Excursions",
+    href: "/excursions",
+    items: [
+      ...EXCURSIONS.map((excursion) => ({
+        href: excursionHref(excursion),
+        label: excursion.name,
+        blurb: `${excursion.region} · ${excursion.duration}`,
+      })),
+      { ...byHref("/excursions"), label: "All excursions" },
+    ],
+  },
+  {
     id: "destinations",
     label: "Destinations",
     href: "/destinations",
@@ -123,10 +138,16 @@ export const NAV_GROUPS: NavGroup[] = [
       { ...byHref("/destinations"), label: "All destinations" },
     ],
   },
+  {
+    // The company pages share one dropdown so the full bar fits on laptops.
+    id: "company",
+    label: "Company",
+    items: ["/how-we-work", "/about", "/contact"].map(byHref),
+  },
 ];
 
 /** Top-level header links after the dropdowns. */
-export const NAV_LINKS: NavItem[] = ["/how-we-work", "/about", "/contact"].map(byHref);
+export const NAV_LINKS: NavItem[] = [];
 
 /** Every public route, used by the sitemap. Keep in sync with src/app. */
 export const ALL_ROUTES: string[] = [
