@@ -89,16 +89,13 @@ export async function submitRfq(
   const step1 = step1Schema.safeParse({
     company: text(formData, "company"),
     country: text(formData, "country"),
+    city: text(formData, "city") || undefined,
+    website: text(formData, "website") || undefined,
     contactName: text(formData, "contactName"),
     role: text(formData, "role"),
     email: text(formData, "email"),
-    destinations: formData.getAll("destinations").filter((v) => typeof v === "string"),
-    datesFlexible: text(formData, "datesFlexible") === "on",
-    dateFrom: text(formData, "dateFrom"),
-    dateTo: text(formData, "dateTo"),
     travellers: text(formData, "travellers"),
     programmeType: text(formData, "programmeType"),
-    brief: text(formData, "brief"),
   });
 
   if (!step1.success) {
@@ -173,7 +170,7 @@ export async function submitRfq(
   }
 
   const reference = buildReference();
-  const datesFlexible = step1.data.datesFlexible;
+  const { city, website } = step1.data;
 
   try {
     const db = getDb();
@@ -187,14 +184,17 @@ export async function submitRfq(
         contactName: step1.data.contactName,
         role: step1.data.role,
         email: step1.data.email,
-        destinations: step1.data.destinations,
-        dateFrom: datesFlexible ? null : step1.data.dateFrom || null,
-        dateTo: datesFlexible ? null : step1.data.dateTo || null,
-        datesFlexible: String(datesFlexible),
+        // Destinations, dates and brief are no longer asked on the form; the
+        // columns stay NOT NULL, so they are stored empty and qualified by phone
+        // or email instead.
+        destinations: [],
+        dateFrom: null,
+        dateTo: null,
+        datesFlexible: "true",
         travellers: step1.data.travellers,
         programmeType: step1.data.programmeType,
-        brief: step1.data.brief,
-        optionalDetail: { ...step2.data, ...step3.data },
+        brief: "",
+        optionalDetail: { city, website, ...step2.data, ...step3.data },
         sourceIpHash: ipHash,
         userAgent: requestHeaders.get("user-agent")?.slice(0, 500) ?? null,
       })
@@ -251,13 +251,10 @@ export async function submitRfq(
         contactName: step1.data.contactName,
         role: step1.data.role,
         email: step1.data.email,
-        destinations: step1.data.destinations,
-        dates: datesFlexible
-          ? "Flexible"
-          : `${step1.data.dateFrom} to ${step1.data.dateTo}`,
+        city,
+        website,
         travellers: step1.data.travellers,
         programmeType: step1.data.programmeType,
-        brief: step1.data.brief,
         attachmentCount: accepted.length,
       });
       await sendAcknowledgement({

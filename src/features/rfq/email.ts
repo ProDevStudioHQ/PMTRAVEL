@@ -41,11 +41,10 @@ export type NotificationInput = {
   contactName: string;
   role: string;
   email: string;
-  destinations: string[];
-  dates: string;
+  city?: string;
+  website?: string;
   travellers: number;
   programmeType: string;
-  brief: string;
   attachmentCount: number;
 };
 
@@ -53,17 +52,13 @@ export async function sendInternalNotification(input: NotificationInput) {
   const to = process.env.B2B_EMAIL ?? COMPANY.email.b2b;
   const lines = [
     `Reference: ${input.reference}`,
-    `Company: ${input.company} (${input.country})`,
+    `Company: ${input.company} (${[input.city, input.country].filter(Boolean).join(", ")})`,
+    `Website: ${input.website ?? "Not given"}`,
     `Contact: ${input.contactName}, ${input.role}`,
     `Email: ${input.email}`,
-    `Destinations: ${input.destinations.join(", ")}`,
-    `Dates: ${input.dates}`,
     `Travellers: ${input.travellers}`,
     `Programme: ${input.programmeType}`,
     `Attachments: ${input.attachmentCount}`,
-    "",
-    "Brief:",
-    input.brief,
   ];
 
   await getTransport().sendMail({

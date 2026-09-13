@@ -1,6 +1,6 @@
 "use client";
 
-// Client Component because the form is a stepper: three steps whose values
+// Client Component because the form is a stepper: four steps whose values
 // are kept as the buyer moves between them, server errors mapped back to the
 // step and field they belong to, and focus moved to each step as it opens.
 // Nothing is trusted here - the server action validates everything again.
@@ -23,9 +23,8 @@ import {
   Building2,
   Bus,
   CalendarClock,
-  CalendarDays,
   CircleCheck,
-  ClipboardList,
+  Globe,
   Hotel,
   Languages,
   Mail,
@@ -36,7 +35,6 @@ import {
   Send,
   Sparkles,
   Tag,
-  Upload,
   User,
   Users,
   Utensils,
@@ -47,13 +45,13 @@ import { submitRfq } from "@/features/rfq/actions";
 import { RFQ_NEXT_STEPS } from "@/features/rfq/next-steps";
 // Types only from ./validation, so zod never reaches the browser bundle.
 import type { RfqFormState } from "@/features/rfq/validation";
-import { DESTINATIONS, PROGRAMME_TYPES } from "@/features/rfq/options";
+import { PROGRAMME_TYPES } from "@/features/rfq/options";
 import { Evidence } from "@/components/Evidence";
 import { COMPANY } from "@/lib/nav";
 
 const initialState: RfqFormState = { status: "idle" };
 
-type StepNumber = 1 | 2 | 3;
+type StepNumber = 1 | 2 | 3 | 4;
 
 const STEPS: {
   number: StepNumber;
@@ -65,47 +63,47 @@ const STEPS: {
 }[] = [
   {
     number: 1,
-    label: "Requirement",
-    title: "What we need to start",
-    subtitle: "This is the whole required form. Everything after it is optional.",
-    icon: ClipboardList,
+    label: "Company",
+    title: "Company Information",
+    subtitle: "Tell us about your travel agency",
+    icon: Building2,
     optional: false,
   },
   {
     number: 2,
+    label: "Contact",
+    title: "Your contact details",
+    subtitle: "Who we reply to, and the size of the programme",
+    icon: User,
+    optional: false,
+  },
+  {
+    number: 3,
     label: "Logistics",
     title: "Detail, if you have it",
-    subtitle: "Rooms, transport, meals and budget sharpen the quote.",
+    subtitle: "Rooms, transport, meals and budget sharpen the quote",
     icon: Hotel,
     optional: true,
   },
   {
-    number: 3,
-    label: "Final notes",
+    number: 4,
+    label: "Notes",
     title: "Anything else we should know",
-    subtitle: "Accessibility, special requirements and how you found us.",
+    subtitle: "Accessibility, special requirements and how you found us",
     icon: Sparkles,
     optional: true,
   },
 ];
 
+const LAST_STEP = STEPS.length as StepNumber;
+/** The first step from which everything required has been seen. */
+const FIRST_SENDABLE_STEP: StepNumber = 3;
+
 /** Which step each field lives on, so a server error can reopen that step. */
 const STEP_FIELDS: Record<StepNumber, string[]> = {
-  1: [
-    "company",
-    "country",
-    "contactName",
-    "role",
-    "email",
-    "travellers",
-    "destinations",
-    "dateFrom",
-    "dateTo",
-    "programmeType",
-    "brief",
-    "attachments",
-  ],
-  2: [
+  1: ["company", "country", "city", "website"],
+  2: ["contactName", "role", "email", "travellers", "programmeType"],
+  3: [
     "rooms",
     "nights",
     "hotelCategory",
@@ -116,14 +114,13 @@ const STEP_FIELDS: Record<StepNumber, string[]> = {
     "quoteDeadline",
     "activities",
   ],
-  3: ["accessibilityNeeds", "specialRequirements", "previousMorocco", "foundUs"],
+  4: ["accessibilityNeeds", "specialRequirements", "previousMorocco", "foundUs"],
 };
 
 /**
  * Plain-language errors (SOP 3.6). The schema's own wording ("Too small:
  * expected string to have >=2 characters") tells a buyer nothing about what
- * to fix, so each field says it plainly. Messages the schema already writes
- * for people - dates, destinations, upload problems - are passed through.
+ * to fix, so each field says it plainly.
  */
 const PLAIN_ERRORS: Record<string, string> = {
   company: "Enter your company name.",
@@ -133,7 +130,6 @@ const PLAIN_ERRORS: Record<string, string> = {
   email: "Enter an email address we can reply to, such as name@company.com.",
   travellers: "Enter the number of travellers as a whole number, 1 or more.",
   programmeType: "Choose the programme type closest to this requirement.",
-  brief: "Write a sentence or two about what the programme has to achieve (at least 20 characters).",
   rooms: "Enter rooms as a whole number, or leave it empty.",
   nights: "Enter nights as a whole number, or leave it empty.",
   quoteDeadline: "Enter the date you need the quote by, or leave it empty.",
@@ -287,7 +283,6 @@ function FormCard({ children }: { children: ReactNode }) {
 export function RfqForm() {
   const [state, formAction, pending] = useActionState(submitRfq, initialState);
   const [step, setStep] = useState<StepNumber>(1);
-  const [flexible, setFlexible] = useState(false);
   const [seenState, setSeenState] = useState(state);
   const headingRefs = useRef<Record<number, HTMLHeadingElement | null>>({});
   const moveFocus = useRef(false);
@@ -340,7 +335,7 @@ export function RfqForm() {
           >
             <CircleCheck size={28} strokeWidth={1.75} />
           </span>
-          <h2 className="mt-6 text-2xl font-bold tracking-tight text-ink-900">We have your requirement</h2>
+          <h2 className="mt-6 text-2xl font-bold tracking-tight text-ink-900">We have your request</h2>
           <p className="measure mt-4 text-base text-ink-500">
             Your reference is{" "}
             <span className="tabular font-medium text-ink-900">{state.reference}</span>. An
@@ -357,9 +352,6 @@ export function RfqForm() {
               </li>
             ))}
           </ol>
-          <div className="measure mt-6">
-            <Evidence note="We have not published a response-time figure because we have not measured our own yet. This request is timestamped, and that measurement starts with it." />
-          </div>
         </div>
       </FormCard>
     );
@@ -373,7 +365,7 @@ export function RfqForm() {
     return (
       <>
         <legend className="sr-only">
-          Step {item.number} of 3: {item.title}
+          Step {item.number} of {LAST_STEP}: {item.title}
         </legend>
         <div>
           <h2
@@ -394,8 +386,8 @@ export function RfqForm() {
   return (
     <FormCard>
       <form action={formAction} onSubmit={onSubmit} noValidate>
-        {/* Step indicator. Every step stays reachable; steps 2 and 3 are optional. */}
-        <nav aria-label="Form steps" className="border-b border-rule bg-paper-2/50 px-4 py-6 sm:px-8">
+        {/* Step indicator. Every step stays reachable; the last two are optional. */}
+        <nav aria-label="Form steps" className="border-b border-rule bg-paper-2/50 px-3 py-6 sm:px-8">
           <ol className="flex items-start">
             {STEPS.map((item, index) => {
               const current = item.number === step;
@@ -409,7 +401,7 @@ export function RfqForm() {
                     type="button"
                     onClick={() => goToStep(item.number)}
                     aria-current={current ? "step" : undefined}
-                    className="group flex w-24 flex-col items-center gap-2 rounded-xl text-center sm:w-32"
+                    className="group flex w-16 flex-col items-center gap-2 rounded-xl text-center sm:w-24"
                   >
                     <span
                       aria-hidden="true"
@@ -426,15 +418,15 @@ export function RfqForm() {
                       <Icon size={20} strokeWidth={1.75} />
                     </span>
                     <span
-                      className={`text-xs font-semibold uppercase tracking-wide ${
-                        current ? "text-ink-900" : "text-ink-500"
+                      className={`text-[0.6875rem] font-semibold uppercase tracking-wide sm:text-xs ${
+                        hasError ? "text-red-600" : current ? "text-ink-900" : "text-ink-500"
                       }`}
                     >
                       <span className="sr-only">Step {item.number}: </span>
                       {item.label}
-                    </span>
-                    <span className={`-mt-1.5 text-xs ${hasError ? "text-red-600" : "text-ink-500"}`}>
-                      {hasError ? "Needs attention" : item.optional ? "Optional" : "Required"}
+                      <span className="sr-only">
+                        {hasError ? ", needs attention" : item.optional ? ", optional" : ", required"}
+                      </span>
                     </span>
                   </button>
                   {!last ? (
@@ -466,79 +458,27 @@ export function RfqForm() {
           </div>
 
           {/*
-            All three steps stay mounted and only the current one is shown, so what
-            a buyer typed on another step is kept - and submitted - when they move.
+            All steps stay mounted and only the current one is shown, so what a
+            buyer typed on another step is kept - and submitted - when they move.
           */}
           <fieldset hidden={step !== 1} className="flex flex-col gap-6 border-0 p-0">
             {heading(1)}
-
+            <FormField name="company" label="Company name" icon={Building2} placeholder="Your Travel Agency Ltd" autoComplete="organization" required errors={errors.company} />
             <div className="grid gap-6 sm:grid-cols-2">
-              <FormField name="company" label="Company" icon={Building2} placeholder="Your Travel Agency Ltd" autoComplete="organization" required errors={errors.company} />
-              <FormField name="country" label="Country you sell from" icon={MapPin} placeholder="France" autoComplete="country-name" required errors={errors.country} />
+              <FormField name="country" label="Country" icon={MapPin} placeholder="France" autoComplete="country-name" required errors={errors.country} />
+              <FormField name="city" label="City" icon={MapPin} placeholder="Paris" autoComplete="address-level2" errors={errors.city} />
+            </div>
+            <FormField name="website" label="Website" icon={Globe} type="url" placeholder="https://www.youragency.com" autoComplete="url" errors={errors.website} />
+          </fieldset>
+
+          <fieldset hidden={step !== 2} className="flex flex-col gap-6 border-0 p-0">
+            {heading(2)}
+            <div className="grid gap-6 sm:grid-cols-2">
               <FormField name="contactName" label="Your name" icon={User} placeholder="Jane Smith" autoComplete="name" required errors={errors.contactName} />
               <FormField name="role" label="Your role" icon={Briefcase} placeholder="Product manager" autoComplete="organization-title" required errors={errors.role} />
               <FormField name="email" label="Email" icon={Mail} placeholder="name@company.com" type="email" autoComplete="email" required errors={errors.email} />
-              <FormField
-                name="travellers"
-                label="Number of travellers"
-                icon={Users}
-                placeholder="24"
-                type="number"
-                required
-                errors={errors.travellers}
-              />
+              <FormField name="travellers" label="Number of travellers" icon={Users} placeholder="24" type="number" required errors={errors.travellers} />
             </div>
-
-            <fieldset
-              className="border-0 p-0"
-              aria-describedby={errors.destinations?.length ? "destinations-error" : undefined}
-            >
-              <legend className="text-sm font-semibold text-ink-900">
-                Destinations
-                <span aria-hidden="true" className="text-red-600"> *</span>
-                <span className="sr-only"> (required)</span>
-              </legend>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {DESTINATIONS.map((destination) => (
-                  <label
-                    key={destination}
-                    className="flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-ink-500/35 bg-paper-2/60 px-4 text-sm text-ink-900 transition-colors duration-200 hover:border-ink-500 has-checked:border-red-600 has-checked:bg-red-050 has-checked:font-semibold has-checked:text-red-900"
-                  >
-                    <input type="checkbox" name="destinations" value={destination} className="size-4 accent-red-600" />
-                    {destination}
-                  </label>
-                ))}
-              </div>
-              {errors.destinations?.length ? (
-                <p id="destinations-error" className="mt-2 text-sm text-red-600">
-                  {plainError("destinations", errors.destinations)}
-                </p>
-              ) : null}
-            </fieldset>
-
-            <div>
-              <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 text-base text-ink-900">
-                <input
-                  type="checkbox"
-                  name="datesFlexible"
-                  checked={flexible}
-                  onChange={(event) => setFlexible(event.target.checked)}
-                  className="size-4 accent-red-600"
-                />
-                Dates are flexible
-              </label>
-              {/*
-                Required whenever they are shown: the server rejects a request with
-                no dates unless "Dates are flexible" is ticked, which hides them.
-              */}
-              {!flexible ? (
-                <div className="mt-4 grid gap-6 sm:grid-cols-2">
-                  <FormField name="dateFrom" label="From" icon={CalendarDays} type="date" required errors={errors.dateFrom} />
-                  <FormField name="dateTo" label="To" icon={CalendarDays} type="date" required errors={errors.dateTo} />
-                </div>
-              ) : null}
-            </div>
-
             <FormField name="programmeType" label="Programme type" icon={Tag} required errors={errors.programmeType}>
               {(control) => (
                 <select {...control} defaultValue="">
@@ -553,45 +493,10 @@ export function RfqForm() {
                 </select>
               )}
             </FormField>
-
-            <FormField
-              name="brief"
-              label="The brief"
-              required
-              textarea
-              placeholder="A 7-night incentive for 24 guests, Marrakech and Agafay…"
-              errors={errors.brief}
-              hint="What the programme has to achieve, and anything that would make it fail."
-            />
-
-            <FormField
-              name="attachments"
-              label="Attach an itinerary or brief"
-              errors={errors.attachments}
-              hint="PDF, DOC, DOCX, XLS, XLSX, JPG or PNG. Up to 5 files, 10MB each."
-            >
-              {(control) => (
-                <div className="flex items-center gap-4 rounded-xl border border-dashed border-ink-500/40 bg-paper-2/60 p-4">
-                  <span
-                    aria-hidden="true"
-                    className="hidden size-11 shrink-0 items-center justify-center rounded-xl bg-paper text-red-600 sm:flex"
-                  >
-                    <Upload size={20} strokeWidth={1.75} />
-                  </span>
-                  <input
-                    {...control}
-                    type="file"
-                    multiple
-                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
-                    className="block w-full text-sm text-ink-900 file:mr-4 file:min-h-11 file:cursor-pointer file:rounded-full file:border file:border-ink-900/20 file:bg-paper file:px-5 file:text-sm file:font-semibold file:text-ink-900 hover:file:border-ink-900"
-                  />
-                </div>
-              )}
-            </FormField>
           </fieldset>
 
-          <fieldset hidden={step !== 2} className="flex flex-col gap-6 border-0 p-0">
-            {heading(2)}
+          <fieldset hidden={step !== 3} className="flex flex-col gap-6 border-0 p-0">
+            {heading(3)}
             <div className="grid gap-6 sm:grid-cols-2">
               <FormField name="rooms" label="Rooms" icon={BedDouble} type="number" placeholder="12" errors={errors.rooms} />
               <FormField name="nights" label="Nights" icon={Moon} type="number" placeholder="7" errors={errors.nights} />
@@ -600,45 +505,21 @@ export function RfqForm() {
               <FormField name="guideLanguage" label="Guide language" icon={Languages} placeholder="French" errors={errors.guideLanguage} />
               <FormField name="meals" label="Meals" icon={Utensils} placeholder="Half board" errors={errors.meals} />
               <FormField name="budgetRange" label="Budget range" icon={Wallet} placeholder="Per person, in EUR" errors={errors.budgetRange} />
-              <FormField
-                name="quoteDeadline"
-                label="You need the quote by"
-                icon={CalendarClock}
-                type="date"
-                errors={errors.quoteDeadline}
-              />
+              <FormField name="quoteDeadline" label="You need the quote by" icon={CalendarClock} type="date" errors={errors.quoteDeadline} />
             </div>
             <FormField name="activities" label="Activities" textarea rows={3} errors={errors.activities} />
           </fieldset>
 
-          <fieldset hidden={step !== 3} className="flex flex-col gap-6 border-0 p-0">
-            {heading(3)}
-            <FormField
-              name="accessibilityNeeds"
-              label="Accessibility needs"
-              textarea
-              rows={3}
-              errors={errors.accessibilityNeeds}
-            />
-            <FormField
-              name="specialRequirements"
-              label="Special requirements"
-              textarea
-              rows={3}
-              errors={errors.specialRequirements}
-            />
+          <fieldset hidden={step !== 4} className="flex flex-col gap-6 border-0 p-0">
+            {heading(4)}
+            <FormField name="accessibilityNeeds" label="Accessibility needs" textarea rows={3} errors={errors.accessibilityNeeds} />
+            <FormField name="specialRequirements" label="Special requirements" textarea rows={3} errors={errors.specialRequirements} />
             <div className="grid gap-6 sm:grid-cols-2">
-              <FormField
-                name="previousMorocco"
-                label="Previous Morocco experience"
-                icon={Map}
-                errors={errors.previousMorocco}
-              />
+              <FormField name="previousMorocco" label="Previous Morocco experience" icon={Map} errors={errors.previousMorocco} />
               <FormField name="foundUs" label="How you found us" icon={Search} errors={errors.foundUs} />
             </div>
           </fieldset>
 
-          {/* Step 1 alone is a complete request, so sending is available on every step. */}
           <div className="flex flex-col gap-6 border-t border-rule pt-6">
             <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -654,11 +535,14 @@ export function RfqForm() {
                 ) : null}
               </div>
               <div className="flex flex-col-reverse gap-3 sm:flex-row">
-                {step < 3 ? (
+                {step < LAST_STEP ? (
                   <>
-                    <button type="submit" disabled={pending} className={pillSecondary}>
-                      {pending ? "Sending…" : "Send now"}
-                    </button>
+                    {/* Once the required steps are behind the buyer, the rest is optional. */}
+                    {step >= FIRST_SENDABLE_STEP ? (
+                      <button type="submit" disabled={pending} className={pillSecondary}>
+                        {pending ? "Sending…" : "Send now"}
+                      </button>
+                    ) : null}
                     <button
                       type="button"
                       onClick={() => goToStep((step + 1) as StepNumber)}
@@ -670,7 +554,7 @@ export function RfqForm() {
                   </>
                 ) : (
                   <button type="submit" disabled={pending} className={pillPrimary}>
-                    {pending ? "Sending…" : "Send this requirement"}
+                    {pending ? "Sending…" : "Send request"}
                     <Send aria-hidden="true" size={16} strokeWidth={2} />
                   </button>
                 )}

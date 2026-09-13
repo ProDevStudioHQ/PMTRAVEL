@@ -16,36 +16,18 @@ export { DESTINATIONS, PROGRAMME_TYPES };
 const trimmed = (min: number, max: number) =>
   z.string().trim().min(min).max(max);
 
-/** Step 1. This alone must be submittable. */
-export const step1Schema = z
-  .object({
-    company: trimmed(2, 200),
-    country: trimmed(2, 100),
-    contactName: trimmed(2, 200),
-    role: trimmed(2, 120),
-    email: z.string().trim().toLowerCase().email().max(320),
-    destinations: z
-      .array(z.enum(DESTINATIONS))
-      .min(1, "Choose at least one destination"),
-    datesFlexible: z.boolean(),
-    dateFrom: z.string().date().optional().or(z.literal("")),
-    dateTo: z.string().date().optional().or(z.literal("")),
-    travellers: z.coerce.number().int().min(1).max(10000),
-    programmeType: z.enum(PROGRAMME_TYPES.map((p) => p.value)),
-    brief: trimmed(20, 5000),
-  })
-  .refine(
-    (value) => value.datesFlexible || (value.dateFrom && value.dateTo),
-    {
-      message: "Give travel dates, or mark the dates as flexible",
-      path: ["dateFrom"],
-    }
-  )
-  .refine(
-    (value) =>
-      !value.dateFrom || !value.dateTo || value.dateFrom <= value.dateTo,
-    { message: "The end date is before the start date", path: ["dateTo"] }
-  );
+/** Company and contact steps. Together these are the required set. */
+export const step1Schema = z.object({
+  company: trimmed(2, 200),
+  country: trimmed(2, 100),
+  city: z.string().trim().max(100).optional(),
+  website: z.string().trim().max(300).optional(),
+  contactName: trimmed(2, 200),
+  role: trimmed(2, 120),
+  email: z.string().trim().toLowerCase().email().max(320),
+  travellers: z.coerce.number().int().min(1).max(10000),
+  programmeType: z.enum(PROGRAMME_TYPES.map((p) => p.value)),
+});
 
 /** Step 2. Entirely optional. */
 export const step2Schema = z.object({

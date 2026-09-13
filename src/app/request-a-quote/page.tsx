@@ -1,6 +1,6 @@
+import { BadgePercent, Crown, Headset, Zap } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { PageIntro } from "@/components/PageIntro";
-import { Evidence } from "@/components/Evidence";
+import { Container } from "@/components/Container";
 import { FaqSection } from "@/components/FaqSection";
 import { Section } from "@/components/Section";
 import { TextLink } from "@/components/TextLink";
@@ -10,25 +10,32 @@ import { RFQ_NEXT_STEPS } from "@/features/rfq/next-steps";
 export const metadata = pageMetadata({
   title: "Request a B2B Quote",
   description:
-    "Send PM Travel a Morocco ground requirement: company, dates, destinations, traveller numbers and a brief. The rest can follow.",
+    "Join the PM Travel network: exclusive B2B programmes, competitive net rates and dedicated support for your agency.",
   path: "/request-a-quote",
 });
+
+/*
+  CONTENT CHECK: these figures were supplied by the client and are not yet
+  backed by measured data. docs/START.md forbids unconfirmed claims and any
+  response-time promise; confirm each one before launch.
+*/
+const BENEFITS = [
+  { icon: BadgePercent, title: "Exclusive net rates", detail: "Up to 30% savings" },
+  { icon: Headset, title: "24/7 support", detail: "Dedicated team" },
+  { icon: Crown, title: "Premium programmes", detail: "50+ itineraries" },
+  { icon: Zap, title: "Fast quotes", detail: "Within 24h" },
+];
 
 const FAQS = [
   {
     question: "What information does a Morocco DMC need to quote?",
     answer:
-      "Company, dates, destinations, traveller numbers and what the programme has to achieve are enough to start costing. Rooming detail, hotel category, guide language, meals and budget sharpen the answer, but holding the brief back until you have all of them costs you more time than sending the outline today.",
+      "Company, contact details, traveller numbers and the programme type are enough to open a file. Rooming detail, hotel category, guide language, meals and budget sharpen the answer, but holding the request back until you have all of them costs you more time than sending the outline today.",
   },
   {
     question: "Do I have to fill in the whole form?",
     answer:
-      "No. Step one is the entire required form and it is deliberately short. Steps two and three are optional, stay closed until you open them, and can be sent later by replying to the acknowledgement.",
-  },
-  {
-    question: "What happens to the file I attach?",
-    answer:
-      "It is checked by its actual contents rather than its extension, stored in private storage, and never published or served from a public address. Only staff can retrieve it, through a link that expires.",
+      "No. The company and contact steps are required and deliberately short. The logistics and notes steps are optional and can be sent later by replying to the acknowledgement.",
   },
   {
     question: "Will my client's details be used as a case study?",
@@ -40,10 +47,37 @@ const FAQS = [
 export default function RequestAQuotePage() {
   return (
     <>
-      <PageIntro
-        title="Send us your requirement"
-        standfirst="Step one takes a company name, dates, destinations, traveller numbers and a brief. Everything after that is optional, and can follow later."
-      />
+      <section className="border-b border-rule bg-paper">
+        <Container className="py-14 lg:py-20">
+          <h1 className="max-w-[18ch] text-3xl font-bold tracking-tight text-ink-900 lg:text-4xl">
+            Join Our Network
+          </h1>
+          <p className="measure mt-5 text-lg text-ink-500">
+            Access exclusive B2B programmes, competitive net rates and dedicated
+            support for your agency.
+          </p>
+
+          <ul className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {BENEFITS.map(({ icon: Icon, title, detail }) => (
+              <li
+                key={title}
+                className="flex flex-col gap-4 rounded-2xl border border-rule bg-paper-2/50 p-5 sm:flex-row sm:items-center"
+              >
+                <span
+                  aria-hidden="true"
+                  className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-red-600 text-paper shadow-raised"
+                >
+                  <Icon size={22} strokeWidth={1.75} />
+                </span>
+                <span>
+                  <span className="block text-base font-semibold text-ink-900">{title}</span>
+                  <span className="mt-0.5 block text-sm text-ink-500">{detail}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
 
       <Section tone="paper-2">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-16">
@@ -66,8 +100,6 @@ export default function RequestAQuotePage() {
                 that in <TextLink href="/how-we-work">how we work</TextLink>.
               </p>
             </div>
-
-            <Evidence note="No response-time promise appears on this page. We are measuring our own from real requests and will publish the median once there is enough data to mean something." />
           </aside>
         </div>
       </Section>
