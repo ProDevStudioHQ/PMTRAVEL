@@ -40,8 +40,11 @@ const BENEFITS: IconItem[] = [
   },
 ];
 
-/** Buyer markets, in the order the portfolio serves them. */
-const MARKETS = ["France", "Spain", "Italy", "UK", "USA", "Canada"];
+/** Where every programme runs: Marrakech and the three places around it. */
+const REGIONS = ["Marrakech", "Imlil", "Ourika", "Agafay"];
+
+/** The experiences the programmes mix. */
+const EXPERIENCES = ["Souks", "Lunch chez l'habitant", "Trekking", "E-bike", "Quad", "Camel ride", "Camp dinner"];
 
 export default function ProgrammesPage() {
   return (
@@ -54,7 +57,7 @@ export default function ProgrammesPage() {
         trail={[{ href: "/programmes", label: "B2B Programmes" }]}
         stats={[
           { value: String(PROGRAMMES.length), label: "Programmes" },
-          { value: String(MARKETS.length), label: "Buyer markets" },
+          { value: String(REGIONS.length), label: "Regions around Marrakech" },
         ]}
       >
         <a href="#programmes" className={PILL.onDarkSolid}>
@@ -76,18 +79,28 @@ export default function ProgrammesPage() {
       <Section id="programmes">
         <SectionHeading eyebrow="Programmes" title="Ready-to-contract Morocco programmes">
           <p>
-            Each programme is designed for a buyer market in Europe, the USA or
-            Canada, operated by our team in Marrakech, and sold under your own
-            brand.
+            Every programme runs in Marrakech, Imlil, the Ourika valley and
+            Agafay, mixing the experiences below differently, for buyers in
+            Europe, the USA and Canada. Operated by our team in Marrakech and
+            sold under your own brand.
           </p>
         </SectionHeading>
-        <ul className="mt-8 flex flex-wrap gap-2" aria-label="Buyer markets">
-          {MARKETS.map((market) => (
-            <li key={market} className="rounded-full border border-rule bg-paper-2 px-4 py-1.5 text-sm font-medium text-ink-900">
-              {market}
-            </li>
-          ))}
-        </ul>
+        <div className="mt-8 flex flex-col gap-3">
+          <ul className="flex flex-wrap gap-2" aria-label="Regions">
+            {REGIONS.map((region) => (
+              <li key={region} className="rounded-full bg-ink-900 px-4 py-1.5 text-sm font-semibold text-paper">
+                {region}
+              </li>
+            ))}
+          </ul>
+          <ul className="flex flex-wrap gap-2" aria-label="Experiences">
+            {EXPERIENCES.map((experience) => (
+              <li key={experience} className="rounded-full border border-rule bg-paper-2 px-4 py-1.5 text-sm font-medium text-ink-900">
+                {experience}
+              </li>
+            ))}
+          </ul>
+        </div>
 
         <ul className="mt-10 grid gap-6 md:grid-cols-2">
           {PROGRAMMES.map((programme) => (
@@ -126,7 +139,14 @@ export default function ProgrammesPage() {
                     </Link>
                   </h3>
                   <p className="mt-1 text-sm font-semibold text-red-600">{programme.tagline}</p>
-                  <p className="mt-3 line-clamp-3 flex-1 text-base text-ink-500">{programme.summary}</p>
+                  <p className="mt-3 line-clamp-3 text-base text-ink-500">{programme.summary}</p>
+                  <ul className="mt-4 flex flex-1 flex-wrap content-start gap-1.5" aria-label="Experiences">
+                    {programme.experiences.map((experience) => (
+                      <li key={experience} className="rounded-full border border-rule px-2.5 py-0.5 text-xs text-ink-900">
+                        {experience}
+                      </li>
+                    ))}
+                  </ul>
                   <dl className="mt-6 grid grid-cols-2 gap-3 border-t border-rule pt-5 text-sm">
                     <div>
                       <dt className="text-ink-500">Format</dt>

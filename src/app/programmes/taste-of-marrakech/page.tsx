@@ -6,7 +6,6 @@ import {
   CircleX,
   ChefHat,
   Coffee,
-  Fish,
   Footprints,
   Mountain,
   PlaneLanding,
@@ -33,7 +32,7 @@ const PATH = "/programmes/taste-of-marrakech";
 export const metadata = pageMetadata({
   title: "Taste of Marrakech Culinary Programme",
   description:
-    "A 7-night B2B culinary programme around Marrakech, the Atlas, Agafay and Essaouira: hands-on cooking, markets, mountains and curated dining.",
+    "A 7-night B2B culinary programme around Marrakech, Imlil, Ourika and Agafay: hands-on cooking, souks, mountains and curated dining.",
   path: PATH,
 });
 
@@ -51,7 +50,7 @@ const STATS = [
   { value: "3", label: "Versions" },
 ];
 
-const PROMISE = ["Cook with locals", "Explore the souks", "Walk the Atlas", "Dine under the Agafay sky", "Taste the Atlantic"];
+const PROMISE = ["Cook with locals", "Explore the souks", "Walk the Atlas", "Ride the Ourika valley", "Dine under the Agafay sky"];
 
 type Day = {
   day: number;
@@ -67,9 +66,9 @@ type Day = {
 
 /*
   The day order is deliberate. Only two days are hands-on cooking, so the
-  table never repeats itself. The long Essaouira road day comes before a slow
-  Agafay morning, and the desert dinner is followed by a night in camp rather
-  than a late drive and an early start.
+  table never repeats itself. Every day stays within reach of Marrakech, the
+  lighter Ourika day comes before a slow Agafay morning, and the desert dinner
+  is followed by a night in camp rather than a late drive and an early start.
 */
 const DAYS: Day[] = [
   {
@@ -126,17 +125,17 @@ const DAYS: Day[] = [
   },
   {
     day: 5,
-    title: "Atlantic Flavours",
-    place: "Essaouira",
-    icon: Fish,
+    title: "Ourika: The Valley Table",
+    place: "Ourika valley",
+    icon: Bike,
     gastronomy: [
-      "Fishing port and fish market experience",
-      "Seafood lunch on the coast",
-      "Optional Moroccan pastry workshop",
+      "Herb and saffron garden visit in the valley",
+      "Lunch chez l'habitant with a local family",
+      "Fresh bread and mint tea by the river",
     ],
-    activity: "The medina, the Skala ramparts and the artisans, then the road back to Marrakech.",
+    activity: "An e-bike ride or a gentle walk along the Ourika river and through its villages, then back to Marrakech.",
     overnight: "Marrakech",
-    imageKey: "b5-essaouira-port",
+    imageKey: "c11b-ourika-road",
   },
   {
     day: 6,
@@ -272,7 +271,7 @@ const FAQS = [
   {
     question: "Can the itinerary be shortened or adapted?",
     answer:
-      "Yes. The programme is modular: the Imlil, Essaouira and Agafay days can be shortened, swapped or upgraded, and the activity level changes independently of the culinary content.",
+      "Yes. The programme is modular: the Imlil, Ourika and Agafay days can be shortened, swapped or upgraded, and the activity level changes independently of the culinary content.",
   },
   {
     question: "Is there a version for incentive groups?",
@@ -301,7 +300,7 @@ export default function TasteOfMarrakechPage() {
     <>
       <DestinationHero
         title="Morocco Through the Table"
-        standfirst="Taste of Marrakech: a 7-night culinary journey through Marrakech, the Atlas Mountains, Agafay and Essaouira, ready to contract as a white-label B2B programme."
+        standfirst="Taste of Marrakech: a 7-night culinary journey through Marrakech, Imlil in the Atlas Mountains, the Ourika valley and Agafay, ready to contract as a white-label B2B programme."
         imageKey="b1-marrakech-hero"
         kicker="Signature programme"
         trail={[
