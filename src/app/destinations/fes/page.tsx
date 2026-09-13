@@ -126,7 +126,7 @@ export default function FesPage() {
           "Departure timing, and what it removes from the final morning",
         ],
         evidence:
-          "No distance or drive time from Marrakech to Fes is published here. It is one of the nine routes being logged, and the figures will appear with the number of runs behind them.",
+          "No distance or drive time from Marrakech to Fes is published here. It is one of the routes being logged, and the figures will appear with the number of runs behind them.",
       }}
       mice={[
         { kind: "seminar", body: "Meetings in palace riads and the city’s historic hotels." },

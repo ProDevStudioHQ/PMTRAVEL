@@ -38,6 +38,8 @@ import { HomeHero } from "@/features/images/HomeHero";
 import { imageByKey } from "@/features/images/registry";
 import { routeBySlug } from "@/features/routes/data";
 import { publishedFigures } from "@/features/routes/publish";
+import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
+import { EXCURSIONS, excursionHref } from "@/features/excursions/data";
 import { COMPANY, RFQ_HREF } from "@/lib/nav";
 
 export const metadata = pageMetadata({
@@ -97,7 +99,7 @@ const SERVICES: { icon: LucideIcon; title: string; body: string; href: string }[
     icon: MapIcon,
     title: "Excursions & Circuits",
     body: "Day trips and multi-day circuits planned around where the group sleeps each night.",
-    href: "/destinations",
+    href: "/excursions",
   },
   {
     icon: PlaneLanding,
@@ -364,6 +366,88 @@ export default function HomePage() {
                 </li>
               );
             })}
+          </ul>
+        </Container>
+      </section>
+
+      {/* 3b. Ready-to-sell B2B products */}
+      <section className="bg-paper">
+        <Container className="py-20 lg:py-28">
+          <SectionHeading eyebrow="Ready to sell" title="B2B programmes and excursions around Marrakech">
+            <p>
+              Contract a complete programme or add a day excursion, all run by our
+              team and sold under your brand.
+            </p>
+          </SectionHeading>
+
+          <div className="mt-14 flex flex-wrap items-end justify-between gap-4">
+            <h3 className="font-display text-xl font-semibold text-ink-900 lg:text-2xl">Programmes</h3>
+            <Link href="/programmes" className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-red-600">
+              All {PROGRAMMES.length} programmes
+              <ArrowRight aria-hidden="true" size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+          </div>
+          <ul className="mt-6 grid gap-5 md:grid-cols-3">
+            {PROGRAMMES.slice(0, 3).map((programme) => (
+              <li key={programme.slug}>
+                <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-rule bg-paper transition-[border-color,box-shadow] duration-200 hover:border-red-600 hover:shadow-overlay">
+                  <div className="relative aspect-[16/10] bg-ink-900">
+                    {imageByKey(programme.cardImage) ? (
+                      <SiteImage imageKey={programme.cardImage} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition-transform duration-500 ease-out group-hover:scale-105" />
+                    ) : null}
+                    <span className="absolute top-4 left-4 rounded-full bg-paper px-3 py-1 text-xs font-semibold text-ink-900">{programme.format}</span>
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <h4 className="font-display text-xl font-bold tracking-tight text-ink-900">
+                      <Link href={programmeHref(programme)} className="after:absolute after:inset-0 after:content-['']">
+                        {programme.name}
+                      </Link>
+                    </h4>
+                    <p className="mt-1 text-sm font-semibold text-red-600">{programme.tagline}</p>
+                    <ul className="mt-4 flex flex-1 flex-wrap content-start gap-1.5" aria-label="Experiences">
+                      {programme.experiences.map((experience) => (
+                        <li key={experience} className="rounded-full border border-rule px-2.5 py-0.5 text-xs text-ink-900">
+                          {experience}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-16 flex flex-wrap items-end justify-between gap-4">
+            <h3 className="font-display text-xl font-semibold text-ink-900 lg:text-2xl">Excursions</h3>
+            <Link href="/excursions" className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-red-600">
+              All {EXCURSIONS.length} excursions
+              <ArrowRight aria-hidden="true" size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+          </div>
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {EXCURSIONS.slice(0, 4).map((excursion) => (
+              <li key={excursion.slug}>
+                <article className="surface-deep group relative isolate flex aspect-[3/4] flex-col justify-end overflow-hidden rounded-2xl bg-ink-900">
+                  {imageByKey(excursion.cardImage) ? (
+                    <SiteImage imageKey={excursion.cardImage} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="-z-10 object-cover transition-transform duration-500 ease-out group-hover:scale-105" />
+                  ) : null}
+                  <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-ink-900/90 via-ink-900/35 to-transparent" />
+                  <span aria-hidden="true" className="absolute top-4 right-4 flex size-9 items-center justify-center rounded-full bg-paper/15 text-paper backdrop-blur-sm group-hover:bg-paper group-hover:text-red-900">
+                    <ArrowUpRight size={16} strokeWidth={2} />
+                  </span>
+                  <div className="p-5">
+                    <p className="text-xs font-semibold text-paper/80">
+                      {excursion.region} · {excursion.duration}
+                    </p>
+                    <h4 className="mt-1 font-display text-lg font-semibold text-paper">
+                      <Link href={excursionHref(excursion)} className="after:absolute after:inset-0 after:content-['']">
+                        {excursion.name}
+                      </Link>
+                    </h4>
+                  </div>
+                </article>
+              </li>
+            ))}
           </ul>
         </Container>
       </section>

@@ -1,12 +1,13 @@
-import { pageMetadata } from "@/lib/metadata";
+import Link from "next/link";
 import type { ReactNode } from "react";
-import { ExternalLink, Globe, Mail, MapPin, type LucideIcon } from "lucide-react";
-import { PageIntro } from "@/components/PageIntro";
-import { ButtonLink } from "@/components/Button";
+import { ArrowRight, ExternalLink, Globe, Mail, MapPin, type LucideIcon } from "lucide-react";
+import { pageMetadata } from "@/lib/metadata";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
-import { Section, SectionIntro } from "@/components/Section";
+import { CtaBanner, PILL, SectionHeading } from "@/components/Modern";
+import { Section } from "@/components/Section";
 import { TextLink } from "@/components/TextLink";
+import { DestinationHero } from "@/features/destinations/DestinationPage";
 import { COMPANY, RFQ_HREF, addressOneLine } from "@/lib/nav";
 
 export const metadata = pageMetadata({
@@ -56,17 +57,36 @@ const FAQS = [
 
 /** A standalone link, so it gets the full 44px tap target rather than its line height. */
 const EMAIL_LINK =
-  "inline-flex min-h-11 items-center wrap-anywhere text-red-600 underline underline-offset-4 transition-colors duration-200 hover:text-red-900";
+  "inline-flex min-h-11 items-center wrap-anywhere text-red-600 underline-offset-4 transition-colors duration-200 hover:text-red-900 hover:underline";
 
-/** One contact channel: an icon beside its own label, so the icon is decorative. */
-function Channel({ icon: Icon, label, children }: { icon: LucideIcon; label: string; children: ReactNode }) {
+/** One contact channel card: an icon beside its own label, so the icon is decorative. */
+function Channel({
+  icon: Icon,
+  label,
+  featured = false,
+  children,
+}: {
+  icon: LucideIcon;
+  label: string;
+  featured?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <li className="flex gap-4 border-b border-rule py-8">
-      <Icon aria-hidden="true" size={20} strokeWidth={1.5} className="mt-1 shrink-0 text-ink-500" />
-      <div className="min-w-0">
-        <h2 className="text-sm font-medium text-ink-500">{label}</h2>
-        {children}
-      </div>
+    <li
+      className={`flex flex-col rounded-3xl border p-7 ${
+        featured ? "border-red-600 bg-paper shadow-raised" : "border-rule bg-paper"
+      }`}
+    >
+      <span
+        aria-hidden="true"
+        className={`flex size-12 items-center justify-center rounded-xl ${
+          featured ? "bg-red-600 text-paper" : "bg-red-050 text-red-600"
+        }`}
+      >
+        <Icon size={22} strokeWidth={1.75} />
+      </span>
+      <h2 className="mt-5 text-sm font-semibold text-ink-500">{label}</h2>
+      {children}
     </li>
   );
 }
@@ -74,10 +94,21 @@ function Channel({ icon: Icon, label, children }: { icon: LucideIcon; label: str
 export default function ContactPage() {
   return (
     <>
-      <PageIntro
+      <DestinationHero
         title="Reach the operations desk"
         standfirst="Email reaches the operations desk in Marrakech directly. Trade enquiries go to the B2B address so they enter the quote workflow rather than a general inbox."
-      />
+        imageKey="b2-marrakech-medersa"
+        kicker={`${COMPANY.address.district}, ${COMPANY.address.city}`}
+        trail={[{ href: "/contact", label: "Contact" }]}
+      >
+        <a href={`mailto:${COMPANY.email.b2b}`} className={PILL.onDarkSolid}>
+          <Mail aria-hidden="true" size={16} strokeWidth={2} />
+          Email the trade desk
+        </a>
+        <Link href={RFQ_HREF} className={PILL.onDarkOutline}>
+          Request a B2B quote
+        </Link>
+      </DestinationHero>
 
       {/*
         SOP Phase 7 also asks for a short contact form. Omitted: the only
@@ -86,8 +117,8 @@ export default function ContactPage() {
         or need a new table and server action. See decisions.md D6.
       */}
       <Section tone="paper-2">
-        <ul className="grid border-t border-rule sm:grid-cols-2 sm:gap-x-12">
-          <Channel icon={Mail} label="Travel trade">
+        <ul className="grid gap-4 md:grid-cols-2">
+          <Channel icon={Mail} label="Travel trade" featured>
             <p className="mt-2 font-display text-xl font-semibold">
               <a className={EMAIL_LINK} href={`mailto:${COMPANY.email.b2b}`}>
                 {COMPANY.email.b2b}
@@ -123,17 +154,23 @@ export default function ContactPage() {
               href={MAPS_HREF}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 inline-flex min-h-11 items-center gap-2 text-base text-red-600 underline underline-offset-4 transition-colors duration-200 hover:text-red-900"
+              className="mt-3 inline-flex min-h-11 items-center gap-2 self-start rounded-full border border-ink-900/20 px-5 text-sm font-semibold text-ink-900 transition-colors duration-200 hover:border-ink-900"
             >
               Open the address in maps
-              <ExternalLink aria-hidden="true" size={16} strokeWidth={1.5} />
+              <ExternalLink aria-hidden="true" size={16} strokeWidth={1.75} />
               <span className="sr-only">(opens in a new tab)</span>
             </a>
           </Channel>
 
           <Channel icon={Globe} label="Working languages">
-            <p className="mt-2 text-base text-ink-900">{COMPANY.languages.join(", ")}</p>
-            <p className="mt-2 text-base text-ink-500">
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {COMPANY.languages.map((language) => (
+                <li key={language} className="rounded-full bg-paper-2 px-3 py-1 text-sm font-medium text-ink-900">
+                  {language}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-base text-ink-500">
               German is not among them. We would rather tell you that here than at
               the airport.
             </p>
@@ -145,61 +182,76 @@ export default function ContactPage() {
       </Section>
 
       <Section>
-        <SectionIntro title="What to put in the first email">
-          <p>
-            Six lines are enough to get a useful answer back. Nothing below is
-            mandatory, but each one you include removes a round trip.
-          </p>
-        </SectionIntro>
-        <ul className="measure mt-8 border-t border-rule">
-          {BRIEF_CHECKLIST.map((item) => (
-            <li key={item} className="flex gap-4 border-b border-rule py-4 text-base text-ink-900">
-              <span aria-hidden="true" className="text-ink-500">
-                &mdash;
-              </span>
-              {item}
-            </li>
-          ))}
-        </ul>
-        <p className="measure mt-6 text-base text-ink-500">
-          Attaching an existing itinerary, even a rough one, is usually faster
-          than describing it. If you would rather work through a form, the{" "}
-          <TextLink href={RFQ_HREF}>quote request</TextLink> asks the same questions
-          in order.
-        </p>
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
+          <div className="self-start lg:sticky lg:top-24">
+            <SectionHeading eyebrow="Your first email" title="What to put in the first email">
+              <p>
+                Six lines are enough to get a useful answer back. Nothing below is
+                mandatory, but each one you include removes a round trip.
+              </p>
+            </SectionHeading>
+            <p className="measure mt-6 text-base text-ink-500">
+              Attaching an existing itinerary, even a rough one, is usually faster
+              than describing it. If you would rather work through a form, the{" "}
+              <TextLink href={RFQ_HREF}>quote request</TextLink> asks the same questions
+              in order.
+            </p>
+          </div>
+          <ol className="grid gap-3 sm:grid-cols-2">
+            {BRIEF_CHECKLIST.map((item, index) => (
+              <li key={item} className="flex gap-4 rounded-2xl border border-rule bg-paper-2 p-5 text-base text-ink-900">
+                <span
+                  aria-hidden="true"
+                  className="tabular flex size-9 shrink-0 items-center justify-center rounded-full bg-red-600 font-display text-sm font-bold text-paper"
+                >
+                  {index + 1}
+                </span>
+                {item}
+              </li>
+            ))}
+          </ol>
+        </div>
       </Section>
 
       {/* The page's one deep section: what is deliberately not published. */}
       <Section tone="deep">
-        <SectionIntro title="What we will not tell you here" onDark />
-        <ul className="measure mt-8 border-t border-paper/15">
-          <li className="border-b border-paper/15 py-5">
-            <Evidence
-              onDark
-              note="No telephone number is published because ours has not been confirmed internally. It will appear here, and nowhere before here, once it has."
-            />
-          </li>
-          <li className="border-b border-paper/15 py-5">
-            <Evidence
-              onDark
-              note="No response-time promise is published because we have not yet measured our own. The measurement is running; the number will follow."
-            />
-          </li>
-        </ul>
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
+          <SectionHeading eyebrow="Stated, not hidden" title="What we will not tell you here" onDark />
+          <ul className="grid gap-3">
+            <li className="rounded-2xl border border-paper/15 bg-paper/[0.06] p-6">
+              <Evidence
+                onDark
+                note="No telephone number is published because ours has not been confirmed internally. It will appear here, and nowhere before here, once it has."
+              />
+            </li>
+            <li className="rounded-2xl border border-paper/15 bg-paper/[0.06] p-6">
+              <Evidence
+                onDark
+                note="No response-time promise is published because we have not yet measured our own. The measurement is running; the number will follow."
+              />
+            </li>
+          </ul>
+        </div>
       </Section>
 
       <FaqSection heading="Before you write" faqs={FAQS} tone="paper-2" />
 
       <Section>
-        <SectionIntro title="Or send the requirement straight through" />
-        <div className="mt-8 flex flex-wrap gap-4">
-          <ButtonLink href={`mailto:${COMPANY.email.b2b}`} className="wrap-anywhere">
-            {COMPANY.email.b2b}
-          </ButtonLink>
-          <ButtonLink href={RFQ_HREF} variant="secondary">
-            Request a B2B quote
-          </ButtonLink>
-        </div>
+        <CtaBanner
+          title="Or send the requirement straight through"
+          imageKey="b1-marrakech-hero"
+          primary={{ href: RFQ_HREF, label: "Request a B2B quote" }}
+          secondary={{ href: `mailto:${COMPANY.email.b2b}`, label: COMPANY.email.b2b }}
+        >
+          <p>
+            Browse ready-to-sell <TextLink href="/programmes" onDark>B2B programmes</TextLink> and{" "}
+            <TextLink href="/excursions" onDark>excursions</TextLink>, or send your own brief.
+          </p>
+        </CtaBanner>
+        <p className="mt-6 flex items-center gap-2 text-sm text-ink-500">
+          <ArrowRight aria-hidden="true" size={14} />
+          Both routes enter the same workflow and are logged the same way.
+        </p>
       </Section>
     </>
   );

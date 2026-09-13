@@ -13,7 +13,7 @@ const FAQS = [
   {
     question: "How long does Marrakech to Merzouga take?",
     answer:
-      "We have not published that figure yet, because we have not finished logging the route. It is the longest of the nine legs we are measuring, and it is the one where a published figure matters most — the difference between a plausible number and a measured one is the difference between a client arriving for dinner and arriving after it.",
+      "We have not published that figure yet, because we have not finished logging the route. It is the longest of the legs we are measuring, and it is the one where a published figure matters most — the difference between a plausible number and a measured one is the difference between a client arriving for dinner and arriving after it.",
   },
   {
     question: "Should Merzouga be two days or three?",

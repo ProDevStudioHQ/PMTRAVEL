@@ -1,20 +1,24 @@
 import type { RouteRecord } from "./types";
+import { DRIVE_LOGS } from "./drive-logs";
 
 /**
- * The nine target routes from Marrakech.
+ * The target routes from Marrakech.
  *
- * `driveLogs` is empty on every route because none has been driven and logged
- * yet. That is the honest state, and it is what makes the table say
- * "Verification in progress".
+ * Drive logs come from data/drive-logs.csv, imported and validated by
+ * `npm run import:drive-logs` into ./drive-logs.ts. A route with fewer than
+ * two usable logs renders as "Verification in progress".
  *
- * TODO(verify): add a DriveLog entry per completed run. Do NOT type a distance
- * or a drive time anywhere in this file - there is no field for one. Figures
- * are derived from logs in publish.ts, so the only way to put a number on the
- * site is to have driven the route. See docs/route-verification.md.
+ * Do NOT type a distance or a drive time anywhere in this file - there is no
+ * field for one. Figures are derived from logs in publish.ts, so the only way
+ * to put a number on the site is to have driven the route. See
+ * docs/route-verification.md.
  */
 
 const TARGETS: { destination: string; slug: string }[] = [
+  // The three routes behind the B2B programmes and excursions come first.
   { destination: "Agafay", slug: "marrakech-agafay" },
+  { destination: "Imlil", slug: "marrakech-imlil" },
+  { destination: "Ourika", slug: "marrakech-ourika" },
   { destination: "Essaouira", slug: "marrakech-essaouira" },
   { destination: "Ouarzazate", slug: "marrakech-ouarzazate" },
   { destination: "Dades", slug: "marrakech-dades" },
@@ -29,7 +33,7 @@ export const ROUTES: RouteRecord[] = TARGETS.map(({ destination, slug }) => ({
   slug,
   origin: "Marrakech",
   destination,
-  driveLogs: [],
+  driveLogs: DRIVE_LOGS[slug] ?? [],
   vehicleClass: null,
   roadAndPasses: null,
   recommendedStops: [],

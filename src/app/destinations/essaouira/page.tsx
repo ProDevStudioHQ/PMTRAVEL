@@ -120,7 +120,7 @@ export default function EssaouiraPage() {
           "Whether an overnight would serve the client better than the day trip",
         ],
         evidence:
-          "No distance or drive time for this leg is published, because it has not been driven and logged by us yet. It is one of the nine routes in the measurement programme.",
+          "No distance or drive time for this leg is published, because it has not been driven and logged by us yet. It is one of the routes in the measurement programme.",
       }}
       mice={[
         { kind: "seminar", body: "Meetings in seafront hotels and privatised riads in the medina." },

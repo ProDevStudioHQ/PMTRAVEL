@@ -23,7 +23,7 @@ const FAQS = [
   {
     question: "How far is Agafay from Marrakech?",
     answer:
-      "We have not published that figure yet, because we have not finished measuring it. Agafay is one of nine routes we are logging from Marrakech, and the distance and drive time will appear on this page with the number of runs they are drawn from and the dates they were driven. We would rather show you an empty cell than a number we copied from somewhere else.",
+      "We have not published that figure yet, because we have not finished measuring it. Agafay is one of the routes we are logging from Marrakech, and the distance and drive time will appear on this page with the number of runs they are drawn from and the dates they were driven. We would rather show you an empty cell than a number we copied from somewhere else.",
   },
   {
     question: "Why not just use Google Maps?",
