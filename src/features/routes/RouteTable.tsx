@@ -79,7 +79,7 @@ export function RouteTable({ linkPublished = false }: { linkPublished?: boolean 
   return (
     <div className="pm-reveal">
       {/* The instrument band. paper on red-900: 12.06:1. */}
-      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 rounded-t-card bg-red-900 px-6 py-4 text-paper">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 rounded-t-2xl bg-red-900 px-6 py-4 text-paper">
         <p className="font-display text-lg font-semibold">From Marrakech</p>
         <p className="tabular text-sm text-paper/90">
           {publishedCount} of {rows.length} routes published
@@ -150,7 +150,7 @@ export function RouteTable({ linkPublished = false }: { linkPublished?: boolean 
       </ul>
 
       {/* The method, always visible. ink-500 on red-050: 4.99:1. */}
-      <div className="rounded-b-card border border-t-0 border-rule bg-red-050 px-6 py-4">
+      <div className="rounded-b-2xl border border-t-0 border-rule bg-red-050 px-6 py-4">
         <Evidence note={method} />
       </div>
     </div>

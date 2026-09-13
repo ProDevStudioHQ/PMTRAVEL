@@ -1,11 +1,12 @@
+import Link from "next/link";
+import { ArrowRight, Clock, Handshake, Languages, MapPin, Quote } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { PageIntro } from "@/components/PageIntro";
-import { ButtonLink } from "@/components/Button";
-import { Card } from "@/components/Card";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
-import { Section, SectionIntro } from "@/components/Section";
+import { CtaBanner, IconCards, PILL, ProseCard, SectionHeading, type IconItem } from "@/components/Modern";
+import { Section } from "@/components/Section";
 import { TextLink } from "@/components/TextLink";
+import { DestinationHero } from "@/features/destinations/DestinationPage";
 import { ImageCredits } from "@/features/images/ImageCredits";
 import { COMPANY, RFQ_HREF } from "@/lib/nav";
 
@@ -16,16 +17,19 @@ export const metadata = pageMetadata({
   path: "/about",
 });
 
-const FACTS = [
+const FACTS: IconItem[] = [
   {
+    icon: MapPin,
     title: "Where we are",
     body: "Gueliz, Marrakech. Operations are run from that office, not remotely and not through a third party.",
   },
   {
+    icon: Handshake,
     title: "Who we work for",
     body: "Tour operators, international agencies, Morocco specialists needing overflow capacity, group operators and FIT specialists.",
   },
   {
+    icon: Languages,
     title: "Languages we operate in",
     body: `${COMPANY.languages.join(", ")}. We do not currently operate in German, and we say so rather than take the booking.`,
   },
@@ -67,109 +71,139 @@ const FAQS = [
 export default function AboutPage() {
   return (
     <>
-      <PageIntro
+      <DestinationHero
         title="A Morocco ground operator, built for the trade"
         standfirst="PM Travel Agency runs ground programmes in Morocco on behalf of the companies that sell them. We are based in Gueliz, Marrakech, and we operate from there."
-      />
+        imageKey="b2-marrakech-medersa"
+        kicker={COMPANY.brandLine}
+        trail={[{ href: "/about", label: "About" }]}
+        stats={[
+          { value: "B2B", label: "Trade only" },
+          { value: COMPANY.address.district, label: `${COMPANY.address.city} office` },
+          { value: String(COMPANY.languages.length), label: "Working languages" },
+        ]}
+      >
+        <Link href={RFQ_HREF} className={PILL.onDarkSolid}>
+          Request a B2B quote
+          <ArrowRight aria-hidden="true" size={16} strokeWidth={2} />
+        </Link>
+        <Link href="/how-we-work" className={PILL.onDarkOutline}>
+          How we work
+        </Link>
+      </DestinationHero>
+
+      <Section>
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
+          <div className="flex flex-col gap-8 self-start lg:sticky lg:top-24">
+            <SectionHeading eyebrow="Why we exist" title="Most of what goes wrong, goes wrong on the ground" />
+            <figure className="surface-deep rounded-3xl bg-red-900 p-7 text-paper">
+              <Quote aria-hidden="true" size={28} strokeWidth={1.75} className="text-paper/60" />
+              <blockquote className="mt-4 font-display text-xl leading-snug font-semibold text-paper">
+                We would rather be the company that publishes its drive times,
+                states how they were measured, and tells you what the backup plan
+                is when the first plan fails.
+              </blockquote>
+            </figure>
+          </div>
+
+          <ProseCard>
+            <p>
+              Most of what goes wrong on a Morocco programme goes wrong on the
+              ground, and it goes wrong in ways the selling agency cannot see from
+              another country. A transfer leaves late and the rest of the day
+              compresses. A drive time taken from a mapping service turns out not
+              to include the pass, the roadworks or the stop the group actually
+              needs. A venue turns out to hold fewer people in the layout the
+              client asked for than in the layout the supplier advertised. None of
+              those are exotic failures. They are the ordinary ones, and they are
+              what a ground partner is for.
+            </p>
+            <p>
+              PM Travel Agency exists to absorb that. We handle the vehicles, the
+              drivers, the arrivals, the hotels, the guides and the decisions that
+              have to be made at eleven at night when something has changed. The
+              company operates as <span className="font-medium">{COMPANY.brandLine}</span>.
+            </p>
+            <p>
+              What we are trying to be different at is narrow and deliberate.
+              Every Morocco operator will tell you they are authentic, tailor-made
+              and available around the clock, and those claims are now worth
+              nothing because everyone makes them. We would rather be the company
+              that publishes its drive times, states how they were measured, and
+              tells you what the backup plan is when the first plan fails. That is
+              a slower way to build a website. It is a much faster way to be
+              trusted with someone else&rsquo;s clients.
+            </p>
+            <p>
+              The practical form of that commitment is the{" "}
+              <TextLink href="/how-we-work">verification standard</TextLink> we hold
+              ourselves to. An operational figure is published only with a source, a
+              method, a date and a named verifier. A supplier&rsquo;s own website is
+              never treated as proof. If a camp&rsquo;s site says it has fifty-two
+              tents, that is a claim we record as unconfirmed until someone from PM
+              Travel has been there and counted. The same applies to every distance
+              and drive time on our{" "}
+              <TextLink href="/routes">route intelligence</TextLink> page: a route
+              publishes figures only after one of our drivers has driven it and
+              logged it.
+            </p>
+            <p>
+              We are a young operation and the site reflects that honestly. There
+              are no statistics here, because we have not measured any yet. There
+              are no testimonials, because we will not publish a client&rsquo;s
+              words without written permission. There is no list of awards. What
+              there is, and what will keep growing, is verified operational
+              detail, because that is the only thing in this industry that a
+              competitor cannot copy off a page in an afternoon.
+            </p>
+          </ProseCard>
+        </div>
+      </Section>
 
       <Section tone="paper-2">
-        <div className="measure flex flex-col gap-6 text-base text-ink-900">
-          <p>
-            Most of what goes wrong on a Morocco programme goes wrong on the
-            ground, and it goes wrong in ways the selling agency cannot see from
-            another country. A transfer leaves late and the rest of the day
-            compresses. A drive time taken from a mapping service turns out not
-            to include the pass, the roadworks or the stop the group actually
-            needs. A venue turns out to hold fewer people in the layout the
-            client asked for than in the layout the supplier advertised. None of
-            those are exotic failures. They are the ordinary ones, and they are
-            what a ground partner is for.
-          </p>
-          <p>
-            PM Travel Agency exists to absorb that. We handle the vehicles, the
-            drivers, the arrivals, the hotels, the guides and the decisions that
-            have to be made at eleven at night when something has changed. The
-            company operates as{" "}
-            <span className="font-medium">{COMPANY.brandLine}</span>.
-          </p>
-          <p>
-            What we are trying to be different at is narrow and deliberate.
-            Every Morocco operator will tell you they are authentic, tailor-made
-            and available around the clock, and those claims are now worth
-            nothing because everyone makes them. We would rather be the company
-            that publishes its drive times, states how they were measured, and
-            tells you what the backup plan is when the first plan fails. That is
-            a slower way to build a website. It is a much faster way to be
-            trusted with someone else&rsquo;s clients.
-          </p>
-          <p>
-            The practical form of that commitment is the{" "}
-            <TextLink href="/how-we-work">verification standard</TextLink> we hold
-            ourselves to. An operational figure is published only with a source, a
-            method, a date and a named verifier. A supplier&rsquo;s own website is
-            never treated as proof. If a camp&rsquo;s site says it has fifty-two
-            tents, that is a claim we record as unconfirmed until someone from PM
-            Travel has been there and counted. The same applies to every distance
-            and drive time on our{" "}
-            <TextLink href="/routes">route intelligence</TextLink> page: a route
-            publishes figures only after one of our drivers has driven it and
-            logged it.
-          </p>
-          <p>
-            We are a young operation and the site reflects that honestly. There
-            are no statistics here, because we have not measured any yet. There
-            are no testimonials, because we will not publish a client&rsquo;s
-            words without written permission. There is no list of awards. What
-            there is, and what will keep growing, is verified operational
-            detail, because that is the only thing in this industry that a
-            competitor cannot copy off a page in an afternoon.
-          </p>
+        <SectionHeading eyebrow="The essentials" title="Who we are, in three facts" />
+        <div className="mt-12">
+          <IconCards items={FACTS} columns={3} />
         </div>
       </Section>
 
       <Section>
-        <SectionIntro title="The essentials" />
-        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {FACTS.map((fact) => (
-            <li key={fact.title}>
-              <Card title={fact.title} className="h-full">
-                {fact.body}
-              </Card>
-            </li>
-          ))}
-        </ul>
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
+          <SectionHeading eyebrow="Stated, not hidden" title="What is not on this page yet">
+            <p>
+              Listing these is deliberate. A buyer checking us out will look for
+              them, and we would rather say where they are than leave a gap.
+            </p>
+          </SectionHeading>
+          <ul className="flex flex-col gap-3">
+            {NOT_YET.map((note) => (
+              <li key={note} className="flex gap-4 rounded-2xl border border-rule bg-paper-2 p-5">
+                <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-paper text-ink-500">
+                  <Clock size={18} strokeWidth={1.75} />
+                </span>
+                <Evidence note={note} />
+              </li>
+            ))}
+          </ul>
+        </div>
       </Section>
+
+      <ImageCredits tone="paper-2" />
+
+      <FaqSection heading="Questions we get asked first" faqs={FAQS} />
 
       <Section tone="paper-2">
-        <SectionIntro title="What is not on this page yet">
-          <p>
-            Listing these is deliberate. A buyer checking us out will look for
-            them, and we would rather say where they are than leave a gap.
-          </p>
-        </SectionIntro>
-        <ul className="measure mt-8 border-t border-rule">
-          {NOT_YET.map((note) => (
-            <li key={note} className="border-b border-rule py-5">
-              <Evidence note={note} />
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <ImageCredits />
-
-      <FaqSection heading="Questions we get asked first" faqs={FAQS} tone="paper-2" />
-
-      <Section>
-        <SectionIntro title="Send us something to operate">
+        <CtaBanner
+          title="Send us something to operate"
+          imageKey="b2-marrakech-medersa"
+          primary={{ href: RFQ_HREF, label: "Request a B2B quote" }}
+          secondary={{ href: "/contact", label: "Contact the office" }}
+        >
           <p>
             The fastest way to find out whether we are useful to you is to send a
             real requirement and see what comes back.
           </p>
-        </SectionIntro>
-        <div className="mt-8">
-          <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
-        </div>
+        </CtaBanner>
       </Section>
     </>
   );

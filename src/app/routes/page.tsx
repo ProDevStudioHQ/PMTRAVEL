@@ -1,10 +1,11 @@
+import Link from "next/link";
+import { ArrowRight, Bus, CalendarClock, Clock, CloudSun, Gauge, Timer, UserRound } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { Container } from "@/components/Container";
-import { ButtonLink } from "@/components/Button";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
-import { Section, SectionIntro } from "@/components/Section";
-import { TextLink } from "@/components/TextLink";
+import { CtaBanner, IconCards, PILL, SectionHeading, type IconItem } from "@/components/Modern";
+import { Section } from "@/components/Section";
+import { DestinationHero } from "@/features/destinations/DestinationPage";
 import { RouteTable } from "@/features/routes/RouteTable";
 import { ROUTES } from "@/features/routes/data";
 import { isPublished } from "@/features/routes/publish";
@@ -42,63 +43,54 @@ const FAQS = [
 ];
 
 /** The fields of a drive log. A set, not a sequence, so they are not numbered. */
-const DRIVE_LOG_FIELDS = [
-  ["Odometer distance", "Start and end reading, not an estimate."],
-  ["Moving time", "Wheels turning, excluding planned stops."],
-  ["Door-to-door time", "What the client actually experiences."],
-  ["Departure time", "A Friday morning out of Marrakech is not a Tuesday one."],
-  ["Vehicle", "Distance is the same; a coach over a pass is not."],
-  ["Conditions", "Weather, roadworks, closures, anything that made this run atypical."],
-  ["Driver", "Named. A run with no named driver is not evidence."],
-] as const;
+const DRIVE_LOG_FIELDS: IconItem[] = [
+  { icon: Gauge, title: "Odometer distance", body: "Start and end reading, not an estimate." },
+  { icon: Timer, title: "Moving time", body: "Wheels turning, excluding planned stops." },
+  { icon: Clock, title: "Door-to-door time", body: "What the client actually experiences." },
+  { icon: CalendarClock, title: "Departure time", body: "A Friday morning out of Marrakech is not a Tuesday one." },
+  { icon: Bus, title: "Vehicle", body: "Distance is the same; a coach over a pass is not." },
+  { icon: CloudSun, title: "Conditions", body: "Weather, roadworks, closures, anything that made this run atypical." },
+  { icon: UserRound, title: "Driver", body: "Named. A run with no named driver is not evidence." },
+];
 
 export default function RoutesPage() {
   const publishedCount = ROUTES.filter(isPublished).length;
   const targetCount = ROUTES.length;
 
-  // Real programme settings, read from the code that enforces them - not
-  // statistics. The published count lives in the table's own band.
-  const programme = [
-    { term: "Routes being measured", value: targetCount },
-    { term: "Logged runs needed to publish a route", value: MIN_LOGS_TO_PUBLISH },
-    { term: "Verified routes before this page is complete", value: ROUTES_PAGE_THRESHOLD },
-  ];
-
   return (
     <>
-      {/* Quiet on purpose: the boldness on this page belongs to the table. */}
-      <section className="border-b border-rule bg-paper">
-        <Container className="grid gap-12 py-16 lg:grid-cols-12 lg:items-end lg:py-24">
-          <div className="lg:col-span-7">
-            <h1 className="max-w-[16ch] text-3xl font-bold tracking-tight text-ink-900 lg:text-4xl">
-              Drive data we measured ourselves
-            </h1>
-            <p className="measure mt-6 text-lg text-ink-500">
-              Almost every Morocco drive time online came from a mapping service
-              or from repetition. Ours are published only after our own drivers
-              have driven the route and logged it.
-            </p>
-          </div>
-          <dl className="border-t border-rule lg:col-span-4 lg:col-start-9">
-            {programme.map((item) => (
-              <div
-                key={item.term}
-                className="flex items-baseline justify-between gap-6 border-b border-rule py-4"
-              >
-                <dt className="text-sm text-ink-500">{item.term}</dt>
-                <dd className="tabular font-display text-2xl font-bold text-ink-900">
-                  {item.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Container>
-      </section>
+      <DestinationHero
+        title="Drive data we measured ourselves"
+        standfirst="Almost every Morocco drive time online came from a mapping service or from repetition. Ours are published only after our own drivers have driven the route and logged it."
+        imageKey="c8-dades-gorge"
+        kicker="Route intelligence"
+        trail={[{ href: "/routes", label: "Route Intelligence" }]}
+        // Real programme settings, read from the code that enforces them - not statistics.
+        stats={[
+          { value: String(targetCount), label: "Routes being measured" },
+          { value: String(MIN_LOGS_TO_PUBLISH), label: "Runs needed to publish" },
+          { value: String(ROUTES_PAGE_THRESHOLD), label: "Verified routes to complete" },
+          { value: String(publishedCount), label: "Routes published" },
+        ]}
+      >
+        <a href="#table" className={PILL.onDarkSolid}>
+          See the routes
+          <ArrowRight aria-hidden="true" size={16} strokeWidth={2} />
+        </a>
+        <Link href={RFQ_HREF} className={PILL.onDarkOutline}>
+          Request a B2B quote
+        </Link>
+      </DestinationHero>
 
-      <Section tone="paper-2">
-        <RouteTable linkPublished />
-        <div className="measure mt-8 flex flex-col gap-4 text-base text-ink-500">
-          <p>
+      <Section tone="paper-2" id="table">
+        <SectionHeading eyebrow="From Marrakech" title="The route table">
+          <p>Every figure comes from logged runs. Everything still being measured says so.</p>
+        </SectionHeading>
+        <div className="mt-12">
+          <RouteTable linkPublished />
+        </div>
+        <div className="mt-6 grid gap-3 md:grid-cols-2">
+          <p className="rounded-2xl border border-rule bg-paper p-5 text-base text-ink-500">
             {publishedCount === 0
               ? `None of the ${targetCount} target routes has enough logged runs to publish yet. The programme is under way; the first figures appear here the moment a route reaches ${MIN_LOGS_TO_PUBLISH} logged runs, without anything being written by hand.`
               : `${publishedCount} of the ${targetCount} target routes ${publishedCount === 1 ? "has" : "have"} enough logged runs to publish.`}
@@ -108,49 +100,47 @@ export default function RoutesPage() {
             can never disagree the way "nine routes, 3 to go" did.
           */}
           {publishedCount < ROUTES_PAGE_THRESHOLD ? (
-            <p>
-              This page is treated as complete once {ROUTES_PAGE_THRESHOLD} of the{" "}
-              {targetCount} routes are verified.
+            <p className="rounded-2xl border border-rule bg-paper p-5 text-base text-ink-500">
+              This page is treated as complete once {ROUTES_PAGE_THRESHOLD} of the {targetCount} routes are verified.
             </p>
           ) : null}
         </div>
       </Section>
 
       <Section>
-        <SectionIntro title="What we record on every run">
-          <p>
-            A drive log is not a note in someone&rsquo;s phone. Each run captures
-            the same fields so that runs can be compared and a median means
-            something.
-          </p>
-        </SectionIntro>
-        <dl className="mt-12 grid border-t border-rule sm:grid-cols-2 sm:gap-x-12 lg:grid-cols-3">
-          {DRIVE_LOG_FIELDS.map(([title, body]) => (
-            <div key={title} className="border-b border-rule py-6">
-              <dt className="text-base font-semibold text-ink-900">{title}</dt>
-              <dd className="mt-2 text-base text-ink-500">{body}</dd>
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.8fr)] lg:gap-16">
+          <div className="self-start lg:sticky lg:top-24">
+            <SectionHeading eyebrow="The drive log" title="What we record on every run">
+              <p>
+                A drive log is not a note in someone&rsquo;s phone. Each run
+                captures the same fields so that runs can be compared and a median
+                means something.
+              </p>
+            </SectionHeading>
+            <div className="mt-6">
+              <Evidence note="Published figures are the median across logged runs, never a single run and never an average that one unusual journey can drag. Both the sample size and the dates it covers are shown with the figure." />
             </div>
-          ))}
-        </dl>
-        <div className="measure mt-8">
-          <Evidence note="Published figures are the median across logged runs, never a single run and never an average that one unusual journey can drag. Both the sample size and the dates it covers are shown with the figure." />
+          </div>
+          <IconCards items={DRIVE_LOG_FIELDS} columns={2} tone="muted" />
         </div>
       </Section>
 
       <FaqSection heading="About these numbers" faqs={FAQS} tone="paper-2" />
 
       <Section>
-        <SectionIntro title="Planning against real timings">
+        <CtaBanner
+          title="Planning against real timings"
+          imageKey="c8b-dades-hairpins"
+          primary={{ href: RFQ_HREF, label: "Request a B2B quote" }}
+          secondary={{ href: "/how-we-work", label: "How we work" }}
+        >
           <p>
             If you are building an itinerary and need to know whether a day works,
             send it to us. We will tell you which legs we have measured and which
             we have not, rather than confirming the whole thing and finding out on
-            the day. More on that in <TextLink href="/how-we-work">how we work</TextLink>.
+            the day.
           </p>
-        </SectionIntro>
-        <div className="mt-8">
-          <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
-        </div>
+        </CtaBanner>
       </Section>
     </>
   );

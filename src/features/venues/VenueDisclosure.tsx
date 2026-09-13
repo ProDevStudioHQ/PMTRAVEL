@@ -14,7 +14,7 @@ import type { PublicVenue } from "@/features/venues/types";
 export function VenueDisclosure({ venues }: { venues: PublicVenue[] }) {
   if (venues.length === 0) {
     return (
-      <div className="rounded-card border border-rule bg-paper p-8">
+      <div className="rounded-3xl border border-rule bg-paper p-8 shadow-raised sm:p-10">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <h3 className="text-lg font-semibold text-ink-900">No venue has been inspected yet</h3>
           <StatusChip status="pending" label="Inspections under way" />
