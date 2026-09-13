@@ -9,6 +9,7 @@ import {
   Map,
   MapPin,
   Mountain,
+  Package,
   Presentation,
   Route,
   Send,
@@ -27,6 +28,7 @@ import { RFQ_HREF } from "@/lib/nav";
 const ICONS: Record<string, LucideIcon> = {
   "/morocco-dmc": Compass,
   "/mice": Presentation,
+  "/programmes": Package,
   "/programmes/taste-of-marrakech": ChefHat,
   "/b2b": Handshake,
   "/routes": Route,
