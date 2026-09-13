@@ -1,13 +1,6 @@
+import { Bus, Coffee, Languages, Mountain, Route, Snowflake } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { Section } from "@/components/Section";
-import { TextLink } from "@/components/TextLink";
-import { PageIntro } from "@/components/PageIntro";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ButtonLink } from "@/components/Button";
-import { Card } from "@/components/Card";
-import { Evidence } from "@/components/Evidence";
-import { FaqSection } from "@/components/FaqSection";
-import { RFQ_HREF } from "@/lib/nav";
+import { DestinationPage } from "@/features/destinations/DestinationPage";
 
 export const metadata = pageMetadata({
   title: "Atlas Mountains Ground Operations",
@@ -41,20 +34,12 @@ const FAQS = [
 
 export default function AtlasPage() {
   return (
-    <>
-      <Breadcrumbs
-        trail={[
-          { href: "/destinations", label: "Destinations" },
-          { href: "/destinations/atlas", label: "Atlas Mountains" },
-        ]}
-      />
-      <PageIntro
-        title="Atlas Mountains"
-        standfirst="A day out of Marrakech and a crossing to the south are sold in similar language and operated completely differently. Getting that distinction right is most of the job."
-      />
-
-      <Section tone="paper-2">
-        <div className="measure flex flex-col gap-6 text-base text-ink-900">
+    <DestinationPage
+      slug="atlas"
+      title="Atlas Mountains"
+      standfirst="A day out of Marrakech and a crossing to the south are sold in similar language and operated completely differently. Getting that distinction right is most of the job."
+      body={
+        <>
           <p>
             The Atlas appears in almost every Morocco itinerary, in two quite
             different roles. In one it is a day: leave Marrakech, spend time in
@@ -95,92 +80,58 @@ export default function AtlasPage() {
             those who managed and those who waited. We ask about this at the
             briefing stage, because on the day the options have narrowed to one.
           </p>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we operate here
-        </h2>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Card title="Day programmes">
-            Valley days from Marrakech with the walking graded to the group
-            rather than to the itinerary title.
-          </Card>
-          <Card title="Crossings to the south">
-            Planned with deliberate slack and an agreed decision point if the
-            road holds up.
-          </Card>
-          <Card title="Vehicle matching">
-            Class chosen for the road, with the alternative stated where a coach
-            is not the right answer.
-          </Card>
-          <Card title="Guiding">
-            Guides briefed on the group&rsquo;s mobility and on what to drop if
-            the day runs long.
-          </Card>
-          <Card title="Lunch and stops">
-            Stops chosen for facilities and timing, not only for the view.
-          </Card>
-          <Card title="Winter planning">
-            A stated alternative route or day that does not depend on the pass.
-          </Card>
-        </div>
-      </Section>
-
-      <Section tone="paper-2">
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we establish before quoting an Atlas day
-        </h2>
-        <ul className="measure mt-8 border-t border-rule">
-          {[
-            "Whether the day returns to Marrakech or commits to arriving elsewhere",
-            "The mobility range in the group, and the version that keeps it together",
-            "Vehicle class against the specific road, not the headcount",
-            "The decision point: when a delay changes the plan rather than extends it",
-            "The winter alternative, agreed before the season rather than during it",
-            "Where lunch and facilities actually are along the chosen line",
-          ].map((item) => (
-            <li
-              key={item}
-              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
-            >
-              <span aria-hidden="true" className="text-ink-500">
-                &mdash;
-              </span>
-              {item}
-            </li>
-          ))}
-        </ul>
-        <div className="measure mt-8">
-          <Evidence note="No Atlas distances, drive times or pass conditions are published on this page. Route measurement is under way; the southern crossings appear on route intelligence as they are driven and logged." />
-        </div>
-      </Section>
-
-      <FaqSection heading="What operators ask about the Atlas" faqs={FAQS} />
-
-      <Section tone="paper-2">
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          Planning an Atlas day or crossing
-        </h2>
-        <p className="measure mt-6 text-lg text-ink-500">
-          Send the itinerary and tell us where the group sleeps that night. That
-          single fact changes how the day should be planned. Related legs are on{" "}
-          <TextLink href="/routes">
-            route intelligence
-          </TextLink>
-          , and the other destinations on the{" "}
-          <TextLink href="/destinations">
-            hub
-          </TextLink>
-          .
-        </p>
-        <div className="measure mt-8">
-          <ButtonLink href={RFQ_HREF}>
-            Request a B2B quote
-          </ButtonLink>
-        </div>
-      </Section>
-    </>
+        </>
+      }
+      services={[
+        {
+          icon: Mountain,
+          title: "Day programmes",
+          body: "Valley days from Marrakech with the walking graded to the group rather than to the itinerary title.",
+        },
+        {
+          icon: Route,
+          title: "Crossings to the south",
+          body: "Planned with deliberate slack and an agreed decision point if the road holds up.",
+        },
+        {
+          icon: Bus,
+          title: "Vehicle matching",
+          body: "Class chosen for the road, with the alternative stated where a coach is not the right answer.",
+        },
+        {
+          icon: Languages,
+          title: "Guiding",
+          body: "Guides briefed on the group’s mobility and on what to drop if the day runs long.",
+        },
+        {
+          icon: Coffee,
+          title: "Lunch and stops",
+          body: "Stops chosen for facilities and timing, not only for the view.",
+        },
+        {
+          icon: Snowflake,
+          title: "Winter planning",
+          body: "A stated alternative route or day that does not depend on the pass.",
+        },
+      ]}
+      checklist={{
+        title: "What we establish before quoting an Atlas day",
+        items: [
+          "Whether the day returns to Marrakech or commits to arriving elsewhere",
+          "The mobility range in the group, and the version that keeps it together",
+          "Vehicle class against the specific road, not the headcount",
+          "The decision point: when a delay changes the plan rather than extends it",
+          "The winter alternative, agreed before the season rather than during it",
+          "Where lunch and facilities actually are along the chosen line",
+        ],
+        evidence:
+          "No Atlas distances, drive times or pass conditions are published on this page. Route measurement is under way; the southern crossings appear on route intelligence as they are driven and logged.",
+      }}
+      faq={{ heading: "What operators ask about the Atlas", faqs: FAQS }}
+      cta={{
+        title: "Planning an Atlas day or crossing",
+        body: "Send the itinerary and tell us where the group sleeps that night. That single fact changes how the day should be planned.",
+      }}
+    />
   );
 }

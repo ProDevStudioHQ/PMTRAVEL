@@ -30,7 +30,23 @@ export const DESTINATION_IMAGE_KEYS: Record<string, string> = {
   marrakech: "b2-marrakech-medersa",
   agafay: "b3-agafay",
   atlas: "b4-atlas-imlil",
-  essaouira: "b5-essaouira",
+  essaouira: "b5-essaouira-port",
   merzouga: "b6-merzouga",
-  fes: "b7-fes",
+  fes: "b7-fes-medina",
 };
+
+/**
+ * The photographs on each destination page: a wide banner, and an optional
+ * second image beside the introduction. Scenery only, all licensed.
+ */
+export const DESTINATION_PAGE_IMAGES: Record<string, { hero: string; detail?: string }> = {
+  marrakech: { hero: "b1-marrakech-hero", detail: "b2-marrakech-medersa" },
+  agafay: { hero: "b3b-agafay-camp", detail: "b3-agafay" },
+  atlas: { hero: "b4-atlas-imlil" },
+  essaouira: { hero: "b5-essaouira-port" },
+  merzouga: { hero: "b9-erg-chebbi-camels", detail: "b6-merzouga" },
+  fes: { hero: "b7-fes-medina", detail: "b7b-fes-alley" },
+};
+
+/** The banner on the destinations hub. */
+export const DESTINATIONS_HUB_HERO = "b1-marrakech-hero";

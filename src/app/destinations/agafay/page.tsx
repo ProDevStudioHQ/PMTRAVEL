@@ -1,14 +1,6 @@
+import { Bus, MapPinned, RotateCcw, ShieldCheck, Sparkles, UtensilsCrossed } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { Section } from "@/components/Section";
-import { TextLink } from "@/components/TextLink";
-import { PageIntro } from "@/components/PageIntro";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ButtonLink } from "@/components/Button";
-import { Card } from "@/components/Card";
-import { Evidence } from "@/components/Evidence";
-import { FaqSection } from "@/components/FaqSection";
-import { RouteStatus } from "@/features/destinations/RouteStatus";
-import { RFQ_HREF } from "@/lib/nav";
+import { DestinationPage } from "@/features/destinations/DestinationPage";
 
 export const metadata = pageMetadata({
   title: "Agafay Ground Operations and Events",
@@ -42,20 +34,13 @@ const FAQS = [
 
 export default function AgafayPage() {
   return (
-    <>
-      <Breadcrumbs
-        trail={[
-          { href: "/destinations", label: "Destinations" },
-          { href: "/destinations/agafay", label: "Agafay" },
-        ]}
-      />
-      <PageIntro
-        title="Agafay"
-        standfirst="Close enough to Marrakech to work as an evening, which is exactly why it gets sold without being planned. Three things decide whether it works."
-      />
-
-      <Section tone="paper-2">
-        <div className="measure flex flex-col gap-6 text-base text-ink-900">
+    <DestinationPage
+      slug="agafay"
+      title="Agafay"
+      standfirst="Close enough to Marrakech to work as an evening, which is exactly why it gets sold without being planned. Three things decide whether it works."
+      routeSlug="marrakech-agafay"
+      body={
+        <>
           <p>
             Agafay has become the standard answer when a Marrakech programme
             needs a desert evening without the drive south. That popularity is
@@ -95,100 +80,58 @@ export default function AgafayPage() {
             generous layout, with no allowance for service access or the space a
             band takes.
           </p>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          The leg from Marrakech
-        </h2>
-        <div className="mt-12 max-w-2xl">
-          <RouteStatus slug="marrakech-agafay" />
-        </div>
-      </Section>
-
-      <Section tone="paper-2">
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we operate here
-        </h2>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Card title="Transfers and waves">
-            Vehicle mix matched to the site&rsquo;s actual access, with the
-            evening timed around the arrival pattern.
-          </Card>
-          <Card title="Dinners and gala evenings">
-            Service flow, dietary handling and a stated fallback if the weather
-            turns.
-          </Card>
-          <Card title="Incentive activities">
-            Scheduled against daylight and wind rather than against a brochure
-            running order.
-          </Card>
-          <Card title="Return movements">
-            The part most often under-planned. Late departures in waves need as
-            much thought as arrivals.
-          </Card>
-          <Card title="Site selection">
-            Matched to group size, layout and month, from sites we have
-            inspected rather than sites we have been sent photographs of.
-          </Card>
-          <Card title="Backup planning">
-            A named fallback for the venue, the weather and the vehicles.
-          </Card>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we verify before recommending a site
-        </h2>
-        <ul className="measure mt-8 border-t border-rule">
-          {[
-            "Whether a coach can complete the journey, or where it stops",
-            "How many vehicles the transfer actually needs at your group size",
-            "The covered space: where it is, and how many it holds measured",
-            "Wind exposure and what it affects at that specific site",
-            "Service access for catering, and what it takes out of the capacity",
-            "Curfew, noise limits and any permit the evening depends on",
-          ].map((item) => (
-            <li
-              key={item}
-              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
-            >
-              <span aria-hidden="true" className="text-ink-500">
-                &mdash;
-              </span>
-              {item}
-            </li>
-          ))}
-        </ul>
-        <div className="measure mt-8">
-          <Evidence note="No Agafay distance, drive time or camp capacity appears on this page, because none has been measured and logged by PM Travel yet. Inspections and route logging are under way, and the figures will be published with their dates when they exist." />
-        </div>
-      </Section>
-
-      <FaqSection tone="paper-2" heading="What operators ask about Agafay" faqs={FAQS} />
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          Planning an Agafay evening
-        </h2>
-        <p className="measure mt-6 text-lg text-ink-500">
-          Tell us the group size, the month and what the evening has to achieve.
-          We will tell you what we have inspected, what we have not, and what we
-          would go and check before recommending anything. The measured position
-          on every leg is on{" "}
-          <TextLink href="/routes">
-            route intelligence
-          </TextLink>
-          .
-        </p>
-        <div className="measure mt-8">
-          <ButtonLink href={RFQ_HREF}>
-            Request a B2B quote
-          </ButtonLink>
-        </div>
-      </Section>
-    </>
+        </>
+      }
+      services={[
+        {
+          icon: Bus,
+          title: "Transfers and waves",
+          body: "Vehicle mix matched to the site’s actual access, with the evening timed around the arrival pattern.",
+        },
+        {
+          icon: UtensilsCrossed,
+          title: "Dinners and gala evenings",
+          body: "Service flow, dietary handling and a stated fallback if the weather turns.",
+        },
+        {
+          icon: Sparkles,
+          title: "Incentive activities",
+          body: "Scheduled against daylight and wind rather than against a brochure running order.",
+        },
+        {
+          icon: RotateCcw,
+          title: "Return movements",
+          body: "The part most often under-planned. Late departures in waves need as much thought as arrivals.",
+        },
+        {
+          icon: MapPinned,
+          title: "Site selection",
+          body: "Matched to group size, layout and month, from sites we have inspected rather than sites we have been sent photographs of.",
+        },
+        {
+          icon: ShieldCheck,
+          title: "Backup planning",
+          body: "A named fallback for the venue, the weather and the vehicles.",
+        },
+      ]}
+      checklist={{
+        title: "What we verify before recommending a site",
+        items: [
+          "Whether a coach can complete the journey, or where it stops",
+          "How many vehicles the transfer actually needs at your group size",
+          "The covered space: where it is, and how many it holds measured",
+          "Wind exposure and what it affects at that specific site",
+          "Service access for catering, and what it takes out of the capacity",
+          "Curfew, noise limits and any permit the evening depends on",
+        ],
+        evidence:
+          "No Agafay distance, drive time or camp capacity appears on this page, because none has been measured and logged by PM Travel yet. Inspections and route logging are under way, and the figures will be published with their dates when they exist.",
+      }}
+      faq={{ heading: "What operators ask about Agafay", faqs: FAQS }}
+      cta={{
+        title: "Planning an Agafay evening",
+        body: "Tell us the group size, the month and what the evening has to achieve. We will tell you what we have inspected, what we have not, and what we would go and check before recommending anything.",
+      }}
+    />
   );
 }

@@ -1,13 +1,6 @@
+import { Compass, Hotel, Languages, PlaneLanding, Users, UtensilsCrossed } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { Section } from "@/components/Section";
-import { TextLink } from "@/components/TextLink";
-import { PageIntro } from "@/components/PageIntro";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ButtonLink } from "@/components/Button";
-import { Card } from "@/components/Card";
-import { Evidence } from "@/components/Evidence";
-import { FaqSection } from "@/components/FaqSection";
-import { RFQ_HREF } from "@/lib/nav";
+import { DestinationPage } from "@/features/destinations/DestinationPage";
 
 export const metadata = pageMetadata({
   title: "Marrakech Ground Operations",
@@ -36,20 +29,12 @@ const FAQS = [
 
 export default function MarrakechPage() {
   return (
-    <>
-      <Breadcrumbs
-        trail={[
-          { href: "/destinations", label: "Destinations" },
-          { href: "/destinations/marrakech", label: "Marrakech" },
-        ]}
-      />
-      <PageIntro
-        title="Marrakech"
-        standfirst="Our base. Most programmes we run start and end here, and most of what decides whether they run well is settled before anyone reaches a hotel."
-      />
-
-      <Section tone="paper-2">
-        <div className="measure flex flex-col gap-6 text-base text-ink-900">
+    <DestinationPage
+      slug="marrakech"
+      title="Marrakech"
+      standfirst="Our base. Most programmes we run start and end here, and most of what decides whether they run well is settled before anyone reaches a hotel."
+      body={
+        <>
           <p>
             Marrakech is the easiest Moroccan city to sell and one of the more
             deceptive ones to operate. The selling points are obvious and the
@@ -88,91 +73,58 @@ export default function MarrakechPage() {
             question is how quickly someone can physically be there. We are not
             coordinating Marrakech from another city or another country.
           </p>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we operate here
-        </h2>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Card title="Airport arrivals and departures">
-            Manifest-led, with flight monitoring and split-arrival planning
-            rather than one pickup that waits.
-          </Card>
-          <Card title="Riad and hotel transfers">
-            Access checked per property, with the last-stretch arrangement
-            agreed before the transfer is confirmed.
-          </Card>
-          <Card title="Guiding">
-            Licensed guides briefed to your itinerary and your client&rsquo;s
-            history, in the languages we operate in.
-          </Card>
-          <Card title="Dining and gala">
-            Restaurant and gala coordination, timed against the rest of the day
-            rather than in isolation.
-          </Card>
-          <Card title="Group movement">
-            Coach access, marshalling points and walking stretches planned as
-            part of the day, not discovered during it.
-          </Card>
-          <Card title="Excursion staging">
-            Marrakech as the base for Agafay, the Atlas, Essaouira and the
-            longer southern routes.
-          </Card>
-        </div>
-      </Section>
-
-      <Section tone="paper-2">
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we check before confirming
-        </h2>
-        <ul className="measure mt-8 border-t border-rule">
-          {[
-            "Vehicle access to the specific property address, not the district",
-            "Where luggage is handed over, and who carries it from there",
-            "Arrival spread across the day, and how many separate movements it implies",
-            "Walking stretches in the programme, against the mobility of the group",
-            "Departure timing for each transfer, not an average for the city",
-            "Guide briefing against the itinerary you sold, including what to skip",
-          ].map((item) => (
-            <li
-              key={item}
-              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
-            >
-              <span aria-hidden="true" className="text-ink-500">
-                &mdash;
-              </span>
-              {item}
-            </li>
-          ))}
-        </ul>
-        <div className="measure mt-8">
-          <Evidence note="This page describes how we operate Marrakech. It carries no distances, drive times or capacities, because none has been measured and logged by us yet. Legs we have driven appear on route intelligence with the date and the number of runs behind them." />
-        </div>
-      </Section>
-
-      <FaqSection heading="What operators ask about Marrakech" faqs={FAQS} />
-
-      <Section tone="paper-2">
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          Send us a Marrakech programme
-        </h2>
-        <p className="measure mt-6 text-lg text-ink-500">
-          Send the itinerary and the property list. We will tell you which
-          addresses are straightforward, which need a different arrangement, and
-          where the day is tighter than it looks. Other destinations are on the{" "}
-          <TextLink href="/destinations">
-            destination hub
-          </TextLink>
-          .
-        </p>
-        <div className="measure mt-8">
-          <ButtonLink href={RFQ_HREF}>
-            Request a B2B quote
-          </ButtonLink>
-        </div>
-      </Section>
-    </>
+        </>
+      }
+      services={[
+        {
+          icon: PlaneLanding,
+          title: "Airport arrivals and departures",
+          body: "Manifest-led, with flight monitoring and split-arrival planning rather than one pickup that waits.",
+        },
+        {
+          icon: Hotel,
+          title: "Riad and hotel transfers",
+          body: "Access checked per property, with the last-stretch arrangement agreed before the transfer is confirmed.",
+        },
+        {
+          icon: Languages,
+          title: "Guiding",
+          body: "Licensed guides briefed to your itinerary and your client’s history, in the languages we operate in.",
+        },
+        {
+          icon: UtensilsCrossed,
+          title: "Dining and gala",
+          body: "Restaurant and gala coordination, timed against the rest of the day rather than in isolation.",
+        },
+        {
+          icon: Users,
+          title: "Group movement",
+          body: "Coach access, marshalling points and walking stretches planned as part of the day, not discovered during it.",
+        },
+        {
+          icon: Compass,
+          title: "Excursion staging",
+          body: "Marrakech as the base for Agafay, the Atlas, Essaouira and the longer southern routes.",
+        },
+      ]}
+      checklist={{
+        title: "What we check before confirming",
+        items: [
+          "Vehicle access to the specific property address, not the district",
+          "Where luggage is handed over, and who carries it from there",
+          "Arrival spread across the day, and how many separate movements it implies",
+          "Walking stretches in the programme, against the mobility of the group",
+          "Departure timing for each transfer, not an average for the city",
+          "Guide briefing against the itinerary you sold, including what to skip",
+        ],
+        evidence:
+          "This page describes how we operate Marrakech. It carries no distances, drive times or capacities, because none has been measured and logged by us yet. Legs we have driven appear on route intelligence with the date and the number of runs behind them.",
+      }}
+      faq={{ heading: "What operators ask about Marrakech", faqs: FAQS }}
+      cta={{
+        title: "Send us a Marrakech programme",
+        body: "Send the itinerary and the property list. We will tell you which addresses are straightforward, which need a different arrangement, and where the day is tighter than it looks.",
+      }}
+    />
   );
 }

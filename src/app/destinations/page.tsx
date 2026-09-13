@@ -1,12 +1,14 @@
+import Link from "next/link";
+import { ArrowRight, Clock } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { PageIntro } from "@/components/PageIntro";
-import { ButtonLink } from "@/components/Button";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
 import { Section, SectionIntro } from "@/components/Section";
 import { TextLink } from "@/components/TextLink";
+import { DestinationHero } from "@/features/destinations/DestinationPage";
 import { PLANNED_DESTINATIONS } from "@/features/destinations/registry";
 import { DestinationRail } from "@/features/images/DestinationRail";
+import { DESTINATIONS_HUB_HERO } from "@/features/images/keys";
 import { RFQ_HREF } from "@/lib/nav";
 
 export const metadata = pageMetadata({
@@ -34,15 +36,29 @@ const FAQS = [
   },
 ];
 
+const pill =
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-semibold transition-colors duration-200";
+
 export default function DestinationsPage() {
   return (
     <>
-      <PageIntro
+      <DestinationHero
         title="Where we operate"
         standfirst="Each destination gets a page when there is genuine operational content behind it: how it is reached, what constrains it, and what we check before we confirm anything. We do not generate these in bulk."
-      />
+        imageKey={DESTINATIONS_HUB_HERO}
+        trail={[{ href: "/destinations", label: "Destinations" }]}
+        kicker="Operated from Marrakech"
+      >
+        <a href="#published" className={`${pill} bg-paper text-red-900 hover:bg-red-050`}>
+          Explore destinations
+          <ArrowRight aria-hidden="true" size={16} strokeWidth={2} />
+        </a>
+        <Link href={RFQ_HREF} className={`${pill} border border-paper/60 text-paper hover:bg-paper hover:text-ink-900`}>
+          Request a B2B quote
+        </Link>
+      </DestinationHero>
 
-      <Section tone="paper-2">
+      <Section tone="paper-2" id="published">
         <SectionIntro title="Published destinations">
           <p>Written from how we operate them, not from what they look like.</p>
         </SectionIntro>
@@ -60,10 +76,14 @@ export default function DestinationsPage() {
             skimming. Ask us about any of them directly in the meantime.
           </p>
         </SectionIntro>
-        {/* A ruled register, not links: none of these has a page. */}
-        <ul className="mt-12 grid grid-cols-2 border-t border-rule sm:grid-cols-3 sm:gap-x-12 lg:grid-cols-4">
+        {/* Chips, not links: none of these has a page. */}
+        <ul className="mt-10 flex flex-wrap gap-3">
           {PLANNED_DESTINATIONS.map((name) => (
-            <li key={name} className="border-b border-rule py-4 text-base text-ink-500">
+            <li
+              key={name}
+              className="inline-flex items-center gap-2 rounded-full border border-rule bg-paper-2 px-4 py-2 text-sm text-ink-900"
+            >
+              <Clock aria-hidden="true" size={14} strokeWidth={1.75} className="text-ink-500" />
               {name}
             </li>
           ))}
@@ -76,17 +96,27 @@ export default function DestinationsPage() {
       <FaqSection heading="Questions about planning Morocco" faqs={FAQS} tone="paper-2" />
 
       <Section>
-        <SectionIntro title="Send us the itinerary">
-          <p>
+        <div className="surface-deep rounded-3xl bg-red-900 px-6 py-12 text-paper sm:px-12 lg:py-16">
+          <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-paper">Send us the itinerary</h2>
+          <p className="measure mt-5 text-lg text-paper/90">
             Draft itineraries are welcome, including rough ones. We will tell you
             which sections are comfortable, which are tight, and which we cannot
-            yet give you a measured timing for. The measured position on each leg
-            is on <TextLink href="/routes">route intelligence</TextLink>.
+            yet give you a measured timing for.
           </p>
-        </SectionIntro>
-        <div className="mt-8">
-          <ButtonLink href={RFQ_HREF}>Request a B2B quote</ButtonLink>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={RFQ_HREF} className={`${pill} bg-paper text-red-900 hover:bg-red-050`}>
+              Request a B2B quote
+              <ArrowRight aria-hidden="true" size={16} strokeWidth={2} />
+            </Link>
+            <Link href="/routes" className={`${pill} border border-paper/60 text-paper hover:bg-paper hover:text-ink-900`}>
+              Route intelligence
+            </Link>
+          </div>
         </div>
+        <p className="measure mt-6 text-base text-ink-500">
+          The measured position on each leg is on{" "}
+          <TextLink href="/routes">route intelligence</TextLink>.
+        </p>
       </Section>
     </>
   );

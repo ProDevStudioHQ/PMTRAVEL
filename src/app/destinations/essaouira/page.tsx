@@ -1,14 +1,6 @@
+import { Bus, CalendarDays, Footprints, Languages, Moon, UtensilsCrossed } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { Section } from "@/components/Section";
-import { TextLink } from "@/components/TextLink";
-import { PageIntro } from "@/components/PageIntro";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ButtonLink } from "@/components/Button";
-import { Card } from "@/components/Card";
-import { Evidence } from "@/components/Evidence";
-import { FaqSection } from "@/components/FaqSection";
-import { RouteStatus } from "@/features/destinations/RouteStatus";
-import { RFQ_HREF } from "@/lib/nav";
+import { DestinationPage } from "@/features/destinations/DestinationPage";
 
 export const metadata = pageMetadata({
   title: "Essaouira Ground Operations",
@@ -37,20 +29,13 @@ const FAQS = [
 
 export default function EssaouiraPage() {
   return (
-    <>
-      <Breadcrumbs
-        trail={[
-          { href: "/destinations", label: "Destinations" },
-          { href: "/destinations/essaouira", label: "Essaouira" },
-        ]}
-      />
-      <PageIntro
-        title="Essaouira"
-        standfirst="The most commonly sold single day out of Marrakech. The driving is the easy part, which is exactly why it catches people out."
-      />
-
-      <Section tone="paper-2">
-        <div className="measure flex flex-col gap-6 text-base text-ink-900">
+    <DestinationPage
+      slug="essaouira"
+      title="Essaouira"
+      standfirst="The most commonly sold single day out of Marrakech. The driving is the easy part, which is exactly why it catches people out."
+      routeSlug="marrakech-essaouira"
+      body={
+        <>
           <p>
             Essaouira is usually the first day trip an operator adds to a
             Marrakech week, and for good reason: it changes the register of the
@@ -90,98 +75,58 @@ export default function EssaouiraPage() {
             so when we think it is the better answer for your client, even
             though the day trip is the simpler thing for us to operate.
           </p>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          The leg from Marrakech
-        </h2>
-        <div className="mt-12 max-w-2xl">
-          <RouteStatus slug="marrakech-essaouira" />
-        </div>
-      </Section>
-
-      <Section tone="paper-2">
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we operate here
-        </h2>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Card title="Day trips from Marrakech">
-            Planned as two movements plus a destination, with the return timed
-            deliberately.
-          </Card>
-          <Card title="Overnight programmes">
-            Where the extra night serves the client better than the round trip.
-          </Card>
-          <Card title="Coach drop-off and marshalling">
-            Where the vehicle stops, where it waits, and where it collects.
-          </Card>
-          <Card title="Guiding">
-            Guides briefed on the walking involved and on what to drop if the
-            group is slower than expected.
-          </Card>
-          <Card title="Dining">
-            Arrangements with an indoor version planned alongside the outdoor
-            one.
-          </Card>
-          <Card title="Group access planning">
-            The walking stretch established against the mobility of the actual
-            group.
-          </Card>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we establish before confirming a day
-        </h2>
-        <ul className="measure mt-8 border-t border-rule">
-          {[
-            "Where the coach stops, and the walking stretch from there",
-            "Mobility across the group, and the version that keeps it together",
-            "Departure time out of Marrakech, and what it costs the day",
-            "The return movement, planned rather than assumed",
-            "An indoor alternative for every outdoor element",
-            "Whether an overnight would serve the client better than the day trip",
-          ].map((item) => (
-            <li
-              key={item}
-              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
-            >
-              <span aria-hidden="true" className="text-ink-500">
-                &mdash;
-              </span>
-              {item}
-            </li>
-          ))}
-        </ul>
-        <div className="measure mt-8">
-          <Evidence note="No distance or drive time for this leg is published, because it has not been driven and logged by us yet. It is one of the nine routes in the measurement programme." />
-        </div>
-      </Section>
-
-      <FaqSection tone="paper-2" heading="What operators ask about Essaouira" faqs={FAQS} />
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          Planning an Essaouira day
-        </h2>
-        <p className="measure mt-6 text-lg text-ink-500">
-          Send us the week the day sits in, not just the day. Where it falls in
-          the programme changes whether it should be there at all. Other
-          destinations are on the{" "}
-          <TextLink href="/destinations">
-            hub
-          </TextLink>
-          .
-        </p>
-        <div className="measure mt-8">
-          <ButtonLink href={RFQ_HREF}>
-            Request a B2B quote
-          </ButtonLink>
-        </div>
-      </Section>
-    </>
+        </>
+      }
+      services={[
+        {
+          icon: CalendarDays,
+          title: "Day trips from Marrakech",
+          body: "Planned as two movements plus a destination, with the return timed deliberately.",
+        },
+        {
+          icon: Moon,
+          title: "Overnight programmes",
+          body: "Where the extra night serves the client better than the round trip.",
+        },
+        {
+          icon: Bus,
+          title: "Coach drop-off and marshalling",
+          body: "Where the vehicle stops, where it waits, and where it collects.",
+        },
+        {
+          icon: Languages,
+          title: "Guiding",
+          body: "Guides briefed on the walking involved and on what to drop if the group is slower than expected.",
+        },
+        {
+          icon: UtensilsCrossed,
+          title: "Dining",
+          body: "Arrangements with an indoor version planned alongside the outdoor one.",
+        },
+        {
+          icon: Footprints,
+          title: "Group access planning",
+          body: "The walking stretch established against the mobility of the actual group.",
+        },
+      ]}
+      checklist={{
+        title: "What we establish before confirming a day",
+        items: [
+          "Where the coach stops, and the walking stretch from there",
+          "Mobility across the group, and the version that keeps it together",
+          "Departure time out of Marrakech, and what it costs the day",
+          "The return movement, planned rather than assumed",
+          "An indoor alternative for every outdoor element",
+          "Whether an overnight would serve the client better than the day trip",
+        ],
+        evidence:
+          "No distance or drive time for this leg is published, because it has not been driven and logged by us yet. It is one of the nine routes in the measurement programme.",
+      }}
+      faq={{ heading: "What operators ask about Essaouira", faqs: FAQS }}
+      cta={{
+        title: "Planning an Essaouira day",
+        body: "Send us the week the day sits in, not just the day. Where it falls in the programme changes whether it should be there at all.",
+      }}
+    />
   );
 }

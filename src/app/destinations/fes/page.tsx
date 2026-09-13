@@ -1,14 +1,6 @@
+import { Hotel, Languages, Lightbulb, Luggage, Route, UtensilsCrossed } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { Section } from "@/components/Section";
-import { TextLink } from "@/components/TextLink";
-import { PageIntro } from "@/components/PageIntro";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ButtonLink } from "@/components/Button";
-import { Card } from "@/components/Card";
-import { Evidence } from "@/components/Evidence";
-import { FaqSection } from "@/components/FaqSection";
-import { RouteStatus } from "@/features/destinations/RouteStatus";
-import { RFQ_HREF } from "@/lib/nav";
+import { DestinationPage } from "@/features/destinations/DestinationPage";
 
 export const metadata = pageMetadata({
   title: "Fes Ground Operations",
@@ -42,20 +34,13 @@ const FAQS = [
 
 export default function FesPage() {
   return (
-    <>
-      <Breadcrumbs
-        trail={[
-          { href: "/destinations", label: "Destinations" },
-          { href: "/destinations/fes", label: "Fes" },
-        ]}
-      />
-      <PageIntro
-        title="Fes"
-        standfirst="Usually reached as a crossing rather than a transfer, and usually given less time than it needs. The medina is the operational problem, and it is a serious one."
-      />
-
-      <Section tone="paper-2">
-        <div className="measure flex flex-col gap-6 text-base text-ink-900">
+    <DestinationPage
+      slug="fes"
+      title="Fes"
+      standfirst="Usually reached as a crossing rather than a transfer, and usually given less time than it needs. The medina is the operational problem, and it is a serious one."
+      routeSlug="marrakech-fes"
+      body={
+        <>
           <p>
             Fes is the destination where the gap between how a programme is sold
             and how it is operated tends to be widest. It arrives in most
@@ -96,96 +81,58 @@ export default function FesPage() {
             We will set out what each does to the itinerary rather than
             defaulting to the road because road is what ground operators do.
           </p>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          The leg from Marrakech
-        </h2>
-        <div className="mt-12 max-w-2xl">
-          <RouteStatus slug="marrakech-fes" />
-        </div>
-      </Section>
-
-      <Section tone="paper-2">
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we operate here
-        </h2>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Card title="Arrival and luggage">
-            Planned as a distinct operation, with the handover point and the
-            carry agreed before the day.
-          </Card>
-          <Card title="Medina guiding">
-            Guides briefed on pace, route and what to drop, not only on
-            content.
-          </Card>
-          <Card title="Riad and hotel transfers">
-            Access established per address rather than per district.
-          </Card>
-          <Card title="Crossings from Marrakech">
-            Planned with slack and a decision point, like any long leg.
-          </Card>
-          <Card title="Dining">
-            Timed against a day that frequently runs longer than planned.
-          </Card>
-          <Card title="Itinerary advice">
-            Including telling you when a day and a half is not enough.
-          </Card>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we establish before confirming Fes
-        </h2>
-        <ul className="measure mt-8 border-t border-rule">
-          {[
-            "How the group arrives, and what state they arrive in",
-            "Vehicle access to each specific address, and where luggage is handed over",
-            "Group size against the route the guide intends to take",
-            "Mobility, and the version of the medina day that holds together",
-            "How many usable hours the itinerary actually gives the city",
-            "Departure timing, and what it removes from the final morning",
-          ].map((item) => (
-            <li
-              key={item}
-              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
-            >
-              <span aria-hidden="true" className="text-ink-500">
-                &mdash;
-              </span>
-              {item}
-            </li>
-          ))}
-        </ul>
-        <div className="measure mt-8">
-          <Evidence note="No distance or drive time from Marrakech to Fes is published here. It is one of the nine routes being logged, and the figures will appear with the number of runs behind them." />
-        </div>
-      </Section>
-
-      <FaqSection tone="paper-2" heading="What operators ask about Fes" faqs={FAQS} />
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          Planning a Fes section
-        </h2>
-        <p className="measure mt-6 text-lg text-ink-500">
-          Send the itinerary with the arrival and departure times as they
-          currently stand. That is usually enough for us to tell you whether the
-          city has been given enough of the week. Other destinations are on the{" "}
-          <TextLink href="/destinations">
-            hub
-          </TextLink>
-          .
-        </p>
-        <div className="measure mt-8">
-          <ButtonLink href={RFQ_HREF}>
-            Request a B2B quote
-          </ButtonLink>
-        </div>
-      </Section>
-    </>
+        </>
+      }
+      services={[
+        {
+          icon: Luggage,
+          title: "Arrival and luggage",
+          body: "Planned as a distinct operation, with the handover point and the carry agreed before the day.",
+        },
+        {
+          icon: Languages,
+          title: "Medina guiding",
+          body: "Guides briefed on pace, route and what to drop, not only on content.",
+        },
+        {
+          icon: Hotel,
+          title: "Riad and hotel transfers",
+          body: "Access established per address rather than per district.",
+        },
+        {
+          icon: Route,
+          title: "Crossings from Marrakech",
+          body: "Planned with slack and a decision point, like any long leg.",
+        },
+        {
+          icon: UtensilsCrossed,
+          title: "Dining",
+          body: "Timed against a day that frequently runs longer than planned.",
+        },
+        {
+          icon: Lightbulb,
+          title: "Itinerary advice",
+          body: "Including telling you when a day and a half is not enough.",
+        },
+      ]}
+      checklist={{
+        title: "What we establish before confirming Fes",
+        items: [
+          "How the group arrives, and what state they arrive in",
+          "Vehicle access to each specific address, and where luggage is handed over",
+          "Group size against the route the guide intends to take",
+          "Mobility, and the version of the medina day that holds together",
+          "How many usable hours the itinerary actually gives the city",
+          "Departure timing, and what it removes from the final morning",
+        ],
+        evidence:
+          "No distance or drive time from Marrakech to Fes is published here. It is one of the nine routes being logged, and the figures will appear with the number of runs behind them.",
+      }}
+      faq={{ heading: "What operators ask about Fes", faqs: FAQS }}
+      cta={{
+        title: "Planning a Fes section",
+        body: "Send the itinerary with the arrival and departure times as they currently stand. That is usually enough for us to tell you whether the city has been given enough of the week.",
+      }}
+    />
   );
 }

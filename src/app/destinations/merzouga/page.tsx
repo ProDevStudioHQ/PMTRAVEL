@@ -1,14 +1,6 @@
+import { Car, ClipboardList, Route, ShieldCheck, Tent, ThermometerSun } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { Section } from "@/components/Section";
-import { TextLink } from "@/components/TextLink";
-import { PageIntro } from "@/components/PageIntro";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ButtonLink } from "@/components/Button";
-import { Card } from "@/components/Card";
-import { Evidence } from "@/components/Evidence";
-import { FaqSection } from "@/components/FaqSection";
-import { RouteStatus } from "@/features/destinations/RouteStatus";
-import { RFQ_HREF } from "@/lib/nav";
+import { DestinationPage } from "@/features/destinations/DestinationPage";
 
 export const metadata = pageMetadata({
   title: "Merzouga Ground Operations",
@@ -42,20 +34,13 @@ const FAQS = [
 
 export default function MerzougaPage() {
   return (
-    <>
-      <Breadcrumbs
-        trail={[
-          { href: "/destinations", label: "Destinations" },
-          { href: "/destinations/merzouga", label: "Merzouga" },
-        ]}
-      />
-      <PageIntro
-        title="Merzouga"
-        standfirst="The longest standard leg we run, and the one where the real question is not how to operate it but whether the itinerary has allowed enough days for it."
-      />
-
-      <Section tone="paper-2">
-        <div className="measure flex flex-col gap-6 text-base text-ink-900">
+    <DestinationPage
+      slug="merzouga"
+      title="Merzouga"
+      standfirst="The longest standard leg we run, and the one where the real question is not how to operate it but whether the itinerary has allowed enough days for it."
+      routeSlug="marrakech-merzouga"
+      body={
+        <>
           <p>
             Merzouga is the destination most likely to appear in an itinerary
             that has not allowed enough time for it. It is a long way from
@@ -95,97 +80,58 @@ export default function MerzougaPage() {
             middle of the day is usable at all. It is not solved by moving
             activities an hour.
           </p>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          The leg from Marrakech
-        </h2>
-        <div className="mt-12 max-w-2xl">
-          <RouteStatus slug="marrakech-merzouga" />
-        </div>
-      </Section>
-
-      <Section tone="paper-2">
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we operate here
-        </h2>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Card title="Multi-day southern circuits">
-            Built around where the group sleeps each night rather than around a
-            list of sights.
-          </Card>
-          <Card title="Camp transfers">
-            The second arrangement from where vehicles stop, planned with
-            luggage and timing in mind.
-          </Card>
-          <Card title="Camp selection">
-            Matched to what the group actually needs served, not to a tent
-            count.
-          </Card>
-          <Card title="Driver briefing">
-            Long-leg driving planned with stops that have usable facilities.
-          </Card>
-          <Card title="Seasonal scheduling">
-            Programmes adjusted for heat rather than nudged by an hour.
-          </Card>
-          <Card title="Backup planning">
-            A stated fallback for vehicles and for the camp itself.
-          </Card>
-        </div>
-      </Section>
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          What we establish before quoting Merzouga
-        </h2>
-        <ul className="measure mt-8 border-t border-rule">
-          {[
-            "Whether the itinerary has allowed two days or three, and which it needs",
-            "Where the group sleeps each night, which governs everything else",
-            "The transfer arrangement into the camp, and what it does to timings",
-            "What the camp can serve as a single seated dinner, measured",
-            "Facilities on the route, not only stops with a view",
-            "The month, and what it makes unworkable",
-          ].map((item) => (
-            <li
-              key={item}
-              className="flex gap-4 border-b border-rule py-4 text-base text-ink-900"
-            >
-              <span aria-hidden="true" className="text-ink-500">
-                &mdash;
-              </span>
-              {item}
-            </li>
-          ))}
-        </ul>
-        <div className="measure mt-8">
-          <Evidence note="No drive time, distance or camp capacity for Merzouga appears on this page. This is the longest leg in the measurement programme and the figures will be published once it has been driven and logged, with the number of runs behind them." />
-        </div>
-      </Section>
-
-      <FaqSection tone="paper-2" heading="What operators ask about Merzouga" faqs={FAQS} />
-
-      <Section>
-        <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-          Planning a southern circuit
-        </h2>
-        <p className="measure mt-6 text-lg text-ink-500">
-          Send the whole circuit rather than the Merzouga night. Where the group
-          sleeps on each of the other nights is what determines whether this one
-          works. The measured position on each leg is on{" "}
-          <TextLink href="/routes">
-            route intelligence
-          </TextLink>
-          .
-        </p>
-        <div className="measure mt-8">
-          <ButtonLink href={RFQ_HREF}>
-            Request a B2B quote
-          </ButtonLink>
-        </div>
-      </Section>
-    </>
+        </>
+      }
+      services={[
+        {
+          icon: Route,
+          title: "Multi-day southern circuits",
+          body: "Built around where the group sleeps each night rather than around a list of sights.",
+        },
+        {
+          icon: Car,
+          title: "Camp transfers",
+          body: "The second arrangement from where vehicles stop, planned with luggage and timing in mind.",
+        },
+        {
+          icon: Tent,
+          title: "Camp selection",
+          body: "Matched to what the group actually needs served, not to a tent count.",
+        },
+        {
+          icon: ClipboardList,
+          title: "Driver briefing",
+          body: "Long-leg driving planned with stops that have usable facilities.",
+        },
+        {
+          icon: ThermometerSun,
+          title: "Seasonal scheduling",
+          body: "Programmes adjusted for heat rather than nudged by an hour.",
+        },
+        {
+          icon: ShieldCheck,
+          title: "Backup planning",
+          body: "A stated fallback for vehicles and for the camp itself.",
+        },
+      ]}
+      checklist={{
+        title: "What we establish before quoting Merzouga",
+        items: [
+          "Whether the itinerary has allowed two days or three, and which it needs",
+          "Where the group sleeps each night, which governs everything else",
+          "The transfer arrangement into the camp, and what it does to timings",
+          "What the camp can serve as a single seated dinner, measured",
+          "Facilities on the route, not only stops with a view",
+          "The month, and what it makes unworkable",
+        ],
+        evidence:
+          "No drive time, distance or camp capacity for Merzouga appears on this page. This is the longest leg in the measurement programme and the figures will be published once it has been driven and logged, with the number of runs behind them.",
+      }}
+      faq={{ heading: "What operators ask about Merzouga", faqs: FAQS }}
+      cta={{
+        title: "Planning a southern circuit",
+        body: "Send the whole circuit rather than the Merzouga night. Where the group sleeps on each of the other nights is what determines whether this one works.",
+      }}
+    />
   );
 }
