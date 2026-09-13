@@ -15,23 +15,78 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BedDouble,
+  Briefcase,
+  Building2,
+  Bus,
+  CalendarClock,
+  CalendarDays,
+  CircleCheck,
+  ClipboardList,
+  Hotel,
+  Languages,
+  Mail,
+  Map,
+  MapPin,
+  Moon,
+  Search,
+  Send,
+  Sparkles,
+  Tag,
+  Upload,
+  User,
+  Users,
+  Utensils,
+  Wallet,
+  type LucideIcon,
+} from "lucide-react";
 import { submitRfq } from "@/features/rfq/actions";
 import { RFQ_NEXT_STEPS } from "@/features/rfq/next-steps";
 // Types only from ./validation, so zod never reaches the browser bundle.
 import type { RfqFormState } from "@/features/rfq/validation";
 import { DESTINATIONS, PROGRAMME_TYPES } from "@/features/rfq/options";
-import { Button } from "@/components/Button";
 import { Evidence } from "@/components/Evidence";
-import { controlClass } from "@/components/Field";
+import { COMPANY } from "@/lib/nav";
 
 const initialState: RfqFormState = { status: "idle" };
 
 type StepNumber = 1 | 2 | 3;
 
-const STEPS: { number: StepNumber; title: string; optional: boolean }[] = [
-  { number: 1, title: "What we need to start", optional: false },
-  { number: 2, title: "Detail, if you have it", optional: true },
-  { number: 3, title: "Anything else we should know", optional: true },
+const STEPS: {
+  number: StepNumber;
+  label: string;
+  title: string;
+  subtitle: string;
+  icon: LucideIcon;
+  optional: boolean;
+}[] = [
+  {
+    number: 1,
+    label: "Requirement",
+    title: "What we need to start",
+    subtitle: "This is the whole required form. Everything after it is optional.",
+    icon: ClipboardList,
+    optional: false,
+  },
+  {
+    number: 2,
+    label: "Logistics",
+    title: "Detail, if you have it",
+    subtitle: "Rooms, transport, meals and budget sharpen the quote.",
+    icon: Hotel,
+    optional: true,
+  },
+  {
+    number: 3,
+    label: "Final notes",
+    title: "Anything else we should know",
+    subtitle: "Accessibility, special requirements and how you found us.",
+    icon: Sparkles,
+    optional: true,
+  },
 ];
 
 /** Which step each field lives on, so a server error can reopen that step. */
@@ -93,6 +148,17 @@ function plainError(name: string, errors?: string[]): string | undefined {
   return PLAIN_ERRORS[name] ?? "Check this field and try again.";
 }
 
+/** Soft filled control with room for a leading icon. Focus keeps the 2px red ring. */
+const inputClass = (invalid: boolean, withIcon: boolean) =>
+  `w-full rounded-xl border bg-paper-2/60 py-3 pr-4 text-base text-ink-900 placeholder:text-ink-500/80 transition-colors duration-200 hover:border-ink-500/70 focus:border-red-600 focus:bg-paper focus:outline-2 focus:outline-offset-2 focus:outline-red-600 ${
+    withIcon ? "pl-11" : "pl-4"
+  } ${invalid ? "border-red-600" : "border-ink-500/35"}`;
+
+const pillBase =
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-semibold transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50";
+const pillPrimary = `${pillBase} bg-red-600 text-paper shadow-raised hover:bg-red-900`;
+const pillSecondary = `${pillBase} border border-ink-900/20 bg-paper text-ink-900 hover:border-ink-900`;
+
 type ControlProps = {
   id: string;
   name: string;
@@ -112,6 +178,8 @@ type FormFieldProps = {
   required?: boolean;
   type?: string;
   hint?: string;
+  placeholder?: string;
+  icon?: LucideIcon;
   textarea?: boolean;
   rows?: number;
   /**
@@ -122,7 +190,7 @@ type FormFieldProps = {
   children?: (props: ControlProps) => ReactNode;
 };
 
-/** Label above the control, "(required)" in the label text, error below it. */
+/** Label above the control, a red asterisk (spoken as "required"), error below it. */
 function FormField({
   name,
   label,
@@ -131,6 +199,8 @@ function FormField({
   required = false,
   type = "text",
   hint,
+  placeholder,
+  icon: Icon,
   textarea = false,
   rows = 5,
   children,
@@ -141,6 +211,7 @@ function FormField({
   const error = plainError(name, errors);
   const describedBy =
     [hint ? hintId : null, error ? errorId : null].filter(Boolean).join(" ") || undefined;
+  const withIcon = Boolean(Icon) && !textarea;
 
   const shared: ControlProps = {
     id,
@@ -149,33 +220,66 @@ function FormField({
     required,
     "aria-describedby": describedBy,
     "aria-invalid": error ? true : undefined,
-    className: `mt-2 ${controlClass(Boolean(error))}`,
+    className: inputClass(Boolean(error), withIcon),
   };
 
   return (
     <div className="flex flex-col">
-      <label htmlFor={id} className="text-sm font-medium text-ink-900">
+      <label htmlFor={id} className="text-sm font-semibold text-ink-900">
         {label}
-        <span className="font-normal text-ink-500">{required ? " (required)" : " (optional)"}</span>
+        {required ? (
+          <>
+            <span aria-hidden="true" className="text-red-600"> *</span>
+            <span className="sr-only"> (required)</span>
+          </>
+        ) : null}
       </label>
       {hint ? (
         <span id={hintId} className="mt-1 text-sm text-ink-500">
           {hint}
         </span>
       ) : null}
-      {children ? (
-        children(shared)
-      ) : textarea ? (
-        <textarea {...shared} rows={rows} />
-      ) : (
-        <input {...shared} type={type} />
-      )}
+      <div className="relative mt-2">
+        {withIcon && Icon ? (
+          <Icon
+            aria-hidden="true"
+            size={18}
+            strokeWidth={1.75}
+            className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-ink-500"
+          />
+        ) : null}
+        {children ? (
+          children(shared)
+        ) : textarea ? (
+          <textarea {...shared} rows={rows} placeholder={placeholder} />
+        ) : (
+          <input {...shared} type={type} placeholder={placeholder} />
+        )}
+      </div>
       {error ? (
         // red-600 on paper: 5.84:1
         <span id={errorId} className="mt-2 text-sm text-red-600">
           {error}
         </span>
       ) : null}
+    </div>
+  );
+}
+
+/** The card every state of the form sits in: header band, body, footer strip. */
+function FormCard({ children }: { children: ReactNode }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-rule bg-paper shadow-raised">
+      {children}
+      <p className="border-t border-rule bg-paper-2/70 px-6 py-4 text-center text-sm text-ink-500">
+        Rather email?{" "}
+        <a
+          href={`mailto:${COMPANY.email.b2b}`}
+          className="wrap-anywhere font-semibold text-red-600 underline-offset-4 hover:underline"
+        >
+          {COMPANY.email.b2b}
+        </a>
+      </p>
     </div>
   );
 }
@@ -228,28 +332,36 @@ export function RfqForm() {
 
   if (state.status === "success") {
     return (
-      <div role="status">
-        <h2 className="text-2xl font-bold tracking-tight text-ink-900">We have your requirement</h2>
-        <p className="measure mt-4 text-base text-ink-500">
-          Your reference is{" "}
-          <span className="tabular font-medium text-ink-900">{state.reference}</span>. An
-          acknowledgement is on its way to the address you gave, setting out what
-          happens next. Quote the reference on anything you send us about this
-          request.
-        </p>
-        <h3 className="mt-8 text-lg font-semibold text-ink-900">What happens next</h3>
-        <ol className="mt-4 border-t border-rule">
-          {RFQ_NEXT_STEPS.map((item, index) => (
-            <li key={item} className="flex gap-4 border-b border-rule py-3 text-base text-ink-900">
-              <span className="tabular font-display font-bold">{index + 1}</span>
-              {item}
-            </li>
-          ))}
-        </ol>
-        <div className="measure mt-6">
-          <Evidence note="We have not published a response-time figure because we have not measured our own yet. This request is timestamped, and that measurement starts with it." />
+      <FormCard>
+        <div role="status" className="p-6 sm:p-10">
+          <span
+            aria-hidden="true"
+            className="flex size-14 items-center justify-center rounded-2xl bg-red-050 text-red-600"
+          >
+            <CircleCheck size={28} strokeWidth={1.75} />
+          </span>
+          <h2 className="mt-6 text-2xl font-bold tracking-tight text-ink-900">We have your requirement</h2>
+          <p className="measure mt-4 text-base text-ink-500">
+            Your reference is{" "}
+            <span className="tabular font-medium text-ink-900">{state.reference}</span>. An
+            acknowledgement is on its way to the address you gave, setting out what
+            happens next. Quote the reference on anything you send us about this
+            request.
+          </p>
+          <h3 className="mt-8 text-lg font-semibold text-ink-900">What happens next</h3>
+          <ol className="mt-4 border-t border-rule">
+            {RFQ_NEXT_STEPS.map((item, index) => (
+              <li key={item} className="flex gap-4 border-b border-rule py-3 text-base text-ink-900">
+                <span className="tabular font-display font-bold">{index + 1}</span>
+                {item}
+              </li>
+            ))}
+          </ol>
+          <div className="measure mt-6">
+            <Evidence note="We have not published a response-time figure because we have not measured our own yet. This request is timestamped, and that measurement starts with it." />
+          </div>
         </div>
-      </div>
+      </FormCard>
     );
   }
 
@@ -263,255 +375,311 @@ export function RfqForm() {
         <legend className="sr-only">
           Step {item.number} of 3: {item.title}
         </legend>
-        <h2
-          ref={(element) => {
-            headingRefs.current[number] = element;
-          }}
-          tabIndex={-1}
-          className="text-2xl font-bold tracking-tight text-ink-900"
-        >
-          {item.title}
-        </h2>
+        <div>
+          <h2
+            ref={(element) => {
+              headingRefs.current[number] = element;
+            }}
+            tabIndex={-1}
+            className="text-2xl font-bold tracking-tight text-ink-900"
+          >
+            {item.title}
+          </h2>
+          <p className="mt-2 text-base text-ink-500">{item.subtitle}</p>
+        </div>
       </>
     );
   };
 
   return (
-    <form action={formAction} onSubmit={onSubmit} noValidate className="flex flex-col gap-8">
-      {/* Step indicator. Every step stays reachable; steps 2 and 3 are optional. */}
-      <nav aria-label="Form steps">
-        <ol className="grid gap-2 sm:grid-cols-3">
-          {STEPS.map((item) => {
-            const current = item.number === step;
-            const hasError = stepHasError(item.number);
-            return (
-              <li key={item.number}>
-                <button
-                  type="button"
-                  onClick={() => goToStep(item.number)}
-                  aria-current={current ? "step" : undefined}
-                  className={`flex min-h-12 w-full items-center gap-3 rounded-control border px-3 py-2 text-left transition-colors duration-200 ${
-                    current ? "border-red-600 bg-red-050" : "border-rule bg-paper hover:border-ink-500"
-                  }`}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={`tabular flex size-7 shrink-0 items-center justify-center rounded-full font-display text-sm font-bold ${
-                      current ? "bg-red-600 text-paper" : "bg-paper-2 text-ink-900"
-                    }`}
+    <FormCard>
+      <form action={formAction} onSubmit={onSubmit} noValidate>
+        {/* Step indicator. Every step stays reachable; steps 2 and 3 are optional. */}
+        <nav aria-label="Form steps" className="border-b border-rule bg-paper-2/50 px-4 py-6 sm:px-8">
+          <ol className="flex items-start">
+            {STEPS.map((item, index) => {
+              const current = item.number === step;
+              const passed = item.number < step;
+              const hasError = stepHasError(item.number);
+              const Icon = item.icon;
+              const last = index === STEPS.length - 1;
+              return (
+                <li key={item.number} className={`flex items-start ${last ? "" : "flex-1"}`}>
+                  <button
+                    type="button"
+                    onClick={() => goToStep(item.number)}
+                    aria-current={current ? "step" : undefined}
+                    className="group flex w-24 flex-col items-center gap-2 rounded-xl text-center sm:w-32"
                   >
-                    {item.number}
-                  </span>
-                  <span className="flex flex-col">
-                    <span className="text-sm font-medium text-ink-900">
-                      <span className="sr-only">Step {item.number}: </span>
-                      {item.title}
+                    <span
+                      aria-hidden="true"
+                      className={`flex size-12 items-center justify-center rounded-xl border transition-all duration-200 ${
+                        current
+                          ? "border-red-600 bg-red-600 text-paper shadow-raised ring-4 ring-red-600/15"
+                          : hasError
+                            ? "border-red-600 bg-red-050 text-red-600"
+                            : passed
+                              ? "border-red-600/40 bg-red-050 text-red-600"
+                              : "border-rule bg-paper text-ink-500 group-hover:border-ink-500 group-hover:text-ink-900"
+                      }`}
+                    >
+                      <Icon size={20} strokeWidth={1.75} />
                     </span>
-                    <span className={`text-xs ${hasError ? "text-red-600" : "text-ink-500"}`}>
+                    <span
+                      className={`text-xs font-semibold uppercase tracking-wide ${
+                        current ? "text-ink-900" : "text-ink-500"
+                      }`}
+                    >
+                      <span className="sr-only">Step {item.number}: </span>
+                      {item.label}
+                    </span>
+                    <span className={`-mt-1.5 text-xs ${hasError ? "text-red-600" : "text-ink-500"}`}>
                       {hasError ? "Needs attention" : item.optional ? "Optional" : "Required"}
                     </span>
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+                  </button>
+                  {!last ? (
+                    <span
+                      aria-hidden="true"
+                      className={`mx-1 mt-6 h-0.5 flex-1 rounded-full transition-colors duration-200 ${
+                        passed ? "bg-red-600" : "bg-ink-500/20"
+                      }`}
+                    />
+                  ) : null}
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
 
-      {state.status === "error" ? (
-        // red-900 on red-050: 10.58:1
-        <div role="alert" className="rounded-control border border-red-600 bg-red-050 px-4 py-3 text-base text-red-900">
-          {state.message}
-        </div>
-      ) : null}
-
-      {/* Honeypot. Hidden from people, left empty by real browsers. */}
-      <div aria-hidden="true" className="hidden">
-        <label htmlFor="companyWebsite">Company website</label>
-        <input id="companyWebsite" name="companyWebsite" type="text" tabIndex={-1} autoComplete="off" />
-      </div>
-
-      {/*
-        All three steps stay mounted and only the current one is shown, so what
-        a buyer typed on another step is kept - and submitted - when they move.
-      */}
-      <fieldset hidden={step !== 1} className="flex flex-col gap-6 border-0 p-0">
-        {heading(1)}
-        <p className="measure text-base text-ink-500">
-          This is the whole required form. Everything after it is optional and
-          can follow later.
-        </p>
-
-        <div className="grid gap-6 sm:grid-cols-2">
-          <FormField name="company" label="Company" autoComplete="organization" required errors={errors.company} />
-          <FormField name="country" label="Country you sell from" autoComplete="country-name" required errors={errors.country} />
-          <FormField name="contactName" label="Your name" autoComplete="name" required errors={errors.contactName} />
-          <FormField name="role" label="Your role" autoComplete="organization-title" required errors={errors.role} />
-          <FormField name="email" label="Email" type="email" autoComplete="email" required errors={errors.email} />
-          <FormField
-            name="travellers"
-            label="Number of travellers"
-            type="number"
-            required
-            errors={errors.travellers}
-          />
-        </div>
-
-        <fieldset
-          className="border-0 p-0"
-          aria-describedby={errors.destinations?.length ? "destinations-error" : undefined}
-        >
-          <legend className="text-sm font-medium text-ink-900">
-            Destinations<span className="font-normal text-ink-500"> (required)</span>
-          </legend>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {DESTINATIONS.map((destination) => (
-              <label
-                key={destination}
-                className="flex min-h-11 cursor-pointer items-center gap-2 rounded-control border border-rule bg-paper px-3 text-base text-ink-900 transition-colors duration-200 has-checked:border-red-600 has-checked:bg-red-050"
-              >
-                <input type="checkbox" name="destinations" value={destination} className="size-4 accent-red-600" />
-                {destination}
-              </label>
-            ))}
-          </div>
-          {errors.destinations?.length ? (
-            <p id="destinations-error" className="mt-2 text-sm text-red-600">
-              {plainError("destinations", errors.destinations)}
-            </p>
-          ) : null}
-        </fieldset>
-
-        <div>
-          <label className="flex min-h-11 cursor-pointer items-center gap-2 text-base text-ink-900">
-            <input
-              type="checkbox"
-              name="datesFlexible"
-              checked={flexible}
-              onChange={(event) => setFlexible(event.target.checked)}
-              className="size-4 accent-red-600"
-            />
-            Dates are flexible
-          </label>
-          {/*
-            Required whenever they are shown: the server rejects a request with
-            no dates unless "Dates are flexible" is ticked, which hides them.
-          */}
-          {!flexible ? (
-            <div className="mt-4 grid gap-6 sm:grid-cols-2">
-              <FormField name="dateFrom" label="From" type="date" required errors={errors.dateFrom} />
-              <FormField name="dateTo" label="To" type="date" required errors={errors.dateTo} />
+        <div className="flex flex-col gap-8 p-6 sm:p-8">
+          {state.status === "error" ? (
+            // red-900 on red-050: 10.58:1
+            <div role="alert" className="rounded-xl border border-red-600 bg-red-050 px-4 py-3 text-base text-red-900">
+              {state.message}
             </div>
           ) : null}
-        </div>
 
-        <FormField name="programmeType" label="Programme type" required errors={errors.programmeType}>
-          {(control) => (
-            <select {...control} defaultValue="">
-              <option value="" disabled>
-                Choose one
-              </option>
-              {PROGRAMME_TYPES.map((type) => (
-                <option key={type.value} value={type.value}>
-                  {type.label}
-                </option>
-              ))}
-            </select>
-          )}
-        </FormField>
+          {/* Honeypot. Hidden from people, left empty by real browsers. */}
+          <div aria-hidden="true" className="hidden">
+            <label htmlFor="companyWebsite">Company website</label>
+            <input id="companyWebsite" name="companyWebsite" type="text" tabIndex={-1} autoComplete="off" />
+          </div>
 
-        <FormField
-          name="brief"
-          label="The brief"
-          required
-          textarea
-          errors={errors.brief}
-          hint="What the programme has to achieve, and anything that would make it fail."
-        />
+          {/*
+            All three steps stay mounted and only the current one is shown, so what
+            a buyer typed on another step is kept - and submitted - when they move.
+          */}
+          <fieldset hidden={step !== 1} className="flex flex-col gap-6 border-0 p-0">
+            {heading(1)}
 
-        <FormField
-          name="attachments"
-          label="Attach an itinerary or brief"
-          errors={errors.attachments}
-          hint="PDF, DOC, DOCX, XLS, XLSX, JPG or PNG. Up to 5 files, 10MB each."
-        >
-          {(control) => (
-            <input
-              {...control}
-              type="file"
-              multiple
-              accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
-              className="mt-2 block w-full text-base text-ink-900 file:mr-4 file:min-h-11 file:rounded-control file:border file:border-ink-900 file:bg-paper file:px-4 file:text-sm file:font-medium file:text-ink-900"
+            <div className="grid gap-6 sm:grid-cols-2">
+              <FormField name="company" label="Company" icon={Building2} placeholder="Your Travel Agency Ltd" autoComplete="organization" required errors={errors.company} />
+              <FormField name="country" label="Country you sell from" icon={MapPin} placeholder="France" autoComplete="country-name" required errors={errors.country} />
+              <FormField name="contactName" label="Your name" icon={User} placeholder="Jane Smith" autoComplete="name" required errors={errors.contactName} />
+              <FormField name="role" label="Your role" icon={Briefcase} placeholder="Product manager" autoComplete="organization-title" required errors={errors.role} />
+              <FormField name="email" label="Email" icon={Mail} placeholder="name@company.com" type="email" autoComplete="email" required errors={errors.email} />
+              <FormField
+                name="travellers"
+                label="Number of travellers"
+                icon={Users}
+                placeholder="24"
+                type="number"
+                required
+                errors={errors.travellers}
+              />
+            </div>
+
+            <fieldset
+              className="border-0 p-0"
+              aria-describedby={errors.destinations?.length ? "destinations-error" : undefined}
+            >
+              <legend className="text-sm font-semibold text-ink-900">
+                Destinations
+                <span aria-hidden="true" className="text-red-600"> *</span>
+                <span className="sr-only"> (required)</span>
+              </legend>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {DESTINATIONS.map((destination) => (
+                  <label
+                    key={destination}
+                    className="flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-ink-500/35 bg-paper-2/60 px-4 text-sm text-ink-900 transition-colors duration-200 hover:border-ink-500 has-checked:border-red-600 has-checked:bg-red-050 has-checked:font-semibold has-checked:text-red-900"
+                  >
+                    <input type="checkbox" name="destinations" value={destination} className="size-4 accent-red-600" />
+                    {destination}
+                  </label>
+                ))}
+              </div>
+              {errors.destinations?.length ? (
+                <p id="destinations-error" className="mt-2 text-sm text-red-600">
+                  {plainError("destinations", errors.destinations)}
+                </p>
+              ) : null}
+            </fieldset>
+
+            <div>
+              <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 text-base text-ink-900">
+                <input
+                  type="checkbox"
+                  name="datesFlexible"
+                  checked={flexible}
+                  onChange={(event) => setFlexible(event.target.checked)}
+                  className="size-4 accent-red-600"
+                />
+                Dates are flexible
+              </label>
+              {/*
+                Required whenever they are shown: the server rejects a request with
+                no dates unless "Dates are flexible" is ticked, which hides them.
+              */}
+              {!flexible ? (
+                <div className="mt-4 grid gap-6 sm:grid-cols-2">
+                  <FormField name="dateFrom" label="From" icon={CalendarDays} type="date" required errors={errors.dateFrom} />
+                  <FormField name="dateTo" label="To" icon={CalendarDays} type="date" required errors={errors.dateTo} />
+                </div>
+              ) : null}
+            </div>
+
+            <FormField name="programmeType" label="Programme type" icon={Tag} required errors={errors.programmeType}>
+              {(control) => (
+                <select {...control} defaultValue="">
+                  <option value="" disabled>
+                    Choose one
+                  </option>
+                  {PROGRAMME_TYPES.map((type) => (
+                    <option key={type.value} value={type.value}>
+                      {type.label}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </FormField>
+
+            <FormField
+              name="brief"
+              label="The brief"
+              required
+              textarea
+              placeholder="A 7-night incentive for 24 guests, Marrakech and Agafay…"
+              errors={errors.brief}
+              hint="What the programme has to achieve, and anything that would make it fail."
             />
-          )}
-        </FormField>
-      </fieldset>
 
-      <fieldset hidden={step !== 2} className="flex flex-col gap-6 border-0 p-0">
-        {heading(2)}
-        <div className="grid gap-6 sm:grid-cols-2">
-          <FormField name="rooms" label="Rooms" type="number" errors={errors.rooms} />
-          <FormField name="nights" label="Nights" type="number" errors={errors.nights} />
-          <FormField name="hotelCategory" label="Hotel category" errors={errors.hotelCategory} />
-          <FormField name="transport" label="Transport" errors={errors.transport} />
-          <FormField name="guideLanguage" label="Guide language" errors={errors.guideLanguage} />
-          <FormField name="meals" label="Meals" errors={errors.meals} />
-          <FormField name="budgetRange" label="Budget range" errors={errors.budgetRange} />
-          <FormField
-            name="quoteDeadline"
-            label="You need the quote by"
-            type="date"
-            errors={errors.quoteDeadline}
-          />
-        </div>
-        <FormField name="activities" label="Activities" textarea rows={3} errors={errors.activities} />
-      </fieldset>
+            <FormField
+              name="attachments"
+              label="Attach an itinerary or brief"
+              errors={errors.attachments}
+              hint="PDF, DOC, DOCX, XLS, XLSX, JPG or PNG. Up to 5 files, 10MB each."
+            >
+              {(control) => (
+                <div className="flex items-center gap-4 rounded-xl border border-dashed border-ink-500/40 bg-paper-2/60 p-4">
+                  <span
+                    aria-hidden="true"
+                    className="hidden size-11 shrink-0 items-center justify-center rounded-xl bg-paper text-red-600 sm:flex"
+                  >
+                    <Upload size={20} strokeWidth={1.75} />
+                  </span>
+                  <input
+                    {...control}
+                    type="file"
+                    multiple
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                    className="block w-full text-sm text-ink-900 file:mr-4 file:min-h-11 file:cursor-pointer file:rounded-full file:border file:border-ink-900/20 file:bg-paper file:px-5 file:text-sm file:font-semibold file:text-ink-900 hover:file:border-ink-900"
+                  />
+                </div>
+              )}
+            </FormField>
+          </fieldset>
 
-      <fieldset hidden={step !== 3} className="flex flex-col gap-6 border-0 p-0">
-        {heading(3)}
-        <FormField
-          name="accessibilityNeeds"
-          label="Accessibility needs"
-          textarea
-          rows={3}
-          errors={errors.accessibilityNeeds}
-        />
-        <FormField
-          name="specialRequirements"
-          label="Special requirements"
-          textarea
-          rows={3}
-          errors={errors.specialRequirements}
-        />
-        <div className="grid gap-6 sm:grid-cols-2">
-          <FormField
-            name="previousMorocco"
-            label="Previous Morocco experience"
-            errors={errors.previousMorocco}
-          />
-          <FormField name="foundUs" label="How you found us" errors={errors.foundUs} />
-        </div>
-      </fieldset>
+          <fieldset hidden={step !== 2} className="flex flex-col gap-6 border-0 p-0">
+            {heading(2)}
+            <div className="grid gap-6 sm:grid-cols-2">
+              <FormField name="rooms" label="Rooms" icon={BedDouble} type="number" placeholder="12" errors={errors.rooms} />
+              <FormField name="nights" label="Nights" icon={Moon} type="number" placeholder="7" errors={errors.nights} />
+              <FormField name="hotelCategory" label="Hotel category" icon={Hotel} placeholder="5-star or riad" errors={errors.hotelCategory} />
+              <FormField name="transport" label="Transport" icon={Bus} placeholder="Private coach" errors={errors.transport} />
+              <FormField name="guideLanguage" label="Guide language" icon={Languages} placeholder="French" errors={errors.guideLanguage} />
+              <FormField name="meals" label="Meals" icon={Utensils} placeholder="Half board" errors={errors.meals} />
+              <FormField name="budgetRange" label="Budget range" icon={Wallet} placeholder="Per person, in EUR" errors={errors.budgetRange} />
+              <FormField
+                name="quoteDeadline"
+                label="You need the quote by"
+                icon={CalendarClock}
+                type="date"
+                errors={errors.quoteDeadline}
+              />
+            </div>
+            <FormField name="activities" label="Activities" textarea rows={3} errors={errors.activities} />
+          </fieldset>
 
-      {/* Step 1 alone is a complete request, so sending is available on every step. */}
-      <div className="flex flex-col gap-6 border-t border-rule pt-8">
-        <div className="flex flex-wrap items-center gap-4">
-          <Button type="submit" disabled={pending}>
-            {pending ? "Sending…" : "Send this requirement"}
-          </Button>
-          {step < 3 ? (
-            <Button type="button" variant="secondary" onClick={() => goToStep((step + 1) as StepNumber)}>
-              {step === 1 ? "Add rooms, transport, meals and budget" : "Add accessibility and special requirements"}
-            </Button>
-          ) : null}
-          {step > 1 ? (
-            <Button type="button" variant="ghost" onClick={() => goToStep((step - 1) as StepNumber)}>
-              Back to step {step - 1}
-            </Button>
-          ) : null}
+          <fieldset hidden={step !== 3} className="flex flex-col gap-6 border-0 p-0">
+            {heading(3)}
+            <FormField
+              name="accessibilityNeeds"
+              label="Accessibility needs"
+              textarea
+              rows={3}
+              errors={errors.accessibilityNeeds}
+            />
+            <FormField
+              name="specialRequirements"
+              label="Special requirements"
+              textarea
+              rows={3}
+              errors={errors.specialRequirements}
+            />
+            <div className="grid gap-6 sm:grid-cols-2">
+              <FormField
+                name="previousMorocco"
+                label="Previous Morocco experience"
+                icon={Map}
+                errors={errors.previousMorocco}
+              />
+              <FormField name="foundUs" label="How you found us" icon={Search} errors={errors.foundUs} />
+            </div>
+          </fieldset>
+
+          {/* Step 1 alone is a complete request, so sending is available on every step. */}
+          <div className="flex flex-col gap-6 border-t border-rule pt-6">
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                {step > 1 ? (
+                  <button
+                    type="button"
+                    onClick={() => goToStep((step - 1) as StepNumber)}
+                    className="inline-flex min-h-11 items-center gap-2 px-1 text-sm font-semibold text-ink-500 transition-colors duration-200 hover:text-ink-900"
+                  >
+                    <ArrowLeft aria-hidden="true" size={16} strokeWidth={2} />
+                    Back
+                  </button>
+                ) : null}
+              </div>
+              <div className="flex flex-col-reverse gap-3 sm:flex-row">
+                {step < 3 ? (
+                  <>
+                    <button type="submit" disabled={pending} className={pillSecondary}>
+                      {pending ? "Sending…" : "Send now"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => goToStep((step + 1) as StepNumber)}
+                      className={pillPrimary}
+                    >
+                      Continue
+                      <ArrowRight aria-hidden="true" size={18} strokeWidth={2} />
+                    </button>
+                  </>
+                ) : (
+                  <button type="submit" disabled={pending} className={pillPrimary}>
+                    {pending ? "Sending…" : "Send this requirement"}
+                    <Send aria-hidden="true" size={16} strokeWidth={2} />
+                  </button>
+                )}
+              </div>
+            </div>
+            <Evidence note="What you send here is commercially sensitive. It is stored encrypted, access to it is logged, and it is never used as public content without your written permission." />
+          </div>
         </div>
-        <Evidence note="What you send here is commercially sensitive. It is stored encrypted, access to it is logged, and it is never used as public content without your written permission." />
-      </div>
-    </form>
+      </form>
+    </FormCard>
   );
 }

@@ -15,11 +15,12 @@ import {
   type FocusEvent,
   type KeyboardEvent,
 } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, Send, X } from "lucide-react";
 import { Container } from "@/components/Container";
 import { ButtonLink } from "@/components/Button";
 import { BrandLogo } from "@/components/BrandLogo";
 import { COMPANY, NAV_GROUPS, NAV_LINKS, RFQ_HREF, type NavGroup } from "@/lib/nav";
+import { iconFor } from "@/lib/nav-icons";
 
 /** SOP 3.1: the bar turns solid once the page has scrolled past 80px. */
 const SCROLL_THRESHOLD = 80;
@@ -355,45 +356,87 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
             onPointerLeave={(event) => {
               if (event.pointerType === "mouse") scheduleClose();
             }}
-            className={`surface-light absolute inset-x-0 top-full hidden border-t border-rule bg-paper text-ink-900 shadow-overlay duration-150 ease-out xl:block ${
+            className={`surface-light pointer-events-none absolute inset-x-0 top-full hidden text-ink-900 duration-200 ease-out xl:block ${
               // Opening: visibility flips at once so the items are focusable
               // immediately. Closing: visibility waits for the fade to finish.
               open
-                ? "visible opacity-100 transition-opacity"
-                : "invisible opacity-0 transition-[opacity,visibility]"
+                ? "visible translate-y-0 opacity-100 transition-[opacity,transform]"
+                : "invisible -translate-y-1 opacity-0 transition-[opacity,transform,visibility]"
             }`}
           >
-            <Container className="py-6">
-              <ul
-                role="none"
-                className={`grid gap-2 ${group.items.length > 4 ? "grid-cols-3" : "grid-cols-2"}`}
-              >
-                {group.items.map((item) => {
-                  const current = isCurrent(item.href);
-                  return (
-                    <li key={item.href} role="none">
-                      <Link
-                        href={item.href}
-                        role="menuitem"
-                        tabIndex={open ? 0 : -1}
-                        aria-current={current ? "page" : undefined}
-                        className="block rounded-card p-3 transition-colors duration-150 hover:bg-paper-2 focus-visible:bg-paper-2"
-                      >
-                        <span
-                          className={`block text-base font-medium ${
-                            current ? "text-red-600" : "text-ink-900"
-                          }`}
-                        >
-                          {item.label}
-                        </span>
-                        {item.blurb ? (
-                          <span className="mt-1 block text-sm text-ink-500">{item.blurb}</span>
-                        ) : null}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+            <Container className="pt-3">
+              <div className="pointer-events-auto flex overflow-hidden rounded-2xl border border-rule bg-paper shadow-overlay">
+                <div className="flex-1 p-3">
+                  <p className="px-3 pt-2 pb-3 text-xs font-semibold uppercase tracking-wide text-ink-500">
+                    {group.label}
+                  </p>
+                  <ul role="none" className="grid grid-cols-2 gap-1">
+                    {group.items.map((item) => {
+                      const current = isCurrent(item.href);
+                      const Icon = iconFor(item.href);
+                      return (
+                        <li key={item.href} role="none">
+                          <Link
+                            href={item.href}
+                            role="menuitem"
+                            tabIndex={open ? 0 : -1}
+                            aria-current={current ? "page" : undefined}
+                            className="group flex items-start gap-4 rounded-xl p-3 transition-colors duration-150 hover:bg-paper-2 focus-visible:bg-paper-2"
+                          >
+                            <span
+                              aria-hidden="true"
+                              className={`flex size-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-150 ${
+                                current
+                                  ? "border-red-600 bg-red-600 text-paper"
+                                  : "border-rule bg-paper-2 text-red-600 group-hover:border-red-600 group-hover:bg-red-600 group-hover:text-paper"
+                              }`}
+                            >
+                              <Icon size={20} strokeWidth={1.75} />
+                            </span>
+                            <span className="min-w-0">
+                              <span
+                                className={`block text-base font-semibold ${
+                                  current ? "text-red-600" : "text-ink-900"
+                                }`}
+                              >
+                                {item.label}
+                              </span>
+                              {item.blurb ? (
+                                <span className="mt-0.5 line-clamp-2 block text-sm text-ink-500">
+                                  {item.blurb}
+                                </span>
+                              ) : null}
+                            </span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+
+                {/* Featured panel: the one action every group leads to. */}
+                <div className="surface-deep flex w-72 shrink-0 flex-col justify-between gap-6 bg-red-900 p-6 text-paper">
+                  <div>
+                    <span
+                      aria-hidden="true"
+                      className="flex size-11 items-center justify-center rounded-xl bg-paper/10"
+                    >
+                      <Send size={20} strokeWidth={1.75} />
+                    </span>
+                    <p className="mt-4 font-display text-lg font-semibold">{COMPANY.positioning}</p>
+                    <p className="mt-2 text-sm text-paper/85">{COMPANY.proofLine}</p>
+                  </div>
+                  <Link
+                    href={RFQ_HREF}
+                    role="menuitem"
+                    tabIndex={open ? 0 : -1}
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-paper px-5 text-sm font-semibold text-red-900 transition-colors duration-150 hover:bg-red-050"
+                  >
+                    Request a quote
+                    <ArrowRight aria-hidden="true" size={16} strokeWidth={2} />
+                  </Link>
+                </div>
+              </div>
             </Container>
           </div>
         );

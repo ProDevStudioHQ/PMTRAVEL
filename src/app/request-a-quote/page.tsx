@@ -6,7 +6,6 @@ import { Section } from "@/components/Section";
 import { TextLink } from "@/components/TextLink";
 import { RfqForm } from "@/features/rfq/RfqForm";
 import { RFQ_NEXT_STEPS } from "@/features/rfq/next-steps";
-import { COMPANY } from "@/lib/nav";
 
 export const metadata = pageMetadata({
   title: "Request a B2B Quote",
@@ -48,9 +47,7 @@ export default function RequestAQuotePage() {
 
       <Section tone="paper-2">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-16">
-          <div className="rounded-card border border-rule bg-paper p-6 sm:p-8">
-            <RfqForm />
-          </div>
+          <RfqForm />
 
           <aside className="flex flex-col gap-10">
             <div>
@@ -67,21 +64,6 @@ export default function RequestAQuotePage() {
               <p className="mt-4 text-base text-ink-500">
                 Nothing unconfirmed is ever presented to you as confirmed. More on
                 that in <TextLink href="/how-we-work">how we work</TextLink>.
-              </p>
-            </div>
-
-            <div>
-              <h2 className="text-lg font-semibold text-ink-900">Rather email?</h2>
-              <p className="mt-3 text-base text-ink-500">
-                A plain email enters the same workflow and is logged the same way.
-              </p>
-              <p className="mt-4 text-base">
-                <a
-                  className="inline-flex min-h-11 items-center wrap-anywhere text-red-600 underline underline-offset-4 transition-colors duration-200 hover:text-red-900"
-                  href={`mailto:${COMPANY.email.b2b}`}
-                >
-                  {COMPANY.email.b2b}
-                </a>
               </p>
             </div>
 
