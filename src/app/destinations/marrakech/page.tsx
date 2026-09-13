@@ -120,6 +120,13 @@ export default function MarrakechPage() {
         evidence:
           "This page describes how we operate Marrakech. It carries no distances, drive times or capacities, because none has been measured and logged by us yet. Legs we have driven appear on route intelligence with the date and the number of runs behind them.",
       }}
+      mice={[
+        { kind: "seminar", body: "In historic palaces and 5-star hotels." },
+        { kind: "teambuilding", body: "In the Agafay desert or the palm groves." },
+        { kind: "gala", body: "Under caidal tents or in privatised riads." },
+        { kind: "culture", body: "The souks, the Majorelle Garden and the city’s museums." },
+        { kind: "incentive", body: "Quad biking, hot-air ballooning, golf, spa and wellness." },
+      ]}
       faq={{ heading: "What operators ask about Marrakech", faqs: FAQS }}
       cta={{
         title: "Send us a Marrakech programme",

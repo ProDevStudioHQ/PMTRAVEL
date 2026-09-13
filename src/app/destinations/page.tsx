@@ -6,17 +6,29 @@ import { FaqSection } from "@/components/FaqSection";
 import { Section, SectionIntro } from "@/components/Section";
 import { TextLink } from "@/components/TextLink";
 import { DestinationHero } from "@/features/destinations/DestinationPage";
-import { PLANNED_DESTINATIONS } from "@/features/destinations/registry";
+import { DESTINATIONS, PLANNED_DESTINATIONS } from "@/features/destinations/registry";
 import { DestinationRail } from "@/features/images/DestinationRail";
 import { DESTINATIONS_HUB_HERO } from "@/features/images/keys";
 import { RFQ_HREF } from "@/lib/nav";
 
 export const metadata = pageMetadata({
-  title: "Morocco Destinations We Operate",
+  title: "Morocco MICE Destinations & Experiences",
   description:
-    "The Moroccan destinations PM Travel operates from Marrakech, described in operational terms: access, timing, vehicles and what we verify.",
+    "From the desert to the imperial cities: the Moroccan destinations PM Travel operates for corporate events, incentives and group travel.",
   path: "/destinations",
 });
+
+/*
+  CONTENT CHECK: "50+ venues", "100+ partner hotels" and "365 days of sunshine"
+  were supplied by the client and are not backed by a record in this repo.
+  docs/START.md forbids unconfirmed claims; confirm each before launch.
+*/
+const STATS = [
+  { value: String(DESTINATIONS.length), label: "Regions" },
+  { value: "50+", label: "Venues" },
+  { value: "100+", label: "Partner hotels" },
+  { value: "365", label: "Days of sunshine" },
+];
 
 const FAQS = [
   {
@@ -43,11 +55,12 @@ export default function DestinationsPage() {
   return (
     <>
       <DestinationHero
-        title="Where we operate"
-        standfirst="Each destination gets a page when there is genuine operational content behind it: how it is reached, what constrains it, and what we check before we confirm anything. We do not generate these in bulk."
+        title="Destinations & Experiences"
+        standfirst="From the desert to the imperial cities, discover the Moroccan destinations that will turn your corporate events into unforgettable experiences."
         imageKey={DESTINATIONS_HUB_HERO}
         trail={[{ href: "/destinations", label: "Destinations" }]}
-        kicker="Operated from Marrakech"
+        kicker="MICE destinations"
+        stats={STATS}
       >
         <a href="#published" className={`${pill} bg-paper text-red-900 hover:bg-red-050`}>
           Explore destinations

@@ -269,30 +269,69 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
                       if (event.pointerType === "mouse") scheduleClose();
                     }}
                   >
-                    <button
-                      ref={(element) => {
-                        triggerRefs.current[group.id] = element;
-                      }}
-                      id={`${group.id}-trigger`}
-                      type="button"
-                      aria-haspopup="menu"
-                      aria-expanded={open}
-                      aria-controls={`${group.id}-menu`}
-                      onClick={() => setOpenGroup(open ? null : group.id)}
-                      onKeyDown={(event) => onTriggerKeyDown(event, group.id)}
-                      onBlur={(event) => onGroupBlur(event, group.id)}
-                      className={`relative flex min-h-11 items-center gap-1 text-sm font-medium transition-colors duration-200 ${
-                        current || open ? "text-paper" : "text-paper/85 hover:text-paper"
-                      } ${current ? ACTIVE_UNDERLINE : ""}`}
-                    >
-                      {group.label}
-                      <ChevronDown
-                        aria-hidden="true"
-                        size={16}
-                        strokeWidth={1.5}
-                        className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-                      />
-                    </button>
+                    {group.href ? (
+                      // The label goes to the hub page; the chevron opens the menu.
+                      <div className={`relative flex min-h-11 items-center ${current ? ACTIVE_UNDERLINE : ""}`}>
+                        <Link
+                          href={group.href}
+                          aria-current={pathname === group.href ? "page" : undefined}
+                          className={`flex min-h-11 items-center text-sm font-medium transition-colors duration-200 ${
+                            current || open ? "text-paper" : "text-paper/85 hover:text-paper"
+                          }`}
+                        >
+                          {group.label}
+                        </Link>
+                        <button
+                          ref={(element) => {
+                            triggerRefs.current[group.id] = element;
+                          }}
+                          id={`${group.id}-trigger`}
+                          type="button"
+                          aria-label={`${group.label} menu`}
+                          aria-haspopup="menu"
+                          aria-expanded={open}
+                          aria-controls={`${group.id}-menu`}
+                          onClick={() => setOpenGroup(open ? null : group.id)}
+                          onKeyDown={(event) => onTriggerKeyDown(event, group.id)}
+                          onBlur={(event) => onGroupBlur(event, group.id)}
+                          className={`flex min-h-11 min-w-7 items-center justify-center transition-colors duration-200 ${
+                            current || open ? "text-paper" : "text-paper/85 hover:text-paper"
+                          }`}
+                        >
+                          <ChevronDown
+                            aria-hidden="true"
+                            size={16}
+                            strokeWidth={1.5}
+                            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+                          />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        ref={(element) => {
+                          triggerRefs.current[group.id] = element;
+                        }}
+                        id={`${group.id}-trigger`}
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-expanded={open}
+                        aria-controls={`${group.id}-menu`}
+                        onClick={() => setOpenGroup(open ? null : group.id)}
+                        onKeyDown={(event) => onTriggerKeyDown(event, group.id)}
+                        onBlur={(event) => onGroupBlur(event, group.id)}
+                        className={`relative flex min-h-11 items-center gap-1 text-sm font-medium transition-colors duration-200 ${
+                          current || open ? "text-paper" : "text-paper/85 hover:text-paper"
+                        } ${current ? ACTIVE_UNDERLINE : ""}`}
+                      >
+                        {group.label}
+                        <ChevronDown
+                          aria-hidden="true"
+                          size={16}
+                          strokeWidth={1.5}
+                          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                    )}
                   </li>
                 );
               })}

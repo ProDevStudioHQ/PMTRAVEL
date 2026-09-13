@@ -127,6 +127,13 @@ export default function AgafayPage() {
         evidence:
           "No Agafay distance, drive time or camp capacity appears on this page, because none has been measured and logged by PM Travel yet. Inspections and route logging are under way, and the figures will be published with their dates when they exist.",
       }}
+      mice={[
+        { kind: "seminar", body: "Open-air sessions and meeting tents at desert lodges, with the Atlas as a backdrop." },
+        { kind: "teambuilding", body: "Desert challenges, orienteering and camel caravans across the stony hills." },
+        { kind: "gala", body: "Dinners under caidal tents with fire shows and live Gnaoua music." },
+        { kind: "culture", body: "Berber tea ceremonies, bread baking and pottery with local artisans." },
+        { kind: "incentive", body: "Quad and buggy rides, sunrise hot-air balloon flights and stargazing nights." },
+      ]}
       faq={{ heading: "What operators ask about Agafay", faqs: FAQS }}
       cta={{
         title: "Planning an Agafay evening",

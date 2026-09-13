@@ -122,6 +122,13 @@ export default function EssaouiraPage() {
         evidence:
           "No distance or drive time for this leg is published, because it has not been driven and logged by us yet. It is one of the nine routes in the measurement programme.",
       }}
+      mice={[
+        { kind: "seminar", body: "Meetings in seafront hotels and privatised riads in the medina." },
+        { kind: "teambuilding", body: "Beach challenges, sailing and cooking with the day’s catch." },
+        { kind: "gala", body: "Dinners on the ramparts or in riad courtyards, with Gnaoua music." },
+        { kind: "culture", body: "The UNESCO-listed medina, thuya woodworkers and the fishing port." },
+        { kind: "incentive", body: "Kitesurfing, horse and camel rides on the beach, and golf." },
+      ]}
       faq={{ heading: "What operators ask about Essaouira", faqs: FAQS }}
       cta={{
         title: "Planning an Essaouira day",

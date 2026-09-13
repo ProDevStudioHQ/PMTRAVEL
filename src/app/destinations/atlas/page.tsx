@@ -127,6 +127,13 @@ export default function AtlasPage() {
         evidence:
           "No Atlas distances, drive times or pass conditions are published on this page. Route measurement is under way; the southern crossings appear on route intelligence as they are driven and logged.",
       }}
+      mice={[
+        { kind: "seminar", body: "Retreats in kasbah lodges and mountain hotels, away from the city." },
+        { kind: "teambuilding", body: "Guided valley hikes and mule treks in the Imlil and Ourika valleys." },
+        { kind: "gala", body: "Private dinners on kasbah terraces facing the High Atlas." },
+        { kind: "culture", body: "Berber villages, argan cooperatives and weekly mountain souks." },
+        { kind: "incentive", body: "Summit walks, mountain biking, zip lines and hammam wellness." },
+      ]}
       faq={{ heading: "What operators ask about the Atlas", faqs: FAQS }}
       cta={{
         title: "Planning an Atlas day or crossing",

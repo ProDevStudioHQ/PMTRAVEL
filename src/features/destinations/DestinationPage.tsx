@@ -1,6 +1,17 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowRight, CircleCheck, MapPin, Route as RouteIcon, type LucideIcon } from "lucide-react";
+import {
+  ArrowRight,
+  CircleCheck,
+  Landmark,
+  MapPin,
+  PartyPopper,
+  Presentation,
+  Route as RouteIcon,
+  Trophy,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import { Container } from "@/components/Container";
 import { Breadcrumbs, type Crumb } from "@/components/Breadcrumbs";
 import { Evidence } from "@/components/Evidence";
@@ -26,6 +37,8 @@ type DestinationHeroProps = {
   trail?: Crumb[];
   /** Label in the chip above the title. */
   kicker?: string;
+  /** Headline figures shown as glass tiles under the actions. */
+  stats?: { value: string; label: string }[];
   children?: ReactNode;
 };
 
@@ -40,6 +53,7 @@ export function DestinationHero({
   imageKey,
   trail,
   kicker = "Morocco",
+  stats,
   children,
 }: DestinationHeroProps) {
   const hasImage = imageKey ? Boolean(imageByKey(imageKey)) : false;
@@ -70,6 +84,19 @@ export function DestinationHero({
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-paper/90">{standfirst}</p>
           {children ? <div className="mt-8 flex flex-wrap gap-3">{children}</div> : null}
+          {stats?.length ? (
+            <dl className="mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="flex flex-col-reverse rounded-2xl border border-paper/20 bg-paper/10 px-4 py-4 backdrop-blur-sm"
+                >
+                  <dt className="mt-1 text-sm text-paper/85">{stat.label}</dt>
+                  <dd className="tabular font-display text-3xl font-bold text-paper">{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
         </div>
       </Container>
     </section>
@@ -82,6 +109,17 @@ export type DestinationService = {
   body: string;
 };
 
+/** The five MICE categories, each with a fixed icon so every page reads the same way. */
+const MICE_KINDS = {
+  seminar: { icon: Presentation, title: "Seminars" },
+  teambuilding: { icon: Users, title: "Team building" },
+  gala: { icon: PartyPopper, title: "Gala evenings" },
+  culture: { icon: Landmark, title: "Cultural activities" },
+  incentive: { icon: Trophy, title: "Incentives" },
+} satisfies Record<string, { icon: LucideIcon; title: string }>;
+
+export type MiceActivity = { kind: keyof typeof MICE_KINDS; body: string };
+
 type DestinationPageProps = {
   slug: string;
   title: string;
@@ -91,6 +129,8 @@ type DestinationPageProps = {
   /** The leg from Marrakech, where there is one. */
   routeSlug?: string;
   services: DestinationService[];
+  /** Meetings, incentives, conferences and events: what the destination offers a group. */
+  mice: MiceActivity[];
   checklist: { title: string; items: string[]; evidence: string };
   faq: { heading: string; faqs: Faq[] };
   cta: { title: string; body: string };
@@ -110,6 +150,7 @@ export function DestinationPage({
   body,
   routeSlug,
   services,
+  mice,
   checklist,
   faq,
   cta,
@@ -121,6 +162,7 @@ export function DestinationPage({
   // Sections alternate paper and paper-2 after the introduction.
   let toneIndex = 0;
   const nextTone = () => (toneIndex++ % 2 === 0 ? "paper-2" : "paper") as "paper" | "paper-2";
+  const miceTone = nextTone();
   const routeTone = routeSlug ? nextTone() : undefined;
   const servicesTone = nextTone();
   const checklistTone = nextTone();
@@ -186,6 +228,54 @@ export function DestinationPage({
               </div>
             </div>
           </aside>
+        </div>
+      </Section>
+
+      <Section tone={miceTone} id="mice">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-16">
+          <div>
+            <span
+              aria-hidden="true"
+              className="flex size-12 items-center justify-center rounded-xl bg-red-600 text-paper shadow-raised"
+            >
+              <PartyPopper size={22} strokeWidth={1.75} />
+            </span>
+            <h2 className="mt-5 max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
+              MICE events &amp; activities
+            </h2>
+            <p className="mt-4 text-base text-ink-500">
+              How {title} works for meetings, incentives, conferences and events.
+            </p>
+            <Link
+              href="/mice"
+              className="group mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-red-600"
+            >
+              MICE &amp; Events
+              <ArrowRight aria-hidden="true" size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+          </div>
+          <ul className="flex flex-col gap-3">
+            {mice.map((activity) => {
+              const { icon: Icon, title: kindTitle } = MICE_KINDS[activity.kind];
+              return (
+                <li
+                  key={activity.kind}
+                  className="flex items-start gap-4 rounded-2xl border border-rule bg-paper p-5 transition-colors duration-200 hover:border-red-600"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-red-050 text-red-600"
+                  >
+                    <Icon size={20} strokeWidth={1.75} />
+                  </span>
+                  <p className="text-base text-ink-500">
+                    <span className="block font-semibold text-ink-900">{kindTitle}</span>
+                    {activity.body}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </Section>
 

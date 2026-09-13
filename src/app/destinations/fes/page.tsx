@@ -128,6 +128,13 @@ export default function FesPage() {
         evidence:
           "No distance or drive time from Marrakech to Fes is published here. It is one of the nine routes being logged, and the figures will appear with the number of runs behind them.",
       }}
+      mice={[
+        { kind: "seminar", body: "Meetings in palace riads and the city’s historic hotels." },
+        { kind: "teambuilding", body: "Artisan challenges in zellige, pottery and brass workshops." },
+        { kind: "gala", body: "Dinners in privatised palaces, with Andalusian music." },
+        { kind: "culture", body: "The medina, its medersas and tanneries, and the Merinid Tombs viewpoint." },
+        { kind: "incentive", body: "Cooking classes, hammam and spa, and day trips to Meknes and Volubilis." },
+      ]}
       faq={{ heading: "What operators ask about Fes", faqs: FAQS }}
       cta={{
         title: "Planning a Fes section",

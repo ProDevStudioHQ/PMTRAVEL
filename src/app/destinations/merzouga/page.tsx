@@ -127,6 +127,13 @@ export default function MerzougaPage() {
         evidence:
           "No drive time, distance or camp capacity for Merzouga appears on this page. This is the longest leg in the measurement programme and the figures will be published once it has been driven and logged, with the number of runs behind them.",
       }}
+      mice={[
+        { kind: "seminar", body: "Small-group sessions at desert lodges on the edge of Erg Chebbi." },
+        { kind: "teambuilding", body: "Dune challenges, sandboarding and camel caravans." },
+        { kind: "gala", body: "Dinners under caidal tents in the dunes, with fire and music." },
+        { kind: "culture", body: "Gnaoua music at Khamlia and visits to nomad families." },
+        { kind: "incentive", body: "4x4 dune drives, sunrise over the dunes and nights under the stars." },
+      ]}
       faq={{ heading: "What operators ask about Merzouga", faqs: FAQS }}
       cta={{
         title: "Planning a southern circuit",

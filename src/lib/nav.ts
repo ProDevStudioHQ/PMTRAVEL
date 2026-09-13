@@ -64,6 +64,8 @@ export const RFQ_HREF = "/request-a-quote";
 export type NavGroup = {
   id: string;
   label: string;
+  /** When set, the label itself links to this hub page; a chevron opens the menu. */
+  href?: string;
   items: NavItem[];
 };
 
@@ -91,6 +93,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     id: "destinations",
     label: "Destinations",
+    href: "/destinations",
     items: [
       ...DESTINATIONS.map((destination) => ({
         href: `/destinations/${destination.slug}`,
