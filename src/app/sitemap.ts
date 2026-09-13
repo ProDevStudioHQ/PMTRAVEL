@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { ALL_ROUTES, SITE_URL } from "@/lib/nav";
 import { ROUTES } from "@/features/routes/data";
 import { DESTINATIONS } from "@/features/destinations/registry";
+import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
 import { isPublished } from "@/features/routes/publish";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -16,7 +17,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     (destination) => `/destinations/${destination.slug}`
   );
 
-  return [...ALL_ROUTES, ...destinationPages, ...routePages].map((path) => ({
+  // Hand-built programme pages are already in ALL_ROUTES through the nav.
+  const programmePages = PROGRAMMES.filter((programme) => !programme.customPage).map(programmeHref);
+
+  return [...ALL_ROUTES, ...destinationPages, ...programmePages, ...routePages].map((path) => ({
     url: `${SITE_URL}${path}`,
     lastModified,
     changeFrequency: "monthly" as const,

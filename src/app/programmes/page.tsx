@@ -6,6 +6,7 @@ import { Section } from "@/components/Section";
 import { SiteImage } from "@/components/SiteImage";
 import { DestinationHero } from "@/features/destinations/DestinationPage";
 import { imageByKey } from "@/features/images/registry";
+import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
 import { RFQ_HREF } from "@/lib/nav";
 
 export const metadata = pageMetadata({
@@ -39,17 +40,8 @@ const BENEFITS: IconItem[] = [
   },
 ];
 
-const PROGRAMMES = [
-  {
-    href: "/programmes/taste-of-marrakech",
-    name: "Taste of Marrakech",
-    tagline: "Morocco Through the Table",
-    summary:
-      "A 7-night culinary journey through Marrakech, the Atlas Mountains, Agafay and Essaouira, with hands-on cooking, markets, mountain activities and curated dining.",
-    facts: ["7 nights / 8 days", "3 versions", "FIT, groups and incentives"],
-    imageKey: "b2-marrakech-medersa",
-  },
-];
+/** Buyer markets, in the order the portfolio serves them. */
+const MARKETS = ["France", "Spain", "Italy", "UK", "USA", "Canada"];
 
 export default function ProgrammesPage() {
   return (
@@ -60,6 +52,10 @@ export default function ProgrammesPage() {
         imageKey="c7-ait-ben-haddou"
         kicker="B2B programmes"
         trail={[{ href: "/programmes", label: "B2B Programmes" }]}
+        stats={[
+          { value: String(PROGRAMMES.length), label: "Programmes" },
+          { value: String(MARKETS.length), label: "Buyer markets" },
+        ]}
       >
         <a href="#programmes" className={PILL.onDarkSolid}>
           Browse programmes
@@ -80,47 +76,67 @@ export default function ProgrammesPage() {
       <Section id="programmes">
         <SectionHeading eyebrow="Programmes" title="Ready-to-contract Morocco programmes">
           <p>
-            Designed, costed and operated by our team in Marrakech, and sold under
-            your own brand.
+            Each programme is designed for a buyer market in Europe, the USA or
+            Canada, operated by our team in Marrakech, and sold under your own
+            brand.
           </p>
         </SectionHeading>
+        <ul className="mt-8 flex flex-wrap gap-2" aria-label="Buyer markets">
+          {MARKETS.map((market) => (
+            <li key={market} className="rounded-full border border-rule bg-paper-2 px-4 py-1.5 text-sm font-medium text-ink-900">
+              {market}
+            </li>
+          ))}
+        </ul>
 
-        <ul className="mt-12 grid gap-6">
+        <ul className="mt-10 grid gap-6 md:grid-cols-2">
           {PROGRAMMES.map((programme) => (
-            <li key={programme.href}>
-              <article className="group relative grid overflow-hidden rounded-3xl border border-rule bg-paper shadow-raised transition-[border-color,box-shadow] duration-200 hover:border-red-600 hover:shadow-overlay lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-                <div className="relative min-h-72 bg-ink-900">
-                  {imageByKey(programme.imageKey) ? (
+            <li key={programme.slug}>
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-rule bg-paper transition-[border-color,box-shadow] duration-200 hover:border-red-600 hover:shadow-overlay">
+                <div className="relative aspect-[16/10] bg-ink-900">
+                  {imageByKey(programme.cardImage) ? (
                     <SiteImage
-                      imageKey={programme.imageKey}
+                      imageKey={programme.cardImage}
                       fill
-                      sizes="(min-width: 1024px) 55vw, 100vw"
+                      sizes="(min-width: 768px) 50vw, 100vw"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                     />
                   ) : null}
-                  <span className="absolute top-5 left-5 rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-paper">
-                    Signature programme
+                  <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                    <span className="rounded-full bg-ink-900 px-3 py-1 font-display text-xs font-bold text-paper">{programme.code}</span>
+                    {programme.customPage ? (
+                      <span className="rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-paper">Signature programme</span>
+                    ) : null}
+                  </div>
+                  <span aria-hidden="true" className="absolute top-4 right-4 flex size-10 items-center justify-center rounded-full bg-paper/90 text-red-900 transition-colors duration-200 group-hover:bg-red-600 group-hover:text-paper">
+                    <ArrowUpRight size={18} strokeWidth={2} />
                   </span>
                 </div>
-                <div className="flex flex-col p-7 lg:p-10">
-                  <p className="text-sm font-semibold text-red-600">{programme.tagline}</p>
-                  <h3 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink-900">
-                    <Link href={programme.href} className="after:absolute after:inset-0 after:content-['']">
-                      {programme.name}
-                    </Link>
-                  </h3>
-                  <p className="mt-4 text-base text-ink-500">{programme.summary}</p>
-                  <ul className="mt-6 flex flex-wrap gap-2">
-                    {programme.facts.map((fact) => (
-                      <li key={fact} className="rounded-full border border-rule bg-paper-2 px-3 py-1.5 text-sm text-ink-900">
-                        {fact}
+                <div className="flex flex-1 flex-col p-6 lg:p-8">
+                  <ul className="flex flex-wrap gap-1.5">
+                    {programme.markets.map((market) => (
+                      <li key={market} className="rounded-full bg-red-050 px-2.5 py-0.5 text-xs font-semibold text-red-900">
+                        {market}
                       </li>
                     ))}
                   </ul>
-                  <span className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-red-600">
-                    View the programme
-                    <ArrowUpRight aria-hidden="true" size={18} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </span>
+                  <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink-900">
+                    <Link href={programmeHref(programme)} className="after:absolute after:inset-0 after:content-['']">
+                      {programme.name}
+                    </Link>
+                  </h3>
+                  <p className="mt-1 text-sm font-semibold text-red-600">{programme.tagline}</p>
+                  <p className="mt-3 line-clamp-3 flex-1 text-base text-ink-500">{programme.summary}</p>
+                  <dl className="mt-6 grid grid-cols-2 gap-3 border-t border-rule pt-5 text-sm">
+                    <div>
+                      <dt className="text-ink-500">Format</dt>
+                      <dd className="font-semibold text-ink-900">{programme.format}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-ink-500">Group</dt>
+                      <dd className="font-semibold text-ink-900">{programme.groupType}</dd>
+                    </div>
+                  </dl>
                 </div>
               </article>
             </li>

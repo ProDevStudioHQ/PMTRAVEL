@@ -1,4 +1,5 @@
 import { DESTINATIONS } from "@/features/destinations/registry";
+import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
 
 /**
  * The single source of truth for company facts and navigation.
@@ -101,7 +102,11 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "B2B Programmes",
     href: "/programmes",
     items: [
-      byHref("/programmes/taste-of-marrakech"),
+      ...PROGRAMMES.map((programme) => ({
+        href: programmeHref(programme),
+        label: programme.name,
+        blurb: programme.markets.join(" · "),
+      })),
       { ...byHref("/programmes"), label: "All programmes" },
     ],
   },

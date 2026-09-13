@@ -45,4 +45,5 @@ const ICONS: Record<string, LucideIcon> = {
   "/destinations/fes": Castle,
 };
 
-export const iconFor = (href: string): LucideIcon => ICONS[href] ?? MapPin;
+export const iconFor = (href: string): LucideIcon =>
+  ICONS[href] ?? (href.startsWith("/programmes/") ? Package : MapPin);
