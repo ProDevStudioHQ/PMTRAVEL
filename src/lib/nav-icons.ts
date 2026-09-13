@@ -1,5 +1,6 @@
 import {
   Castle,
+  ChefHat,
   Compass,
   Handshake,
   Info,
@@ -26,6 +27,7 @@ import { RFQ_HREF } from "@/lib/nav";
 const ICONS: Record<string, LucideIcon> = {
   "/morocco-dmc": Compass,
   "/mice": Presentation,
+  "/programmes/taste-of-marrakech": ChefHat,
   "/b2b": Handshake,
   "/routes": Route,
   "/destinations": Map,

@@ -47,6 +47,11 @@ export type NavItem = {
 export const PRIMARY_NAV: NavItem[] = [
   { href: "/morocco-dmc", label: "Morocco DMC", blurb: "What we operate" },
   { href: "/mice", label: "MICE & Events", blurb: "Meetings, incentives, events" },
+  {
+    href: "/programmes/taste-of-marrakech",
+    label: "Taste of Marrakech",
+    blurb: "Signature 7-night culinary programme",
+  },
   { href: "/b2b", label: "For Travel Trade", blurb: "How we work with agencies" },
   { href: "/routes", label: "Route Intelligence", blurb: "Measured drive data" },
   { href: "/destinations", label: "Destinations", blurb: "Where we operate" },
@@ -88,7 +93,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     id: "operations",
     label: "Operations",
-    items: ["/morocco-dmc", "/mice", "/b2b", "/routes"].map(byHref),
+    items: ["/morocco-dmc", "/programmes/taste-of-marrakech", "/mice", "/b2b", "/routes"].map(byHref),
   },
   {
     id: "destinations",
