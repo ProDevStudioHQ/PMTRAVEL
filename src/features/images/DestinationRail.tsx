@@ -59,6 +59,18 @@ export function DestinationRail({ exclude }: DestinationRailProps) {
                 <ArrowUpRight size={18} strokeWidth={2} />
               </span>
               <div className="p-6">
+                {destination.segments?.length ? (
+                  <ul className="mb-3 flex flex-wrap gap-1.5">
+                    {destination.segments.map((segment) => (
+                      <li
+                        key={segment}
+                        className="rounded-full border border-paper/25 bg-paper/10 px-2.5 py-0.5 text-xs text-paper backdrop-blur-sm"
+                      >
+                        {segment}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
                 <h3 className="font-display text-xl font-semibold text-paper">
                   <Link href={href} className="after:absolute after:inset-0 after:content-['']">
                     {destination.name}

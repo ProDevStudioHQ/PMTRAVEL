@@ -33,6 +33,16 @@ export const DESTINATION_IMAGE_KEYS: Record<string, string> = {
   essaouira: "b5-essaouira-port",
   merzouga: "b6-merzouga",
   fes: "b7-fes-medina",
+  casablanca: "c1-casablanca-sea",
+  rabat: "c2-rabat-hassan-tower",
+  tangier: "c3-tangier-night",
+  chefchaouen: "c4-chefchaouen",
+  agadir: "c5-agadir-taghazout",
+  ouarzazate: "c6-ouarzazate-kasbah",
+  "ait-ben-haddou": "c7-ait-ben-haddou",
+  dades: "c8-dades-gorge",
+  zagora: "c9-zagora-dunes",
+  dakhla: "c10-dakhla-lagoon",
 };
 
 /**
@@ -46,6 +56,16 @@ export const DESTINATION_PAGE_IMAGES: Record<string, { hero: string; detail?: st
   essaouira: { hero: "b5-essaouira-port" },
   merzouga: { hero: "b9-erg-chebbi-camels", detail: "b6-merzouga" },
   fes: { hero: "b7-fes-medina", detail: "b7b-fes-alley" },
+  casablanca: { hero: "c1-casablanca-sea", detail: "c1b-casablanca-mosque" },
+  rabat: { hero: "c2-rabat-hassan-tower", detail: "c2b-rabat-tower-detail" },
+  tangier: { hero: "c3-tangier-night", detail: "c3b-tangier-cave" },
+  chefchaouen: { hero: "c4-chefchaouen", detail: "c4b-chefchaouen-steps" },
+  agadir: { hero: "c5-agadir-taghazout", detail: "c5b-agadir-surf" },
+  ouarzazate: { hero: "c6-ouarzazate-kasbah", detail: "c6b-ouarzazate-village" },
+  "ait-ben-haddou": { hero: "c7-ait-ben-haddou", detail: "c7b-ait-ben-haddou-ksar" },
+  dades: { hero: "c8-dades-gorge", detail: "c8b-dades-hairpins" },
+  zagora: { hero: "c9-zagora-dunes", detail: "c9b-zagora-cliffs" },
+  dakhla: { hero: "c10-dakhla-lagoon", detail: "c10b-dakhla-beach" },
 };
 
 /** The banner on the destinations hub. */

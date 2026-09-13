@@ -16,7 +16,12 @@ const SERVICE_LINKS: NavItem[] = [
   { href: RFQ_HREF, label: "Request a quote" },
 ];
 
-const DESTINATION_LINKS: NavItem[] = NAV_GROUPS.find((group) => group.id === "destinations")?.items ?? [];
+/** The first six destinations and the hub; the full list would swamp the column. */
+const DESTINATION_ITEMS = NAV_GROUPS.find((group) => group.id === "destinations")?.items ?? [];
+const DESTINATION_LINKS: NavItem[] = [
+  ...DESTINATION_ITEMS.slice(0, 6),
+  ...DESTINATION_ITEMS.filter((item) => item.href === "/destinations"),
+];
 
 const COMPANY_LINKS: NavItem[] = COMPANY_HREFS.flatMap(
   (href) => ALL_PAGES.find((item) => item.href === href) ?? []

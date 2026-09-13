@@ -409,7 +409,10 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
                   <p className="px-3 pt-2 pb-3 text-xs font-semibold uppercase tracking-wide text-ink-500">
                     {group.label}
                   </p>
-                  <ul role="none" className="grid grid-cols-2 gap-1">
+                  <ul
+                    role="none"
+                    className={`grid gap-1 ${group.items.length > 8 ? "grid-cols-3" : "grid-cols-2"}`}
+                  >
                     {group.items.map((item) => {
                       const current = isCurrent(item.href);
                       const Icon = iconFor(item.href);

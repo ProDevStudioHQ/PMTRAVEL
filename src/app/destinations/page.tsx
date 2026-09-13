@@ -83,10 +83,10 @@ export default function DestinationsPage() {
       <Section>
         <SectionIntro title="Operated, not yet written up">
           <p>
-            We work in these already. They do not have pages yet, because a page
-            here has to say something an operator cannot get elsewhere, and we
-            would rather have six pages worth reading than seventeen worth
-            skimming. Ask us about any of them directly in the meantime.
+            We work here already. There is no page yet, because a page here has
+            to say something an operator cannot get elsewhere, and we would
+            rather publish pages worth reading than pages worth skimming. Ask us
+            directly in the meantime.
           </p>
         </SectionIntro>
         {/* Chips, not links: none of these has a page. */}

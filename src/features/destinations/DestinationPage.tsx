@@ -157,7 +157,13 @@ export function DestinationPage({
 }: DestinationPageProps) {
   const images = DESTINATION_PAGE_IMAGES[slug];
   const detail = images?.detail && imageByKey(images.detail) ? images.detail : undefined;
-  const summary = destinationBySlug(slug)?.summary;
+  const entry = destinationBySlug(slug);
+  const summary = entry?.summary;
+  const kicker = entry?.segments?.length
+    ? entry.segments.join(" / ")
+    : slug === "marrakech"
+      ? "Our base in Morocco"
+      : "Operated from Marrakech";
 
   // Sections alternate paper and paper-2 after the introduction.
   let toneIndex = 0;
@@ -175,7 +181,7 @@ export function DestinationPage({
         title={title}
         standfirst={standfirst}
         imageKey={images?.hero}
-        kicker={slug === "marrakech" ? "Our base in Morocco" : "Operated from Marrakech"}
+        kicker={kicker}
         trail={[
           { href: "/destinations", label: "Destinations" },
           { href: `/destinations/${slug}`, label: title },
