@@ -57,6 +57,10 @@ const PAGES = [
   "/routes",
   "/request-a-quote",
   "/contact",
+  "/programmes",
+  "/programmes/atlas-agafay-escape",
+  "/excursions",
+  "/excursions/ourika-valley-ebike",
 ];
 
 const kb = (bytes) => `${(bytes / 1024).toFixed(1)}KB`;

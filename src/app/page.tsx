@@ -233,9 +233,10 @@ function routeStatus(routeSlug?: string): { status: Status; label?: string; href
   const route = routeSlug ? routeBySlug(routeSlug) : undefined;
   if (!route) return { status: "future", label: "Not yet logged" };
   const figures = publishedFigures(route);
+  // A route page exists only once the leg is published; until then, link to the destination.
   return figures
     ? { status: "verified", label: `Driven ${figures.sampleSize}×`, href: `/routes/${route.slug}` }
-    : { status: "pending", href: `/routes/${route.slug}` };
+    : { status: "pending" };
 }
 
 /* -------------------------------------------------------------------------- */

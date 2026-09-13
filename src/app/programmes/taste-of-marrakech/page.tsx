@@ -185,7 +185,7 @@ const VERSIONS = [
     name: "Marrakech Culinary Escape",
     audience: "General leisure market",
     includes: [
-      "4★ hotels or selected riads",
+      "4-star hotels or selected riads",
       "Both hands-on cooking classes",
       "Soft activity level in Imlil and Agafay",
       "Shared or private transfers",
@@ -197,7 +197,7 @@ const VERSIONS = [
     name: "Marrakech Culinary & Active",
     audience: "Active travellers and small groups",
     includes: [
-      "4★ to 5★ hotels and riads",
+      "4-star to 5-star hotels and riads",
       "Both hands-on cooking classes",
       "Imlil trek or e-bike, Agafay e-bike or camel",
       "Private transfers throughout",
@@ -228,7 +228,7 @@ const SPECS: Spec[] = [
   { requirement: "MICE", answer: "Incentive version on request" },
   { requirement: "Culinary", answer: "Core of the programme" },
   { requirement: "Active component", answer: "Optional, three levels" },
-  { requirement: "Hotel categories", answer: "4★, 5★ and luxury" },
+  { requirement: "Hotel categories", answer: "4-star, 5-star and luxury" },
   { requirement: "Dietary needs", answer: "Vegetarian, halal and allergies handled with each supplier, stated in the proposal" },
   { requirement: "Families", answer: "Child-friendly version on request" },
   { requirement: "Transport", answer: "Vehicle class matched to group size and road" },

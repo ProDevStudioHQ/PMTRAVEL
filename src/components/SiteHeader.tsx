@@ -19,7 +19,9 @@ import { ArrowRight, ChevronDown, Menu, Send, X } from "lucide-react";
 import { Container } from "@/components/Container";
 import { ButtonLink } from "@/components/Button";
 import { BrandLogo } from "@/components/BrandLogo";
-import { COMPANY, NAV_GROUPS, NAV_LINKS, RFQ_HREF, type NavGroup } from "@/lib/nav";
+import { COMPANY, RFQ_HREF } from "@/lib/company";
+// Types only: the menus are passed in by the layout, so the menu data stays on the server.
+import type { NavGroup, NavItem } from "@/lib/nav";
 import { iconFor } from "@/lib/nav-icons";
 
 /** SOP 3.1: the bar turns solid once the page has scrolled past 80px. */
@@ -44,6 +46,10 @@ const ACTIVE_UNDERLINE =
   "after:absolute after:inset-x-0 after:bottom-1.5 after:h-0.5 after:bg-paper after:content-['']";
 
 type SiteHeaderProps = {
+  /** The dropdown groups, built on the server from nav.ts. */
+  groups: NavGroup[];
+  /** Top-level links after the dropdowns. */
+  links: NavItem[];
   /**
    * True when the home page renders its photographic hero. Decided on the
    * server from the image registry, so the bar never goes transparent over a
@@ -52,7 +58,7 @@ type SiteHeaderProps = {
   overlayOnHome?: boolean;
 };
 
-export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
+export function SiteHeader({ groups, links, overlayOnHome = false }: SiteHeaderProps) {
   const pathname = usePathname();
   const scrolled = useSyncExternalStore(subscribeToScroll, isScrolled, isScrolledOnServer);
 
@@ -229,7 +235,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
   }, [drawerOpen]);
 
   const openDrawer = () => {
-    setExpanded(NAV_GROUPS.find(groupIsCurrent)?.id ?? null);
+    setExpanded(groups.find(groupIsCurrent)?.id ?? null);
     setDrawerOpen(true);
   };
 
@@ -255,7 +261,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
           {/* The full bar needs about 1000px, so it appears from xl (1280px). */}
           <nav aria-label="Primary" className="hidden xl:block">
             <ul className="flex items-center gap-7 whitespace-nowrap 2xl:gap-9">
-              {NAV_GROUPS.map((group) => {
+              {groups.map((group) => {
                 const open = openGroup === group.id;
                 const current = groupIsCurrent(group);
                 return (
@@ -337,7 +343,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
                 );
               })}
 
-              {NAV_LINKS.map((item) => {
+              {links.map((item) => {
                 const current = isCurrent(item.href);
                 return (
                   <li key={item.href}>
@@ -377,7 +383,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
       </div>
 
       {/* Dropdown panels: full width, anchored under the bar. */}
-      {NAV_GROUPS.map((group) => {
+      {groups.map((group) => {
         const open = openGroup === group.id;
         return (
           <div
@@ -511,7 +517,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
 
         <nav aria-label="Primary (mobile)" className="flex-1 overflow-y-auto px-5 py-2">
           <ul className="flex flex-col">
-            {NAV_GROUPS.map((group) => {
+            {groups.map((group) => {
               const open = expanded === group.id;
               return (
                 <li key={group.id} className="border-b border-rule">
@@ -561,7 +567,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
               );
             })}
 
-            {NAV_LINKS.map((item) => {
+            {links.map((item) => {
               const current = isCurrent(item.href);
               return (
                 <li key={item.href} className="border-b border-rule">

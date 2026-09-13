@@ -31,6 +31,15 @@ const PAGES = [
   "/routes",
   "/request-a-quote",
   "/contact",
+  "/programmes",
+  "/programmes/taste-of-marrakech",
+  "/programmes/atlas-agafay-escape",
+  "/programmes/trek-and-taste-atlas",
+  "/excursions",
+  "/excursions/agafay-quad-camel-sunset",
+  "/excursions/ourika-valley-ebike",
+  "/destinations/casablanca",
+  "/destinations/ait-ben-haddou",
   "/this-page-does-not-exist",
 ];
 

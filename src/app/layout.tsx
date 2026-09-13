@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Sans, Newsreader } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
+import { NAV_GROUPS, NAV_LINKS } from "@/lib/nav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { COMPANY, SITE_URL } from "@/lib/nav";
 import { imageByKey } from "@/features/images/registry";
@@ -91,7 +92,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <SiteHeader overlayOnHome={Boolean(imageByKey(IMAGE_SLOTS.homeHero))} />
+        <SiteHeader
+          groups={NAV_GROUPS}
+          links={NAV_LINKS}
+          overlayOnHome={Boolean(imageByKey(IMAGE_SLOTS.homeHero))}
+        />
         <main id="main">{children}</main>
         <SiteFooter />
         <script

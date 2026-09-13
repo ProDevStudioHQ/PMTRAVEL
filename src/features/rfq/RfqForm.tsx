@@ -47,7 +47,8 @@ import { RFQ_NEXT_STEPS } from "@/features/rfq/next-steps";
 import type { RfqFormState } from "@/features/rfq/validation";
 import { PROGRAMME_TYPES } from "@/features/rfq/options";
 import { Evidence } from "@/components/Evidence";
-import { COMPANY } from "@/lib/nav";
+// From ./company, not ./nav, which would ship the menu data to the browser.
+import { COMPANY } from "@/lib/company";
 
 const initialState: RfqFormState = { status: "idle" };
 

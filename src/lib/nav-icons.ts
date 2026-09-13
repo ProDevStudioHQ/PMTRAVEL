@@ -20,7 +20,8 @@ import {
   Workflow,
   type LucideIcon,
 } from "lucide-react";
-import { RFQ_HREF } from "@/lib/nav";
+// From ./company, not ./nav: the header imports this module in the browser.
+import { RFQ_HREF } from "@/lib/company";
 
 /**
  * One lucide icon per page, keyed by href, for the header dropdowns and the

@@ -1,4 +1,4 @@
-import { COMPANY } from "@/lib/nav";
+import { COMPANY } from "@/lib/company";
 
 type BrandLogoProps = {
   /** Paper artwork for dark surfaces: the header, the footer, the hero. */

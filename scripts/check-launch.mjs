@@ -61,6 +61,15 @@ const PAGES = [
   "/destinations/fes",
   "/routes",
   "/request-a-quote",
+  "/programmes",
+  "/programmes/taste-of-marrakech",
+  "/programmes/atlas-agafay-escape",
+  "/programmes/trek-and-taste-atlas",
+  "/excursions",
+  "/excursions/agafay-quad-camel-sunset",
+  "/excursions/ourika-valley-ebike",
+  "/destinations/casablanca",
+  "/destinations/ait-ben-haddou",
   "/contact",
 ];
 
@@ -110,7 +119,9 @@ try {
     { pattern: /"@type":\s*"(Review|AggregateRating)"/i, label: "review schema" },
     { pattern: /aggregateRating|ratingValue|reviewCount/i, label: "rating markup" },
     { pattern: /<blockquote[\s\S]{0,600}?<cite[\s>]/i, label: "an attributed quotation" },
-    { pattern: /★|&#9733;|\b[1-5](\.\d)?\s*(?:out of|\/)\s*5\b/i, label: "a star rating" },
+    // Tested against visible text only: layout classes such as aspect-[4/5]
+    // otherwise read as "4/5" and fail the check on a card's shape.
+    { pattern: /★|&#9733;|\b[1-5](\.\d)?\s*(?:out of|\/)\s*5\b/i, label: "a star rating", visibleOnly: true },
     {
       pattern: /\b\d[\d,]*\+?\s*(?:happy|satisfied|delighted)\s*(?:clients?|customers?|travellers?)\b/i,
       label: "a client counter",
@@ -123,8 +134,12 @@ try {
     { pattern: /\b(?:award-winning|leading|number one|#1)\s+(?:morocco\s+)?(?:dmc|operator|agency)\b/i, label: "a ranking claim" },
     { pattern: /\b\d+\+?\s*years?\s+of\s+experience\b/i, label: "an experience claim" },
   ];
+  const visibleText = allHtml
+    .replace(/<script[\s\S]*?<\/script>/g, " ")
+    .replace(/<style[\s\S]*?<\/style>/g, " ")
+    .replace(/<[^>]+>/g, " ");
   const proofHits = socialProof
-    .filter(({ pattern }) => pattern.test(allHtml))
+    .filter(({ pattern, visibleOnly }) => pattern.test(visibleOnly ? visibleText : allHtml))
     .map(({ label }) => label);
   record(
     proofHits.length > 0 ? "FAIL" : "PASS",
