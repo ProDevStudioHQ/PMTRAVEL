@@ -245,15 +245,16 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
         solid ? "border-paper/15 bg-red-900" : "border-transparent bg-transparent"
       } ${overlayPage ? "-mb-16" : ""}`}
     >
-      <Container>
-        <div className="flex h-16 items-center justify-between gap-6">
+      {/* Wider than the page container: the full bar needs the room to breathe. */}
+      <div className="mx-auto w-full max-w-[1440px] px-5 lg:px-8">
+        <div className="flex h-16 items-center justify-between gap-8">
           <Link href="/" aria-label={`${COMPANY.name}, home`} className="flex min-h-11 shrink-0 items-center">
-            <BrandLogo onDark />
+            <BrandLogo onDark compact />
           </Link>
 
           {/* The full bar needs about 1000px, so it appears from xl (1280px). */}
           <nav aria-label="Primary" className="hidden xl:block">
-            <ul className="flex items-center gap-6">
+            <ul className="flex items-center gap-7 whitespace-nowrap 2xl:gap-9">
               {NAV_GROUPS.map((group) => {
                 const open = openGroup === group.id;
                 const current = groupIsCurrent(group);
@@ -355,7 +356,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
             </ul>
           </nav>
 
-          <div className="hidden shrink-0 xl:block">
+          <div className="hidden shrink-0 whitespace-nowrap xl:block">
             <ButtonLink href={RFQ_HREF} tone="dark">
               Request a quote
             </ButtonLink>
@@ -373,7 +374,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
             Menu
           </button>
         </div>
-      </Container>
+      </div>
 
       {/* Dropdown panels: full width, anchored under the bar. */}
       {NAV_GROUPS.map((group) => {

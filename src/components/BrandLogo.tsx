@@ -3,6 +3,11 @@ import { COMPANY } from "@/lib/nav";
 type BrandLogoProps = {
   /** Paper artwork for dark surfaces: the header, the footer, the hero. */
   onDark?: boolean;
+  /**
+   * Hide the brand line where the full navigation bar is showing but space is
+   * tight (xl), keeping it on tablets and on wide screens.
+   */
+  compact?: boolean;
 };
 
 /**
@@ -14,7 +19,7 @@ type BrandLogoProps = {
  * currentColor, so one component serves light and dark surfaces. The brand
  * line is sentence case: tracked capitals are forbidden (SOP 2.2).
  */
-export function BrandLogo({ onDark = false }: BrandLogoProps) {
+export function BrandLogo({ onDark = false, compact = false }: BrandLogoProps) {
   return (
     <span className="flex items-center gap-3">
       <svg
@@ -59,7 +64,7 @@ export function BrandLogo({ onDark = false }: BrandLogoProps) {
         </span>
         {/* Hidden on the narrowest phones, where it pushed the menu button off-screen. */}
         <span
-          className={`mt-0.5 hidden text-xs leading-tight sm:block ${
+          className={`mt-0.5 hidden text-xs leading-tight sm:block ${compact ? "xl:hidden 2xl:block" : ""} ${
             onDark ? "text-paper/80" : "text-ink-500"
           }`}
         >
