@@ -253,7 +253,7 @@ export function SiteHeader({ overlayOnHome = false }: SiteHeaderProps) {
 
           {/* The full bar needs about 1000px, so it appears from xl (1280px). */}
           <nav aria-label="Primary" className="hidden xl:block">
-            <ul className="flex items-center gap-8">
+            <ul className="flex items-center gap-6">
               {NAV_GROUPS.map((group) => {
                 const open = openGroup === group.id;
                 const current = groupIsCurrent(group);

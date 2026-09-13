@@ -94,7 +94,16 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     id: "operations",
     label: "Operations",
-    items: ["/morocco-dmc", "/programmes", "/programmes/taste-of-marrakech", "/mice", "/b2b", "/routes"].map(byHref),
+    items: ["/morocco-dmc", "/mice", "/b2b", "/routes"].map(byHref),
+  },
+  {
+    id: "programmes",
+    label: "B2B Programmes",
+    href: "/programmes",
+    items: [
+      byHref("/programmes/taste-of-marrakech"),
+      { ...byHref("/programmes"), label: "All programmes" },
+    ],
   },
   {
     id: "destinations",
