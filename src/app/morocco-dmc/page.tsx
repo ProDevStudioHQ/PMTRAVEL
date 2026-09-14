@@ -49,7 +49,7 @@ const SERVICES: ShowcaseService[] = [
       "Split arrivals planned as separate movements",
       "A stated backup for every movement",
     ],
-    imageKey: "c8-dades-gorge",
+    imageKey: "d5-dmc-menara-airport",
   },
   {
     id: "accommodation",
@@ -63,7 +63,7 @@ const SERVICES: ShowcaseService[] = [
       "Restaurants, private dinners and gala evenings",
       "Dietary requirements handled end to end",
     ],
-    imageKey: "b7-fes-medina",
+    imageKey: "d6-dmc-riad-patio",
   },
   {
     id: "guiding",
@@ -77,7 +77,7 @@ const SERVICES: ShowcaseService[] = [
       "Day trips and multi-day circuits",
       "Activities scheduled against where the group sleeps",
     ],
-    imageKey: "c7-ait-ben-haddou",
+    imageKey: "d7-dmc-covered-souk",
   },
   {
     id: "groups",
@@ -91,7 +91,7 @@ const SERVICES: ShowcaseService[] = [
       "Staff introduce themselves on your behalf",
       "Every quote line marked requested, on option or confirmed",
     ],
-    imageKey: "b9-erg-chebbi-camels",
+    imageKey: "d8-dmc-jemaa-el-fnaa-sunset",
   },
 ];
 

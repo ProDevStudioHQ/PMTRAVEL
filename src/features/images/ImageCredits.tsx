@@ -5,7 +5,9 @@ import { IMAGES, OPERATIONAL_SOURCES } from "@/features/images/registry";
 /**
  * Photograph credits.
  *
- * The Unsplash Licence does not require attribution. We give it anyway, and we
+ * The Unsplash Licence does not require attribution; the Creative Commons BY
+ * and BY-SA licences on the Wikimedia Commons photographs do. We give it for
+ * all of them, and we
  * say plainly which images are licensed scenery rather than our own work -
  * a site arguing that published claims should carry their provenance cannot
  * quietly imply that someone else's photographs are ours.
@@ -38,7 +40,7 @@ export function ImageCredits({ tone = "paper" }: { tone?: "paper" | "paper-2" })
         ))}
       </ul>
       <div className="measure mt-6">
-        <Evidence note="Licensed under terms permitting commercial use. Attribution is not required by the licence; it is given because a site about provenance should have some." />
+        <Evidence note="All licensed for commercial use. Unsplash and CC0 photographs need no credit and get one anyway; Creative Commons BY and BY-SA photographs from Wikimedia Commons are credited here as their licences require." />
       </div>
     </Section>
   );

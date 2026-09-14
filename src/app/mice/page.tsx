@@ -22,7 +22,7 @@ const SERVICES: ShowcaseService[] = [
       "Coffee breaks and networking lunches",
       "Room layouts matched to the group and the format",
     ],
-    imageKey: "b2-marrakech-medersa",
+    imageKey: "d1-mice-conference-hall",
   },
   {
     id: "incentives",
@@ -35,7 +35,7 @@ const SERVICES: ShowcaseService[] = [
       "Gala dinners in memorable settings",
       "Private transport and tailored logistics",
     ],
-    imageKey: "b3b-agafay-camp",
+    imageKey: "d2-mice-riad-rooftop-pool",
   },
   {
     id: "corporate-events",
@@ -48,7 +48,7 @@ const SERVICES: ShowcaseService[] = [
       "Invitations and guest management",
       "Full coordination on the day",
     ],
-    imageKey: "c3-tangier-night",
+    imageKey: "d3-mice-bahia-palace",
   },
   {
     id: "logistics",
@@ -61,7 +61,7 @@ const SERVICES: ShowcaseService[] = [
       "On-site coordination for the whole programme",
       "Local suppliers we work with directly",
     ],
-    imageKey: "b1-marrakech-hero",
+    imageKey: "d4-mice-menara-terminal-roof",
   },
 ];
 
