@@ -25,7 +25,7 @@ export type Excursion = {
   seoTitle: string;
   /** 155 characters or fewer. */
   seoDescription: string;
-  region: "Marrakech" | "Imlil" | "Ourika" | "Agafay" | "Imlil & Agafay";
+  region: "Marrakech" | "Imlil" | "Ourika" | "Agafay" | "Imlil & Agafay" | "Essaouira";
   duration: "Half day" | "Full day" | "Evening" | "Afternoon & evening";
   level: "Easy" | "Moderate" | "Active";
   experiences: string[];
@@ -447,6 +447,231 @@ export const EXCURSIONS: Excursion[] = [
       { question: "Is it a very long day?", answer: "It is a long day with two drives. For families with young children we recommend adding the night in camp." },
       { question: "Can the quad be added?", answer: "Yes, a quad ride can be added in Agafay before the camel ride." },
       { question: "Is the walk demanding?", answer: "No. It is an easy village walk, adapted to the group." },
+    ],
+  },
+
+  /* ---------------------------------------------------------------------- */
+  {
+    slug: "majorelle-jardin-secret-gardens",
+    code: "E10",
+    name: "Majorelle & Jardin Secret Gardens",
+    tagline: "The Two Gardens of Marrakech",
+    summary:
+      "A guided half day between the two great gardens of Marrakech: the blue villa and cactus garden of Majorelle in Gueliz, then Le Jardin Secret, a restored riad garden hidden in the medina.",
+    seoTitle: "Majorelle and Jardin Secret Gardens",
+    seoDescription:
+      "A half-day B2B guided visit to the Majorelle Garden and Le Jardin Secret in Marrakech, with hotel pickup and timed entry. White-label.",
+    region: "Marrakech",
+    duration: "Half day",
+    level: "Easy",
+    experiences: ["Gardens", "Guided visit", "Mint tea"],
+    groupType: "Private or small groups, 2 to 25",
+    heroImage: "e14-majorelle-villa",
+    cardImage: "e15-jardin-secret",
+    highlights: [
+      "The blue villa and cactus garden of Majorelle",
+      "Timed entry arranged in advance",
+      "Le Jardin Secret, a riad garden inside the medina",
+      "The story of the gardens and the people who made them",
+      "Mint tea in the medina",
+    ],
+    steps: [
+      { moment: "Start", title: "Meet the guide", body: "Pickup at the hotel and the short drive to Gueliz, with a briefing on the gardens on the way." },
+      { moment: "Morning", title: "The Majorelle Garden", body: "The cobalt villa, bamboo alleys and cactus garden, visited on a pre-booked entry slot." },
+      { moment: "Late morning", title: "Le Jardin Secret", body: "Into the medina for the restored riad garden, its water channels and the view from its tower." },
+      { moment: "End", title: "Mint tea", body: "Mint tea in the medina, then return to the hotel or free time in the souks." },
+    ],
+    includes: ["Licensed local guide", "Hotel pickup and return", "Majorelle Garden entrance", "Le Jardin Secret entrance", "Mint tea"],
+    options: ["Add the YSL Museum", "Afternoon version", "Combine with the Souk & Medina Walk (see E1)", "Lunch in Gueliz"],
+    bring: ["Comfortable shoes", "Sun protection", "A hat in the warm months"],
+    idealFor: ["Garden and design lovers", "Seniors and families", "Short-stay and cruise guests"],
+    buyers: ["Tour operators adding a Marrakech half day", "Agencies selling city stays", "MICE groups with a free morning"],
+    extraSpecs: [
+      { requirement: "Entry slots", answer: "Majorelle entry is timed and sells out in high season; slots confirmed per booking", pending: true },
+    ],
+    faqs: [
+      { question: "Are the garden tickets included?", answer: "Yes. Entry to both gardens is included and the Majorelle slot is booked in advance." },
+      { question: "Can the YSL Museum be added?", answer: "Yes, as an option next to the Majorelle Garden, on the same visit." },
+      { question: "Is it suitable for guests with limited mobility?", answer: "Largely yes. Paths are flat, with some steps; we confirm access for the group at booking." },
+    ],
+  },
+
+  /* ---------------------------------------------------------------------- */
+  {
+    slug: "historic-marrakech-palaces-tombs",
+    code: "E11",
+    name: "Historic Marrakech: Madrasa & Tombs",
+    tagline: "Eight Centuries of Marrakech in a Morning",
+    summary:
+      "A guided half day through the monuments of the medina: the Koutoubia, the Saadian Tombs, the ruins of the El Badi Palace and the carved courtyard of the Ben Youssef Madrasa.",
+    seoTitle: "Historic Marrakech Monuments Tour",
+    seoDescription:
+      "A half-day B2B guided tour of historic Marrakech: the Koutoubia, Saadian Tombs, El Badi Palace and Ben Youssef Madrasa. White-label.",
+    region: "Marrakech",
+    duration: "Half day",
+    level: "Easy",
+    experiences: ["Monuments", "Guided walk", "History"],
+    groupType: "Private or small groups, 2 to 25",
+    heroImage: "e16-ben-youssef-madrasa",
+    cardImage: "e17-saadian-tombs",
+    highlights: [
+      "The Koutoubia minaret and its gardens",
+      "The Saadian Tombs and the Hall of Twelve Columns",
+      "The ruins and storks of the El Badi Palace",
+      "The Ben Youssef Madrasa courtyard",
+      "A guide who tells the history, not just the dates",
+    ],
+    steps: [
+      { moment: "Start", title: "The Koutoubia", body: "Pickup at the hotel and a start at the Koutoubia, where the guide sets out the story of the city." },
+      { moment: "Morning", title: "Saadian Tombs & El Badi", body: "The carved burial halls of the Saadian dynasty, then the vast ruined courtyards of the El Badi Palace." },
+      { moment: "Late morning", title: "Ben Youssef Madrasa", body: "Across the medina to the madrasa: cedar, stucco and zellige around the courtyard pool." },
+      { moment: "End", title: "Return", body: "Return to the hotel, or free time in the northern souks near the madrasa." },
+    ],
+    includes: ["Licensed local guide", "Hotel pickup and return", "Monument entrances", "Bottled water"],
+    options: ["Swap a monument for the Bahia Palace", "Add the Dar El Bacha museum", "Lunch in a medina riad", "Private vehicle between monuments"],
+    bring: ["Comfortable walking shoes", "Shoulders and knees covered", "Sun protection"],
+    idealFor: ["History and architecture lovers", "School and cultural groups", "First-time visitors"],
+    buyers: ["Cultural tour operators", "Agencies selling city stays", "Educational travel organisers"],
+    extraSpecs: [
+      { requirement: "Opening days", answer: "Monument opening days and hours checked against the date before confirming", pending: true },
+    ],
+    faqs: [
+      { question: "Can guests enter the Koutoubia mosque?", answer: "No. Non-Muslims cannot enter; the visit covers the minaret, the exterior and the gardens." },
+      { question: "Does it overlap with the Souk & Medina Walk?", answer: "Very little. E1 is about the souks and the Bahia Palace; this tour covers the other monuments, and the two combine well." },
+      { question: "Is it suitable for large groups?", answer: "Yes, split into smaller groups with their own guide, as the Saadian Tombs are narrow." },
+    ],
+  },
+
+  /* ---------------------------------------------------------------------- */
+  {
+    slug: "jemaa-el-fna-evening-food-walk",
+    code: "E12",
+    name: "Jemaa el-Fna Evening Food Walk",
+    tagline: "The Square After Dark, One Tasting at a Time",
+    summary:
+      "An evening food walk through Jemaa el-Fna and the lanes around it as the square fills with smoke and music: street food stalls chosen by the guide, spice and sweet shops, and a rooftop view at dusk.",
+    seoTitle: "Jemaa el-Fna Evening Food Walk",
+    seoDescription:
+      "A B2B evening food walk in Marrakech: a guided tasting route through Jemaa el-Fna stalls, spice and sweet shops, with a rooftop view at dusk.",
+    region: "Marrakech",
+    duration: "Evening",
+    level: "Easy",
+    experiences: ["Food tasting", "Guided walk", "Night market"],
+    groupType: "Private or small groups, 2 to 16",
+    heroImage: "e18-jemaa-el-fna-dusk",
+    cardImage: "e21-spice-market-roses",
+    highlights: [
+      "Jemaa el-Fna as it comes alive at dusk",
+      "Stalls chosen by the guide for quality and hygiene",
+      "Tastings from harira and grills to msemen and sweets",
+      "Spice and pastry shops in the lanes around the square",
+      "A rooftop view over the square",
+    ],
+    steps: [
+      { moment: "Dusk", title: "Rooftop over the square", body: "Pickup at the hotel and a first mint tea on a rooftop as the stalls light up below." },
+      { moment: "Evening", title: "The food stalls", body: "Down into the square for tastings at the guide's chosen stalls, from soups and grills to snails for the curious." },
+      { moment: "Later", title: "Into the lanes", body: "Spice shops, bread ovens and a pastry stop in the lanes around the square." },
+      { moment: "End", title: "Return", body: "Return to the hotel, or stay on for the music and storytellers in the square." },
+    ],
+    includes: ["Licensed local guide", "Hotel pickup and return", "Food and drink tastings", "Rooftop mint tea"],
+    options: ["Vegetarian tasting route", "Dinner in a riad instead of the last tastings", "Gnawa music stop", "Earlier start for families"],
+    bring: ["An appetite", "Comfortable shoes", "Small cash for extra purchases"],
+    idealFor: ["Food lovers", "Couples and friends", "Guests on a first night in Marrakech"],
+    buyers: ["Food and culinary tour operators", "Agencies selling city stays", "Incentive planners with a free evening"],
+    faqs: [
+      { question: "Is the street food safe?", answer: "The guide uses stalls chosen for quality and hygiene, and guests only taste what they want." },
+      { question: "Can dietary needs be handled?", answer: "Yes, vegetarian and most allergies, if we know at booking. A vegetarian route is available." },
+      { question: "Is it too busy for groups?", answer: "The square is crowded in the evening, so groups are kept small, with one guide for up to about 8 guests." },
+    ],
+  },
+
+  /* ---------------------------------------------------------------------- */
+  {
+    slug: "spice-market-cooking-class",
+    code: "E13",
+    name: "Spice Market & Cooking Class",
+    tagline: "Shop the Souk, Cook the Tajine",
+    summary:
+      "A half-day cooking experience: a guided shop for spices and fresh produce in the medina, then a hands-on class in a riad kitchen to cook a tajine, salads and bread, and lunch on what the group has made.",
+    seoTitle: "Marrakech Spice Market and Cooking Class",
+    seoDescription:
+      "A half-day B2B cooking class in Marrakech: a guided shop in the spice market, a hands-on tajine class in a riad kitchen and lunch. White-label.",
+    region: "Marrakech",
+    duration: "Half day",
+    level: "Easy",
+    experiences: ["Cooking class", "Spice market", "Lunch"],
+    groupType: "Private or small groups, 2 to 20",
+    heroImage: "e20-spice-shop",
+    cardImage: "e19-spice-shop-arch",
+    highlights: [
+      "A guided shop in the spice market",
+      "The spices of Moroccan cooking explained",
+      "A hands-on class in a riad kitchen",
+      "Cook a tajine, salads and bread",
+      "Lunch on what the group has cooked",
+    ],
+    steps: [
+      { moment: "Morning", title: "The spice market", body: "Pickup at the hotel and a guided walk through the spice and produce stalls to buy the day's ingredients." },
+      { moment: "Late morning", title: "In the kitchen", body: "Aprons on in a riad kitchen: the spice blends, a tajine, seasonal salads and bread, with a local cook." },
+      { moment: "Midday", title: "Lunch", body: "Lunch together on the dishes the group has made, with mint tea." },
+      { moment: "End", title: "Return", body: "Recipes to take home, then return to the hotel." },
+    ],
+    includes: ["Guide for the market", "Hotel pickup and return", "Cooking class with a local cook", "Ingredients and lunch", "Printed recipes"],
+    options: ["Afternoon class with dinner", "Pastry and bread class", "Team cooking challenge for groups", "Class in a countryside kitchen"],
+    bring: ["Comfortable shoes", "Hair ties for the kitchen", "Small cash for spice purchases"],
+    idealFor: ["Food lovers", "Families with older children", "Team-building groups"],
+    buyers: ["Culinary tour operators", "Agencies selling city stays", "MICE planners for team building"],
+    extraSpecs: [
+      { requirement: "Kitchen capacity", answer: "Class size and number of cooking stations confirmed with the kitchen for the group", pending: true },
+    ],
+    faqs: [
+      { question: "Do guests need cooking experience?", answer: "No. The cook works at the pace of the group and everyone takes part." },
+      { question: "Can dietary needs be handled?", answer: "Yes, vegetarian, vegan and most allergies, if we know at booking." },
+      { question: "Can it work as team building?", answer: "Yes, as a team cooking challenge, for groups the kitchen can seat, confirmed before booking." },
+    ],
+  },
+
+  /* ---------------------------------------------------------------------- */
+  {
+    slug: "essaouira-day-trip",
+    code: "E14",
+    name: "Essaouira Day Trip",
+    tagline: "Blue Boats, Ramparts & the Atlantic",
+    summary:
+      "A full day on the Atlantic coast: the drive through argan country to Essaouira, a guided walk on the ramparts, in the medina and around the fishing port, and fresh fish for lunch before the return to Marrakech.",
+    seoTitle: "Essaouira Day Trip from Marrakech",
+    seoDescription:
+      "A full-day B2B excursion from Marrakech to Essaouira: argan country, a guided walk on the ramparts, medina and fishing port, and fish lunch.",
+    region: "Essaouira",
+    duration: "Full day",
+    level: "Easy",
+    experiences: ["Coast", "Guided walk", "Argan cooperative", "Fish lunch"],
+    groupType: "Private or shared, 2 to 30",
+    heroImage: "e22-essaouira-citadel",
+    cardImage: "e23-essaouira-skala",
+    highlights: [
+      "The Atlantic ramparts of the Skala",
+      "The blue boats of the fishing port",
+      "A walk in the medina, a UNESCO World Heritage site",
+      "A women's argan cooperative on the way",
+      "Fresh fish for lunch by the port",
+    ],
+    steps: [
+      { moment: "Morning", title: "Argan country", body: "Pickup in Marrakech and the drive west, with a stop at a women's argan cooperative." },
+      { moment: "Late morning", title: "Ramparts and port", body: "A guided walk on the Skala ramparts and around the fishing port and its blue boats." },
+      { moment: "Midday", title: "Fish lunch", body: "Fresh fish for lunch at the port or in the medina." },
+      { moment: "Afternoon", title: "Medina and return", body: "Free time in the medina and on the beach, then the drive back to Marrakech." },
+    ],
+    includes: ["Transport from Marrakech", "Local guide in Essaouira", "Argan cooperative visit", "Fish lunch"],
+    options: ["Overnight in an Essaouira riad", "Private vehicle and guide", "Surf or kitesurf lesson", "Wine estate lunch on the way"],
+    bring: ["A windproof layer, even in summer", "Comfortable shoes", "Sun protection"],
+    idealFor: ["Guests who want the sea after the city", "Couples and families", "Photography lovers"],
+    buyers: ["Tour operators adding a coast day", "Agencies selling Marrakech stays", "Incentive planners"],
+    extraSpecs: [{ requirement: "Long day", answer: "A long day with a return drive; an overnight in Essaouira is recommended for a slower pace" }],
+    faqs: [
+      { question: "Is it a very long day?", answer: "It is a long day with a drive each way. For a slower pace we recommend adding a night in Essaouira." },
+      { question: "Is the argan stop a shopping stop?", answer: "It is a visit to a women's cooperative to see how the oil is made. Buying is optional." },
+      { question: "Is it windy?", answer: "Often, which is why it is a kitesurfing town. We advise guests to bring a warm, windproof layer." },
     ],
   },
 ];

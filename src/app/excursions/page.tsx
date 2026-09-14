@@ -34,7 +34,7 @@ const BENEFITS: IconItem[] = [
   },
 ];
 
-const REGIONS = ["Marrakech", "Imlil", "Ourika", "Agafay"];
+const REGIONS = ["Marrakech", "Imlil", "Ourika", "Agafay", "Essaouira"];
 
 const LEVEL_STYLE = {
   Easy: "bg-status-verified/10 text-status-verified",
@@ -47,7 +47,7 @@ export default function ExcursionsPage() {
     <>
       <DestinationHero
         title="B2B Excursions from Marrakech"
-        standfirst="Day, half-day and evening excursions around Marrakech, Imlil, the Ourika valley and Agafay, ready to sell on their own or add to your programmes."
+        standfirst="Day, half-day and evening excursions in and around Marrakech, Imlil, the Ourika valley, Agafay and Essaouira, ready to sell on their own or add to your programmes."
         imageKey="e01-merzouga-quads"
         kicker="B2B excursions"
         trail={[{ href: "/excursions", label: "B2B Excursions" }]}
