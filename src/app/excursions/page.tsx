@@ -48,7 +48,7 @@ export default function ExcursionsPage() {
       <DestinationHero
         title="B2B Excursions from Marrakech"
         standfirst="Day, half-day and evening excursions around Marrakech, Imlil, the Ourika valley and Agafay, ready to sell on their own or add to your programmes."
-        imageKey="b3b-agafay-camp"
+        imageKey="e01-merzouga-quads"
         kicker="B2B excursions"
         trail={[{ href: "/excursions", label: "B2B Excursions" }]}
         stats={[

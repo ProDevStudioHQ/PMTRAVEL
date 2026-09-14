@@ -66,8 +66,8 @@ export const EXCURSIONS: Excursion[] = [
     level: "Easy",
     experiences: ["Souk", "Guided walk", "Mint tea"],
     groupType: "Private or small groups, 2 to 25",
-    heroImage: "b1-marrakech-hero",
-    cardImage: "b2-marrakech-medersa",
+    heroImage: "d7-dmc-covered-souk",
+    cardImage: "e12-souk-lanterns",
     highlights: [
       "The spice, leather, metal and dyers' souks",
       "Artisans at work in their workshops",
@@ -109,8 +109,8 @@ export const EXCURSIONS: Excursion[] = [
     level: "Easy",
     experiences: ["Village walk", "Lunch chez l'habitant", "Mint tea"],
     groupType: "Private or shared, 2 to 30",
-    heroImage: "b4-atlas-imlil",
-    cardImage: "b4-atlas-imlil",
+    heroImage: "e09-imlil-from-aroumd",
+    cardImage: "e10-imlil-village",
     highlights: [
       "The Imlil valley under the High Atlas peaks",
       "A guided walk between Amazigh villages",
@@ -153,7 +153,7 @@ export const EXCURSIONS: Excursion[] = [
     experiences: ["E-bike", "Lunch chez l'habitant", "Village visit"],
     groupType: "Private or shared, 2 to 20",
     heroImage: "c11b-ourika-road",
-    cardImage: "c11b-ourika-road",
+    cardImage: "e04-atlas-road-cyclists",
     highlights: [
       "Electric-assisted bikes, easy for any regular cyclist",
       "Along the Ourika river and through its villages",
@@ -196,8 +196,8 @@ export const EXCURSIONS: Excursion[] = [
     level: "Moderate",
     experiences: ["Quad", "Camel ride", "Camp dinner"],
     groupType: "Private or shared, 2 to 60",
-    heroImage: "b3b-agafay-camp",
-    cardImage: "b3b-agafay-camp",
+    heroImage: "e05-agafay-camel-caravan",
+    cardImage: "e01-merzouga-quads",
     highlights: [
       "A guided quad ride across the Agafay hills",
       "A camel ride at sunset",
@@ -240,8 +240,8 @@ export const EXCURSIONS: Excursion[] = [
     level: "Easy",
     experiences: ["Sunset", "Camel ride", "Camp dinner"],
     groupType: "Private or shared, 2 to 120",
-    heroImage: "b3-agafay",
-    cardImage: "b3-agafay",
+    heroImage: "e07-agafay-tent",
+    cardImage: "e06-agafay-tracks",
     highlights: [
       "Sunset over the Agafay hills",
       "A short camel ride or a sunset walk",
@@ -287,8 +287,8 @@ export const EXCURSIONS: Excursion[] = [
     level: "Active",
     experiences: ["Trek", "Lunch chez l'habitant", "Mountain views"],
     groupType: "Private or small groups, 2 to 15",
-    heroImage: "b4-atlas-imlil",
-    cardImage: "c11-ourika-valley",
+    heroImage: "e11-toubkal-hikers",
+    cardImage: "e09-imlil-from-aroumd",
     highlights: [
       "A full day of mountain walking",
       "Mountain guide who sets the pace to the group",
@@ -334,8 +334,8 @@ export const EXCURSIONS: Excursion[] = [
     level: "Moderate",
     experiences: ["E-bike", "Mint tea in camp"],
     groupType: "Private or shared, 2 to 20",
-    heroImage: "b3-agafay",
-    cardImage: "b3-agafay",
+    heroImage: "e13-agafay-desert-track",
+    cardImage: "e03-atlas-pass-cyclist",
     highlights: [
       "Electric-assisted mountain bikes",
       "Desert tracks with the Atlas on the horizon",
@@ -379,7 +379,7 @@ export const EXCURSIONS: Excursion[] = [
     experiences: ["Walk", "Waterfalls", "Lunch chez l'habitant"],
     groupType: "Private or shared, 2 to 25",
     heroImage: "c11-ourika-valley",
-    cardImage: "c11-ourika-valley",
+    cardImage: "e08-setti-fatma-cascade",
     highlights: [
       "The Ourika valley and its river",
       "A guided walk to the waterfalls above Setti Fatma",
@@ -422,7 +422,7 @@ export const EXCURSIONS: Excursion[] = [
     level: "Easy",
     experiences: ["Village walk", "Lunch chez l'habitant", "Camel ride", "Camp dinner"],
     groupType: "Private or shared, 2 to 30",
-    heroImage: "b3b-agafay-camp",
+    heroImage: "e05-agafay-camel-caravan",
     cardImage: "b4-atlas-imlil",
     highlights: [
       "Mountains and desert in one day",
