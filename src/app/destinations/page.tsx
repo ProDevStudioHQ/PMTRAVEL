@@ -4,7 +4,6 @@ import { pageMetadata } from "@/lib/metadata";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
 import { Section, SectionIntro } from "@/components/Section";
-import { TextLink } from "@/components/TextLink";
 import { DestinationHero } from "@/features/destinations/DestinationPage";
 import { DESTINATIONS, PLANNED_DESTINATIONS } from "@/features/destinations/registry";
 import { DestinationRail } from "@/features/images/DestinationRail";
@@ -121,15 +120,8 @@ export default function DestinationsPage() {
               Request a B2B quote
               <ArrowRight aria-hidden="true" size={16} strokeWidth={2} />
             </Link>
-            <Link href="/routes" className={`${pill} border border-paper/60 text-paper hover:bg-paper hover:text-ink-900`}>
-              Route intelligence
-            </Link>
           </div>
         </div>
-        <p className="measure mt-6 text-base text-ink-500">
-          The measured position on each leg is on{" "}
-          <TextLink href="/routes">route intelligence</TextLink>.
-        </p>
       </Section>
     </>
   );

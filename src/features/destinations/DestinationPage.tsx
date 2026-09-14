@@ -7,7 +7,6 @@ import {
   MapPin,
   PartyPopper,
   Presentation,
-  Route as RouteIcon,
   Trophy,
   Users,
   type LucideIcon,
@@ -18,7 +17,6 @@ import { Evidence } from "@/components/Evidence";
 import { FaqSection, type Faq } from "@/components/FaqSection";
 import { Section } from "@/components/Section";
 import { SiteImage } from "@/components/SiteImage";
-import { RouteStatus } from "@/features/destinations/RouteStatus";
 import { destinationBySlug } from "@/features/destinations/registry";
 import { DestinationRail } from "@/features/images/DestinationRail";
 import { DESTINATION_PAGE_IMAGES } from "@/features/images/keys";
@@ -126,8 +124,6 @@ type DestinationPageProps = {
   standfirst: string;
   /** The introduction, as a run of <p> elements. */
   body: ReactNode;
-  /** The leg from Marrakech, where there is one. */
-  routeSlug?: string;
   services: DestinationService[];
   /** Meetings, incentives, conferences and events: what the destination offers a group. */
   mice: MiceActivity[];
@@ -138,7 +134,7 @@ type DestinationPageProps = {
 
 /**
  * The shared destination page: photographic banner, introduction beside a
- * second photograph, the measured leg, what we operate, what we check, FAQ,
+ * second photograph, MICE activities, what we operate, what we check, FAQ,
  * and a closing call to action with the other destinations.
  *
  * Every page keeps its own copy; this only decides how it is laid out.
@@ -148,7 +144,6 @@ export function DestinationPage({
   title,
   standfirst,
   body,
-  routeSlug,
   services,
   mice,
   checklist,
@@ -169,7 +164,6 @@ export function DestinationPage({
   let toneIndex = 0;
   const nextTone = () => (toneIndex++ % 2 === 0 ? "paper-2" : "paper") as "paper" | "paper-2";
   const miceTone = nextTone();
-  const routeTone = routeSlug ? nextTone() : undefined;
   const servicesTone = nextTone();
   const checklistTone = nextTone();
   const faqTone = nextTone();
@@ -222,13 +216,6 @@ export function DestinationPage({
                   className="group flex min-h-11 items-center justify-between text-sm font-semibold text-red-600"
                 >
                   Request a B2B quote
-                  <ArrowRight aria-hidden="true" size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
-                </Link>
-                <Link
-                  href="/routes"
-                  className="group flex min-h-11 items-center justify-between text-sm font-semibold text-ink-900"
-                >
-                  Route intelligence
                   <ArrowRight aria-hidden="true" size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
               </div>
@@ -284,28 +271,6 @@ export function DestinationPage({
           </ul>
         </div>
       </Section>
-
-      {routeSlug && routeTone ? (
-        <Section tone={routeTone}>
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center lg:gap-16">
-            <div>
-              <span
-                aria-hidden="true"
-                className="flex size-12 items-center justify-center rounded-xl bg-red-600 text-paper shadow-raised"
-              >
-                <RouteIcon size={22} strokeWidth={1.75} />
-              </span>
-              <h2 className="mt-5 max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
-                The leg from Marrakech
-              </h2>
-              <p className="mt-4 text-base text-ink-500">
-                Figures appear here only once our own drivers have logged the leg.
-              </p>
-            </div>
-            <RouteStatus slug={routeSlug} />
-          </div>
-        </Section>
-      ) : null}
 
       <Section tone={servicesTone} id="operate">
         <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-ink-900">
@@ -377,9 +342,6 @@ export function DestinationPage({
             <Link href={RFQ_HREF} className={pillLight}>
               Request a B2B quote
               <ArrowRight aria-hidden="true" size={16} strokeWidth={2} />
-            </Link>
-            <Link href="/routes" className={pillOutline}>
-              Route intelligence
             </Link>
           </div>
         </div>

@@ -38,7 +38,6 @@ export default function MerzougaPage() {
       slug="merzouga"
       title="Merzouga"
       standfirst="The longest standard leg we run, and the one where the real question is not how to operate it but whether the itinerary has allowed enough days for it."
-      routeSlug="marrakech-merzouga"
       body={
         <>
           <p>

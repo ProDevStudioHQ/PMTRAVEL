@@ -14,8 +14,6 @@ export type DestinationEntry = {
   name: string;
   /** One line for the hub page. Operational, not promotional. */
   summary: string;
-  /** The route slug for the leg from Marrakech, where there is one. */
-  routeSlug?: string;
   /** The buyer segments the destination serves, shown as tags. */
   segments?: string[];
 };
@@ -32,7 +30,6 @@ export const DESTINATIONS: DestinationEntry[] = [
     name: "Agafay",
     summary:
       "Close enough to Marrakech to work as an evening. Wind, transfer waves and the wet-weather plan decide whether it does.",
-    routeSlug: "marrakech-agafay",
   },
   {
     slug: "atlas",
@@ -45,21 +42,18 @@ export const DESTINATIONS: DestinationEntry[] = [
     name: "Essaouira",
     summary:
       "The most common single day out of Marrakech. Coach parking and medina access are the constraints, not the driving.",
-    routeSlug: "marrakech-essaouira",
   },
   {
     slug: "merzouga",
     name: "Merzouga",
     summary:
       "The longest standard leg we run. Whether it should be two days or three is the question an operator actually needs answered.",
-    routeSlug: "marrakech-merzouga",
   },
   {
     slug: "fes",
     name: "Fes",
     summary:
       "Usually reached as a crossing rather than a transfer. The medina is the operational problem, and it is a serious one.",
-    routeSlug: "marrakech-fes",
   },
   // Ordered by commercial priority for the travel trade.
   {
@@ -67,7 +61,6 @@ export const DESTINATIONS: DestinationEntry[] = [
     name: "Casablanca",
     summary:
       "Morocco's largest business gateway and main international airport. Arrival handling and city traffic decide more than the venue does.",
-    routeSlug: "marrakech-casablanca",
     segments: ["Business", "MICE", "Airport"],
   },
   {
@@ -82,7 +75,6 @@ export const DESTINATIONS: DestinationEntry[] = [
     name: "Rabat",
     summary:
       "The capital: ministries, embassies and institutions. Protocol, security and access govern the programme more than distance does.",
-    routeSlug: "marrakech-rabat",
     segments: ["MICE", "Corporate", "Cultural"],
   },
   {
@@ -90,7 +82,6 @@ export const DESTINATIONS: DestinationEntry[] = [
     name: "Tangier",
     summary:
       "Business city, major port and the shortest crossing to Spain. Ferries and connections shape the programme.",
-    routeSlug: "marrakech-tangier",
     segments: ["Corporate", "Groups", "Leisure"],
   },
   {
@@ -105,7 +96,6 @@ export const DESTINATIONS: DestinationEntry[] = [
     name: "Ouarzazate",
     summary:
       "Morocco's film capital and the gateway to the Sahara. The Tizi n'Tichka crossing decides the day more than the destination does.",
-    routeSlug: "marrakech-ouarzazate",
     segments: ["Film", "Adventure", "Circuits"],
   },
   {
@@ -120,7 +110,6 @@ export const DESTINATIONS: DestinationEntry[] = [
     name: "Dades Valley",
     summary:
       "Gorges, kasbahs and one of Morocco's most photographed roads. The road is the experience, and also the constraint.",
-    routeSlug: "marrakech-dades",
     segments: ["Adventure", "Groups"],
   },
   {

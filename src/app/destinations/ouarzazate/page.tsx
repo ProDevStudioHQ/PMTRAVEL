@@ -33,7 +33,6 @@ export default function OuarzazatePage() {
       slug="ouarzazate"
       title="Ouarzazate"
       standfirst="Where the High Atlas gives way to the desert. Morocco's film capital, and the gateway to every southern circuit."
-      routeSlug="marrakech-ouarzazate"
       body={
         <>
           <p>

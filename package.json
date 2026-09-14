@@ -11,7 +11,6 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node scripts/migrate.mjs",
     "verify:data": "node scripts/verify-data.mjs",
-    "import:drive-logs": "node scripts/import-drive-logs.mjs",
     "check:budget": "node scripts/check-budget.mjs",
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:launch": "node scripts/check-launch.mjs"

@@ -119,7 +119,7 @@ export default function ChefchaouenPage() {
           "A briefing on photographing residents and private doors",
         ],
         evidence:
-          "No drive time to Chefchaouen from Tangier or Fes is published here, because none has been measured and logged by us. Figures appear on route intelligence only once a leg has been driven.",
+          "No drive time to Chefchaouen from Tangier or Fes is published here, because none has been measured and logged by us.",
       }}
       faq={{ heading: "What operators ask about Chefchaouen", faqs: FAQS }}
       cta={{

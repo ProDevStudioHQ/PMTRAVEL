@@ -6,7 +6,6 @@ import {
   CircleX,
   ClipboardCheck,
   MapPinned,
-  Route,
   Search,
   Send,
   Truck,
@@ -267,18 +266,12 @@ export default function HowWeWorkPage() {
         <SectionHeading eyebrow="The cost of the standard" title="Where you can see it working">
           <p>
             The standard is easy to claim, so the useful thing is to look at what
-            it has cost us. We could fill both pages below this afternoon from
+            it has cost us. We could fill the page below this afternoon from
             public sources, and every competitor&rsquo;s page suggests they have.
           </p>
         </SectionHeading>
         <ul className="mt-12 grid gap-4 md:grid-cols-2">
           {[
-            {
-              icon: Route,
-              title: "Route intelligence",
-              body: "Every row currently reads “verification in progress”, because we have not finished driving them.",
-              href: "/routes",
-            },
             {
               icon: MapPinned,
               title: "MICE and events",
@@ -314,7 +307,7 @@ export default function HowWeWorkPage() {
           title="See the method applied to your programme"
           imageKey="b7-fes-medina"
           primary={{ href: RFQ_HREF, label: "Request a B2B quote" }}
-          secondary={{ href: "/routes", label: "Route intelligence" }}
+          secondary={{ href: "#standard", label: "The verification standard" }}
         >
           <p>
             Send a real brief. Every line that comes back states what has been

@@ -65,9 +65,8 @@ These are not style preferences. Breaking one damages the business.
 - Destination pages are written one at a time, by hand, and registered in
   `src/features/destinations/registry.ts`. A page needs 400+ words of genuine
   operational content before it gets a URL.
-- Route figures come from `driveLogs` only. `RouteRecord` has no distance or
-  duration field, and `verify:data` fails the build if one is added. To publish
-  a route, add logged runs — see `docs/route-verification.md`.
+- No distances or drive times on the site. Route intelligence has been removed,
+  and `check:launch` fails if a figure appears.
 
 ## Scope discipline
 

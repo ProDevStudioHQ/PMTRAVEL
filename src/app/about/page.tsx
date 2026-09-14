@@ -142,10 +142,8 @@ export default function AboutPage() {
               never treated as proof. If a camp&rsquo;s site says it has fifty-two
               tents, that is a claim we record as unconfirmed until someone from PM
               Travel has been there and counted. The same applies to every distance
-              and drive time on our{" "}
-              <TextLink href="/routes">route intelligence</TextLink> page: a route
-              publishes figures only after one of our drivers has driven it and
-              logged it.
+              and drive time: we give one only after one of our drivers has driven
+              the route and logged it.
             </p>
             <p>
               We are a young operation and the site reflects that honestly. There

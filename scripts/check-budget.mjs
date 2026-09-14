@@ -54,7 +54,6 @@ const PAGES = [
   "/how-we-work",
   "/destinations",
   "/destinations/agafay",
-  "/routes",
   "/request-a-quote",
   "/contact",
   "/programmes",

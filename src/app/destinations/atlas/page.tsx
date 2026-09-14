@@ -125,7 +125,7 @@ export default function AtlasPage() {
           "Where lunch and facilities actually are along the chosen line",
         ],
         evidence:
-          "No Atlas distances, drive times or pass conditions are published on this page. Route measurement is under way; the southern crossings appear on route intelligence as they are driven and logged.",
+          "No Atlas distances, drive times or pass conditions are published on this page, because none has been measured by us yet.",
       }}
       mice={[
         { kind: "seminar", body: "Retreats in kasbah lodges and mountain hotels, away from the city." },

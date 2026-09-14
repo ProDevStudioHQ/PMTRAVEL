@@ -118,7 +118,7 @@ export default function MarrakechPage() {
           "Guide briefing against the itinerary you sold, including what to skip",
         ],
         evidence:
-          "This page describes how we operate Marrakech. It carries no distances, drive times or capacities, because none has been measured and logged by us yet. Legs we have driven appear on route intelligence with the date and the number of runs behind them.",
+          "This page describes how we operate Marrakech. It carries no distances, drive times or capacities, because none has been measured and logged by us yet.",
       }}
       mice={[
         { kind: "seminar", body: "In historic palaces and 5-star hotels." },

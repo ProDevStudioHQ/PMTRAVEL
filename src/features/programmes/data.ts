@@ -9,7 +9,7 @@ import type { Faq } from "@/components/FaqSection";
  * desert camp. Sold white-label by travel agencies and tour operators.
  *
  * Rules for this file, the same as the rest of the site:
- *   - no drive times or distances: legs are timed only once logged in /routes
+ *   - no drive times or distances: legs are timed only once driven and logged by us
  *   - no retail prices: proposals are costed per departure from net rates
  *   - suppliers (hotels, camps, activity providers) are not named until contracted
  *   - guiding only in the languages PM Travel operates (see COMPANY.languages)

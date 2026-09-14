@@ -33,7 +33,6 @@ export default function CasablancaPage() {
       slug="casablanca"
       title="Casablanca"
       standfirst="Morocco's business capital and its main international gateway. For many groups it is where the programme begins, even when the programme is somewhere else."
-      routeSlug="marrakech-casablanca"
       body={
         <>
           <p>

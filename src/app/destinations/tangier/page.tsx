@@ -33,7 +33,6 @@ export default function TangierPage() {
       slug="tangier"
       title="Tangier"
       standfirst="Where Morocco faces Europe. A business and port city, the shortest crossing to Spain, and the start of the high-speed line south."
-      routeSlug="marrakech-tangier"
       body={
         <>
           <p>

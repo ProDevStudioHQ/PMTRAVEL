@@ -38,7 +38,6 @@ export default function FesPage() {
       slug="fes"
       title="Fes"
       standfirst="Usually reached as a crossing rather than a transfer, and usually given less time than it needs. The medina is the operational problem, and it is a serious one."
-      routeSlug="marrakech-fes"
       body={
         <>
           <p>

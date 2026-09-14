@@ -141,7 +141,7 @@ come from `NAV_GROUPS` and `NAV_LINKS` in `src/lib/nav.ts`; the logo is
 1. Foundation, design system, shell, 10 page shells, Docker, CI — **done**
 2. Home, About, Contact with real content — **done**
 3. RFQ end to end — **done** (needs DATABASE_URL, SMTP and S3 to run)
-4. Route intelligence — **system done**; publishing blocked on 3 driven-and-logged routes
+4. Route intelligence — **removed** (no /routes pages, drive logs or route data)
 5. Venue intelligence — **system done**; publishing blocked on inspections
 6. Destination pages — **done** (6 published)
 7. SEO and answer-first content — **done**
@@ -152,27 +152,10 @@ Finish one milestone. Report. Stop.
 
 ## Route intelligence (Milestone 4)
 
-The system is built; the data is fieldwork. `src/features/routes/`:
-
-| File | Does |
-| --- | --- |
-| `types.ts` | `RouteRecord`, `DriveLog`, `EvidenceEntry`. **No distance or duration field exists on a route.** |
-| `data.ts` | The nine target routes, every `driveLogs` array empty |
-| `publish.ts` | Derives published figures from logs; returns `null` below two usable runs |
-| `RouteTable.tsx` | The dark data surface |
-
-`/routes/[slug]` builds pages from published routes only (`generateStaticParams`
-plus `dynamicParams = false`), so an unmeasured route 404s rather than
-rendering an empty page. Today that is all nine of them, which is correct.
-
-Adding two valid logs to a route is the whole publishing action: the table
-fills in, the page starts being built, and the sitemap picks it up. There is no
-publish switch and nowhere to type a figure by hand.
-
-`npm run verify:data` enforces this in CI, along with the ban on phone numbers,
-`tel:` links and `Review`/`AggregateRating`/`Offer`/`Event` schema.
-
-See `docs/route-verification.md` for what to record on a run.
+Removed. The site publishes no distances or drive times, and
+`npm run check:launch` fails if one appears. `npm run verify:data` still
+enforces the ban on phone numbers, `tel:` links and
+`Review`/`AggregateRating`/`Offer`/`Event` schema in CI.
 
 ## Venue intelligence (Milestone 5)
 
@@ -198,10 +181,6 @@ generate these from a list.**
 `src/features/destinations/registry.ts` drives the hub page and the sitemap. A
 slug added there without a page produces a broken link rather than a thin one,
 which is the intended failure mode.
-
-`RouteStatus.tsx` reads the same drive logs as `/routes`, so a destination page
-can never claim a timing the route table does not have. Where a leg is
-unmeasured it says so and links to the measurement programme.
 
 The eleven further destinations are named on the hub as places we operate but
 have not written up. They get pages when there is something to say, one at a

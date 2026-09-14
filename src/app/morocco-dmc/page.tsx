@@ -208,8 +208,7 @@ export default function MoroccoDmcPage() {
             </p>
             <p>
               We answer those in the same way each time: with a named backup for
-              every movement, with{" "}
-              <TextLink href="/routes">drive data we measured ourselves</TextLink>{" "}
+              every movement, with drive data we measured ourselves
               or an honest statement that we have not measured it yet, and with a
               quote where every line states whether it is requested, on option,
               held or confirmed. The service list below is real, but it is not the

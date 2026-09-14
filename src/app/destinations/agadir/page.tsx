@@ -114,7 +114,7 @@ export default function AgadirPage() {
           "Wind and sea conditions for beach and surf activities",
         ],
         evidence:
-          "No drive times for Agadir excursions are published here, because none has been measured and logged by us. Figures appear on route intelligence only once a leg has been driven.",
+          "No drive times for Agadir excursions are published here, because none has been measured and logged by us.",
       }}
       faq={{ heading: "What operators ask about Agadir", faqs: FAQS }}
       cta={{

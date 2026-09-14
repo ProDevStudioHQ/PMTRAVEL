@@ -59,7 +59,6 @@ const PAGES = [
   "/destinations/essaouira",
   "/destinations/merzouga",
   "/destinations/fes",
-  "/routes",
   "/request-a-quote",
   "/programmes",
   "/programmes/taste-of-marrakech",
@@ -147,31 +146,13 @@ try {
     proofHits.length ? `found: ${proofHits.join(", ")}` : ""
   );
 
-  // --- Every unverified route row says so ---
-  const routesHtml = rendered.get("/routes")?.html ?? "";
-  const routeData = readFileSync("src/features/routes/data.ts", "utf8");
-  const loggedRuns = (routeData.match(/drivenOn:/g) ?? []).length;
-  const pendingRows = (routesHtml.match(/Verification in progress/g) ?? []).length;
-  record(
-    loggedRuns === 0 && pendingRows > 0 ? "PASS" : loggedRuns > 0 ? "MANUAL" : "FAIL",
-    "Every unverified route row says Verification in progress",
-    loggedRuns === 0 ? "no runs logged yet, all rows pending" : `${loggedRuns} runs logged - check the table by eye`
-  );
-
   // --- No invented distances or drive times ---
   const inventedFigure = /\b\d{2,4}\s*km\b|\b\d+\s*h(?:ours?)?\s*\d*\s*m(?:ins?)?\b/i;
   const figureOnSite = inventedFigure.test(allHtml);
   record(
-    !figureOnSite || loggedRuns > 0 ? "PASS" : "FAIL",
+    figureOnSite ? "FAIL" : "PASS",
     "No invented distances or drive times anywhere",
-    figureOnSite ? "figures present - confirm each has a drive log" : "no figures published"
-  );
-
-  // --- Three verified routes, if /routes is live ---
-  record(
-    loggedRuns >= 6 ? "PASS" : "BLOCKED",
-    "At least 3 routes driven and logged",
-    `${loggedRuns} runs logged; 3 routes x 2 runs = 6 needed. Fieldwork - see docs/route-verification.md`
+    figureOnSite ? "figures present - remove any we have not measured" : "no figures published"
   );
 
   // --- Real office photograph on /about ---

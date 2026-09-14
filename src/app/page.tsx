@@ -21,7 +21,6 @@ import {
   MapPin,
   PlaneLanding,
   Presentation,
-  Route,
   ScanSearch,
   Send,
   ShieldCheck,
@@ -33,11 +32,8 @@ import {
 import { pageMetadata } from "@/lib/metadata";
 import { Container } from "@/components/Container";
 import { SiteImage } from "@/components/SiteImage";
-import { StatusChip, type Status } from "@/components/StatusChip";
 import { HomeHero } from "@/features/images/HomeHero";
 import { imageByKey } from "@/features/images/registry";
-import { routeBySlug } from "@/features/routes/data";
-import { publishedFigures } from "@/features/routes/publish";
 import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
 import { EXCURSIONS, excursionHref } from "@/features/excursions/data";
 import { COMPANY, RFQ_HREF } from "@/lib/nav";
@@ -205,11 +201,6 @@ const AUDIENCES: { icon: LucideIcon; title: string; body: string; href: string }
 
 const INTELLIGENCE: { icon: LucideIcon; title: string; body: string }[] = [
   {
-    icon: Route,
-    title: "Route intelligence",
-    body: "Drive times published only after our own drivers have driven and logged the route.",
-  },
-  {
     icon: ScanSearch,
     title: "Venue inspection",
     body: "Capacities and access recorded on site, with the date of the inspection.",
@@ -220,26 +211,6 @@ const INTELLIGENCE: { icon: LucideIcon; title: string; body: string }[] = [
     body: "Every line of a quote marked requested, on option, held or confirmed.",
   },
 ];
-
-/** Popular legs. The status comes from the drive logs, never from this list. */
-const POPULAR_ROUTES: { destination: string; routeSlug?: string; fallbackHref: string }[] = [
-  { destination: "Agafay", routeSlug: "marrakech-agafay", fallbackHref: "/destinations/agafay" },
-  { destination: "Essaouira", routeSlug: "marrakech-essaouira", fallbackHref: "/destinations/essaouira" },
-  { destination: "Aït Ben Haddou", fallbackHref: "/destinations/ait-ben-haddou" },
-  { destination: "Ouarzazate", routeSlug: "marrakech-ouarzazate", fallbackHref: "/destinations/ouarzazate" },
-  { destination: "Merzouga", routeSlug: "marrakech-merzouga", fallbackHref: "/destinations/merzouga" },
-  { destination: "Fes", routeSlug: "marrakech-fes", fallbackHref: "/destinations/fes" },
-];
-
-function routeStatus(routeSlug?: string): { status: Status; label?: string; href?: string } {
-  const route = routeSlug ? routeBySlug(routeSlug) : undefined;
-  if (!route) return { status: "future", label: "Not yet logged" };
-  const figures = publishedFigures(route);
-  // A route page exists only once the leg is published; until then, link to the destination.
-  return figures
-    ? { status: "verified", label: `Driven ${figures.sampleSize}×`, href: `/routes/${route.slug}` }
-    : { status: "pending" };
-}
 
 /* -------------------------------------------------------------------------- */
 /* Building blocks                                                            */
@@ -614,7 +585,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 8. Morocco Operations Intelligence + Popular Routes */}
+      {/* 8. Morocco Operations Intelligence */}
       <section className="surface-deep relative isolate overflow-hidden bg-ink-900 text-paper">
         <div
           aria-hidden="true"
@@ -634,13 +605,13 @@ export default function HomePage() {
           >
             <p>
               Most Morocco information is repeated rather than checked. We build
-              our own operational record, from routes driven and logged to venues
-              inspected and services tracked by status, and we quote from it.
+              our own operational record, from venues inspected to services
+              tracked by status, and we quote from it.
               Where something has not been measured yet, we say so.
             </p>
           </SectionHeading>
 
-          <ul className="mt-12 grid gap-4 md:grid-cols-3">
+          <ul className="mt-12 grid gap-4 md:grid-cols-2">
             {INTELLIGENCE.map(({ icon: Icon, title, body }) => (
               <li key={title} className="rounded-2xl border border-paper/12 bg-paper/[0.05] p-6">
                 <span
@@ -653,39 +624,6 @@ export default function HomePage() {
                 <p className="mt-2 text-sm text-paper/80">{body}</p>
               </li>
             ))}
-          </ul>
-
-          <div className="mt-20 flex flex-wrap items-end justify-between gap-4 border-t border-paper/12 pt-12">
-            <div>
-              <h3 className="font-display text-xl font-semibold text-paper lg:text-2xl">Popular Routes</h3>
-              <p className="mt-2 text-base text-paper/75">
-                The status of each leg comes straight from our drive logs.
-              </p>
-            </div>
-            <Link href="/routes" className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-paper">
-              All route intelligence
-              <ArrowRight aria-hidden="true" size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
-          </div>
-
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {POPULAR_ROUTES.map(({ destination, routeSlug, fallbackHref }) => {
-              const { status, label, href } = routeStatus(routeSlug);
-              return (
-                <li key={destination}>
-                  <article className="group relative flex h-full flex-col gap-4 rounded-2xl border border-paper/12 bg-paper/[0.04] p-5 transition-colors duration-200 hover:border-paper/40 hover:bg-paper/[0.08]">
-                    <h4 className="flex items-center gap-3 font-display text-lg font-semibold text-paper">
-                      <Link href={href ?? fallbackHref} className="flex items-center gap-3 after:absolute after:inset-0 after:content-['']">
-                        <span>Marrakech</span>
-                        <ArrowRight aria-hidden="true" size={18} className="text-red-600" />
-                        <span>{destination}</span>
-                      </Link>
-                    </h4>
-                    <StatusChip status={status} label={label} onDark />
-                  </article>
-                </li>
-              );
-            })}
           </ul>
         </Container>
       </section>

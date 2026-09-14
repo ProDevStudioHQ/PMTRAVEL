@@ -59,28 +59,6 @@ for (const file of sourceFiles) {
   }
 }
 
-// 3. Route figures must come from drive logs. The RouteRecord type has no
-//    distance or duration field, so a hand-typed figure shows up as a field
-//    that should not exist.
-const routeData = readFileSync("src/features/routes/data.ts", "utf8");
-for (const banned of ["distanceKm:", "driveTimeMinutes:", "movingMinutes:", "elapsedMinutes:"]) {
-  if (routeData.includes(banned)) {
-    fail(
-      "src/features/routes/data.ts",
-      `has a hand-written "${banned}" - figures are derived from driveLogs only`
-    );
-  }
-}
-
-// 4. Every drive log must name a driver and a date. An anonymous run is not
-//    evidence, and publish.ts will silently discard it.
-const logBlocks = routeData.match(/driveLogs:\s*\[([\s\S]*?)\]/g) ?? [];
-for (const block of logBlocks) {
-  if (block.includes("drivenOn") && !block.includes("driver:")) {
-    fail("src/features/routes/data.ts", "has a drive log with no named driver");
-  }
-}
-
 // 5. No statistics section or case studies page.
 for (const file of sourceFiles) {
   if (file.includes("case-studies")) fail(file, "case studies must not be published");

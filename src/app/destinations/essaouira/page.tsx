@@ -33,7 +33,6 @@ export default function EssaouiraPage() {
       slug="essaouira"
       title="Essaouira"
       standfirst="The most commonly sold single day out of Marrakech. The driving is the easy part, which is exactly why it catches people out."
-      routeSlug="marrakech-essaouira"
       body={
         <>
           <p>

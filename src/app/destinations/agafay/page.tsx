@@ -13,7 +13,7 @@ const FAQS = [
   {
     question: "How far is Agafay from Marrakech?",
     answer:
-      "We have not published that figure because we have not finished measuring it. Agafay is one of the routes we are logging, and the distance and drive time will appear here and on route intelligence together, with the number of logged runs behind them. Anyone can give you a mapping estimate; the reason to ask us is that our number will be one we drove.",
+      "We do not publish that figure, because we have not measured it ourselves. Ask us and we will give you a timing in the quote once our drivers have driven it. Anyone can give you a mapping estimate; the reason to ask us is that our number will be one we drove.",
   },
   {
     question: "Is Agafay suitable for corporate groups?",
@@ -38,7 +38,6 @@ export default function AgafayPage() {
       slug="agafay"
       title="Agafay"
       standfirst="Close enough to Marrakech to work as an evening, which is exactly why it gets sold without being planned. Three things decide whether it works."
-      routeSlug="marrakech-agafay"
       body={
         <>
           <p>

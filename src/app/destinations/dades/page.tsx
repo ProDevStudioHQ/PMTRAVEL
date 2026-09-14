@@ -33,7 +33,6 @@ export default function DadesPage() {
       slug="dades"
       title="Dades Valley"
       standfirst="Palm groves, kasbahs and a gorge road that climbs in hairpins. The road is the experience, and it is also the constraint."
-      routeSlug="marrakech-dades"
       body={
         <>
           <p>

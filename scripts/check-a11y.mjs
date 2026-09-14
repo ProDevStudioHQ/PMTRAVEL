@@ -28,7 +28,6 @@ const PAGES = [
   "/destinations/essaouira",
   "/destinations/merzouga",
   "/destinations/fes",
-  "/routes",
   "/request-a-quote",
   "/contact",
   "/programmes",

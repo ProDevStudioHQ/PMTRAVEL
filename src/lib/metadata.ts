@@ -4,7 +4,7 @@ import { COMPANY } from "@/lib/nav";
 type PageMetadataInput = {
   title: string;
   description: string;
-  /** Site-relative path, e.g. "/routes". Resolved against metadataBase. */
+  /** Site-relative path, e.g. "/about". Resolved against metadataBase. */
   path: string;
   /** Keep the page out of search results (internal pages only). */
   noindex?: boolean;

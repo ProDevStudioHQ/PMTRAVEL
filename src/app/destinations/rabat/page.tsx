@@ -33,7 +33,6 @@ export default function RabatPage() {
       slug="rabat"
       title="Rabat"
       standfirst="The capital: the palace, the ministries and the embassies. Programmes here run to someone else's timetable, and planning for that is most of the job."
-      routeSlug="marrakech-rabat"
       body={
         <>
           <p>

@@ -112,7 +112,7 @@ export default function ZagoraPage() {
           "The onward route, back to Marrakech or on to the south",
         ],
         evidence:
-          "No drive time from Marrakech to Zagora is published here, because none has been measured and logged by us yet. Figures appear on route intelligence only once a leg has been driven.",
+          "No drive time from Marrakech to Zagora is published here, because none has been measured and logged by us yet.",
       }}
       faq={{ heading: "What operators ask about Zagora", faqs: FAQS }}
       cta={{
