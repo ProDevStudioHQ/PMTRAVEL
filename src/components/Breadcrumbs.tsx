@@ -32,6 +32,7 @@ export function Breadcrumbs({ trail, onDark = false }: BreadcrumbsProps) {
                 <>
                   <Link
                     href={crumb.href}
+                    translate={index === 0 ? "no" : undefined}
                     className={`flex min-h-11 items-center underline-offset-4 hover:underline ${onDark ? "hover:text-sand" : "hover:text-terracotta-700"}`}
                   >
                     {crumb.label}

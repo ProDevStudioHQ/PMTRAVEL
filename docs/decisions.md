@@ -5,6 +5,22 @@ six months otherwise. Newest first.
 
 ---
 
+## D8 — Machine translation via Google Translate (FR, ES, PT)
+
+**Date:** 2026-11-18 · **Status:** accepted (business chose "Automatic (Google)")
+
+A flag dropdown (EN, FR, ES, PT) sets Google's googtrans cookie and reloads;
+Google's script loads only for non-English visitors. Consequences: machine
+quality, no indexed FR/ES/PT pages (hreflang stays EN-only), CSP allows Google
+Translate hosts, and frame-ancestors / X-Frame-Options moved from none/DENY to
+self/SAMEORIGIN because Google frames the page. Brand, phones and emails are
+marked notranslate. A guarded removeChild/insertBefore patch prevents React
+crashes on translated pages. The headline word reveal is off while translated
+so Google translates whole sentences. For proper SEO in French later, build
+real /fr pages (src/i18n/config.ts) and drop the widget.
+
+---
+
 ## D7 — November 2026 rebuild: new brand, structure and contact policy
 
 **Date:** 2026-11-17 · **Status:** accepted (business website brief, Nov 2026)

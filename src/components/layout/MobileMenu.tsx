@@ -12,7 +12,7 @@ import { ChevronDown, Phone, X } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { WhatsappIcon } from "@/components/Icon";
 import { buttonClasses } from "@/components/Button";
-import { LanguageSwitch } from "@/components/layout/SiteHeader";
+import { LanguageDropdown } from "@/components/layout/LanguageDropdown";
 import { COMPANY, LOGIN_HREF, RFQ_HREF, whatsappLink } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
 import type { NavEntry } from "@/lib/nav";
@@ -75,7 +75,8 @@ export function MobileMenu({ nav, open, onClose, pathname }: Props) {
                         href={item.href}
                         onClick={onClose}
                         aria-current={pathname === item.href ? "page" : undefined}
-                        className="flex min-h-14 items-center font-display text-2xl aria-[current=page]:text-gold"
+                        translate={item.id === "home" ? "no" : undefined}
+                        className={`${item.id === "home" ? "notranslate " : ""}flex min-h-14 items-center font-display text-2xl aria-[current=page]:text-gold`}
                       >
                         {item.label}
                       </Link>
@@ -137,7 +138,7 @@ export function MobileMenu({ nav, open, onClose, pathname }: Props) {
                 <span>{en.cta.login}</span>
               </Link>
             </div>
-            <LanguageSwitch className="mt-6" />
+            <LanguageDropdown className="mt-6 inline-block" align="left" up />
           </nav>
 
           <div className="grid shrink-0 grid-cols-2 gap-3 border-t border-sand/10 p-4 sm:px-6">

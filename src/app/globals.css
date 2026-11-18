@@ -30,6 +30,7 @@
   --color-muted: #6b6b6b;
   --color-line: rgb(26 26 26 / 0.1);
   --color-whatsapp: #1f8f4e; /* icon-only button, 4.13 with white */
+  --color-linkedin: #0a66c2; /* LinkedIn brand blue, 5.7 with white */
 
   /* ---- Legacy names, remapped so pages built before D7 adopt the new brand ---- */
   --color-red-900: #0e1a2b;
@@ -398,5 +399,36 @@ dd.font-bold {
   .rail-pad {
     padding-inline: max(2.5rem, calc((100vw - var(--container-site)) / 2 + 2.5rem));
     scroll-padding-inline: max(2.5rem, calc((100vw - var(--container-site)) / 2 + 2.5rem));
+  }
+}
+
+/* Instagram brand gradient (official colours). */
+.bg-instagram {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+}
+
+/* Google Translate: keep its own toolbar, tooltips and highlight out of the design. */
+.skiptranslate > iframe,
+iframe.skiptranslate,
+.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+.goog-text-highlight,
+font[style] {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Translated labels run longer: drop Partner Login from the bar on laptops (still in menu and footer). */
+@media (min-width: 1280px) and (max-width: 1535px) {
+  html.translated-ltr .hide-when-translated {
+    display: none !important;
   }
 }

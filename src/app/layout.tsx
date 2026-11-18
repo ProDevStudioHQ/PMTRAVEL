@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { FloatingWhatsApp, SiteFooter } from "@/components/layout/SiteFooter";
 import { CookieBanner } from "@/components/layout/CookieBanner";
+import { GoogleTranslate } from "@/components/layout/GoogleTranslate";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { JsonLd } from "@/components/JsonLd";
 import { NAV } from "@/lib/nav";
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SiteFooter />
           <FloatingWhatsApp href={whatsappLink()} />
           <CookieBanner />
+          <GoogleTranslate />
         </MotionProvider>
         <JsonLd data={organizationSchema()} />
         <JsonLd data={websiteSchema()} />

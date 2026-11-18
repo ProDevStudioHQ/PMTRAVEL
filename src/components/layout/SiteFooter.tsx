@@ -53,14 +53,14 @@ export function SiteFooter() {
           <p className="mt-5 max-w-sm text-sm text-sand/70">{COMPANY.shortDescription}</p>
           <ul className="mt-6 flex gap-3" aria-label="Social media">
             <li>
-              <a href={COMPANY.social.instagram} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-full border border-sand/20 text-sand/80 transition-colors hover:border-gold hover:text-gold">
-                <InstagramIcon />
+              <a href={COMPANY.social.instagram} target="_blank" rel="noopener noreferrer" className="bg-instagram grid size-11 place-items-center rounded-full text-white shadow-raised transition-transform hover:scale-110">
+                <InstagramIcon size={22} />
                 <span className="sr-only">Instagram</span>
               </a>
             </li>
             <li>
-              <a href={COMPANY.social.linkedin} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-full border border-sand/20 text-sand/80 transition-colors hover:border-gold hover:text-gold">
-                <LinkedinIcon />
+              <a href={COMPANY.social.linkedin} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-full bg-linkedin text-white shadow-raised transition-transform hover:scale-110">
+                <LinkedinIcon size={20} />
                 <span className="sr-only">LinkedIn</span>
               </a>
             </li>
@@ -85,7 +85,7 @@ export function SiteFooter() {
       {/* Contact cards */}
       <Container className="pt-12 pb-14">
         <h2 className="font-sans text-xs font-medium tracking-[0.2em] text-gold uppercase">Contact</h2>
-        <address className="not-italic">
+        <address className="notranslate not-italic" translate="no">
           <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <ContactCard icon={<MapPin {...iconProps} />} label="Office">
               <p>{addressOneLine}</p>

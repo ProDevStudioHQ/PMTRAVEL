@@ -3,20 +3,8 @@ import { Container } from "@/components/Container";
 import { Breadcrumbs, type Crumb } from "@/components/Breadcrumbs";
 import { SiteImage } from "@/components/SiteImage";
 
-/** Splits a headline into words for the CSS word-by-word reveal. */
-export function RevealWords({ text }: { text: string }) {
-  const words = text.split(" ");
-  return (
-    <span className="reveal-words">
-      {words.map((word, i) => (
-        <span key={`${word}-${i}`} className="w">
-          {word}
-          {i < words.length - 1 ? " " : ""}
-        </span>
-      ))}
-    </span>
-  );
-}
+export { RevealWords } from "@/components/RevealWords";
+import { RevealWords } from "@/components/RevealWords";
 
 type PageHeroProps = {
   eyebrow: string;

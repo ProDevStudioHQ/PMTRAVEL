@@ -15,8 +15,8 @@ import { Logo } from "@/components/layout/Logo";
 import { WhatsappIcon } from "@/components/Icon";
 import { buttonClasses } from "@/components/Button";
 import { MobileMenu } from "@/components/layout/MobileMenu";
+import { LanguageDropdown } from "@/components/layout/LanguageDropdown";
 import { COMPANY, LOGIN_HREF, RFQ_HREF, whatsappLink } from "@/lib/company";
-import { LOCALES } from "@/i18n/config";
 import { en } from "@/i18n/dictionaries/en";
 import type { NavEntry } from "@/lib/nav";
 
@@ -108,13 +108,13 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
       >
         {/* Utility bar (desktop) */}
         <div
-          className={`hidden overflow-hidden border-b border-sand/10 transition-[max-height,opacity] duration-300 lg:block ${
-            scrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"
+          className={`relative z-10 hidden border-b border-sand/10 transition-[max-height,opacity] duration-300 lg:block ${
+            scrolled ? "pointer-events-none max-h-0 overflow-hidden opacity-0" : "max-h-10 overflow-visible opacity-100"
           }`}
         >
           <div className="mx-auto grid h-10 max-w-site grid-cols-[1fr_auto_1fr] items-center px-10 text-[0.8125rem] text-sand/80">
             <span aria-hidden="true" />
-            <div className="flex items-center justify-center gap-8">
+            <div className="notranslate flex items-center justify-center gap-8" translate="no">
               <a href={`tel:${COMPANY.phone.mobile.tel}`} className="inline-flex items-center gap-2 hover:text-sand">
                 <Phone aria-hidden="true" size={14} className="text-gold" />
                 {COMPANY.phone.mobile.display}
@@ -130,7 +130,7 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
                 {COMPANY.email.b2b}
               </a>
             </div>
-            <LanguageSwitch className="justify-self-end" />
+            <LanguageDropdown className="justify-self-end" />
           </div>
         </div>
 
@@ -148,7 +148,8 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
                       <Link
                         href={item.href}
                         aria-current={active ? "page" : undefined}
-                        className={`relative inline-flex min-h-11 items-center whitespace-nowrap px-2.5 text-[0.9375rem] transition-colors hover:text-white ${
+                        translate={item.id === "home" ? "no" : undefined}
+                        className={`${item.id === "home" ? "notranslate " : ""}relative inline-flex min-h-11 items-center whitespace-nowrap px-2.5 text-[0.9375rem] transition-colors hover:text-white ${
                           active ? "text-white after:absolute after:inset-x-3 after:bottom-2 after:h-px after:bg-gold" : "text-sand/85"
                         }`}
                       >
@@ -209,7 +210,7 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
 
           <div className="flex items-center gap-2">
             {/* Visibility lives on wrappers: the button's own inline-flex would override `hidden`. */}
-            <span className="hidden md:contents">
+            <span className="hide-when-translated hidden md:contents">
               <Link href={LOGIN_HREF} className={buttonClasses("secondary", "dark", "min-h-11 whitespace-nowrap px-4 text-sm")}>
                 {en.cta.login}
               </Link>
@@ -307,23 +308,3 @@ function MegaPanel({ item, pathname }: { item: NavEntry; pathname: string }) {
   );
 }
 
-export function LanguageSwitch({ className = "" }: { className?: string }) {
-  return (
-    <ul className={`flex items-center gap-1 ${className}`} aria-label="Language">
-      {LOCALES.map((locale) => (
-        <li key={locale.code}>
-          {locale.enabled ? (
-            <span aria-current="true" lang={locale.code} className="rounded-full border border-gold/50 px-2 py-0.5 text-xs font-medium text-sand">
-              {locale.label}
-            </span>
-          ) : (
-            <span lang={locale.code} title={en.nav.languageSoon} aria-disabled="true" className="px-2 py-0.5 text-xs text-sand/50">
-              {locale.label}
-              <span className="sr-only"> ({en.nav.languageSoon})</span>
-            </span>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-}

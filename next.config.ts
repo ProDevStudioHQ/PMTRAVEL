@@ -7,7 +7,7 @@ import type { NextConfig } from "next";
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "X-Frame-Options", value: "DENY" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
   {
     key: "Strict-Transport-Security",
@@ -32,7 +32,8 @@ const securityHeaders = [
        * Revisit if the site ever renders user-supplied content, or if it moves
        * to dynamic rendering for another reason. See docs/decisions.md.
        */
-      "script-src 'self' 'unsafe-inline'",
+      // Google Translate (loaded only after a visitor picks FR/ES/PT; docs/decisions.md D8).
+      "script-src 'self' 'unsafe-inline' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
       /*
        * style-src allows inline styles because next/image sets positioning
        * and object-fit through a style attribute on every rendered image.
@@ -44,14 +45,14 @@ const securityHeaders = [
        * hand-writes a style attribute, so the only inline styles that reach a
        * page are the framework's own. See docs/decisions.md, D2.
        */
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data:",
-      "font-src 'self'",
-      "connect-src 'self'",
+      "style-src 'self' 'unsafe-inline' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
+      "img-src 'self' data: https://fonts.gstatic.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com https://www.google.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "connect-src 'self' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
       "form-action 'self'",
-      "frame-ancestors 'none'",
+      "frame-ancestors 'self'", // Google Translate frames this page; other sites still cannot
       // Google Maps on /contact only, loaded after consent or a click (MapEmbed).
-      "frame-src https://www.google.com https://maps.google.com",
+      "frame-src 'self' https://www.google.com https://maps.google.com https://translate.google.com",
       "worker-src 'self'",
       "manifest-src 'self'",
       "media-src 'self'",

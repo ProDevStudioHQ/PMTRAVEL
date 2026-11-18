@@ -22,12 +22,13 @@ export default function CookiesPage() {
           paragraphs: ["This site sets no advertising, analytics or tracking cookies."],
           list: [
             "pm-cookie-consent (local storage): remembers whether you chose “Accept” or “Essential only”, so we don't ask again.",
+            "googtrans (cookie): set only if you choose Français, Español or Português in the language menu; it remembers your language. Choosing English removes it.",
           ],
         },
         {
           heading: "Third-party content",
           paragraphs: [
-            "The Google Map on our contact page is loaded from Google, which may set its own cookies. It loads only if you accept cookies or click “Show map”. Links to WhatsApp, Instagram and LinkedIn take you to those services, which have their own cookie policies.",
+            "Translations are provided by Google Translate, loaded only after you pick a language other than English; Google may set its own cookies. The Google Map on our contact page is loaded from Google, which may set its own cookies. It loads only if you accept cookies or click “Show map”. Links to WhatsApp, Instagram and LinkedIn take you to those services, which have their own cookie policies.",
           ],
         },
         {

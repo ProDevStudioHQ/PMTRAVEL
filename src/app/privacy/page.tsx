@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         {
           heading: "Where it goes",
           paragraphs: [
-            "Submissions are stored in our database and emailed to our team. Our email and hosting providers process this data on our behalf. If you open the Google Map on our contact page, Google receives data under its own privacy policy.",
+            "Submissions are stored in our database and emailed to our team. Our email and hosting providers process this data on our behalf. If you open the Google Map on our contact page, or choose a language other than English (pages are machine-translated by Google Translate), Google receives data, including the page text, under its own privacy policy.",
           ],
         },
         {

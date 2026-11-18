@@ -3,7 +3,7 @@ import Link from "next/link";
 /** Wordmark: "PM TRAVEL AGENCY" with the "by Prestige Majestic" subline. */
 export function Logo({ className = "", onClick }: { className?: string; onClick?: () => void }) {
   return (
-    <Link href="/" onClick={onClick} className={`group inline-flex min-h-11 items-center gap-3 ${className}`} aria-label="PM Travel Agency, home">
+    <Link href="/" onClick={onClick} className={`notranslate group inline-flex min-h-11 items-center gap-3 ${className}`} translate="no" aria-label="PM Travel Agency, home">
       <span
         aria-hidden="true"
         className="grid size-10 shrink-0 place-items-center rounded-full border border-gold/70 font-display text-[0.95rem] font-semibold tracking-tight text-gold transition-colors group-hover:bg-gold group-hover:text-midnight"

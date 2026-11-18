@@ -29,8 +29,12 @@ export function Counter({ value, prefix = "", suffix = "", className }: { value:
   return (
     <span ref={ref} className={`tabular ${className ?? ""}`}>
       {prefix}
-      {display}
-      {suffix}
+      {/* The number changes while counting; Google Translate must not freeze it. */}
+      <span className="notranslate" translate="no">
+        {display}
+      </span>
+      {/* Leading space as margin: Google Translate trims spaces from text nodes. */}
+      {suffix ? <span className={suffix.startsWith(" ") ? "ml-[0.25em]" : ""}>{suffix.trimStart()}</span> : null}
     </span>
   );
 }
