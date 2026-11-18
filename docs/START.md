@@ -1,5 +1,11 @@
 # PM Travel website — start here
 
+> **November 2026 rebuild — read docs/decisions.md D7 first.** It supersedes the
+> palette, fonts, motion budget and "never published" contact rules below. Phone,
+> WhatsApp and hours are now confirmed and live in src/lib/company.ts. The
+> evidence rule still stands: no invented figures, testimonials or logos.
+> Content for new pages lives in src/content/ (b2b, leisure, journal, home).
+
 Companion to the PM Travel Agency Website SOP v1.0 (12 September 2026).
 Where the two disagree, the SOP wins.
 

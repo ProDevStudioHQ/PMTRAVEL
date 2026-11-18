@@ -11,7 +11,7 @@ import { imageByKey } from "@/features/images/registry";
  */
 
 const pillBase =
-  "inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-semibold transition-colors duration-200";
+  "group inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 text-[0.9375rem] font-medium transition-colors duration-200";
 
 export const PILL = {
   /** Paper on a dark or photographic surface. */
@@ -22,12 +22,7 @@ export const PILL = {
 };
 
 export function Eyebrow({ children, onDark = false }: { children: ReactNode; onDark?: boolean }) {
-  return (
-    <p className={`flex items-center gap-3 text-sm font-semibold ${onDark ? "text-paper/80" : "text-red-600"}`}>
-      <span aria-hidden="true" className={`h-0.5 w-8 rounded-full ${onDark ? "bg-paper/60" : "bg-red-600"}`} />
-      {children}
-    </p>
-  );
+  return <p className={onDark ? "eyebrow eyebrow-on-dark" : "eyebrow"}>{children}</p>;
 }
 
 type SectionHeadingProps = {
@@ -43,7 +38,7 @@ export function SectionHeading({ eyebrow, title, children, onDark = false, class
     <div className={className}>
       <Eyebrow onDark={onDark}>{eyebrow}</Eyebrow>
       <h2
-        className={`mt-4 max-w-[24ch] text-2xl font-bold tracking-tight lg:text-[2.5rem] lg:leading-[1.1] ${
+        className={`t-h2 mt-4 max-w-[22ch] ${
           onDark ? "text-paper" : "text-ink-900"
         }`}
       >
@@ -191,7 +186,7 @@ export function CtaBanner({
           <div aria-hidden="true" className="absolute inset-0 -z-10 bg-red-900/90" />
         </>
       ) : null}
-      <h2 className="max-w-[22ch] text-3xl font-bold tracking-tight text-paper lg:text-[3rem] lg:leading-[1.05]">
+      <h2 className="t-h2 max-w-[22ch] text-paper">
         {title}
       </h2>
       {children ? <div className="measure mt-5 text-lg text-paper/90">{children}</div> : null}

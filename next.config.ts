@@ -50,7 +50,8 @@ const securityHeaders = [
       "connect-src 'self'",
       "form-action 'self'",
       "frame-ancestors 'none'",
-      "frame-src 'none'",
+      // Google Maps on /contact only, loaded after consent or a click (MapEmbed).
+      "frame-src https://www.google.com https://maps.google.com",
       "worker-src 'self'",
       "manifest-src 'self'",
       "media-src 'self'",
@@ -67,6 +68,16 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
+  },
+  async redirects() {
+    // Pages replaced by the 2026-11 site structure (docs/decisions.md D7).
+    return [
+      { source: "/morocco-dmc", destination: "/b2b/dmc-services", permanent: true },
+      { source: "/mice", destination: "/b2b/mice", permanent: true },
+      { source: "/how-we-work", destination: "/b2b", permanent: true },
+      { source: "/styleguide", destination: "/", permanent: true },
+      { source: "/become-a-partner", destination: "/b2b/become-a-partner", permanent: true },
+    ];
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

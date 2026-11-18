@@ -26,14 +26,19 @@ function walk(dir, files = []) {
 
 const sourceFiles = walk("src");
 
-// 1. No phone number, tel: link or WhatsApp link anywhere in the source.
-//    The number is unconfirmed; two conflicting values were supplied.
+// 1. Phone numbers and WhatsApp links are confirmed (docs/decisions.md D7)
+//    but live in exactly one place, src/lib/company.ts. A number retyped
+//    anywhere else drifts the day it changes. tel: links must be built from
+//    COMPANY.phone, never hard-coded.
+const PHONE_SOURCE = join("src", "lib", "company.ts");
 const PHONE_PATTERNS = [
-  { pattern: /href=["'`]tel:/i, label: "a tel: link" },
-  { pattern: /wa\.me|api\.whatsapp\.com/i, label: "a WhatsApp link" },
-  { pattern: /\+212[\s-]?\d/, label: "a +212 phone number" },
-  { pattern: /\b0[5-7]\d{8}\b/, label: "a Moroccan mobile number" },
+  { pattern: /href=["'`]tel:\+?\d/i, label: "a hard-coded tel: link" },
+  { pattern: /wa\.me\/\d|api\.whatsapp\.com/i, label: "a hard-coded WhatsApp link" },
+  { pattern: /\+212[\s-]?\d/, label: "a retyped +212 phone number" },
+  { pattern: /\b0[5-7]\d{8}\b/, label: "a retyped Moroccan phone number" },
 ];
+// The contact page's meta description states the number for search results.
+const PHONE_ALLOWED = [PHONE_SOURCE, join("src", "app", "contact", "page.tsx")];
 
 // 2. Schema types we can never back with real data.
 const FORBIDDEN_SCHEMA = [
@@ -45,12 +50,24 @@ const FORBIDDEN_SCHEMA = [
   "ratingValue",
 ];
 
+// 3. Testimonials and partner logos are placeholders until real ones are
+//    supplied with permission. A placeholder flag may only be turned off on
+//    an entry whose text is no longer a "[...]" placeholder.
+const homeContent = readFileSync(join("src", "content", "home.ts"), "utf8");
+for (const match of homeContent.matchAll(/quote: "([^"]*)"[^}]*placeholder: (true|false)/g)) {
+  const [, quote, flag] = match;
+  if (flag === "false" && /^\[.*\]$/.test(quote)) fail("src/content/home.ts", "a placeholder testimonial is marked as real");
+  if (flag === "true" && !/^\[.*\]$/.test(quote)) fail("src/content/home.ts", "a written testimonial is still flagged as a placeholder");
+}
+
 for (const file of sourceFiles) {
   const contents = readFileSync(file, "utf8");
   const withoutComments = contents.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
 
-  for (const { pattern, label } of PHONE_PATTERNS) {
-    if (pattern.test(withoutComments)) fail(file, `contains ${label}`);
+  if (!PHONE_ALLOWED.includes(file)) {
+    for (const { pattern, label } of PHONE_PATTERNS) {
+      if (pattern.test(withoutComments)) fail(file, `contains ${label}; import it from src/lib/company.ts`);
+    }
   }
   for (const needle of FORBIDDEN_SCHEMA) {
     if (withoutComments.includes(needle)) {
@@ -121,7 +138,32 @@ if (!venueData.includes('import "server-only"')) {
 //    the root layout template, so that is counted too.
 const BRAND_SUFFIX = " | PM Travel Agency";
 const TITLE_MAX = 60;
-const DESCRIPTION_MAX = 155;
+const DESCRIPTION_MIN = 120;
+const DESCRIPTION_MAX = 160;
+
+/**
+ * pageMetadata() appends the brand only while the result fits in 60
+ * characters, so the rendered title is either "title | brand" or "title".
+ * The home title is set verbatim by the business brief and is exempt.
+ */
+function checkTitle(file, title, { exempt = false } = {}) {
+  if (exempt) return;
+  const rendered = (title + BRAND_SUFFIX).length <= TITLE_MAX ? title + BRAND_SUFFIX : title;
+  if (rendered.length > TITLE_MAX) fail(file, `title renders at ${rendered.length} chars, over ${TITLE_MAX}: "${rendered}"`);
+  if (title.includes("PM Travel Agency")) fail(file, `title "${title}" repeats the brand`);
+}
+
+function checkDescription(file, description) {
+  if (description.length > DESCRIPTION_MAX) fail(file, `description is ${description.length} chars, over ${DESCRIPTION_MAX}: "${description.slice(0, 50)}…"`);
+  if (description.length < DESCRIPTION_MIN) fail(file, `description is ${description.length} chars, under ${DESCRIPTION_MIN}: "${description.slice(0, 50)}…"`);
+}
+
+// Titles and descriptions held in content data (dynamic routes).
+for (const file of [join("src", "content", "b2b.ts"), join("src", "content", "leisure.ts"), join("src", "content", "journal.ts")]) {
+  const source = readFileSync(file, "utf8");
+  for (const [, t] of source.matchAll(/seoTitle:\s*"([^"]+)"/g)) checkTitle(file, t);
+  for (const [, d] of source.matchAll(/(?:seoDescription|description):\s*\n?\s*"([^"]{60,})"/g)) checkDescription(file, d);
+}
 
 // Some titles are template literals reading from COMPANY, because company
 // facts are never retyped into a page. Resolve those so their real rendered
@@ -152,25 +194,17 @@ for (const file of pageFiles) {
   const title = rawTitle ? resolveTitle(rawTitle) : undefined;
   const description = metadataBlock.match(/description:\s*"([^"]+)"/)?.[1];
 
+  const isHome = file.endsWith(join("src", "app", "page.tsx"));
   if (!title) {
     fail(file, "has metadata but no title");
   } else {
-    // The home page sets its own full title; every other page gets the
-    // template suffix appended.
-    const isHome = file.endsWith(join("app", "page.tsx"));
-    const rendered = isHome ? title : title + BRAND_SUFFIX;
-    if (rendered.length > TITLE_MAX) {
-      fail(file, `title renders at ${rendered.length} chars, over ${TITLE_MAX}: "${rendered}"`);
-    }
-    if (!isHome && title.includes("PM Travel Agency")) {
-      fail(file, "title repeats the brand, which the template already appends");
-    }
+    checkTitle(file, title, { exempt: isHome });
   }
 
   if (!description) {
     fail(file, "has metadata but no description");
-  } else if (description.length > DESCRIPTION_MAX) {
-    fail(file, `description is ${description.length} chars, over ${DESCRIPTION_MAX}`);
+  } else {
+    checkDescription(file, description);
   }
 
   if (!/alternates|path:/.test(metadataBlock)) {
@@ -237,6 +271,8 @@ if (priorityCount > 1) {
 //      keeps that allowance scoped to the framework rather than becoming a
 //      general licence to style inline.
 for (const file of sourceFiles) {
+  // The Open Graph renderer (Satori) only understands inline styles.
+  if (file.endsWith(join("lib", "og.tsx"))) continue;
   const contents = readFileSync(file, "utf8").replace(
     /\/\*[\s\S]*?\*\/|\/\/.*$/gm,
     ""
@@ -249,7 +285,7 @@ for (const file of sourceFiles) {
 // 10. No plain <img> tags. Images go through SiteImage, which supplies width,
 //     height and alt from the record - so nothing can ship without them.
 for (const file of sourceFiles) {
-  if (file.endsWith(join("components", "SiteImage.tsx"))) continue;
+  if (file.endsWith(join("components", "SiteImage.tsx")) || file.endsWith(join("lib", "og.tsx"))) continue;
   const contents = readFileSync(file, "utf8").replace(
     /\/\*[\s\S]*?\*\/|\/\/.*$/gm,
     ""

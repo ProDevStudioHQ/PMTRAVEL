@@ -304,7 +304,7 @@ export default function TasteOfMarrakechPage() {
         imageKey="b1-marrakech-hero"
         kicker="Signature programme"
         trail={[
-          { href: "/morocco-dmc", label: "Morocco DMC" },
+          { href: "/b2b/dmc-services", label: "DMC Services" },
           { href: PATH, label: "Taste of Marrakech" },
         ]}
         stats={STATS}
@@ -613,7 +613,7 @@ export default function TasteOfMarrakechPage() {
                 a team activity, and an Agafay sunset with a gala dinner.
               </p>
             </div>
-            <Link href="/mice" className={`${pill} border border-ink-900/20 text-ink-900 hover:border-ink-900`}>
+            <Link href="/b2b/mice" className={`${pill} border border-ink-900/20 text-ink-900 hover:border-ink-900`}>
               MICE &amp; Events
               <ArrowRight aria-hidden="true" size={16} strokeWidth={2} />
             </Link>

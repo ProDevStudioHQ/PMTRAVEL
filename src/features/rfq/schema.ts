@@ -156,3 +156,27 @@ export const rfqAccessLog = pgTable("rfq_access_log", {
 
 export type RfqRequest = typeof rfqRequests.$inferSelect;
 export type NewRfqRequest = typeof rfqRequests.$inferInsert;
+
+/**
+ * Website enquiries (2026-11 site): quote requests, partner applications,
+ * contact messages and newsletter sign-ups. One table, typed by `kind`, with
+ * the validated form payload in `data`. Stored before any email is sent, so a
+ * mail failure can never lose a commercial enquiry.
+ */
+export const enquiryKind = pgEnum("enquiry_kind", ["quote", "partner", "contact", "newsletter"]);
+
+export const enquiries = pgTable(
+  "enquiries",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    reference: text("reference").notNull().unique(),
+    kind: enquiryKind("kind").notNull(),
+    email: text("email").notNull(),
+    data: jsonb("data").notNull(),
+    sourcePath: text("source_path"),
+    sourceIpHash: text("source_ip_hash"),
+    userAgent: text("user_agent"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("enquiries_kind_created_idx").on(table.kind, table.createdAt)]
+);

@@ -1,130 +1,107 @@
-import { DESTINATIONS } from "@/features/destinations/registry";
-import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
-import { EXCURSIONS, excursionHref } from "@/features/excursions/data";
-import { RFQ_HREF } from "@/lib/company";
+import { B2B_MENU } from "@/content/b2b";
+import { EXPERIENCES, TOURS, leisureHref } from "@/content/leisure";
+import { LOGIN_HREF, PARTNER_HREF, RFQ_HREF } from "@/lib/company";
 
 /**
- * Navigation: the page lists behind the header, footer and sitemap.
- *
- * Company facts live in ./company and are re-exported here so existing
- * server-side imports keep working. Client Components must import from
- * ./company directly and receive the menus as props - importing this module
- * in the browser would ship the full destination, programme and excursion
- * data with it.
+ * Navigation: the single source for the header, mobile menu and footer.
+ * Everything here is plain data so it can be passed to the Client header.
+ * Every href points at a real page (checked by `npm run verify:data`).
  */
-export { COMPANY, addressOneLine, RFQ_HREF, SITE_URL } from "@/lib/company";
+export { COMPANY, addressOneLine, RFQ_HREF, SITE_URL, PARTNER_HREF, LOGIN_HREF } from "@/lib/company";
 
-export type NavItem = {
-  href: string;
-  label: string;
-  /** Short line used in the footer and on hub pages. */
-  blurb?: string;
-};
+export type NavLink = { href: string; label: string; blurb?: string };
 
-export const PRIMARY_NAV: NavItem[] = [
-  { href: "/morocco-dmc", label: "Morocco DMC", blurb: "What we operate" },
-  { href: "/mice", label: "MICE & Events", blurb: "Meetings, incentives, events" },
-  { href: "/programmes", label: "B2B Programmes", blurb: "Ready-to-contract packages" },
-  { href: "/excursions", label: "B2B Excursions", blurb: "Day trips around Marrakech" },
-  {
-    href: "/programmes/taste-of-marrakech",
-    label: "Taste of Marrakech",
-    blurb: "Signature 7-night culinary programme",
-  },
-  { href: "/b2b", label: "For Travel Trade", blurb: "How we work with agencies" },
-  { href: "/destinations", label: "Destinations", blurb: "Where we operate" },
-  { href: "/how-we-work", label: "How We Work", blurb: "Workflow and verification" },
-];
-
-export const SECONDARY_NAV: NavItem[] = [
-  { href: "/about", label: "About", blurb: "Who we are" },
-  { href: "/contact", label: "Contact", blurb: "Reach the operations desk" },
-];
-
-/** A dropdown group in the header (SOP 3.1). */
-export type NavGroup = {
+export type NavEntry = {
   id: string;
   label: string;
-  /** When set, the label itself links to this hub page; a chevron opens the menu. */
-  href?: string;
-  items: NavItem[];
+  href: string;
+  /** "list": small dropdown. "mega": wide panel with descriptions and a quote card. */
+  menu?: { kind: "list" | "mega"; items: NavLink[]; allLabel?: string };
+  emphasis?: boolean;
 };
 
-/** Look a page up in the full list, so labels and blurbs are never retyped. */
-const byHref = (href: string): NavItem => {
-  const item = [...PRIMARY_NAV, ...SECONDARY_NAV].find((entry) => entry.href === href);
-  if (!item) throw new Error(`No navigation entry for ${href}`);
-  return item;
-};
-
-/** A destination's one-line description: the first sentence of its summary. */
-const firstSentence = (text: string) => text.split(/(?<=\.)\s/)[0] ?? text;
-
-/**
- * The header's arrangement. PRIMARY_NAV and SECONDARY_NAV stay the full list
- * for the footer and sitemap. The header groups everything into five
- * dropdowns, so every page stays reachable from the header.
- */
-export const NAV_GROUPS: NavGroup[] = [
+export const NAV: NavEntry[] = [
+  { id: "home", label: "Home", href: "/" },
   {
-    id: "operations",
-    label: "Operations",
-    items: ["/morocco-dmc", "/mice", "/b2b"].map(byHref),
+    id: "experiences",
+    label: "Experiences",
+    href: "/experiences",
+    menu: {
+      kind: "list",
+      allLabel: "All experiences",
+      items: EXPERIENCES.map((e) => ({ href: leisureHref(e), label: e.name, blurb: e.menuBlurb })),
+    },
   },
   {
-    id: "programmes",
-    label: "B2B Programmes",
-    href: "/programmes",
-    items: [
-      ...PROGRAMMES.map((programme) => ({
-        href: programmeHref(programme),
-        label: programme.name,
-        blurb: programme.markets.join(" · "),
-      })),
-      { ...byHref("/programmes"), label: "All programmes" },
-    ],
+    id: "tours",
+    label: "Tours",
+    href: "/tours",
+    menu: {
+      kind: "list",
+      allLabel: "All tours",
+      items: TOURS.map((t) => ({ href: leisureHref(t), label: t.name, blurb: t.menuBlurb })),
+    },
   },
   {
-    id: "excursions",
-    label: "B2B Excursions",
-    href: "/excursions",
-    items: [
-      ...EXCURSIONS.map((excursion) => ({
-        href: excursionHref(excursion),
-        label: excursion.name,
-        blurb: `${excursion.region} · ${excursion.duration}`,
-      })),
-      { ...byHref("/excursions"), label: "All excursions" },
-    ],
+    id: "b2b",
+    label: "B2B & DMC",
+    href: "/b2b",
+    emphasis: true,
+    menu: {
+      kind: "mega",
+      allLabel: "B2B overview",
+      items: [
+        ...B2B_MENU.map((a) => ({ href: `/b2b/${a.slug}`, label: a.name, blurb: a.menuBlurb })),
+        { href: PARTNER_HREF, label: "Become a Partner", blurb: "Open a trade account and get our partner rates." },
+      ],
+    },
   },
-  {
-    id: "destinations",
-    label: "Destinations",
-    href: "/destinations",
-    items: [
-      ...DESTINATIONS.map((destination) => ({
-        href: `/destinations/${destination.slug}`,
-        label: destination.name,
-        blurb: firstSentence(destination.summary),
-      })),
-      { ...byHref("/destinations"), label: "All destinations" },
-    ],
-  },
-  {
-    // The company pages share one dropdown so the full bar fits on laptops.
-    id: "company",
-    label: "Company",
-    items: ["/how-we-work", "/about", "/contact"].map(byHref),
-  },
+  { id: "about", label: "About", href: "/about" },
+  { id: "journal", label: "Journal", href: "/journal" },
+  { id: "gallery", label: "Gallery", href: "/gallery" },
+  { id: "contact", label: "Contact", href: "/contact" },
 ];
 
-/** Top-level header links after the dropdowns. */
-export const NAV_LINKS: NavItem[] = [];
+export const FOOTER_B2B: NavLink[] = [
+  ...B2B_MENU.map((a) => ({ href: `/b2b/${a.slug}`, label: a.slug === "mice" ? "MICE" : a.name })),
+  { href: PARTNER_HREF, label: "Become a Partner" },
+  { href: LOGIN_HREF, label: "Partner Login" },
+];
 
-/** Every public route, used by the sitemap. Keep in sync with src/app. */
-export const ALL_ROUTES: string[] = [
+export const FOOTER_EXPLORE: NavLink[] = [
+  { href: "/experiences", label: "Experiences" },
+  { href: "/tours", label: "Tours" },
+  { href: "/destinations", label: "Destinations" },
+  { href: "/programmes", label: "B2B Programmes" },
+  { href: "/about", label: "About" },
+  { href: "/journal", label: "Journal" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/contact", label: "Contact" },
+];
+
+export const LEGAL_LINKS: NavLink[] = [
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+  { href: "/cookies", label: "Cookies" },
+];
+
+/** Static routes for the sitemap. Dynamic collections are added in sitemap.ts. */
+export const STATIC_ROUTES: string[] = [
   "/",
-  ...PRIMARY_NAV.map((item) => item.href),
-  ...SECONDARY_NAV.map((item) => item.href),
+  "/experiences",
+  "/tours",
+  "/b2b",
+  PARTNER_HREF,
   RFQ_HREF,
+  LOGIN_HREF,
+  "/about",
+  "/journal",
+  "/gallery",
+  "/contact",
+  "/destinations",
+  "/programmes",
+  "/excursions",
+  "/privacy",
+  "/terms",
+  "/cookies",
 ];

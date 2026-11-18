@@ -14,33 +14,10 @@ import { createRequire } from "node:module";
 
 const ORIGIN = "http://127.0.0.1:3112";
 
-const PAGES = [
-  "/",
-  "/about",
-  "/morocco-dmc",
-  "/mice",
-  "/b2b",
-  "/how-we-work",
-  "/destinations",
-  "/destinations/marrakech",
-  "/destinations/agafay",
-  "/destinations/atlas",
-  "/destinations/essaouira",
-  "/destinations/merzouga",
-  "/destinations/fes",
-  "/request-a-quote",
-  "/contact",
-  "/programmes",
-  "/programmes/taste-of-marrakech",
-  "/programmes/atlas-agafay-escape",
-  "/programmes/trek-and-taste-atlas",
-  "/excursions",
-  "/excursions/agafay-quad-camel-sunset",
-  "/excursions/ourika-valley-ebike",
-  "/destinations/casablanca",
-  "/destinations/ait-ben-haddou",
-  "/this-page-does-not-exist",
-];
+/** Filled from the live sitemap, plus pages the sitemap leaves out on purpose. */
+const PAGES = [];
+const EXTRA_PAGES = ["/partner-login", "/this-page-does-not-exist"];
+const internalLinks = new Map();
 
 const failures = [];
 const fail = (page, message) => failures.push(`${page}: ${message}`);
@@ -146,6 +123,13 @@ try {
   }
   if (!ready) throw new Error("Server did not become healthy");
 
+  const sitemap = await (await fetch(`${ORIGIN}/sitemap.xml`)).text();
+  for (const [, loc] of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+    const path = new URL(loc).pathname;
+    if (!PAGES.includes(path)) PAGES.push(path);
+  }
+  PAGES.push(...EXTRA_PAGES);
+
   for (const page of PAGES) {
     const response = await fetch(`${ORIGIN}${page}`);
     const html = await response.text();
@@ -160,6 +144,17 @@ try {
     }
 
     check(page, html);
+
+    for (const [, href] of stripScripts(html).matchAll(/<a[^>]+href="(\/[^"#?]*)/g)) {
+      if (href.startsWith("/_next")) continue;
+      if (!internalLinks.has(href)) internalLinks.set(href, page);
+    }
+  }
+
+  // Every internal link on every page must resolve (no broken menu items or CTAs).
+  for (const [href, from] of internalLinks) {
+    const response = await fetch(`${ORIGIN}${href}`, { redirect: "manual" });
+    if (response.status >= 400) fail(from, `links to ${href}, which returns ${response.status}`);
   }
 } finally {
   server.kill();
@@ -171,4 +166,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Accessibility check passed (${PAGES.length} pages).`);
+console.log(`Accessibility check passed (${PAGES.length} pages, ${internalLinks.size} internal links).`);

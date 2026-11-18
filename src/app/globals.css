@@ -1,83 +1,103 @@
 @import "tailwindcss";
 
 /*
-  PM Travel design system.
-  Source of truth: docs/REDESIGN-SOP.md, adopted in docs/decisions.md D4.
-  This file is the ONLY place a hex value may appear. Every text pair below
-  was measured before use; the figures are recorded in docs/START.md.
+  PM Travel Agency design system (2026-11 brand: Midnight, Sand, Terracotta, Gold).
+  Adopted in docs/decisions.md D7. This file is the ONLY place a hex value may appear.
+
+  Measured contrast (WCAG 2.x):
+    ink on sand 15.49 · sand on midnight 15.56 · muted on sand 4.74 · muted on white 5.33
+    white on terracotta-600 5.19 · sand on terracotta-600 4.62
+    terracotta-700 on sand 5.41 · terracotta-300 on midnight 6.30 · gold on midnight 7.23
+  The brand terracotta #C4622D measures 4.09 with white text, so it never carries
+  small text: filled buttons use terracotta-600, terracotta text on light uses -700.
+  Gold on sand is 2.15: decorative only (lines, icons beside a label), never text.
 */
 @theme {
-  /* Tailwind's default reds are removed so only the brand reds exist. */
   --color-red-*: initial;
 
-  /* Brand. Red is structural: actions, active state, one deep section. */
-  --color-red-900: #6e0f14; /* oxblood - footer, dark sections, nav on scroll */
-  --color-red-600: #c1272d; /* primary - things you can click */
-  --color-red-050: #fbedec; /* tint - table headers, quiet backgrounds */
-  --color-ink-900: #1b1517; /* body text and headings */
-  --color-ink-500: #6e6560; /* secondary text, captions, meta */
-  --color-paper: #ffffff; /* default surface */
-  --color-paper-2: #f5f2f0; /* alternating section surface */
+  /* ---- Brand ---- */
+  --color-midnight: #0e1a2b;
+  --color-midnight-2: #16263d;
+  --color-sand: #f6f1ea;
+  --color-sand-2: #ede4d7; /* decorative surface, no muted text on it */
+  --color-white: #ffffff;
+  --color-terracotta: #c4622d; /* brand: large display, icons, rules, hover fills */
+  --color-terracotta-600: #ad5327; /* filled CTAs */
+  --color-terracotta-700: #9e4a20; /* terracotta text on light surfaces */
+  --color-terracotta-300: #d9875a; /* terracotta text on midnight */
+  --color-gold: #c9a14a;
+  --color-ink: #1a1a1a;
+  --color-muted: #6b6b6b;
+  --color-line: rgb(26 26 26 / 0.1);
+  --color-whatsapp: #1f8f4e; /* icon-only button, 4.13 with white */
 
-  /* Data status. Always paired with a shape and a word, never colour alone. */
-  --color-status-verified: #23704a; /* 6.02 on paper, 5.40 on paper-2 */
-  --color-status-progress: #9a5b00; /* 5.43 on paper, 4.87 on paper-2 */
+  /* ---- Legacy names, remapped so pages built before D7 adopt the new brand ---- */
+  --color-red-900: #0e1a2b;
+  --color-red-600: #ad5327;
+  --color-red-050: #faf6f1;
+  --color-ink-900: #1a1a1a;
+  --color-ink-500: #6b6b6b;
+  --color-paper: #f6f1ea;
+  --color-paper-2: #ffffff;
+  --color-rule: rgb(26 26 26 / 0.1);
 
-  /* Hairlines: ink at 10%, the static card and section border. */
-  --color-rule: rgb(27 21 23 / 0.1);
+  --color-status-verified: #23704a;
+  --color-status-progress: #9a5b00;
 
-  /* Fonts. Display for headings, sans for everything else, serif for evidence only. */
-  --font-display: var(--font-archivo), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-sans: var(--font-plex), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-evidence: var(--font-newsreader), ui-serif, Georgia, "Times New Roman",
-    serif;
+  /* ---- Fonts ---- */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  --font-evidence: var(--font-fraunces), ui-serif, Georgia, serif;
 
-  /* Type scale (rem): 0.8125 0.9375 1 1.25 1.625 2.25 3.25 4.5 */
+  /* ---- Type scale (legacy steps, still used by content pages) ---- */
   --text-xs: 0.8125rem;
   --text-xs--line-height: 1.5;
   --text-sm: 0.9375rem;
   --text-sm--line-height: 1.6;
-  --text-base: 1rem;
-  --text-base--line-height: 1.6;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.7;
   --text-lg: 1.25rem;
-  --text-lg--line-height: 1.45;
+  --text-lg--line-height: 1.5;
   --text-xl: 1.625rem;
-  --text-xl--line-height: 1.15;
+  --text-xl--line-height: 1.2;
   --text-2xl: 2.25rem;
   --text-2xl--line-height: 1.1;
   --text-3xl: 3.25rem;
   --text-3xl--line-height: 1.05;
   --text-4xl: 4.5rem;
-  --text-4xl--line-height: 1.05;
+  --text-4xl--line-height: 1.02;
 
-  /* Radius: one value per element class. Full-bleed sections are square. */
-  --radius-control: 4px; /* buttons and inputs */
-  --radius-card: 8px; /* cards and panels */
+  --radius-control: 12px;
+  --radius-card: 20px;
 
-  /* Shadows: two levels, warm-tinted, only where elevation means something. */
-  --shadow-raised: 0 1px 2px rgb(27 21 23 / 0.08), 0 2px 8px rgb(27 21 23 / 0.08);
-  --shadow-overlay: 0 4px 12px rgb(27 21 23 / 0.08), 0 16px 40px rgb(27 21 23 / 0.08);
+  --shadow-raised: 0 1px 2px rgb(14 26 43 / 0.06), 0 4px 16px rgb(14 26 43 / 0.06);
+  --shadow-overlay: 0 8px 24px rgb(14 26 43 / 0.1), 0 24px 60px rgb(14 26 43 / 0.12);
+  --shadow-lift: 0 18px 40px -12px rgb(14 26 43 / 0.25);
 
-  --container-site: 1200px;
+  --container-site: 1280px;
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
   color-scheme: light;
+  --header-h: 72px;
 }
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 16px);
 }
 
 body {
-  background-color: var(--color-paper);
-  color: var(--color-ink-900);
+  background-color: var(--color-sand);
+  color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: var(--text-base);
-  line-height: 1.6;
+  font-size: 1.0625rem;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 @layer base {
@@ -86,33 +106,83 @@ body {
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.01em;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
 }
 
-/* Text-only blocks stay under 72 characters. */
-.measure {
-  max-width: 68ch;
+/* ---- Fluid type ---- */
+.t-hero {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
-
-/* Every published operational number: tabular, lining figures. */
+.t-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.t-h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-terracotta-700);
+}
+.on-dark .eyebrow,
+.eyebrow-on-dark {
+  color: var(--color-terracotta-300);
+}
+.measure {
+  max-width: 65ch;
+}
 .tabular {
   font-variant-numeric: tabular-nums lining-nums;
 }
 
-/* Focus: 2px brand red at 2px offset; inverted on dark surfaces. */
+/* Thin gold divider */
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  border: 0;
+}
+
+/* Section rhythm: 96px mobile-up to 140px desktop */
+.section-y {
+  padding-block: clamp(4.5rem, 9vw, 8.75rem);
+}
+
+/* ---- Focus ---- */
 :focus-visible {
-  outline: 2px solid var(--color-red-600);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-terracotta-600);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
-
+.on-dark :focus-visible,
 .surface-deep :focus-visible {
-  outline-color: var(--color-paper);
+  outline-color: var(--color-gold);
 }
-
-/* A light panel inside a dark surface (dropdown, drawer) restores the red ring. */
-.surface-deep .surface-light :focus-visible {
-  outline-color: var(--color-red-600);
+.surface-deep .surface-light :focus-visible,
+.on-dark .surface-light :focus-visible {
+  outline-color: var(--color-terracotta-600);
 }
 
 .skip-link {
@@ -121,7 +191,6 @@ body {
   top: 0;
   z-index: 100;
 }
-
 .skip-link:focus {
   display: inline-flex;
   align-items: center;
@@ -129,27 +198,146 @@ body {
   left: 1rem;
   top: 1rem;
   padding: 0.75rem 1rem;
-  background: var(--color-red-900);
-  color: var(--color-paper);
-  border-radius: var(--radius-control);
+  background: var(--color-midnight);
+  color: var(--color-sand);
+  border-radius: 999px;
 }
 
-/*
-  Motion budget (SOP 2.4): the nav transition on scroll, dropdown open and
-  close, and at most one orchestrated moment per page - the route table reveal.
-  Nothing else animates. Reduced motion removes all of it.
-*/
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+/* ---- Motion (CSS side). JS motion lives in Framer Motion components. ---- */
+
+/* Hero headline: word-by-word reveal, pure CSS so it never waits on JS (LCP). */
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.reveal-words > .w {
+  display: inline-block;
+  animation: word-in 0.7s var(--ease-premium) both;
+}
+.reveal-words > .w:nth-child(1) { animation-delay: 0.1s; }
+.reveal-words > .w:nth-child(2) { animation-delay: 0.16s; }
+.reveal-words > .w:nth-child(3) { animation-delay: 0.22s; }
+.reveal-words > .w:nth-child(4) { animation-delay: 0.28s; }
+.reveal-words > .w:nth-child(5) { animation-delay: 0.34s; }
+.reveal-words > .w:nth-child(6) { animation-delay: 0.4s; }
+.reveal-words > .w:nth-child(7) { animation-delay: 0.46s; }
+.reveal-words > .w:nth-child(8) { animation-delay: 0.52s; }
+.reveal-words > .w:nth-child(9) { animation-delay: 0.58s; }
+.reveal-words > .w:nth-child(10) { animation-delay: 0.64s; }
+.reveal-words > .w:nth-child(11) { animation-delay: 0.7s; }
+.reveal-words > .w:nth-child(n + 12) { animation-delay: 0.76s; }
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-up {
+  animation: fade-up 0.8s var(--ease-premium) both;
+}
+.delay-1 { animation-delay: 0.55s; }
+.delay-2 { animation-delay: 0.7s; }
+.delay-3 { animation-delay: 0.85s; }
+
+/* Ken Burns: slow zoom on hero photographs. Transform only, so no layout shift. */
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+.ken-burns {
+  animation: ken-burns 20s ease-out both;
+  transform-origin: 50% 40%;
+  will-change: transform;
+}
+
+/* Partner logo strip */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Cards: lift, shadow and image zoom on hover */
+.card-lift {
+  transition:
+    transform 0.4s var(--ease-premium),
+    box-shadow 0.4s var(--ease-premium);
+}
+.card-lift .card-img {
+  transition: transform 0.7s var(--ease-premium);
+}
+@media (hover: hover) {
+  .card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
+  }
+  .card-lift:hover .card-img {
+    transform: scale(1.05);
   }
 }
 
+/* Buttons: arrow slides right on hover */
+.arrow-slide {
+  transition: transform 0.25s var(--ease-premium);
+}
+.group:hover .arrow-slide,
+.group:focus-visible .arrow-slide {
+  transform: translateX(4px);
+}
+
+/* Horizontal scroller */
+.scroller {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gold) transparent;
+}
+.scroller > * {
+  scroll-snap-align: start;
+}
+
+/* Native accordion */
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details .acc-icon {
+  transition: transform 0.25s var(--ease-premium);
+}
+details[open] .acc-icon {
+  transform: rotate(45deg);
+}
+details[open] .acc-body {
+  animation: fade-up 0.35s var(--ease-premium) both;
+}
+
+/* Legacy reveal (route table era) */
 @keyframes pm-reveal {
   from {
     opacity: 0;
@@ -160,7 +348,55 @@ body {
     transform: none;
   }
 }
-
 .pm-reveal {
   animation: pm-reveal 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Reduced motion: everything above stops. Framer components check the same query. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ken-burns,
+  .marquee-track {
+    animation: none !important;
+  }
+}
+
+/* Pages built before D7 set font-bold on headings; Fraunces reads best at 500–600. */
+h1.font-bold,
+h2.font-bold,
+h3.font-bold,
+dd.font-bold {
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Horizontal rail aligned to the container's left edge, bleeding off the right. */
+.rail-pad {
+  padding-inline: 1rem;
+  scroll-padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .rail-pad {
+    padding-inline: 1.5rem;
+    scroll-padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .rail-pad {
+    padding-inline: max(2.5rem, calc((100vw - var(--container-site)) / 2 + 2.5rem));
+    scroll-padding-inline: max(2.5rem, calc((100vw - var(--container-site)) / 2 + 2.5rem));
+  }
 }

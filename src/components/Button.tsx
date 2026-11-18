@@ -1,65 +1,71 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
+import { ArrowRight } from "lucide-react";
 
-/** Three variants only (SOP 3.3). */
-type Variant = "primary" | "secondary" | "ghost";
-
-/** "dark" for buttons that sit on red-900 or over a photograph. */
+type Variant = "primary" | "secondary" | "ghost" | "whatsapp";
+/** "dark" for buttons on midnight or over a photograph. */
 type Tone = "light" | "dark";
 
 const base =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-control text-sm font-medium transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50";
+  "group inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-[0.9375rem] font-medium leading-none transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, Record<Tone, string>> = {
-  // paper on red-600: 5.84:1. Hover deepens to red-900 (12.06:1).
+  // white on terracotta-600: 5.19:1
   primary: {
-    light: "bg-red-600 px-6 text-paper hover:bg-red-900",
-    dark: "bg-red-600 px-6 text-paper hover:bg-paper hover:text-red-900",
+    light: "bg-terracotta-600 text-white hover:bg-midnight",
+    dark: "bg-terracotta-600 text-white hover:bg-sand hover:text-midnight",
   },
-  // ink-900 on paper: 18.01:1. On dark: paper border and text.
   secondary: {
-    light: "border border-ink-900 px-6 text-ink-900 hover:bg-paper-2",
-    dark: "border border-paper px-6 text-paper hover:bg-paper hover:text-ink-900",
+    light: "border border-midnight/25 text-midnight hover:border-midnight hover:bg-midnight hover:text-sand",
+    dark: "border border-sand/50 text-sand hover:bg-sand hover:text-midnight",
   },
-  // Text action; the underline appears on hover.
   ghost: {
-    light: "px-1 text-red-600 underline-offset-4 hover:underline",
-    dark: "px-1 text-paper underline-offset-4 hover:underline",
+    light: "px-1 text-terracotta-700 underline-offset-4 hover:underline",
+    dark: "px-1 text-sand underline-offset-4 hover:underline",
+  },
+  whatsapp: {
+    light: "border border-midnight/25 text-midnight hover:bg-midnight hover:text-sand",
+    dark: "border border-sand/50 text-sand hover:bg-sand hover:text-midnight",
   },
 };
 
-const classesFor = (variant: Variant, tone: Tone) => variants[variant][tone];
+export const buttonClasses = (variant: Variant = "primary", tone: Tone = "light", className = "") =>
+  `${base} ${variants[variant][tone]} ${className}`;
+
+function Arrow() {
+  return <ArrowRight aria-hidden="true" size={18} strokeWidth={1.75} className="arrow-slide" />;
+}
 
 type ButtonLinkProps = ComponentProps<typeof Link> & {
   variant?: Variant;
   tone?: Tone;
+  arrow?: boolean;
+  icon?: ReactNode;
   children: ReactNode;
 };
 
-export function ButtonLink({
-  variant = "primary",
-  tone = "light",
-  className = "",
-  children,
-  ...props
-}: ButtonLinkProps) {
+export function ButtonLink({ variant = "primary", tone = "light", arrow = false, icon, className = "", children, ...props }: ButtonLinkProps) {
+  const external = typeof props.href === "string" && /^https?:/.test(props.href);
   return (
-    <Link className={`${base} ${classesFor(variant, tone)} ${className}`} {...props}>
-      {children}
+    <Link
+      className={buttonClasses(variant, tone, className)}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      {...props}
+    >
+      {icon}
+      <span>{children}</span>
+      {arrow ? <Arrow /> : null}
     </Link>
   );
 }
 
-type ButtonProps = ComponentProps<"button"> & {
-  variant?: Variant;
-  tone?: Tone;
-};
+type ButtonProps = ComponentProps<"button"> & { variant?: Variant; tone?: Tone; arrow?: boolean };
 
-export function Button({
-  variant = "primary",
-  tone = "light",
-  className = "",
-  ...props
-}: ButtonProps) {
-  return <button className={`${base} ${classesFor(variant, tone)} ${className}`} {...props} />;
+export function Button({ variant = "primary", tone = "light", arrow = false, className = "", children, ...props }: ButtonProps) {
+  return (
+    <button className={buttonClasses(variant, tone, className)} {...props}>
+      <span>{children}</span>
+      {arrow ? <Arrow /> : null}
+    </button>
+  );
 }

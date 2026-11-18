@@ -1,71 +1,107 @@
 /**
  * Company facts and site-wide constants, with no other imports.
  *
- * Kept apart from nav.ts on purpose: nav.ts pulls in the destination,
- * programme and excursion data to build the menus, and anything imported by a
- * Client Component (the header, the quote form, the logo) ships to the
- * browser. Importing facts from here keeps that data out of the bundle.
+ * Kept apart from nav.ts so Client Components (header, forms, WhatsApp button)
+ * can import facts without pulling page data into the browser bundle.
  *
- * Never retype a company fact into a page. Import it from here (or from
- * nav.ts, which re-exports everything below).
+ * Never retype a company fact into a page. Import it from here.
  *
- * Deliberately absent, because they are not confirmed and must not appear
- * anywhere on the site - not even as placeholder text:
- *   - telephone number / tel: link / WhatsApp link
- *   - registered entity name, RC, ICE, TVA, ODV licence, IATA
- * See docs/START.md, "What must never be published".
+ * Contact details below were supplied by the business in the November 2026
+ * website brief (see docs/decisions.md D7). Values set to `null` are not yet
+ * supplied: the site renders a clearly marked placeholder for them and never
+ * a guessed value.
  */
 export const COMPANY = {
   name: "PM Travel Agency",
-  brandLine: "By Prestige Majestic Project & Events",
-  positioning: "Your Morocco Ground Partner",
-  proofLine: "You sell Morocco. We operate it on the ground.",
+  legalLine: "PM Travel Agency by Prestige Majestic Projects & Events",
+  brandLine: "by Prestige Majestic",
+  parent: "Prestige Majestic Projects & Events",
+  positioning: "Your Ground Partner in Morocco",
+  shortDescription:
+    "PM Travel Agency by Prestige Majestic Projects & Events — Morocco DMC based in Marrakech.",
   address: {
-    line1: "Bureau 3, Residence Al Manar",
-    district: "Gueliz",
+    line1: "N° 3, Résidence Al Manar 10",
+    street: "Rue Ibn Battouta",
     city: "Marrakech",
     postalCode: "40000",
     country: "Morocco",
+    countryCode: "MA",
+  },
+  /**
+   * Office coordinates for schema `geo`. TODO(business): copy the exact
+   * latitude/longitude from the Google Business Profile pin. The schema omits
+   * `geo` while this is null rather than publishing a guess.
+   */
+  geo: null as { latitude: number; longitude: number } | null,
+  phone: {
+    mobile: { display: "+212 762 455 472", tel: "+212762455472" },
+    landline: { display: "+212 524 347 213", tel: "+212524347213" },
+  },
+  whatsapp: {
+    number: "212762455472",
+    url: "https://wa.me/212762455472",
   },
   email: {
     b2b: "b2b@pm-travelagency.com",
     general: "contact@pm-travelagency.com",
   },
+  social: {
+    instagram: "https://www.instagram.com/pmtravelagencybypmpe/",
+    linkedin: "https://www.linkedin.com/company/133753972/",
+  },
+  mapsUrl:
+    "https://www.google.com/maps/place/PM+Travel+Agency+By+Prestige+Majestic+Projects%26Events/data=!4m2!3m1!1s0x0:0xffb2c0eb32059292",
+  /** Lazy-loaded iframe on /contact. Place query, no API key needed. */
+  mapsEmbedUrl:
+    "https://www.google.com/maps?q=PM+Travel+Agency+By+Prestige+Majestic+Projects%26Events,+Marrakech&output=embed",
+  hours: [
+    { days: "Monday–Friday", time: "9:00 AM – 6:00 PM", schemaDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
+    { days: "Saturday", time: "9:00 AM – 1:00 PM", schemaDays: ["Saturday"], opens: "09:00", closes: "13:00" },
+    { days: "Sunday", time: "Closed", schemaDays: [], opens: null, closes: null },
+  ],
+  timezone: "Morocco time (GMT+1)",
   languages: ["English", "French", "Arabic", "Italian", "Spanish"] as const,
+  languageCodes: "EN · FR · AR · IT · ES",
 } as const;
+
+/**
+ * Credentials shown in the Proof & Trust section and the footer.
+ * TODO(business): supply the licence number and year founded. Until then the
+ * site renders a marked placeholder, never an invented figure.
+ */
+export const CREDENTIALS = {
+  licenceNumber: null as string | null,
+  yearFounded: null as number | null,
+};
+
+/**
+ * The trust strip under the home hero. Editable claims supplied by the
+ * business; change them here and every page updates.
+ */
+export const TRUST_POINTS: { value: number | null; prefix?: string; suffix?: string; text?: string; caption: string }[] = [
+  { value: 24, suffix: "h", caption: "Quotes within 24h" },
+  { value: 200, suffix: "+ pax", caption: "FIT to 200+ pax" },
+  { value: 5, suffix: " languages", caption: COMPANY.languageCodes },
+  { value: null, text: "Marrakech", caption: "Office in Marrakech" },
+];
 
 export const addressOneLine = [
   COMPANY.address.line1,
-  COMPANY.address.district,
-  `${COMPANY.address.city} ${COMPANY.address.postalCode}`,
+  COMPANY.address.street,
+  COMPANY.address.city,
   COMPANY.address.country,
 ].join(", ");
 
 export const RFQ_HREF = "/request-a-quote";
+export const PARTNER_HREF = "/b2b/become-a-partner";
+export const LOGIN_HREF = "/partner-login";
 
-const SITE_URL_FALLBACK = "http://localhost:3000";
+/** WhatsApp deep link with a prefilled message. */
+export const whatsappLink = (message = "Hello PM Travel Agency, I'm a travel professional and would like to discuss a Morocco programme.") =>
+  `${COMPANY.whatsapp.url}?text=${encodeURIComponent(message)}`;
 
 /**
- * The canonical origin, used by metadataBase, the sitemap and robots.txt.
- *
- * Must never throw. `??` alone is not enough: Docker's `ARG` with no
- * `--build-arg` sets an empty *string*, which passes a nullish check and then
- * crashes `new URL("")` during the build. An unparseable value is treated the
- * same way, so a typo degrades to localhost rather than failing the build in
- * a page it has nothing to do with.
- *
- * A missing value in a production build is caught explicitly by the Dockerfile,
- * which would otherwise bake localhost canonicals into the deployed site.
+ * The production origin. Canonicals, sitemap, robots and Open Graph always use
+ * it, so a staging deployment can never publish staging canonicals.
  */
-function resolveSiteUrl(): string {
-  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (!configured) return SITE_URL_FALLBACK;
-  try {
-    new URL(configured);
-  } catch {
-    return SITE_URL_FALLBACK;
-  }
-  return configured.replace(/\/+$/, "");
-}
-
-export const SITE_URL = resolveSiteUrl();
+export const SITE_URL = "https://pm-travelagency.com";

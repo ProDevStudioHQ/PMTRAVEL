@@ -1,110 +1,86 @@
-import { BadgePercent, Crown, Headset, Zap } from "lucide-react";
+import { Suspense } from "react";
+import { Clock, FileText, Mail, MessageCircle } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Container } from "@/components/Container";
-import { FaqSection } from "@/components/FaqSection";
-import { Section } from "@/components/Section";
-import { TextLink } from "@/components/TextLink";
-import { RfqForm } from "@/features/rfq/RfqForm";
-import { RFQ_NEXT_STEPS } from "@/features/rfq/next-steps";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { RevealWords } from "@/components/PageHero";
+import { QuoteForm, QuoteFormInner } from "@/components/forms/QuoteForm";
+import { ButtonLink } from "@/components/Button";
+import { WhatsappIcon } from "@/components/Icon";
+import { COMPANY, RFQ_HREF, whatsappLink } from "@/lib/company";
+import { PARTNER_PROCESS } from "@/content/b2b";
 
 export const metadata = pageMetadata({
-  title: "Request a B2B Quote",
+  title: "Request a B2B Quote | Morocco Net Rates",
   description:
-    "Join the PM Travel network: exclusive B2B programmes, competitive net rates and dedicated support for your agency.",
-  path: "/request-a-quote",
+    "Request a B2B quote for Morocco: send dates, pax, service level and destinations. Costed proposal at net rates within 24h for standard requests.",
+  path: RFQ_HREF,
 });
 
-/*
-  CONTENT CHECK: these figures were supplied by the client and are not yet
-  backed by measured data. docs/START.md forbids unconfirmed claims and any
-  response-time promise; confirm each one before launch.
-*/
-const BENEFITS = [
-  { icon: BadgePercent, title: "Exclusive net rates", detail: "Up to 30% savings" },
-  { icon: Headset, title: "24/7 support", detail: "Dedicated team" },
-  { icon: Crown, title: "Premium programmes", detail: "50+ itineraries" },
-  { icon: Zap, title: "Fast quotes", detail: "Within 24h" },
-];
-
-const FAQS = [
-  {
-    question: "What information does a Morocco DMC need to quote?",
-    answer:
-      "Company, contact details, traveller numbers and the programme type are enough to open a file. Rooming detail, hotel category, guide language, meals and budget sharpen the answer, but holding the request back until you have all of them costs you more time than sending the outline today.",
-  },
-  {
-    question: "Do I have to fill in the whole form?",
-    answer:
-      "No. The company and contact steps are required and deliberately short. The logistics and notes steps are optional and can be sent later by replying to the acknowledgement.",
-  },
-  {
-    question: "Will my client's details be used as a case study?",
-    answer:
-      "Not without your written permission. There are no case studies on this site and none will appear that a client has not agreed to in writing.",
-  },
-];
-
-export default function RequestAQuotePage() {
+export default function RequestQuotePage() {
   return (
     <>
-      <section className="border-b border-rule bg-paper">
-        <Container className="py-14 lg:py-20">
-          <h1 className="max-w-[18ch] text-3xl font-bold tracking-tight text-ink-900 lg:text-4xl">
-            Join Our Network
+      <section className="on-dark surface-deep bg-midnight text-sand">
+        <Container className="pt-28 pb-14 lg:pt-36 lg:pb-20">
+          <Breadcrumbs trail={[{ href: RFQ_HREF, label: "Request a Quote" }]} onDark />
+          <p className="eyebrow eyebrow-on-dark fade-up mt-10">For travel professionals</p>
+          <h1 className="t-hero mt-4 max-w-4xl !text-[clamp(2.5rem,5vw,4.5rem)] text-sand">
+            <RevealWords text="Request a B2B Quote" />
           </h1>
-          <p className="measure mt-5 text-lg text-ink-500">
-            Access exclusive B2B programmes, competitive net rates and dedicated
-            support for your agency.
+          <p className="fade-up delay-1 mt-6 max-w-2xl text-lg text-sand/80">
+            Send your brief. We reply with a costed, day-by-day proposal at net rates — within 24 hours for standard requests. Sent to {COMPANY.email.b2b}.
           </p>
-
-          <ul className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {BENEFITS.map(({ icon: Icon, title, detail }) => (
-              <li
-                key={title}
-                className="flex flex-col gap-4 rounded-2xl border border-rule bg-paper-2/50 p-5 sm:flex-row sm:items-center"
-              >
-                <span
-                  aria-hidden="true"
-                  className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-red-600 text-paper shadow-raised"
-                >
-                  <Icon size={22} strokeWidth={1.75} />
-                </span>
-                <span>
-                  <span className="block text-base font-semibold text-ink-900">{title}</span>
-                  <span className="mt-0.5 block text-sm text-ink-500">{detail}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
         </Container>
       </section>
 
-      <Section tone="paper-2">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-16">
-          <RfqForm />
-
-          <aside className="flex flex-col gap-10">
-            <div>
-              <h2 className="text-lg font-semibold text-ink-900">What comes back</h2>
-              {/* A genuine sequence, so it is numbered. The same list closes the form. */}
-              <ol className="mt-4 border-t border-rule">
-                {RFQ_NEXT_STEPS.map((item, index) => (
-                  <li key={item} className="flex gap-4 border-b border-rule py-3 text-base text-ink-500">
-                    <span className="tabular font-display font-bold text-ink-900">{index + 1}</span>
-                    {item}
+      <section className="bg-sand">
+        <Container className="grid gap-12 py-16 lg:grid-cols-12 lg:py-24">
+          <div className="rounded-3xl border border-line bg-white p-6 sm:p-10 lg:col-span-8">
+            <Suspense fallback={<QuoteFormInner />}>
+              <QuoteForm />
+            </Suspense>
+          </div>
+          <aside className="space-y-6 lg:col-span-4" aria-label="What happens next">
+            <div className="rounded-3xl border border-line bg-white p-8">
+              <h2 className="font-display text-xl">What happens next</h2>
+              <ol className="mt-5 space-y-5">
+                {PARTNER_PROCESS.map((step, i) => (
+                  <li key={step.title} className="flex gap-4">
+                    <span className="grid size-8 shrink-0 place-items-center rounded-full border border-gold font-display text-sm text-terracotta-700">{i + 1}</span>
+                    <span>
+                      <span className="block font-medium">{step.title}</span>
+                      <span className="mt-0.5 block text-sm text-muted">{step.body}</span>
+                    </span>
                   </li>
                 ))}
               </ol>
-              <p className="mt-4 text-base text-ink-500">
-                Nothing unconfirmed is ever presented to you as confirmed. More on
-                that in <TextLink href="/how-we-work">how we work</TextLink>.
-              </p>
+            </div>
+            <div className="on-dark rounded-3xl bg-midnight p-8 text-sand">
+              <h2 className="font-display text-xl">Prefer to talk?</h2>
+              <ul className="mt-5 space-y-3 text-sm text-sand/80">
+                <li className="flex gap-3">
+                  <MessageCircle aria-hidden="true" size={18} className="text-gold" /> WhatsApp the ops desk: {COMPANY.phone.mobile.display}
+                </li>
+                <li className="flex gap-3">
+                  <Mail aria-hidden="true" size={18} className="text-gold" />
+                  <a href={`mailto:${COMPANY.email.b2b}`} className="underline decoration-gold underline-offset-4">
+                    {COMPANY.email.b2b}
+                  </a>
+                </li>
+                <li className="flex gap-3">
+                  <Clock aria-hidden="true" size={18} className="text-gold" /> Mon–Fri 9:00–18:00, Sat 9:00–13:00 ({COMPANY.timezone})
+                </li>
+                <li className="flex gap-3">
+                  <FileText aria-hidden="true" size={18} className="text-gold" /> Net rates, written confirmations
+                </li>
+              </ul>
+              <ButtonLink href={whatsappLink("Hello, I'd like to send a brief for a Morocco programme.")} variant="whatsapp" tone="dark" icon={<WhatsappIcon size={18} />} className="mt-6 w-full">
+                WhatsApp the Ops Desk
+              </ButtonLink>
             </div>
           </aside>
-        </div>
-      </Section>
-
-      <FaqSection heading="Before you send it" faqs={FAQS} />
+        </Container>
+      </section>
     </>
   );
 }

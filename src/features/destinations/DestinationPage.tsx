@@ -69,15 +69,15 @@ export function DestinationHero({
         </>
       ) : null}
 
-      <Container className="flex min-h-[30rem] flex-col pt-4 pb-14 lg:min-h-[36rem] lg:pb-20">
+      <Container className="flex min-h-[32rem] flex-col pt-28 pb-14 lg:min-h-[40rem] lg:pt-36 lg:pb-20">
         {trail ? <Breadcrumbs trail={trail} onDark /> : null}
 
         <div className="mt-auto pt-16">
-          <span className="inline-flex items-center gap-2 rounded-full border border-paper/25 bg-paper/10 px-3 py-1 text-xs font-medium text-paper backdrop-blur-sm">
+          <span className="eyebrow eyebrow-on-dark inline-flex items-center gap-2">
             <MapPin aria-hidden="true" size={14} strokeWidth={2} />
             {kicker}
           </span>
-          <h1 className="mt-5 max-w-[16ch] text-3xl font-bold tracking-tight text-paper sm:text-4xl lg:text-[5rem] lg:leading-none">
+          <h1 className="t-hero mt-5 max-w-[16ch] text-paper">
             {title}
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-paper/90">{standfirst}</p>
@@ -240,7 +240,7 @@ export function DestinationPage({
               How {title} works for meetings, incentives, conferences and events.
             </p>
             <Link
-              href="/mice"
+              href="/b2b/mice"
               className="group mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-red-600"
             >
               MICE &amp; Events

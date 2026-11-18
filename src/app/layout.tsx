@@ -1,109 +1,67 @@
-import type { Metadata } from "next";
-import { Archivo, IBM_Plex_Sans, Newsreader } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/SiteHeader";
-import { NAV_GROUPS, NAV_LINKS } from "@/lib/nav";
-import { SiteFooter } from "@/components/SiteFooter";
-import { COMPANY, SITE_URL } from "@/lib/nav";
-import { imageByKey } from "@/features/images/registry";
-import { IMAGE_SLOTS } from "@/features/images/keys";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { FloatingWhatsApp, SiteFooter } from "@/components/layout/SiteFooter";
+import { CookieBanner } from "@/components/layout/CookieBanner";
+import { MotionProvider } from "@/components/motion/MotionProvider";
+import { JsonLd } from "@/components/JsonLd";
+import { NAV } from "@/lib/nav";
+import { COMPANY, SITE_URL, whatsappLink } from "@/lib/company";
+import { organizationSchema, websiteSchema } from "@/lib/schema";
+import { en } from "@/i18n/dictionaries/en";
 
-/**
- * Display face for headings (SOP 2.2). Variable, so 600-700 costs one file.
- * next/font generates a metric-matched fallback, which keeps the swap from
- * shifting layout.
- */
-const archivo = Archivo({
+/** Headings: Fraunces, variable (one file covers 500–600, no optical-size axis to keep it small), self-hosted by next/font. */
+const fraunces = Fraunces({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-archivo",
+  variable: "--font-fraunces",
 });
 
-/** Body and UI. Only the two weights the SOP specifies. */
-const plex = IBM_Plex_Sans({
+/** Body and UI: Inter, variable. */
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500"],
   display: "swap",
-  variable: "--font-plex",
-});
-
-/**
- * Reserved for the Evidence component only, which always renders italic - so
- * only the italic face is downloaded. Loading the upright face as well cost
- * roughly 60KB for glyphs nothing on the site uses.
- */
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  style: ["italic"],
-  weight: ["400"],
-  display: "swap",
-  variable: "--font-newsreader",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${COMPANY.name} | ${COMPANY.positioning}`,
+    default: "Morocco DMC for Travel Agencies & Tour Operators | PM Travel Agency",
     template: `%s | ${COMPANY.name}`,
   },
   description:
-    "Morocco ground operations for travel trade. Transfers, guiding, hotels, groups, FIT and events, planned with verified operational data.",
-  // No canonical and no og:url here: every page sets both from its own path
-  // through pageMetadata(). Set here, they were inherited by every page and
-  // pointed all of them at the home page.
-  openGraph: {
-    type: "website",
-    siteName: COMPANY.name,
-    locale: "en",
-  },
+    "Marrakech-based Morocco DMC and ground handler for travel agencies, tour operators, advisors and MICE planners. Net rates, white-label, 24/7 support.",
+  applicationName: COMPANY.name,
+  openGraph: { type: "website", siteName: COMPANY.name, locale: "en_GB" },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
+  formatDetection: { telephone: false },
 };
 
-/**
- * Organization and TravelAgency, as one entity (SOP Phase 8). No Review,
- * AggregateRating, Offer or Event - and no telephone or legal identifier,
- * because neither is confirmed. The logo and image are the generated brand
- * assets in src/app, served by Next.js at these paths.
- */
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": ["Organization", "TravelAgency"],
-  "@id": `${SITE_URL}/#organization`,
-  name: COMPANY.name,
-  url: SITE_URL,
-  logo: `${SITE_URL}/apple-icon.png`,
-  image: `${SITE_URL}/opengraph-image.png`,
-  email: COMPANY.email.b2b,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: `${COMPANY.address.line1}, ${COMPANY.address.district}`,
-    addressLocality: COMPANY.address.city,
-    postalCode: COMPANY.address.postalCode,
-    addressCountry: "MA",
-  },
-  areaServed: { "@type": "Country", name: "Morocco" },
-  availableLanguage: [...COMPANY.languages],
+export const viewport: Viewport = {
+  themeColor: "#0e1a2b",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${archivo.variable} ${plex.variable} ${newsreader.variable}`}>
-      <body>
+    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
+      <body id="top">
         <a href="#main" className="skip-link">
-          Skip to content
+          {en.nav.skip}
         </a>
-        <SiteHeader
-          groups={NAV_GROUPS}
-          links={NAV_LINKS}
-          overlayOnHome={Boolean(imageByKey(IMAGE_SLOTS.homeHero))}
-        />
-        <main id="main">{children}</main>
-        <SiteFooter />
-        <script
-          type="application/ld+json"
-          // Static, developer-authored object. No user input reaches this.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
+        <MotionProvider>
+          <SiteHeader nav={NAV} />
+          <main id="main">{children}</main>
+          <SiteFooter />
+          <FloatingWhatsApp href={whatsappLink()} />
+          <CookieBanner />
+        </MotionProvider>
+        <JsonLd data={organizationSchema()} />
+        <JsonLd data={websiteSchema()} />
       </body>
     </html>
   );

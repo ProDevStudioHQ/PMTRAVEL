@@ -40,26 +40,30 @@ import { gzipSync } from "node:zlib";
  * rather than on the next small change. Update the baseline above whenever it
  * moves, so drift stays visible instead of being absorbed silently.
  */
-const JS_BUDGET_BYTES = 192 * 1024;
+/*
+ * 2026-11 site (docs/decisions.md D7): Framer Motion is required by the brief.
+ * Measured home page: 228.4KB = ~172KB runtime + ~13KB Framer Motion core
+ * (features lazy-loaded) + header/mobile menu, forms, timeline, counters and
+ * testimonial slider. Gate set at 240KB so any further growth fails.
+ */
+const JS_BUDGET_BYTES = 240 * 1024;
 const SOP_JS_BUDGET_BYTES = 120 * 1024;
 const TOTAL_BUDGET_BYTES = 900 * 1024;
 const ORIGIN = "http://127.0.0.1:3111";
 
 const PAGES = [
   "/",
-  "/about",
-  "/morocco-dmc",
-  "/mice",
   "/b2b",
-  "/how-we-work",
-  "/destinations",
-  "/destinations/agafay",
+  "/b2b/tour-operators",
+  "/b2b/become-a-partner",
+  "/experiences/luxury",
+  "/tours/honeymoon",
   "/request-a-quote",
   "/contact",
-  "/programmes",
+  "/gallery",
+  "/journal/agafay-or-merzouga",
+  "/destinations/agafay",
   "/programmes/atlas-agafay-escape",
-  "/excursions",
-  "/excursions/ourika-valley-ebike",
 ];
 
 const kb = (bytes) => `${(bytes / 1024).toFixed(1)}KB`;

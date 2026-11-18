@@ -1,40 +1,38 @@
+import Link from "next/link";
 import { Container } from "@/components/Container";
 import { ButtonLink } from "@/components/Button";
-import { TextLink } from "@/components/TextLink";
-import { PRIMARY_NAV, SECONDARY_NAV } from "@/lib/nav";
+import { NAV } from "@/lib/nav";
+import { RFQ_HREF } from "@/lib/company";
 
-/**
- * The 404 page. It says what happened, then offers every published section
- * as a way back in. Next.js marks it noindex automatically.
- */
+/** Custom 404. Next.js marks it noindex automatically. */
 export default function NotFound() {
-  const pages = [...PRIMARY_NAV, ...SECONDARY_NAV];
-
   return (
-    <section className="bg-paper">
-      <Container className="py-24 lg:py-32">
-        <p aria-hidden="true" className="tabular font-display text-4xl font-bold text-ink-500">
-          404
+    <section className="on-dark surface-deep relative flex min-h-[100svh] items-center overflow-hidden bg-midnight text-sand">
+      <div aria-hidden="true" className="pointer-events-none absolute -right-40 -bottom-40 size-[40rem] rounded-full border border-gold/15" />
+      <Container className="relative pt-32 pb-20">
+        <p className="eyebrow eyebrow-on-dark">Error 404</p>
+        <h1 className="t-hero mt-5 max-w-[14ch] text-sand">This path leads nowhere.</h1>
+        <p className="mt-6 max-w-xl text-lg text-sand/75">
+          The page may have moved. Here are the roads that do lead somewhere.
         </p>
-        <h1 className="mt-6 max-w-[18ch] text-3xl font-bold tracking-tight text-ink-900 lg:text-4xl">
-          That page does not exist
-        </h1>
-        <p className="measure mt-6 text-lg text-ink-500">
-          The address may have changed, or the page may never have been published.
-        </p>
-        <nav aria-label="Site sections" className="mt-12">
-          <ul className="grid border-t border-rule sm:grid-cols-2 sm:gap-x-12 lg:grid-cols-3">
-            {pages.map((item) => (
-              <li key={item.href} className="border-b border-rule">
-                <TextLink href={item.href} className="flex min-h-12 items-center text-base">
+        <nav aria-label="Site sections" className="mt-10">
+          <ul className="flex flex-wrap gap-2">
+            {NAV.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="inline-flex min-h-11 items-center rounded-full border border-sand/20 px-5 text-sm hover:border-gold hover:text-gold">
                   {item.label}
-                </TextLink>
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <div className="mt-10">
-          <ButtonLink href="/">Back to the home page</ButtonLink>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <ButtonLink href="/" tone="dark" arrow>
+            Back to home
+          </ButtonLink>
+          <ButtonLink href={RFQ_HREF} variant="secondary" tone="dark">
+            Request a Quote
+          </ButtonLink>
         </div>
       </Container>
     </section>

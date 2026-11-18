@@ -25,7 +25,7 @@ RUN mkdir -p /app/public
 # configuration; override with --build-arg (or Dokploy's Build Arguments) when
 # the site moves to another domain, and change the default here at the same
 # time so the two cannot drift apart.
-ARG NEXT_PUBLIC_SITE_URL=https://pmtravel.digitalstudiolf.online
+ARG NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 
@@ -41,10 +41,10 @@ RUN test -n "$NEXT_PUBLIC_SITE_URL" || { \
       echo "is not enough - it must be set as a build argument."; \
       echo ""; \
       echo "  Dokploy: application -> Build -> Build Arguments, add"; \
-      echo "           NEXT_PUBLIC_SITE_URL=https://pmtravel.digitalstudiolf.online"; \
+      echo "           NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com"; \
       echo ""; \
       echo "  Docker:  docker build \\"; \
-      echo "             --build-arg NEXT_PUBLIC_SITE_URL=https://pmtravel.digitalstudiolf.online \\"; \
+      echo "             --build-arg NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com \\"; \
       echo "             -t pm-travel:local ."; \
       echo ""; \
       exit 1; \

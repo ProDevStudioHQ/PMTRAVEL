@@ -5,6 +5,51 @@ six months otherwise. Newest first.
 
 ---
 
+## D7 — November 2026 rebuild: new brand, structure and contact policy
+
+**Date:** 2026-11-17 · **Status:** accepted (business website brief, Nov 2026)
+
+The business supplied a full website brief that supersedes D4/D5 and the
+REDESIGN-SOP where they conflict:
+
+1. **Brand.** Midnight #0E1A2B, Sand #F6F1EA, Terracotta #C4622D, Gold #C9A14A;
+   Fraunces (headings) + Inter (body). The old token names (red-900, red-600,
+   paper…) are kept as aliases in globals.css so pre-D7 pages re-skin.
+   **Contrast:** #C4622D measures 4.09:1 with white, so it never carries small
+   text. Filled CTAs use terracotta-600 #AD5327 (5.19:1); terracotta text on
+   light uses terracotta-700 #9E4A20 (5.41:1 on sand). Gold is decorative on
+   light surfaces (2.15:1) and only used as text on midnight (7.23:1).
+2. **Motion.** Framer Motion is now allowed (brief requirement), loaded via
+   LazyMotion with features fetched after hydration. The hero headline reveal
+   and Ken Burns zoom are pure CSS so they never delay LCP. Everything respects
+   prefers-reduced-motion. Home JS gate raised to 240KB (measured 228KB).
+3. **Contact details are confirmed and published**: +212 762 455 472 (phone /
+   WhatsApp), +212 524 347 213 (landline), opening hours, new office address.
+   They live only in src/lib/company.ts; verify:data fails on a number retyped
+   elsewhere.
+4. **Trust claims** supplied by the business ("Quotes within 24h", "FIT to
+   200+ pax", 5 languages) are editable in TRUST_POINTS. Licence number, year
+   founded, testimonials and partner logos are **visible, marked placeholders**
+   until supplied; verify:data stops a placeholder testimonial being marked real.
+   Office geo coordinates are null (schema omits geo) until copied from the
+   Google Business Profile.
+5. **Structure.** /morocco-dmc, /mice, /how-we-work 301 to /b2b/dmc-services,
+   /b2b/mice, /b2b. New: /experiences/*, /tours/*, /b2b/*, /journal/*,
+   /gallery, /partner-login, /privacy, /terms, /cookies. Destination,
+   programme and excursion pages are kept and linked as sample products.
+6. **Forms.** One enquiries table (drizzle/0001_enquiries.sql) for quote,
+   partner, contact and newsletter forms. Store first, then email
+   b2b@ / contact@. With neither DATABASE_URL nor SMTP configured the form
+   refuses and shows the email/WhatsApp fallback — it never fakes success.
+   Partner Login has no backend yet and says so.
+7. **Google Map** on /contact: CSP frame-src allows google.com; the iframe
+   loads only after cookie consent or a click.
+8. **Canonical origin** is always https://pm-travelagency.com.
+9. **Legal pages are published from the drafts' facts but have NOT been
+   reviewed by a lawyer.** That review is a launch blocker.
+
+---
+
 ## D6 — No contact form, and no "by when" in the RFQ confirmation
 
 **Date:** 2026-09-12 · **Status:** accepted; the contact form is a separate

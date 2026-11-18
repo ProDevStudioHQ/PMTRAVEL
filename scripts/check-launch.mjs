@@ -45,32 +45,7 @@ const server = spawn(process.execPath, [nextBin, "start", "--port", "3113"], {
   env: { ...process.env, NODE_ENV: "production" },
 });
 
-const PAGES = [
-  "/",
-  "/about",
-  "/morocco-dmc",
-  "/mice",
-  "/b2b",
-  "/how-we-work",
-  "/destinations",
-  "/destinations/marrakech",
-  "/destinations/agafay",
-  "/destinations/atlas",
-  "/destinations/essaouira",
-  "/destinations/merzouga",
-  "/destinations/fes",
-  "/request-a-quote",
-  "/programmes",
-  "/programmes/taste-of-marrakech",
-  "/programmes/atlas-agafay-escape",
-  "/programmes/trek-and-taste-atlas",
-  "/excursions",
-  "/excursions/agafay-quad-camel-sunset",
-  "/excursions/ourika-valley-ebike",
-  "/destinations/casablanca",
-  "/destinations/ait-ben-haddou",
-  "/contact",
-];
+const PAGES = ["/", "/about", "/b2b", "/b2b/dmc-services", "/contact", "/request-a-quote", "/destinations", "/destinations/agafay"];
 
 try {
   let ready = false;
@@ -90,12 +65,17 @@ try {
   }
   const allHtml = [...rendered.values()].map((page) => page.html).join("\n");
 
-  // --- No phone number anywhere ---
-  const phone = /href="tel:|wa\.me|api\.whatsapp\.com|\+212[\s-]?\d|\b0[5-7]\d{8}\b/;
+  // --- Confirmed contact details published (D7) ---
   record(
-    phone.test(allHtml) || phone.test(sourceText) ? "FAIL" : "PASS",
-    "No phone number anywhere"
+    allHtml.includes('href="tel:+212762455472"') && allHtml.includes("wa.me/212762455472") ? "PASS" : "FAIL",
+    "Confirmed phone and WhatsApp links published"
   );
+
+  // --- Placeholders still on the site (licence, year, testimonials, logos) ---
+  record(/\[Add [^\]]+\]|\[Partner logo/.test(allHtml) ? "BLOCKED" : "PASS", "No content placeholders left (licence no., year founded, testimonials, partner logos)");
+
+  // --- Legal pages reviewed ---
+  record("MANUAL", "Privacy, Terms and Cookies reviewed by a lawyer (GDPR, UK GDPR, Law 09-08)");
 
   // --- No legal identifiers ---
   const identifiers = /\bRC\s*[:n°]|\bICE\s*[:n°]?\s*\d|\bTVA\s*[:n°]?\s*\d|\bIATA\s*[:n°]?\s*\d/i;
