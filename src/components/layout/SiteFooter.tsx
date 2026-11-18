@@ -45,8 +45,45 @@ export function SiteFooter() {
 
   return (
     <footer className="on-dark surface-deep border-t border-gold/20 bg-midnight text-sand">
+
+      {/* Brand + link columns */}
+      <Container className="grid gap-12 pt-16 pb-12 sm:grid-cols-2 lg:grid-cols-12 lg:pt-20">
+        <div className="sm:col-span-2 lg:col-span-6">
+          <Logo />
+          <p className="mt-5 max-w-sm text-sm text-sand/70">{COMPANY.shortDescription}</p>
+          <ul className="mt-6 flex gap-3" aria-label="Social media">
+            <li>
+              <a href={COMPANY.social.instagram} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-full border border-sand/20 text-sand/80 transition-colors hover:border-gold hover:text-gold">
+                <InstagramIcon />
+                <span className="sr-only">Instagram</span>
+              </a>
+            </li>
+            <li>
+              <a href={COMPANY.social.linkedin} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-full border border-sand/20 text-sand/80 transition-colors hover:border-gold hover:text-gold">
+                <LinkedinIcon />
+                <span className="sr-only">LinkedIn</span>
+              </a>
+            </li>
+          </ul>
+          <p className="mt-6 text-xs text-sand/55">
+            Licence no.: {CREDENTIALS.licenceNumber ?? <span className="text-gold/80">[Add licence number]</span>}
+          </p>
+        </div>
+        <div className="lg:col-span-3">
+          <Column title="B2B & DMC" links={FOOTER_B2B} />
+        </div>
+        <div className="lg:col-span-3">
+          <Column title="Explore" links={FOOTER_EXPLORE} />
+        </div>
+      </Container>
+
+
+      <Container>
+        <hr className="gold-rule opacity-40" />
+      </Container>
+
       {/* Contact cards */}
-      <Container className="pt-16 pb-12 lg:pt-20">
+      <Container className="pt-12 pb-14">
         <h2 className="font-sans text-xs font-medium tracking-[0.2em] text-gold uppercase">Contact</h2>
         <address className="not-italic">
           <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -95,40 +132,6 @@ export function SiteFooter() {
         </address>
       </Container>
 
-      <Container>
-        <hr className="gold-rule opacity-40" />
-      </Container>
-
-      {/* Brand + link columns */}
-      <Container className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-12">
-        <div className="sm:col-span-2 lg:col-span-6">
-          <Logo />
-          <p className="mt-5 max-w-sm text-sm text-sand/70">{COMPANY.shortDescription}</p>
-          <ul className="mt-6 flex gap-3" aria-label="Social media">
-            <li>
-              <a href={COMPANY.social.instagram} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-full border border-sand/20 text-sand/80 transition-colors hover:border-gold hover:text-gold">
-                <InstagramIcon />
-                <span className="sr-only">Instagram</span>
-              </a>
-            </li>
-            <li>
-              <a href={COMPANY.social.linkedin} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-full border border-sand/20 text-sand/80 transition-colors hover:border-gold hover:text-gold">
-                <LinkedinIcon />
-                <span className="sr-only">LinkedIn</span>
-              </a>
-            </li>
-          </ul>
-          <p className="mt-6 text-xs text-sand/55">
-            Licence no.: {CREDENTIALS.licenceNumber ?? <span className="text-gold/80">[Add licence number]</span>}
-          </p>
-        </div>
-        <div className="lg:col-span-3">
-          <Column title="B2B & DMC" links={FOOTER_B2B} />
-        </div>
-        <div className="lg:col-span-3">
-          <Column title="Explore" links={FOOTER_EXPLORE} />
-        </div>
-      </Container>
 
       {/* Bottom bar */}
       <div className="border-t border-sand/10">
