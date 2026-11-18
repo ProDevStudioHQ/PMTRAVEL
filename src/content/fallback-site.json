@@ -1,0 +1,588 @@
+{
+  "settings": {
+    "siteName": "PM Travel Agency",
+    "logo": null,
+    "logoDark": null,
+    "emails": {
+      "contact": "contact@pm-travelagency.com",
+      "b2b": "b2b@pm-travelagency.com"
+    },
+    "phones": {
+      "mobile": "+212 7 62 45 54 72",
+      "landline": "+212 5 24 34 72 13",
+      "whatsapp": "+212762455472"
+    },
+    "address": "N° 3, Résidence Al Manar 10, Rue Ibn Battouta, Marrakech, Morocco",
+    "openingHours": "Mon–Fri 9:00–18:00 · Sat 9:00–13:00 · Closed Sunday",
+    "googleMapsUrl": "https://www.google.com/maps/place/PM+Travel+Agency+By+Prestige+Majestic+Projects%26Events/data=!4m2!3m1!1s0x0:0xffb2c0eb32059292",
+    "quoteReplyPromise": "We reply within 24 hours",
+    "seo": {
+      "title": "PM Travel Agency — Morocco DMC & Ground Handler in Marrakech",
+      "description": "Marrakech-based DMC for travel agencies, tour operators and MICE planners: net rates, tailor-made Morocco programmes and one local team from arrival to departure.",
+      "ogImage": null
+    }
+  },
+  "topBar": {
+    "enabled": true,
+    "items": [
+      {
+        "id": "tb1",
+        "type": "PHONE",
+        "label": "+212 7 62 45 54 72",
+        "value": "+212762455472",
+        "url": "tel:+212762455472",
+        "icon": "phone",
+        "position": "LEFT",
+        "showOnMobile": true
+      },
+      {
+        "id": "tb2",
+        "type": "WHATSAPP",
+        "label": "WhatsApp",
+        "value": "+212762455472",
+        "url": "https://wa.me/212762455472",
+        "icon": "message-circle",
+        "position": "LEFT",
+        "showOnMobile": true
+      },
+      {
+        "id": "tb3",
+        "type": "EMAIL",
+        "label": "b2b@pm-travelagency.com",
+        "value": "b2b@pm-travelagency.com",
+        "url": "mailto:b2b@pm-travelagency.com",
+        "icon": "mail",
+        "position": "LEFT",
+        "showOnMobile": false
+      },
+      {
+        "id": "tb4",
+        "type": "LANGUAGE_SWITCH",
+        "label": "EN / FR",
+        "value": null,
+        "url": null,
+        "icon": null,
+        "position": "RIGHT",
+        "showOnMobile": true
+      }
+    ],
+    "announcement": null
+  },
+  "nav": {
+    "items": [
+      {
+        "id": "nav_home",
+        "label": "Home",
+        "url": "/",
+        "type": "LINK",
+        "description": null,
+        "icon": null,
+        "isHighlighted": false,
+        "openInNewTab": false,
+        "buttonStyle": null,
+        "children": []
+      },
+      {
+        "id": "nav_experiences",
+        "label": "Experiences",
+        "url": "/experiences",
+        "type": "DROPDOWN",
+        "description": null,
+        "icon": null,
+        "isHighlighted": false,
+        "openInNewTab": false,
+        "buttonStyle": null,
+        "children": [
+          {
+            "id": "cat_luxury",
+            "label": "Luxury",
+            "url": "/experiences/luxury",
+            "type": "LINK",
+            "description": "Palace hotels, private riads and luxury desert camps.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "cat_adventure",
+            "label": "Adventure",
+            "url": "/experiences/adventure",
+            "type": "LINK",
+            "description": "Atlas treks, e-bikes, quads and desert expeditions.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "cat_culture",
+            "label": "Culture",
+            "url": "/experiences/culture",
+            "type": "LINK",
+            "description": "Medinas, palaces, crafts and Amazigh villages.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "cat_wellness",
+            "label": "Wellness",
+            "url": "/experiences/wellness",
+            "type": "LINK",
+            "description": "Hammams, spa riads, yoga and quiet gardens.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "cat_gastronomy",
+            "label": "Gastronomy",
+            "url": "/experiences/gastronomy",
+            "type": "LINK",
+            "description": "Cooking classes, food walks and dinners in riads.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "cat_private",
+            "label": "Private Experiences",
+            "url": "/experiences/private",
+            "type": "LINK",
+            "description": "Exclusive access, private dinners and VIP moments.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "nav_tours",
+        "label": "Tours",
+        "url": "/tours",
+        "type": "DROPDOWN",
+        "description": null,
+        "icon": null,
+        "isHighlighted": false,
+        "openInNewTab": false,
+        "buttonStyle": null,
+        "children": [
+          {
+            "id": "cat_private-tours",
+            "label": "Private Tours",
+            "url": "/tours/private-tours",
+            "type": "LINK",
+            "description": "Private car, private guide, your clients' pace.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "cat_group-tours",
+            "label": "Group Tours",
+            "url": "/tours/group-tours",
+            "type": "LINK",
+            "description": "Coach tours and departures for groups of all sizes.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "cat_family",
+            "label": "Family",
+            "url": "/tours/family",
+            "type": "LINK",
+            "description": "Kid-friendly pacing, camels, gardens and pools.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "cat_honeymoon",
+            "label": "Honeymoon",
+            "url": "/tours/honeymoon",
+            "type": "LINK",
+            "description": "Romantic riads, desert nights and the coast.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "cat_tailor-made",
+            "label": "Tailor-Made",
+            "url": "/tours/tailor-made",
+            "type": "LINK",
+            "description": "Built from scratch around your client's brief.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "nav_b2b",
+        "label": "B2B & DMC",
+        "url": "/b2b",
+        "type": "MEGA_MENU",
+        "description": null,
+        "icon": null,
+        "isHighlighted": true,
+        "openInNewTab": false,
+        "buttonStyle": null,
+        "children": [
+          {
+            "id": "n4a",
+            "label": "Travel Agencies",
+            "url": "/b2b/travel-agencies",
+            "type": "LINK",
+            "description": "Net rates and white-label service for your clients",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "n4b",
+            "label": "Tour Operators",
+            "url": "/b2b/tour-operators",
+            "type": "LINK",
+            "description": "Series, FIT and allotments across Morocco",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "n4c",
+            "label": "Travel Advisors",
+            "url": "/b2b/travel-advisors",
+            "type": "LINK",
+            "description": "Tailor-made trips with a local team behind you",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "n4d",
+            "label": "Groups",
+            "url": "/b2b/groups",
+            "type": "LINK",
+            "description": "Group logistics from 10 to 200+ travellers",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "n4e",
+            "label": "MICE",
+            "url": "/b2b/mice",
+            "type": "LINK",
+            "description": "Incentives, meetings, conferences and events",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "n4f",
+            "label": "DMC Services",
+            "url": "/b2b/dmc-services",
+            "type": "LINK",
+            "description": "Transport, guides, hotels, venues and permits",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "n4g",
+            "label": "Become a Partner",
+            "url": "/b2b/become-a-partner",
+            "type": "LINK",
+            "description": "Apply for partner rates and support",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "nav_company",
+        "label": "Company",
+        "url": "/about",
+        "type": "DROPDOWN",
+        "description": null,
+        "icon": null,
+        "isHighlighted": false,
+        "openInNewTab": false,
+        "buttonStyle": null,
+        "children": [
+          {
+            "id": "nav_about",
+            "label": "About",
+            "url": "/about",
+            "type": "LINK",
+            "description": "Who we are and how we work.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "nav_journal",
+            "label": "Journal",
+            "url": "/journal",
+            "type": "LINK",
+            "description": "Trade guides and Morocco insights.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "nav_gallery",
+            "label": "Gallery",
+            "url": "/gallery",
+            "type": "LINK",
+            "description": "The Morocco we operate, in pictures.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          },
+          {
+            "id": "nav_contact",
+            "label": "Contact",
+            "url": "/contact",
+            "type": "LINK",
+            "description": "Office, phone, WhatsApp and email.",
+            "icon": null,
+            "isHighlighted": false,
+            "openInNewTab": false,
+            "buttonStyle": null,
+            "children": []
+          }
+        ]
+      }
+    ],
+    "buttons": [
+      {
+        "id": "btn_login",
+        "label": "Partner Login",
+        "url": "/partner-login",
+        "type": "BUTTON",
+        "description": null,
+        "icon": null,
+        "isHighlighted": false,
+        "openInNewTab": false,
+        "buttonStyle": "OUTLINE",
+        "children": []
+      },
+      {
+        "id": "btn_quote",
+        "label": "Request a Quote",
+        "url": "/request-a-quote",
+        "type": "BUTTON",
+        "description": null,
+        "icon": null,
+        "isHighlighted": false,
+        "openInNewTab": false,
+        "buttonStyle": "PRIMARY",
+        "children": []
+      }
+    ]
+  },
+  "footer": {
+    "aboutText": "PM Travel Agency by Prestige Majestic Projects & Events — your ground partner in Morocco.",
+    "columns": [
+      {
+        "id": "f1",
+        "title": "Experiences",
+        "links": [
+          {
+            "label": "Luxury",
+            "url": "/experiences/luxury",
+            "openInNewTab": false
+          },
+          {
+            "label": "Adventure",
+            "url": "/experiences/adventure",
+            "openInNewTab": false
+          },
+          {
+            "label": "Culture",
+            "url": "/experiences/culture",
+            "openInNewTab": false
+          },
+          {
+            "label": "Wellness",
+            "url": "/experiences/wellness",
+            "openInNewTab": false
+          },
+          {
+            "label": "Gastronomy",
+            "url": "/experiences/gastronomy",
+            "openInNewTab": false
+          }
+        ]
+      },
+      {
+        "id": "f2",
+        "title": "Tours",
+        "links": [
+          {
+            "label": "Private Tours",
+            "url": "/tours/private-tours",
+            "openInNewTab": false
+          },
+          {
+            "label": "Group Tours",
+            "url": "/tours/group-tours",
+            "openInNewTab": false
+          },
+          {
+            "label": "Family",
+            "url": "/tours/family",
+            "openInNewTab": false
+          },
+          {
+            "label": "Honeymoon",
+            "url": "/tours/honeymoon",
+            "openInNewTab": false
+          },
+          {
+            "label": "Tailor-Made",
+            "url": "/tours/tailor-made",
+            "openInNewTab": false
+          }
+        ]
+      },
+      {
+        "id": "f3",
+        "title": "B2B & DMC",
+        "links": [
+          {
+            "label": "Travel Agencies",
+            "url": "/b2b/travel-agencies",
+            "openInNewTab": false
+          },
+          {
+            "label": "Tour Operators",
+            "url": "/b2b/tour-operators",
+            "openInNewTab": false
+          },
+          {
+            "label": "MICE",
+            "url": "/b2b/mice",
+            "openInNewTab": false
+          },
+          {
+            "label": "Become a Partner",
+            "url": "/b2b/become-a-partner",
+            "openInNewTab": false
+          },
+          {
+            "label": "Partner Login",
+            "url": "/partner-login",
+            "openInNewTab": false
+          }
+        ]
+      },
+      {
+        "id": "f4",
+        "title": "Company",
+        "links": [
+          {
+            "label": "About",
+            "url": "/about",
+            "openInNewTab": false
+          },
+          {
+            "label": "Journal",
+            "url": "/journal",
+            "openInNewTab": false
+          },
+          {
+            "label": "Gallery",
+            "url": "/gallery",
+            "openInNewTab": false
+          },
+          {
+            "label": "Contact",
+            "url": "/contact",
+            "openInNewTab": false
+          }
+        ]
+      }
+    ],
+    "socials": [
+      {
+        "platform": "INSTAGRAM",
+        "url": "https://www.instagram.com/pmtravelagencybypmpe/"
+      },
+      {
+        "platform": "LINKEDIN",
+        "url": "https://www.linkedin.com/company/133753972/"
+      }
+    ],
+    "legalLinks": [
+      {
+        "label": "Privacy Policy",
+        "url": "/privacy",
+        "openInNewTab": false
+      },
+      {
+        "label": "Terms",
+        "url": "/terms",
+        "openInNewTab": false
+      },
+      {
+        "label": "Cookies",
+        "url": "/cookies",
+        "openInNewTab": false
+      }
+    ],
+    "showContactBlock": true,
+    "showMap": true,
+    "newsletter": {
+      "enabled": false,
+      "text": null
+    },
+    "copyright": "© 2026 PM Travel Agency by Prestige Majestic Projects & Events. All rights reserved."
+  },
+  "updatedAt": "2026-11-18T00:00:00.000Z"
+}

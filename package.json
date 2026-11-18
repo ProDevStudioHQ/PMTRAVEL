@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/pull-fallback.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -14,7 +15,9 @@
     "check:budget": "node scripts/check-budget.mjs",
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:launch": "node scripts/check-launch.mjs",
-    "images:blur": "node scripts/gen-blur.mjs"
+    "images:blur": "node scripts/gen-blur.mjs",
+    "cms:pull": "node scripts/pull-fallback.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",
@@ -43,7 +46,8 @@
     "eslint-config-next": "16.3.5",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=22"
