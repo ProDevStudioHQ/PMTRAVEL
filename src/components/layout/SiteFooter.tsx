@@ -1,12 +1,10 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ArrowUp, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Container } from "@/components/Container";
-import { ButtonLink } from "@/components/Button";
 import { InstagramIcon, LinkedinIcon, WhatsappIcon } from "@/components/Icon";
 import { Logo } from "@/components/layout/Logo";
-import { EnquiryForm } from "@/components/forms/EnquiryForm";
-import { NEWSLETTER_FIELDS } from "@/components/forms/configs";
-import { COMPANY, CREDENTIALS, RFQ_HREF, addressOneLine } from "@/lib/company";
+import { COMPANY, CREDENTIALS, addressOneLine, whatsappLink } from "@/lib/company";
 import { FOOTER_B2B, FOOTER_EXPLORE, LEGAL_LINKS } from "@/lib/nav";
 import { en } from "@/i18n/dictionaries/en";
 
@@ -27,45 +25,85 @@ function Column({ title, links }: { title: string; links: { href: string; label:
   );
 }
 
-export function SiteFooter() {
+/** One contact detail per card. */
+function ContactCard({ icon, label, children, className = "" }: { icon: ReactNode; label: string; children: ReactNode; className?: string }) {
   return (
-    <footer className="on-dark surface-deep bg-midnight text-sand">
-      {/* Top band */}
-      <Container className="grid gap-12 pt-20 pb-14 lg:grid-cols-12 lg:pt-28">
-        <div className="lg:col-span-7">
-          <p className="t-h2 max-w-[16ch] text-sand">{en.footer.tagline}</p>
-          <ButtonLink href={RFQ_HREF} tone="dark" arrow className="mt-8">
-            {en.cta.b2bQuote}
-          </ButtonLink>
-        </div>
-        <div className="lg:col-span-5">
-          <h2 className="font-display text-xl text-sand">{en.footer.newsletterTitle}</h2>
-          <p className="mt-2 text-sm text-sand/70">{en.footer.newsletterBody}</p>
-          <div className="mt-5">
-            <EnquiryForm
-              kind="newsletter"
-              idPrefix="footer-newsletter"
-              fields={NEWSLETTER_FIELDS}
-              submitLabel="Subscribe"
-              successTitle="You're on the list"
-              successBody="We'll send trade news a few times a year. Unsubscribe any time."
-              compact
-              onDark
-              footnote={false}
-            />
-          </div>
-        </div>
+    <li className={"flex h-full gap-4 rounded-2xl border border-sand/10 bg-midnight-2 p-5 transition-colors hover:border-gold/40 " + className}>
+      <span className="grid size-11 shrink-0 place-items-center rounded-full border border-gold/40 text-gold">{icon}</span>
+      <div className="min-w-0">
+        <h3 className="font-sans text-xs font-medium tracking-[0.18em] text-sand/60 uppercase">{label}</h3>
+        <div className="mt-1.5 text-[0.9375rem] break-words text-sand">{children}</div>
+      </div>
+    </li>
+  );
+}
+
+const linkClass = "underline-offset-4 hover:text-gold hover:underline";
+
+export function SiteFooter() {
+  const iconProps = { "aria-hidden": true, size: 20, strokeWidth: 1.5 } as const;
+
+  return (
+    <footer className="on-dark surface-deep border-t border-gold/20 bg-midnight text-sand">
+      {/* Contact cards */}
+      <Container className="pt-16 pb-12 lg:pt-20">
+        <h2 className="font-sans text-xs font-medium tracking-[0.2em] text-gold uppercase">Contact</h2>
+        <address className="not-italic">
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ContactCard icon={<MapPin {...iconProps} />} label="Office">
+              <p>{addressOneLine}</p>
+              <a href={COMPANY.mapsUrl} target="_blank" rel="noopener noreferrer" className={`mt-1 inline-block text-sm text-gold ${linkClass}`}>
+                Open in Google Maps
+              </a>
+            </ContactCard>
+            <ContactCard icon={<Phone {...iconProps} />} label={COMPANY.phone.mobile.label}>
+              <a href={`tel:${COMPANY.phone.mobile.tel}`} className={linkClass}>
+                {COMPANY.phone.mobile.display}
+              </a>
+            </ContactCard>
+            <ContactCard icon={<WhatsappIcon size={20} />} label="WhatsApp">
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                Chat with our ops desk
+              </a>
+            </ContactCard>
+            <ContactCard icon={<Phone {...iconProps} />} label={COMPANY.phone.landline.label}>
+              <a href={`tel:${COMPANY.phone.landline.tel}`} className={linkClass}>
+                {COMPANY.phone.landline.display}
+              </a>
+            </ContactCard>
+            <ContactCard icon={<Mail {...iconProps} />} label="B2B / Travel trade">
+              <a href={`mailto:${COMPANY.email.b2b}`} className={linkClass}>
+                {COMPANY.email.b2b}
+              </a>
+            </ContactCard>
+            <ContactCard icon={<Mail {...iconProps} />} label="General">
+              <a href={`mailto:${COMPANY.email.general}`} className={linkClass}>
+                {COMPANY.email.general}
+              </a>
+            </ContactCard>
+            <ContactCard icon={<Clock {...iconProps} />} label="Opening hours" className="sm:col-span-2 lg:col-span-3">
+              <dl className="flex flex-col gap-x-10 gap-y-1 text-sm sm:flex-row sm:flex-wrap">
+                {COMPANY.hours.map((h) => (
+                  <div key={h.days} className="flex gap-2 whitespace-nowrap">
+                    <dt className="text-sand/60">{h.days}</dt>
+                    <dd>{h.time}</dd>
+                  </div>
+                ))}
+              </dl>
+            </ContactCard>
+          </ul>
+        </address>
       </Container>
 
       <Container>
         <hr className="gold-rule opacity-40" />
       </Container>
 
-      {/* Columns */}
-      <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12">
-        <div className="lg:col-span-4">
+      {/* Brand + link columns */}
+      <Container className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-12">
+        <div className="sm:col-span-2 lg:col-span-6">
           <Logo />
-          <p className="mt-5 max-w-xs text-sm text-sand/70">{COMPANY.shortDescription}</p>
+          <p className="mt-5 max-w-sm text-sm text-sand/70">{COMPANY.shortDescription}</p>
           <ul className="mt-6 flex gap-3" aria-label="Social media">
             <li>
               <a href={COMPANY.social.instagram} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-full border border-sand/20 text-sand/80 transition-colors hover:border-gold hover:text-gold">
@@ -84,65 +122,11 @@ export function SiteFooter() {
             Licence no.: {CREDENTIALS.licenceNumber ?? <span className="text-gold/80">[Add licence number]</span>}
           </p>
         </div>
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-3">
           <Column title="B2B & DMC" links={FOOTER_B2B} />
         </div>
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-3">
           <Column title="Explore" links={FOOTER_EXPLORE} />
-        </div>
-        <div className="sm:col-span-2 lg:col-span-4">
-          <h2 className="font-sans text-xs font-medium tracking-[0.2em] text-gold uppercase">Contact</h2>
-          <address className="mt-5 space-y-4 text-[0.9375rem] text-sand/80 not-italic">
-            <p className="flex gap-3">
-              <MapPin aria-hidden="true" size={18} strokeWidth={1.5} className="mt-1 shrink-0 text-gold" />
-              <span>
-                {addressOneLine}
-                <br />
-                <a href={COMPANY.mapsUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-sand underline decoration-gold underline-offset-4 hover:text-gold">
-                  Open in Google Maps
-                </a>
-              </span>
-            </p>
-            <p className="flex gap-3">
-              <Phone aria-hidden="true" size={18} strokeWidth={1.5} className="mt-1 shrink-0 text-gold" />
-              <span>
-                Phone / WhatsApp:{" "}
-                <a href={`tel:${COMPANY.phone.mobile.tel}`} className="hover:text-sand">
-                  {COMPANY.phone.mobile.display}
-                </a>
-                <br />
-                Landline:{" "}
-                <a href={`tel:${COMPANY.phone.landline.tel}`} className="hover:text-sand">
-                  {COMPANY.phone.landline.display}
-                </a>
-              </span>
-            </p>
-            <p className="flex gap-3">
-              <Mail aria-hidden="true" size={18} strokeWidth={1.5} className="mt-1 shrink-0 text-gold" />
-              <span>
-                B2B / Travel trade:{" "}
-                <a href={`mailto:${COMPANY.email.b2b}`} className="hover:text-sand">
-                  {COMPANY.email.b2b}
-                </a>
-                <br />
-                General:{" "}
-                <a href={`mailto:${COMPANY.email.general}`} className="hover:text-sand">
-                  {COMPANY.email.general}
-                </a>
-              </span>
-            </p>
-            <div className="flex gap-3">
-              <Clock aria-hidden="true" size={18} strokeWidth={1.5} className="mt-1 shrink-0 text-gold" />
-              <dl className="grid grid-cols-[auto_1fr] gap-x-3 text-sm">
-                {COMPANY.hours.map((h) => (
-                  <div key={h.days} className="contents">
-                    <dt className="text-sand/60">{h.days}</dt>
-                    <dd>{h.time}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </address>
         </div>
       </Container>
 

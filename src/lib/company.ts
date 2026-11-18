@@ -34,8 +34,8 @@ export const COMPANY = {
    */
   geo: null as { latitude: number; longitude: number } | null,
   phone: {
-    mobile: { display: "+212 762 455 472", tel: "+212762455472" },
-    landline: { display: "+212 524 347 213", tel: "+212524347213" },
+    mobile: { label: "Mobile / WhatsApp", display: "+212 762 455 472", tel: "+212762455472" },
+    landline: { label: "Fixe", display: "+212 524 347 213", tel: "+212524347213" },
   },
   whatsapp: {
     number: "212762455472",

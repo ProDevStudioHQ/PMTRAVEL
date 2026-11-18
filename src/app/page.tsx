@@ -8,16 +8,15 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Container } from "@/components/Container";
 import { Reveal } from "@/components/motion/Reveal";
 import { Counter } from "@/components/motion/Counter";
-import { IconTile, ImageCard, LogoMarquee } from "@/components/cards";
+import { IconTile, ImageCard } from "@/components/cards";
 import { Icon } from "@/components/Icon";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
-import { Testimonials } from "@/components/home/Testimonials";
 import { FaqSection } from "@/components/FaqSection";
 import { CtaBand } from "@/components/CtaBand";
 import { HOME_AUDIENCES, PARTNER_PROCESS } from "@/content/b2b";
 import { EXPERIENCES, leisureHref } from "@/content/leisure";
-import { DMC_SERVICES, HOME_DESTINATIONS, PARTNER_BENEFITS, PARTNER_LOGOS, TESTIMONIALS, TRADE_FAQS } from "@/content/home";
-import { COMPANY, CREDENTIALS, PARTNER_HREF, RFQ_HREF, TRUST_POINTS, addressOneLine } from "@/lib/company";
+import { DMC_SERVICES, HOME_DESTINATIONS, PARTNER_BENEFITS, TRADE_FAQS } from "@/content/home";
+import { PARTNER_HREF, RFQ_HREF, TRUST_POINTS } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
 
 export const metadata = pageMetadata({
@@ -175,49 +174,10 @@ export default function HomePage() {
         <div className="pb-10 lg:pb-16" />
       </section>
 
-      {/* 8. Proof & trust */}
-      <Section tone="white" aria-labelledby="proof">
-        <SectionHeading id="proof" eyebrow="Proof & trust" title="Partners who operate with us" />
-        <div className="mt-12 grid gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <Testimonials items={TESTIMONIALS} />
-          </div>
-          <dl className="grid content-start gap-px overflow-hidden rounded-3xl border border-line bg-line lg:col-span-5">
-            <div className="bg-sand p-6">
-              <dt className="text-xs tracking-[0.2em] text-muted uppercase">Licence number</dt>
-              <dd className="mt-2 font-display text-xl">{CREDENTIALS.licenceNumber ?? <span className="text-terracotta-700">[Add licence number]</span>}</dd>
-            </div>
-            <div className="bg-sand p-6">
-              <dt className="text-xs tracking-[0.2em] text-muted uppercase">Years operating</dt>
-              <dd className="mt-2 font-display text-xl">
-                {CREDENTIALS.yearFounded ? `Since ${CREDENTIALS.yearFounded}` : <span className="text-terracotta-700">[Add year founded]</span>}
-              </dd>
-            </div>
-            <div className="bg-sand p-6">
-              <dt className="text-xs tracking-[0.2em] text-muted uppercase">Office</dt>
-              <dd className="mt-2">
-                <address className="not-italic">{addressOneLine}</address>
-                <a href={COMPANY.mapsUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center text-sm text-terracotta-700 underline underline-offset-4">
-                  Open in Google Maps
-                </a>
-              </dd>
-            </div>
-            <div className="bg-sand p-6">
-              <dt className="text-xs tracking-[0.2em] text-muted uppercase">Parent company</dt>
-              <dd className="mt-2">{COMPANY.parent}</dd>
-            </div>
-          </dl>
-        </div>
-        <div className="mt-14">
-          <p className="mb-5 text-center text-xs tracking-[0.2em] text-muted uppercase">Selected partners</p>
-          <LogoMarquee names={PARTNER_LOGOS} />
-        </div>
-      </Section>
-
-      {/* 9. Trade FAQ */}
+      {/* 8. Trade FAQ */}
       <FaqSection eyebrow="Trade FAQ" heading="Questions travel professionals ask us" faqs={TRADE_FAQS} intro="Anything else? Ask the ops desk on WhatsApp." />
 
-      {/* 10. Final CTA */}
+      {/* 9. Final CTA */}
       <CtaBand />
     </>
   );

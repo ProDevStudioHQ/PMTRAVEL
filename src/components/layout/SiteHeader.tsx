@@ -112,8 +112,9 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
             scrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"
           }`}
         >
-          <div className="mx-auto flex h-10 max-w-site items-center justify-between px-10 text-[0.8125rem] text-sand/80">
-            <div className="flex items-center gap-6">
+          <div className="mx-auto grid h-10 max-w-site grid-cols-[1fr_auto_1fr] items-center px-10 text-[0.8125rem] text-sand/80">
+            <span aria-hidden="true" />
+            <div className="flex items-center justify-center gap-8">
               <a href={`tel:${COMPANY.phone.mobile.tel}`} className="inline-flex items-center gap-2 hover:text-sand">
                 <Phone aria-hidden="true" size={14} className="text-gold" />
                 {COMPANY.phone.mobile.display}
@@ -129,7 +130,7 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
                 {COMPANY.email.b2b}
               </a>
             </div>
-            <LanguageSwitch />
+            <LanguageSwitch className="justify-self-end" />
           </div>
         </div>
 

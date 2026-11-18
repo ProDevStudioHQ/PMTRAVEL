@@ -59,7 +59,7 @@ export default function ContactPage() {
                   Open in Google Maps
                 </a>
               </Detail>
-              <Detail icon={<Phone aria-hidden="true" size={20} strokeWidth={1.5} />} title="Phone / WhatsApp">
+              <Detail icon={<Phone aria-hidden="true" size={20} strokeWidth={1.5} />} title={COMPANY.phone.mobile.label}>
                 <p>
                   <a href={`tel:${COMPANY.phone.mobile.tel}`} className="hover:text-terracotta-700">
                     {COMPANY.phone.mobile.display}
@@ -70,7 +70,7 @@ export default function ContactPage() {
                   </a>
                 </p>
                 <p className="mt-1">
-                  Landline:{" "}
+                  {COMPANY.phone.landline.label}:{" "}
                   <a href={`tel:${COMPANY.phone.landline.tel}`} className="hover:text-terracotta-700">
                     {COMPANY.phone.landline.display}
                   </a>
