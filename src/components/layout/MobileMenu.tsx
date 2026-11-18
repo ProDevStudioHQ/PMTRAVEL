@@ -109,7 +109,7 @@ export function MobileMenu({ nav, open, onClose, pathname }: Props) {
                           transition={{ duration: 0.25, ease: "easeOut" }}
                           className="overflow-hidden pb-3"
                         >
-                          {[...item.menu.items, { href: item.href, label: item.menu.allLabel ?? item.label }].map((link) => (
+                          {[...item.menu.items, ...(item.menu.allLabel ? [{ href: item.href, label: item.menu.allLabel }] : [])].map((link) => (
                             <li key={link.href}>
                               <Link
                                 href={link.href}

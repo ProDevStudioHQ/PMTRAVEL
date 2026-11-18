@@ -141,7 +141,7 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
           <nav ref={navRef} aria-label="Main" className="hidden xl:block">
             <ul className="flex items-center gap-0.5">
               {nav.map((item) => {
-                const active = isActive(pathname, item.href);
+                const active = item.menu ? item.menu.items.some((link) => isActive(pathname, link.href)) || isActive(pathname, item.href) : isActive(pathname, item.href);
                 if (!item.menu) {
                   return (
                     <li key={item.id}>
@@ -209,7 +209,7 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
 
           <div className="flex items-center gap-2">
             {/* Visibility lives on wrappers: the button's own inline-flex would override `hidden`. */}
-            <span className="hidden md:contents xl:hidden 2xl:contents">
+            <span className="hidden md:contents">
               <Link href={LOGIN_HREF} className={buttonClasses("secondary", "dark", "min-h-11 whitespace-nowrap px-4 text-sm")}>
                 {en.cta.login}
               </Link>
@@ -255,10 +255,12 @@ function ListPanel({ item, pathname }: { item: NavEntry; pathname: string }) {
           </li>
         ))}
       </ul>
-      <Link href={item.href} className="group mt-1 flex items-center justify-between border-t border-line px-4 pt-3 pb-2 text-sm font-medium text-terracotta-700">
-        {item.menu!.allLabel}
-        <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
-      </Link>
+      {item.menu!.allLabel ? (
+        <Link href={item.href} className="group mt-1 flex items-center justify-between border-t border-line px-4 pt-3 pb-2 text-sm font-medium text-terracotta-700">
+          {item.menu!.allLabel}
+          <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
+        </Link>
+      ) : null}
     </div>
   );
 }

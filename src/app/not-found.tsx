@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { ButtonLink } from "@/components/Button";
-import { NAV } from "@/lib/nav";
+import { NAV, type NavLink } from "@/lib/nav";
 import { RFQ_HREF } from "@/lib/company";
 
 /** Custom 404. Next.js marks it noindex automatically. */
@@ -17,7 +17,7 @@ export default function NotFound() {
         </p>
         <nav aria-label="Site sections" className="mt-10">
           <ul className="flex flex-wrap gap-2">
-            {NAV.map((item) => (
+            {NAV.flatMap((item): NavLink[] => (item.id === "company" && item.menu ? item.menu.items : [{ href: item.href, label: item.label }])).map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="inline-flex min-h-11 items-center rounded-full border border-sand/20 px-5 text-sm hover:border-gold hover:text-gold">
                   {item.label}

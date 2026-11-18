@@ -56,10 +56,21 @@ export const NAV: NavEntry[] = [
       ],
     },
   },
-  { id: "about", label: "About", href: "/about" },
-  { id: "journal", label: "Journal", href: "/journal" },
-  { id: "gallery", label: "Gallery", href: "/gallery" },
-  { id: "contact", label: "Contact", href: "/contact" },
+  {
+    id: "company",
+    label: "Company",
+    href: "/about",
+    menu: {
+      kind: "list",
+      // No "all" link: the four pages are the whole group.
+      items: [
+        { href: "/about", label: "About", blurb: "Who we are and how we work." },
+        { href: "/journal", label: "Journal", blurb: "Trade guides and Morocco insights." },
+        { href: "/gallery", label: "Gallery", blurb: "The Morocco we operate, in pictures." },
+        { href: "/contact", label: "Contact", blurb: "Office, phone, WhatsApp and email." },
+      ],
+    },
+  },
 ];
 
 export const FOOTER_B2B: NavLink[] = [
