@@ -3,9 +3,8 @@ import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
-import { LeisureCard } from "@/components/templates/LeisureCard";
+import type { ReactNode } from "react";
 import { CtaBand } from "@/components/CtaBand";
-import { type LeisureProduct } from "@/content/leisure";
 import { RFQ_HREF } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
 
@@ -18,12 +17,14 @@ type HubProps = {
   label: string;
   listTitle: string;
   listIntro: string;
-  products: LeisureProduct[];
+  cards: { key: string; node: ReactNode }[];
+  /** Rendered after the list, e.g. featured CRM programmes. */
+  children?: ReactNode;
 };
 
 
 /** Hub page for /experiences and /tours. */
-export function LeisureHub({ eyebrow, title, standfirst, imageKey, path, label, listTitle, listIntro, products }: HubProps) {
+export function LeisureHub({ eyebrow, title, standfirst, imageKey, path, label, listTitle, listIntro, cards, children }: HubProps) {
   return (
     <>
       <PageHero eyebrow={eyebrow} title={title} standfirst={standfirst} imageKey={imageKey} trail={[{ href: path, label }]}>
@@ -36,13 +37,14 @@ export function LeisureHub({ eyebrow, title, standfirst, imageKey, path, label, 
           {listIntro}
         </SectionHeading>
         <ul className="swipe-row mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p, i) => (
-            <Reveal as="li" key={p.slug} delay={(i % 3) * 0.08}>
-              <LeisureCard product={p} />
+          {cards.map((card, i) => (
+            <Reveal as="li" key={card.key} delay={(i % 3) * 0.08}>
+              {card.node}
             </Reveal>
           ))}
         </ul>
       </Section>
+      {children}
       <CtaBand />
     </>
   );

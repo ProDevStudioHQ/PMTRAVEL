@@ -1,6 +1,5 @@
 import { pageMetadata } from "@/lib/metadata";
-import { LeisureHub } from "@/components/templates/LeisureHub";
-import { TOURS } from "@/content/leisure";
+import { SectionHub } from "@/features/cms/SectionHub";
 
 export const metadata = pageMetadata({
   title: "Morocco Tours for Agencies & Tour Operators",
@@ -9,18 +8,17 @@ export const metadata = pageMetadata({
   path: "/tours",
 });
 
-export default function ToursPage() {
+export default async function ToursPage() {
   return (
-    <LeisureHub
-      eyebrow="Tours"
-      title="Morocco tours, operated by one local team"
-      standfirst="Private, group, family, honeymoon or built from scratch — every tour costed at net rates and run by our Marrakech operations desk."
-      imageKey="c8-dades-gorge"
-      path="/tours"
-      label="Tours"
-      listTitle="Tour formats"
-      listIntro="Start from a format, then tell us the dates, pax and service level. We send a costed proposal."
-      products={TOURS}
+    <SectionHub
+      sectionKey="tours"
+      copy={{
+        eyebrow: "Tours",
+        title: "Morocco tours, operated by one local team",
+        standfirst: "Private, group, family, honeymoon or built from scratch — every tour costed at net rates and run by our Marrakech operations desk.",
+        listTitle: "Tour formats",
+        listIntro: "Start from a format, then tell us the dates, pax and service level. We send a costed proposal.",
+      }}
     />
   );
 }

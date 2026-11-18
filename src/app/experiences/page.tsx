@@ -1,6 +1,5 @@
 import { pageMetadata } from "@/lib/metadata";
-import { LeisureHub } from "@/components/templates/LeisureHub";
-import { EXPERIENCES } from "@/content/leisure";
+import { SectionHub } from "@/features/cms/SectionHub";
 
 export const metadata = pageMetadata({
   title: "Morocco Experiences for Travel Professionals",
@@ -9,18 +8,17 @@ export const metadata = pageMetadata({
   path: "/experiences",
 });
 
-export default function ExperiencesPage() {
+export default async function ExperiencesPage() {
   return (
-    <LeisureHub
-      eyebrow="Experiences"
-      title="Signature Morocco experiences"
-      standfirst="The product behind our programmes — designed in Marrakech, operated by our team and sold under your brand."
-      imageKey="e18-jemaa-el-fna-dusk"
-      path="/experiences"
-      label="Experiences"
-      listTitle="Six ways to experience Morocco"
-      listIntro="Each experience can be sold on its own, added to a tour or built into a group, incentive or tailor-made programme."
-      products={EXPERIENCES}
+    <SectionHub
+      sectionKey="experiences"
+      copy={{
+        eyebrow: "Experiences",
+        title: "Signature Morocco experiences",
+        standfirst: "The product behind our programmes — designed in Marrakech, operated by our team and sold under your brand.",
+        listTitle: "Ways to experience Morocco",
+        listIntro: "Each experience can be sold on its own, added to a tour or built into a group, incentive or tailor-made programme.",
+      }}
     />
   );
 }

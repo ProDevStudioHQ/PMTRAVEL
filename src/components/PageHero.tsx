@@ -10,7 +10,10 @@ type PageHeroProps = {
   eyebrow: string;
   title: string;
   standfirst?: ReactNode;
+  /** Key into the image record. Ignored when `media` is given. */
   imageKey: string;
+  /** A ready-made priority image (e.g. a CRM cover via CmsImage) in place of the record image. */
+  media?: ReactNode;
   trail?: Crumb[];
   children?: ReactNode;
   /** Full viewport height (home). Inner pages use a shorter banner. */
@@ -23,12 +26,12 @@ type PageHeroProps = {
  * slowly zooms (Ken Burns, transform only). The headline reveals word by word
  * in pure CSS, so it never waits for JavaScript.
  */
-export function PageHero({ eyebrow, title, standfirst, imageKey, trail, children, full = false, below }: PageHeroProps) {
+export function PageHero({ eyebrow, title, standfirst, imageKey, media, trail, children, full = false, below }: PageHeroProps) {
   return (
     <section className={`on-dark surface-deep relative isolate overflow-hidden bg-midnight text-sand ${full ? "min-h-[100svh]" : "min-h-[70svh] lg:min-h-[78svh]"} flex flex-col`}>
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="ken-burns absolute inset-0">
-          <SiteImage imageKey={imageKey} fill priority sizes="100vw" className="object-cover" />
+          {media ?? <SiteImage imageKey={imageKey} fill priority sizes="100vw" className="object-cover" />}
         </div>
         <div aria-hidden="true" className="absolute inset-0 bg-midnight/45" />
         <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-4/5 bg-linear-to-t from-midnight via-midnight/70 to-transparent" />

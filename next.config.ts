@@ -1,5 +1,28 @@
 import type { NextConfig } from "next";
 
+type RemotePattern = { protocol: "http" | "https"; hostname: string; port?: string; pathname: string };
+
+/**
+ * CRM media hosts next/image may optimise (docs/api-contract.md section 9).
+ * Production is fixed; a CRM_API_URL on another origin (local CRM on :3001,
+ * staging) adds that origin's /media too. Local IPs are allowed only then.
+ */
+function crmImageHosts(): { patterns: RemotePattern[]; local: boolean } {
+  const patterns: RemotePattern[] = [{ protocol: "https", hostname: "crm.pm-travelagency.com", pathname: "/media/**" }];
+  let local = false;
+  try {
+    const url = new URL(process.env.CRM_API_URL ?? "");
+    if (url.hostname !== "crm.pm-travelagency.com") {
+      patterns.push({ protocol: url.protocol === "http:" ? "http" : "https", hostname: url.hostname, ...(url.port ? { port: url.port } : {}), pathname: "/media/**" });
+      local = ["localhost", "127.0.0.1", "::1"].includes(url.hostname);
+    }
+  } catch {
+    // CRM_API_URL not set or not a URL: production host only.
+  }
+  return { patterns, local };
+}
+const crmImages = crmImageHosts();
+
 /**
  * Security headers. Kept here rather than in middleware so they apply to
  * static assets too and cost nothing at request time.
@@ -74,6 +97,8 @@ const nextConfig: NextConfig = {
     imageSizes: [96, 160, 256, 384, 480],
     qualities: [70],
     minimumCacheTTL: 2678400,
+    remotePatterns: crmImages.patterns,
+    ...(crmImages.local ? { dangerouslyAllowLocalIP: true } : {}),
   },
   async redirects() {
     // Pages replaced by the 2026-11 site structure (docs/decisions.md D7).

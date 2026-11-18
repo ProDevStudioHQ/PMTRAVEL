@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { ButtonLink } from "@/components/Button";
@@ -22,7 +23,7 @@ function must<T>(value: T | undefined, what: string): T {
 }
 
 /** Template for every /experiences/[slug] and /tours/[slug] page. */
-export function LeisurePage({ product }: { product: LeisureProduct }) {
+export function LeisurePage({ product, cmsProgrammes }: { product: LeisureProduct; cmsProgrammes?: ReactNode }) {
   const path = leisureHref(product);
   const hub = product.kind === "experience" ? { href: "/experiences", label: "Experiences" } : { href: "/tours", label: "Tours" };
   const programmes = product.programmes.map((s) => must(programmeBySlug(s), `programme ${s}`));
@@ -72,6 +73,9 @@ export function LeisurePage({ product }: { product: LeisureProduct }) {
           ))}
         </ul>
       </Section>
+
+      {/* Programmes published in the CRM for this category */}
+      {cmsProgrammes}
 
       {/* Sample itineraries */}
       <Section tone="white" aria-labelledby="itineraries">
