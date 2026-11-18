@@ -5,7 +5,6 @@ import { PageHero } from "@/components/PageHero";
 import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
 import { SectionHeading } from "@/components/SectionHeading";
-import { Container } from "@/components/Container";
 import { Reveal } from "@/components/motion/Reveal";
 import { Counter } from "@/components/motion/Counter";
 import { IconTile, ImageCard } from "@/components/cards";
@@ -15,7 +14,7 @@ import { FaqSection } from "@/components/FaqSection";
 import { CtaBand } from "@/components/CtaBand";
 import { HOME_AUDIENCES, PARTNER_PROCESS } from "@/content/b2b";
 import { EXPERIENCES, leisureHref } from "@/content/leisure";
-import { DMC_SERVICES, HOME_DESTINATIONS, PARTNER_BENEFITS, TRADE_FAQS } from "@/content/home";
+import { DMC_SERVICES, PARTNER_BENEFITS, TRADE_FAQS } from "@/content/home";
 import { PARTNER_HREF, RFQ_HREF, TRUST_POINTS } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
 
@@ -78,23 +77,26 @@ export default function HomePage() {
 
       {/* 3. What partners get */}
       <Section tone="midnight" aria-labelledby="benefits">
-        <div className="grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <SectionHeading id="benefits" eyebrow="What partners get" title="Everything a ground partner should be" onDark>
-              Net rates, your brand, fast proposals and a team that answers — before, during and after the trip.
-            </SectionHeading>
-            <ButtonLink href={PARTNER_HREF} tone="dark" arrow className="mt-8">
-              {en.cta.partner}
-            </ButtonLink>
-          </div>
-          <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-8">
-            {PARTNER_BENEFITS.map((b, i) => (
-              <Reveal as="li" key={b.title} delay={(i % 2) * 0.08}>
-                <IconTile icon={b.icon} title={b.title} body={b.body} onDark />
-              </Reveal>
-            ))}
-          </ul>
-        </div>
+        <SectionHeading id="benefits" eyebrow="What partners get" title="Everything a ground partner should be" onDark>
+          Net rates, your brand, fast proposals and a team that answers — before, during and after the trip.
+        </SectionHeading>
+        {/* 8 benefits + the partner card fill a clean 3 x 3 grid. */}
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {PARTNER_BENEFITS.map((b, i) => (
+            <Reveal as="li" key={b.title} delay={(i % 3) * 0.08}>
+              <IconTile icon={b.icon} title={b.title} body={b.body} onDark />
+            </Reveal>
+          ))}
+          <Reveal as="li" delay={0.16}>
+            <Link href={PARTNER_HREF} className="card-lift group flex h-full flex-col justify-between rounded-3xl bg-terracotta-600 p-7 text-white">
+              <span className="font-display text-[1.5rem] leading-tight">Become a Partner</span>
+              <span className="mt-6 text-sm text-white/90">Open a trade account and get our partner rates.</span>
+              <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium">
+                Apply now <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
+              </span>
+            </Link>
+          </Reveal>
+        </ul>
       </Section>
 
       {/* 4. DMC services */}
@@ -147,37 +149,10 @@ export default function HomePage() {
         </ul>
       </Section>
 
-      {/* 7. Destinations */}
-      <section className="bg-sand" aria-labelledby="destinations">
-        <Container className="section-y !pb-0">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <SectionHeading id="destinations" eyebrow="Destinations" title="Where we operate">
-              Based in Marrakech, operating across Morocco.
-            </SectionHeading>
-            <Link href="/destinations" className="group inline-flex min-h-11 items-center gap-2 font-medium text-terracotta-700">
-              All destinations <ArrowRight aria-hidden="true" size={18} className="arrow-slide" />
-            </Link>
-          </div>
-        </Container>
-        <div
-          className="scroller rail-pad mt-12 flex gap-5 overflow-x-auto pb-8"
-          tabIndex={0}
-          role="region"
-          aria-label="Destinations, scroll horizontally"
-        >
-          {HOME_DESTINATIONS.map((d) => (
-            <div key={d.slug} className="w-[78vw] max-w-[340px] shrink-0">
-              <ImageCard href={`/destinations/${d.slug}`} imageKey={d.image} title={d.name} line={d.line} sizes="340px" aspect="aspect-[3/4]" />
-            </div>
-          ))}
-        </div>
-        <div className="pb-10 lg:pb-16" />
-      </section>
-
-      {/* 8. Trade FAQ */}
+      {/* 7. Trade FAQ */}
       <FaqSection eyebrow="Trade FAQ" heading="Questions travel professionals ask us" faqs={TRADE_FAQS} intro="Anything else? Ask the ops desk on WhatsApp." />
 
-      {/* 9. Final CTA */}
+      {/* 8. Final CTA */}
       <CtaBand />
     </>
   );
