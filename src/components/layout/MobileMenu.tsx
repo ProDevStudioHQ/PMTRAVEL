@@ -5,7 +5,6 @@
  * scroll, closes on Escape, traps nothing it does not need to (focus moves to
  * the close button on open and back to the opener on close).
  */
-import Link from "next/link";
 import { AnimatePresence, m } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Phone, X } from "lucide-react";
@@ -13,13 +12,13 @@ import { Logo } from "@/components/layout/Logo";
 import { WhatsappIcon } from "@/components/Icon";
 import { buttonClasses } from "@/components/Button";
 import { LanguageDropdown } from "@/components/layout/LanguageDropdown";
-import { COMPANY, LOGIN_HREF, RFQ_HREF, whatsappLink } from "@/lib/company";
+import { NavAnchor } from "@/components/layout/NavAnchor";
 import { en } from "@/i18n/dictionaries/en";
-import type { NavEntry } from "@/lib/nav";
+import type { NavButton, NavEntry, SiteContact } from "@/lib/site-layout";
 
-type Props = { nav: NavEntry[]; open: boolean; onClose: () => void; pathname: string };
+type Props = { nav: NavEntry[]; buttons: NavButton[]; contact: SiteContact; open: boolean; onClose: () => void; pathname: string };
 
-export function MobileMenu({ nav, open, onClose, pathname }: Props) {
+export function MobileMenu({ nav, buttons, contact, open, onClose, pathname }: Props) {
   const [expanded, setExpanded] = useState<string | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -71,15 +70,16 @@ export function MobileMenu({ nav, open, onClose, pathname }: Props) {
                 if (!item.menu) {
                   return (
                     <li key={item.id}>
-                      <Link
+                      <NavAnchor
                         href={item.href}
+                        newTab={item.newTab}
                         onClick={onClose}
                         aria-current={pathname === item.href ? "page" : undefined}
                         translate={item.id === "home" ? "no" : undefined}
                         className={`${item.id === "home" ? "notranslate " : ""}flex min-h-14 items-center font-display text-2xl aria-[current=page]:text-gold`}
                       >
                         {item.label}
-                      </Link>
+                      </NavAnchor>
                     </li>
                   );
                 }
@@ -110,16 +110,17 @@ export function MobileMenu({ nav, open, onClose, pathname }: Props) {
                           transition={{ duration: 0.25, ease: "easeOut" }}
                           className="overflow-hidden pb-3"
                         >
-                          {[...item.menu.items, ...(item.menu.allLabel ? [{ href: item.href, label: item.menu.allLabel }] : [])].map((link) => (
+                          {[...item.menu.items, ...(item.menu.allLabel ? [{ href: item.href, label: item.menu.allLabel, newTab: false }] : [])].map((link) => (
                             <li key={link.href}>
-                              <Link
+                              <NavAnchor
                                 href={link.href}
+                                newTab={link.newTab}
                                 onClick={onClose}
                                 aria-current={pathname === link.href ? "page" : undefined}
                                 className="flex min-h-11 items-center pl-4 text-base text-sand/80 hover:text-sand aria-[current=page]:text-gold"
                               >
                                 {link.label}
-                              </Link>
+                              </NavAnchor>
                             </li>
                           ))}
                         </m.ul>
@@ -130,23 +131,30 @@ export function MobileMenu({ nav, open, onClose, pathname }: Props) {
               })}
             </ul>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <Link href={RFQ_HREF} onClick={onClose} className={buttonClasses("primary", "dark", "w-full")}>
-                <span>{en.cta.quote}</span>
-              </Link>
-              <Link href={LOGIN_HREF} onClick={onClose} className={buttonClasses("secondary", "dark", "w-full")}>
-                <span>{en.cta.login}</span>
-              </Link>
-            </div>
+            {buttons.length > 0 ? (
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {buttons.map((button) => (
+                  <NavAnchor
+                    key={button.id}
+                    href={button.href}
+                    newTab={button.newTab}
+                    onClick={onClose}
+                    className={buttonClasses(button.style === "OUTLINE" ? "secondary" : "primary", "dark", "w-full")}
+                  >
+                    <span>{button.label}</span>
+                  </NavAnchor>
+                ))}
+              </div>
+            ) : null}
             <LanguageDropdown className="mt-6 inline-block" align="left" up />
           </nav>
 
           <div className="grid shrink-0 grid-cols-2 gap-3 border-t border-sand/10 p-4 sm:px-6">
-            <a href={`tel:${COMPANY.phone.mobile.tel}`} className={buttonClasses("secondary", "dark", "w-full")}>
+            <a href={contact.mobileHref} className={buttonClasses("secondary", "dark", "w-full")}>
               <Phone aria-hidden="true" size={18} />
               <span>Call</span>
             </a>
-            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className={buttonClasses("secondary", "dark", "w-full")}>
+            <a href={contact.whatsappHref} target="_blank" rel="noopener noreferrer" className={buttonClasses("secondary", "dark", "w-full")}>
               <WhatsappIcon size={18} />
               <span>WhatsApp</span>
             </a>

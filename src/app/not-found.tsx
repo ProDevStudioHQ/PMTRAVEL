@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { ButtonLink } from "@/components/Button";
-import { NAV, type NavLink } from "@/lib/nav";
 import { RFQ_HREF } from "@/lib/company";
+import { getSite } from "@/lib/cms";
+import { toNavEntries, type NavLink } from "@/lib/site-layout";
 
 /** Custom 404. Next.js marks it noindex automatically. */
-export default function NotFound() {
+export default async function NotFound() {
+  const nav = toNavEntries((await getSite()).nav.items);
+  // Top-level sections, with small groups (Company) opened up into their pages.
+  const links = nav
+    .flatMap((item): NavLink[] => (item.menu && !item.menu.allLabel ? item.menu.items : [{ href: item.href, label: item.label }]))
+    .filter((link) => link.href.startsWith("/"));
   return (
     <section className="on-dark surface-deep relative flex min-h-[100svh] items-center overflow-hidden bg-midnight text-sand">
       <div aria-hidden="true" className="pointer-events-none absolute -right-40 -bottom-40 size-[40rem] rounded-full border border-gold/15" />
@@ -17,7 +23,7 @@ export default function NotFound() {
         </p>
         <nav aria-label="Site sections" className="mt-10">
           <ul className="flex flex-wrap gap-2">
-            {NAV.flatMap((item): NavLink[] => (item.id === "company" && item.menu ? item.menu.items : [{ href: item.href, label: item.label }])).map((item) => (
+            {links.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="inline-flex min-h-11 items-center rounded-full border border-sand/20 px-5 text-sm hover:border-gold hover:text-gold">
                   {item.label}

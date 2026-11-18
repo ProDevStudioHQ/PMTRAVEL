@@ -96,8 +96,10 @@ export const RFQ_HREF = "/request-a-quote";
 export const PARTNER_HREF = "/b2b/become-a-partner";
 export const LOGIN_HREF = "/partner-login";
 
+export const WHATSAPP_DEFAULT_MESSAGE = "Hello PM Travel Agency, I'm a travel professional and would like to discuss a Morocco programme.";
+
 /** WhatsApp deep link with a prefilled message. */
-export const whatsappLink = (message = "Hello PM Travel Agency, I'm a travel professional and would like to discuss a Morocco programme.") =>
+export const whatsappLink = (message = WHATSAPP_DEFAULT_MESSAGE) =>
   `${COMPANY.whatsapp.url}?text=${encodeURIComponent(message)}`;
 
 /**

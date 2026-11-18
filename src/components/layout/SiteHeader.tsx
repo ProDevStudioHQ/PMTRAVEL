@@ -4,28 +4,42 @@
  * Client Component, because the header reacts to scroll (transparent → solid
  * with blur after 40px; hides on scroll down, shows on scroll up), opens
  * dropdowns on hover/click/keyboard, marks the current page and runs the
- * full-screen mobile menu. Menus arrive as plain data props from nav.ts.
+ * full-screen mobile menu. Menus, buttons, the top bar and contact details
+ * arrive as plain data props, built from the CRM's /site in the root layout.
  */
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, m } from "framer-motion";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { ArrowRight, ChevronDown, Mail, Menu, Phone } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
-import { WhatsappIcon } from "@/components/Icon";
 import { buttonClasses } from "@/components/Button";
 import { MobileMenu } from "@/components/layout/MobileMenu";
-import { LanguageDropdown } from "@/components/layout/LanguageDropdown";
-import { COMPANY, LOGIN_HREF, RFQ_HREF, whatsappLink } from "@/lib/company";
+import { NavAnchor } from "@/components/layout/NavAnchor";
+import { AnnouncementStrip, TopBar } from "@/components/layout/TopBar";
+import { RFQ_HREF } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
-import type { NavEntry } from "@/lib/nav";
+import type { NavButton, NavEntry, SiteContact } from "@/lib/site-layout";
+import type { SitePayload } from "@/types/cms";
+
+type HeaderProps = {
+  nav: NavEntry[];
+  buttons: NavButton[];
+  topBar: SitePayload["topBar"];
+  contact: SiteContact;
+};
+
+/** OUTLINE buttons appear from md, PRIMARY from sm; the mobile menu always lists both. */
+export function navButtonClasses(button: NavButton, className: string) {
+  return buttonClasses(button.style === "OUTLINE" ? "secondary" : "primary", "dark", className);
+}
 
 /** Routes whose top is a light surface: the header starts solid there. */
 const SOLID_ROUTES = new Set(["/partner-login"]);
 
 const isActive = (pathname: string, href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`));
 
-export function SiteHeader({ nav }: { nav: NavEntry[] }) {
+export function SiteHeader({ nav, buttons, topBar, contact }: HeaderProps) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -106,33 +120,8 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
           hidden && !mobileOpen && open === null ? "-translate-y-full" : "translate-y-0"
         } ${solid ? "bg-midnight/90 shadow-[0_1px_0_rgb(201_161_74/0.25)] backdrop-blur-md" : "bg-linear-to-b from-midnight/70 to-transparent"}`}
       >
-        {/* Utility bar (desktop) */}
-        <div
-          className={`relative z-10 hidden border-b border-sand/10 transition-[max-height,opacity] duration-300 lg:block ${
-            scrolled ? "pointer-events-none max-h-0 overflow-hidden opacity-0" : "max-h-10 overflow-visible opacity-100"
-          }`}
-        >
-          <div className="mx-auto grid h-10 max-w-site grid-cols-[1fr_auto_1fr] items-center px-10 text-[0.8125rem] text-sand/80">
-            <span aria-hidden="true" />
-            <div className="notranslate flex items-center justify-center gap-8" translate="no">
-              <a href={`tel:${COMPANY.phone.mobile.tel}`} className="inline-flex items-center gap-2 hover:text-sand">
-                <Phone aria-hidden="true" size={14} className="text-gold" />
-                {COMPANY.phone.mobile.display}
-              </a>
-              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-sand">
-                <span className="text-gold">
-                  <WhatsappIcon size={14} />
-                </span>
-                WhatsApp
-              </a>
-              <a href={`mailto:${COMPANY.email.b2b}`} className="inline-flex items-center gap-2 hover:text-sand">
-                <Mail aria-hidden="true" size={14} className="text-gold" />
-                {COMPANY.email.b2b}
-              </a>
-            </div>
-            <LanguageDropdown className="justify-self-end" />
-          </div>
-        </div>
+        {topBar.announcement ? <AnnouncementStrip announcement={topBar.announcement} collapsed={scrolled} /> : null}
+        {topBar.enabled && topBar.items.length > 0 ? <TopBar items={topBar.items} collapsed={scrolled} /> : null}
 
         {/* Main bar */}
         <div className="mx-auto flex h-[72px] max-w-site items-center justify-between gap-6 px-4 sm:px-6 lg:px-10">
@@ -145,8 +134,9 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
                 if (!item.menu) {
                   return (
                     <li key={item.id}>
-                      <Link
+                      <NavAnchor
                         href={item.href}
+                        newTab={item.newTab}
                         aria-current={active ? "page" : undefined}
                         translate={item.id === "home" ? "no" : undefined}
                         className={`${item.id === "home" ? "notranslate " : ""}relative inline-flex min-h-11 items-center whitespace-nowrap px-2.5 text-[0.9375rem] transition-colors hover:text-white ${
@@ -154,7 +144,7 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
                         }`}
                       >
                         {item.label}
-                      </Link>
+                      </NavAnchor>
                     </li>
                   );
                 }
@@ -210,16 +200,13 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
 
           <div className="flex items-center gap-2">
             {/* Visibility lives on wrappers: the button's own inline-flex would override `hidden`. */}
-            <span className="hide-when-translated hidden md:contents">
-              <Link href={LOGIN_HREF} className={buttonClasses("secondary", "dark", "min-h-11 whitespace-nowrap px-4 text-sm")}>
-                {en.cta.login}
-              </Link>
-            </span>
-            <span className="hidden sm:contents">
-              <Link href={RFQ_HREF} className={buttonClasses("primary", "dark", "min-h-11 whitespace-nowrap px-4 text-sm")}>
-                <span>{en.cta.quote}</span>
-              </Link>
-            </span>
+            {buttons.map((button) => (
+              <span key={button.id} className={button.style === "OUTLINE" ? "hide-when-translated hidden md:contents" : "hidden sm:contents"}>
+                <NavAnchor href={button.href} newTab={button.newTab} className={navButtonClasses(button, "min-h-11 whitespace-nowrap px-4 text-sm")}>
+                  <span>{button.label}</span>
+                </NavAnchor>
+              </span>
+            ))}
             <button
               type="button"
               className="inline-flex size-11 items-center justify-center rounded-full border border-sand/30 xl:hidden"
@@ -234,7 +221,7 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
         </div>
       </header>
 
-      <MobileMenu nav={nav} open={mobileOpen} onClose={() => setMobileOpen(false)} pathname={pathname} />
+      <MobileMenu nav={nav} buttons={buttons} contact={contact} open={mobileOpen} onClose={() => setMobileOpen(false)} pathname={pathname} />
     </>
   );
 }
@@ -245,14 +232,15 @@ function ListPanel({ item, pathname }: { item: NavEntry; pathname: string }) {
       <ul>
         {item.menu!.items.map((link) => (
           <li key={link.href}>
-            <Link
+            <NavAnchor
               href={link.href}
+              newTab={link.newTab}
               aria-current={pathname === link.href ? "page" : undefined}
               className="block rounded-xl px-4 py-3 transition-colors hover:bg-sand aria-[current=page]:bg-sand"
             >
               <span className="block text-[0.9375rem] font-medium">{link.label}</span>
               {link.blurb ? <span className="mt-0.5 block text-[0.8125rem] leading-snug text-muted">{link.blurb}</span> : null}
-            </Link>
+            </NavAnchor>
           </li>
         ))}
       </ul>
@@ -274,8 +262,9 @@ function MegaPanel({ item, pathname }: { item: NavEntry; pathname: string }) {
         <ul className="mt-3 grid grid-cols-2 gap-1">
           {item.menu!.items.map((link) => (
             <li key={link.href}>
-              <Link
+              <NavAnchor
                 href={link.href}
+                newTab={link.newTab}
                 aria-current={pathname === link.href ? "page" : undefined}
                 className="group block rounded-xl px-4 py-3 transition-colors hover:bg-sand aria-[current=page]:bg-sand"
               >
@@ -284,14 +273,16 @@ function MegaPanel({ item, pathname }: { item: NavEntry; pathname: string }) {
                   <ArrowRight aria-hidden="true" size={14} className="arrow-slide text-terracotta-700 opacity-0 group-hover:opacity-100" />
                 </span>
                 {link.blurb ? <span className="mt-0.5 block text-[0.8125rem] leading-snug text-muted">{link.blurb}</span> : null}
-              </Link>
+              </NavAnchor>
             </li>
           ))}
         </ul>
-        <Link href={item.href} className="group mt-3 inline-flex items-center gap-2 px-4 text-sm font-medium text-terracotta-700">
-          {item.menu!.allLabel}
-          <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
-        </Link>
+        {item.menu!.allLabel ? (
+          <Link href={item.href} className="group mt-3 inline-flex items-center gap-2 px-4 text-sm font-medium text-terracotta-700">
+            {item.menu!.allLabel}
+            <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
+          </Link>
+        ) : null}
       </div>
       <div className="on-dark col-span-4 flex flex-col justify-between rounded-2xl bg-midnight p-6 text-sand">
         <div>

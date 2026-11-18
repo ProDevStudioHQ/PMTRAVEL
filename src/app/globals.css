@@ -577,3 +577,9 @@ body:has(main .cta-band) .site-cta {
   font-size: 1.4rem;
   line-height: 1.3;
 }
+
+/* CRM announcement strip (TopBar.tsx): it sits in the fixed header, so push the
+   page down by its height while it is shown. */
+body:has(.site-announcement) #main {
+  padding-top: 2.25rem;
+}

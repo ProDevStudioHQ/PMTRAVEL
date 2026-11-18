@@ -1,100 +1,14 @@
-import { B2B_MENU } from "@/content/b2b";
-import { EXPERIENCES, TOURS, leisureHref } from "@/content/leisure";
 import { LOGIN_HREF, PARTNER_HREF, RFQ_HREF } from "@/lib/company";
 
 /**
- * Navigation: the single source for the header, mobile menu and footer.
- * Everything here is plain data so it can be passed to the Client header.
- * Every href points at a real page (checked by `npm run verify:data`).
+ * Navigation now comes from the CRM (GET /site, docs/api-contract.md 5.1):
+ * header, dropdowns, buttons, top bar and footer columns are edited there.
+ * The offline copy is src/content/fallback-site.json. This file keeps the
+ * company re-exports older pages import, the nav types and the static routes
+ * the sitemap lists.
  */
 export { COMPANY, addressOneLine, RFQ_HREF, SITE_URL, PARTNER_HREF, LOGIN_HREF } from "@/lib/company";
-
-export type NavLink = { href: string; label: string; blurb?: string };
-
-export type NavEntry = {
-  id: string;
-  label: string;
-  href: string;
-  /** "list": small dropdown. "mega": wide panel with descriptions and a quote card. */
-  menu?: { kind: "list" | "mega"; items: NavLink[]; allLabel?: string };
-  emphasis?: boolean;
-};
-
-export const NAV: NavEntry[] = [
-  { id: "home", label: "Home", href: "/" },
-  {
-    id: "experiences",
-    label: "Experiences",
-    href: "/experiences",
-    menu: {
-      kind: "list",
-      allLabel: "All experiences",
-      items: EXPERIENCES.map((e) => ({ href: leisureHref(e), label: e.name, blurb: e.menuBlurb })),
-    },
-  },
-  {
-    id: "tours",
-    label: "Tours",
-    href: "/tours",
-    menu: {
-      kind: "list",
-      allLabel: "All tours",
-      items: TOURS.map((t) => ({ href: leisureHref(t), label: t.name, blurb: t.menuBlurb })),
-    },
-  },
-  {
-    id: "b2b",
-    label: "B2B & DMC",
-    href: "/b2b",
-    emphasis: true,
-    menu: {
-      kind: "mega",
-      allLabel: "B2B overview",
-      items: [
-        ...B2B_MENU.map((a) => ({ href: `/b2b/${a.slug}`, label: a.name, blurb: a.menuBlurb })),
-        { href: PARTNER_HREF, label: "Become a Partner", blurb: "Open a trade account and get our partner rates." },
-      ],
-    },
-  },
-  {
-    id: "company",
-    label: "Company",
-    href: "/about",
-    menu: {
-      kind: "list",
-      // No "all" link: the four pages are the whole group.
-      items: [
-        { href: "/about", label: "About", blurb: "Who we are and how we work." },
-        { href: "/journal", label: "Journal", blurb: "Trade guides and Morocco insights." },
-        { href: "/gallery", label: "Gallery", blurb: "The Morocco we operate, in pictures." },
-        { href: "/contact", label: "Contact", blurb: "Office, phone, WhatsApp and email." },
-      ],
-    },
-  },
-];
-
-export const FOOTER_B2B: NavLink[] = [
-  ...B2B_MENU.map((a) => ({ href: `/b2b/${a.slug}`, label: a.slug === "mice" ? "MICE" : a.name })),
-  { href: PARTNER_HREF, label: "Become a Partner" },
-  { href: LOGIN_HREF, label: "Partner Login" },
-];
-
-export const FOOTER_EXPLORE: NavLink[] = [
-  { href: "/experiences", label: "Experiences" },
-  { href: "/tours", label: "Tours" },
-  { href: "/destinations", label: "Destinations" },
-  { href: "/programmes", label: "B2B Programmes" },
-  { href: "/about", label: "About" },
-  { href: "/journal", label: "Journal" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/contact", label: "Contact" },
-];
-
-export const LEGAL_LINKS: NavLink[] = [
-  { href: "/privacy", label: "Privacy" },
-  { href: "/terms", label: "Terms" },
-  { href: "/cookies", label: "Cookies" },
-];
+export type { NavEntry, NavLink } from "@/lib/site-layout";
 
 /** Static routes for the sitemap. Dynamic collections are added in sitemap.ts. */
 export const STATIC_ROUTES: string[] = [

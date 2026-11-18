@@ -1,23 +1,42 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUp, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Container } from "@/components/Container";
-import { InstagramIcon, LinkedinIcon, WhatsappIcon } from "@/components/Icon";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  TiktokIcon,
+  WhatsappIcon,
+  XIcon,
+  YoutubeIcon,
+} from "@/components/Icon";
 import { Logo } from "@/components/layout/Logo";
-import { COMPANY, CREDENTIALS, addressOneLine, whatsappLink } from "@/lib/company";
-import { FOOTER_B2B, FOOTER_EXPLORE, LEGAL_LINKS } from "@/lib/nav";
+import { NavAnchor } from "@/components/layout/NavAnchor";
+import { EnquiryForm } from "@/components/forms/EnquiryForm";
+import { NEWSLETTER_FIELDS } from "@/components/forms/configs";
+import { CREDENTIALS } from "@/lib/company";
+import { safeHref, siteContact, splitHours } from "@/lib/site-layout";
 import { en } from "@/i18n/dictionaries/en";
+import type { Link as CmsLink, SitePayload, SocialLink } from "@/types/cms";
 
-function Column({ title, links }: { title: string; links: { href: string; label: string }[] }) {
+/** Footer links that survive the URL check. */
+const usable = (links: CmsLink[]) =>
+  links.flatMap((l) => {
+    const href = safeHref(l.url);
+    return href ? [{ href, label: l.label, newTab: l.openInNewTab }] : [];
+  });
+
+function Column({ title, links }: { title: string; links: CmsLink[] }) {
   return (
     <div>
       <h2 className="font-sans text-xs font-medium tracking-[0.2em] text-gold uppercase">{title}</h2>
       <ul className="mt-5 space-y-1">
-        {links.map((link) => (
-          <li key={link.href}>
-            <Link href={link.href} className="inline-flex min-h-9 items-center text-[0.9375rem] text-sand/75 transition-colors hover:text-sand">
+        {usable(links).map((link) => (
+          <li key={link.href + link.label}>
+            <NavAnchor href={link.href} newTab={link.newTab} className="inline-flex min-h-9 items-center text-[0.9375rem] text-sand/75 transition-colors hover:text-sand">
               {link.label}
-            </Link>
+            </NavAnchor>
           </li>
         ))}
       </ul>
@@ -38,110 +57,161 @@ function ContactCard({ icon, label, children, className = "" }: { icon: ReactNod
   );
 }
 
+const SOCIAL: Record<SocialLink["platform"], { name: string; icon: ReactNode; className: string }> = {
+  INSTAGRAM: { name: "Instagram", icon: <InstagramIcon size={22} />, className: "bg-instagram" },
+  LINKEDIN: { name: "LinkedIn", icon: <LinkedinIcon size={20} />, className: "bg-linkedin" },
+  FACEBOOK: { name: "Facebook", icon: <FacebookIcon size={20} />, className: "bg-majorelle" },
+  YOUTUBE: { name: "YouTube", icon: <YoutubeIcon size={22} />, className: "bg-terracotta" },
+  TIKTOK: { name: "TikTok", icon: <TiktokIcon size={20} />, className: "bg-ink" },
+  PINTEREST: { name: "Pinterest", icon: <PinterestIcon size={20} />, className: "bg-terracotta-700" },
+  X: { name: "X", icon: <XIcon size={18} />, className: "bg-ink" },
+};
+
 const linkClass = "underline-offset-4 hover:text-gold hover:underline";
 
-export function SiteFooter() {
+export function SiteFooter({ site }: { site: SitePayload }) {
+  const { footer, settings } = site;
+  const contact = siteContact(site);
+  const mapsHref = footer.showMap ? safeHref(settings.googleMapsUrl) : null;
+  const socials = footer.socials.flatMap((s) => {
+    const href = safeHref(s.url);
+    return href ? [{ ...s, href }] : [];
+  });
   const iconProps = { "aria-hidden": true, size: 20, strokeWidth: 1.5 } as const;
+  const columnGrid = footer.columns.length >= 4 ? "lg:grid-cols-4" : footer.columns.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2";
 
   return (
     <footer className="on-dark surface-deep zellige-bg border-t border-gold/20 bg-midnight text-sand">
-
       {/* Brand + link columns */}
-      <Container className="grid gap-12 pt-16 pb-12 sm:grid-cols-2 lg:grid-cols-12 lg:pt-20">
-        <div className="sm:col-span-2 lg:col-span-6">
+      <Container className="grid gap-12 pt-16 pb-12 lg:grid-cols-12 lg:pt-20">
+        <div className="lg:col-span-4">
           <Logo />
-          <p className="mt-5 max-w-sm text-sm text-sand/70">{COMPANY.shortDescription}</p>
-          <ul className="mt-6 flex gap-3" aria-label="Social media">
-            <li>
-              <a href={COMPANY.social.instagram} target="_blank" rel="noopener noreferrer" className="bg-instagram grid size-11 place-items-center rounded-full text-white shadow-raised transition-transform hover:scale-110">
-                <InstagramIcon size={22} />
-                <span className="sr-only">Instagram</span>
-              </a>
-            </li>
-            <li>
-              <a href={COMPANY.social.linkedin} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-full bg-linkedin text-white shadow-raised transition-transform hover:scale-110">
-                <LinkedinIcon size={20} />
-                <span className="sr-only">LinkedIn</span>
-              </a>
-            </li>
-          </ul>
+          <p className="mt-5 max-w-sm text-sm text-sand/70">{footer.aboutText}</p>
+          {socials.length > 0 ? (
+            <ul className="mt-6 flex flex-wrap gap-3" aria-label="Social media">
+              {socials.map((s) => (
+                <li key={s.platform + s.href}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`grid size-11 place-items-center rounded-full text-white shadow-raised transition-transform hover:scale-110 ${SOCIAL[s.platform].className}`}
+                  >
+                    {SOCIAL[s.platform].icon}
+                    <span className="sr-only">{SOCIAL[s.platform].name}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : null}
           <p className="mt-6 text-xs text-sand/55">
             Licence no.: {CREDENTIALS.licenceNumber ?? <span className="text-gold/80">[Add licence number]</span>}
           </p>
         </div>
-        <div className="lg:col-span-3">
-          <Column title="B2B & DMC" links={FOOTER_B2B} />
+        <div className={`grid gap-10 sm:grid-cols-2 lg:col-span-8 ${columnGrid}`}>
+          {footer.columns.map((column) => (
+            <Column key={column.id} title={column.title} links={column.links} />
+          ))}
         </div>
-        <div className="lg:col-span-3">
-          <Column title="Explore" links={FOOTER_EXPLORE} />
-        </div>
       </Container>
 
+      {footer.newsletter.enabled ? (
+        <Container className="pb-12">
+          <div className="grid gap-6 rounded-card border border-sand/10 bg-midnight-2 p-6 sm:p-8 lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-5">
+              <h2 className="font-display text-2xl text-sand">Trade newsletter</h2>
+              {footer.newsletter.text ? <p className="mt-2 text-sm text-sand/70">{footer.newsletter.text}</p> : null}
+            </div>
+            <div className="lg:col-span-7">
+              <EnquiryForm
+                kind="newsletter"
+                fields={NEWSLETTER_FIELDS}
+                submitLabel="Subscribe"
+                successTitle="You're subscribed"
+                successBody="Thank you. The next trade update will reach your inbox."
+                idPrefix="footer-newsletter"
+                compact
+                onDark
+              />
+            </div>
+          </div>
+        </Container>
+      ) : null}
 
-      <Container>
-        <hr className="gold-rule opacity-40" />
-      </Container>
+      {footer.showContactBlock ? (
+        <>
+          <Container>
+            <hr className="gold-rule opacity-40" />
+          </Container>
 
-      {/* Contact cards */}
-      <Container className="pt-12 pb-14">
-        <h2 className="font-sans text-xs font-medium tracking-[0.2em] text-gold uppercase">Contact</h2>
-        <address className="notranslate not-italic" translate="no">
-          <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <ContactCard icon={<MapPin {...iconProps} />} label="Office">
-              <p>{addressOneLine}</p>
-              <a href={COMPANY.mapsUrl} target="_blank" rel="noopener noreferrer" className={`mt-1 inline-block text-sm text-gold ${linkClass}`}>
-                Open in Google Maps
-              </a>
-            </ContactCard>
-            <ContactCard icon={<Phone {...iconProps} />} label={COMPANY.phone.mobile.label}>
-              <a href={`tel:${COMPANY.phone.mobile.tel}`} className={linkClass}>
-                {COMPANY.phone.mobile.display}
-              </a>
-            </ContactCard>
-            <ContactCard icon={<WhatsappIcon size={20} />} label="WhatsApp">
-              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                Chat with our ops desk
-              </a>
-            </ContactCard>
-            <ContactCard icon={<Phone {...iconProps} />} label={COMPANY.phone.landline.label}>
-              <a href={`tel:${COMPANY.phone.landline.tel}`} className={linkClass}>
-                {COMPANY.phone.landline.display}
-              </a>
-            </ContactCard>
-            <ContactCard icon={<Mail {...iconProps} />} label="B2B / Travel trade">
-              <a href={`mailto:${COMPANY.email.b2b}`} className={linkClass}>
-                {COMPANY.email.b2b}
-              </a>
-            </ContactCard>
-            <ContactCard icon={<Mail {...iconProps} />} label="General">
-              <a href={`mailto:${COMPANY.email.general}`} className={linkClass}>
-                {COMPANY.email.general}
-              </a>
-            </ContactCard>
-            <ContactCard icon={<Clock {...iconProps} />} label="Opening hours" className="sm:col-span-2 lg:col-span-3">
-              <dl className="flex flex-col gap-x-10 gap-y-1 text-sm sm:flex-row sm:flex-wrap">
-                {COMPANY.hours.map((h) => (
-                  <div key={h.days} className="flex gap-2 whitespace-nowrap">
-                    <dt className="text-sand/60">{h.days}</dt>
-                    <dd>{h.time}</dd>
-                  </div>
-                ))}
-              </dl>
-            </ContactCard>
-          </ul>
-        </address>
-      </Container>
-
+          {/* Contact cards */}
+          <Container className="pt-12 pb-14">
+            <h2 className="font-sans text-xs font-medium tracking-[0.2em] text-gold uppercase">Contact</h2>
+            <address className="notranslate not-italic" translate="no">
+              <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <ContactCard icon={<MapPin {...iconProps} />} label="Office">
+                  <p>{settings.address}</p>
+                  {mapsHref ? (
+                    <a href={mapsHref} target="_blank" rel="noopener noreferrer" className={`mt-1 inline-block text-sm text-gold ${linkClass}`}>
+                      Open in Google Maps
+                    </a>
+                  ) : null}
+                </ContactCard>
+                {contact.mobileDisplay ? (
+                  <ContactCard icon={<Phone {...iconProps} />} label="Mobile / WhatsApp">
+                    <a href={contact.mobileHref} className={linkClass}>
+                      {contact.mobileDisplay}
+                    </a>
+                  </ContactCard>
+                ) : null}
+                <ContactCard icon={<WhatsappIcon size={20} />} label="WhatsApp">
+                  <a href={contact.whatsappHref} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                    Chat with our ops desk
+                  </a>
+                </ContactCard>
+                {contact.landlineDisplay ? (
+                  <ContactCard icon={<Phone {...iconProps} />} label="Landline">
+                    <a href={contact.landlineHref} className={linkClass}>
+                      {contact.landlineDisplay}
+                    </a>
+                  </ContactCard>
+                ) : null}
+                <ContactCard icon={<Mail {...iconProps} />} label="B2B / Travel trade">
+                  <a href={`mailto:${contact.emailB2b}`} className={linkClass}>
+                    {contact.emailB2b}
+                  </a>
+                </ContactCard>
+                <ContactCard icon={<Mail {...iconProps} />} label="General">
+                  <a href={`mailto:${contact.emailContact}`} className={linkClass}>
+                    {contact.emailContact}
+                  </a>
+                </ContactCard>
+                {settings.openingHours ? (
+                  <ContactCard icon={<Clock {...iconProps} />} label="Opening hours" className="sm:col-span-2 lg:col-span-3">
+                    <ul className="flex flex-col gap-x-10 gap-y-1 text-sm sm:flex-row sm:flex-wrap">
+                      {splitHours(settings.openingHours).map((line) => (
+                        <li key={line} className="whitespace-nowrap">
+                          {line}
+                        </li>
+                      ))}
+                    </ul>
+                  </ContactCard>
+                ) : null}
+              </ul>
+            </address>
+          </Container>
+        </>
+      ) : null}
 
       {/* Bottom bar */}
       <div className="border-t border-sand/10">
         <Container className="flex flex-col gap-4 py-6 text-[0.8125rem] text-sand/60 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <span>© 2026 {COMPANY.name}</span>
-            {LEGAL_LINKS.map((link) => (
-              <Link key={link.href} href={link.href} className="inline-flex min-h-9 items-center hover:text-sand">
+            <span>{footer.copyright}</span>
+            {usable(footer.legalLinks).map((link) => (
+              <NavAnchor key={link.href} href={link.href} newTab={link.newTab} className="inline-flex min-h-9 items-center hover:text-sand">
                 {link.label}
-              </Link>
+              </NavAnchor>
             ))}
           </div>
           <a href="#top" className="inline-flex min-h-11 items-center gap-2 self-start rounded-full border border-sand/20 px-4 hover:border-gold hover:text-sand sm:self-auto">
