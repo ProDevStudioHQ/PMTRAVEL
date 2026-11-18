@@ -220,10 +220,10 @@ export async function getSitemap(): Promise<SitemapEntry[] | null> {
  * Live, uncached check used by /api/health: can we reach the CRM with our key,
  * and does /site still match the contract?
  */
-export async function checkCmsLive(): Promise<SiteSource> {
+export async function checkCmsLive(timeoutMs = CMS_TIMEOUT_MS): Promise<SiteSource> {
   if (!isCmsConfigured()) return "fallback";
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), CMS_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(`${apiBase()}/site`, {
       headers: { "x-api-key": process.env.CRM_API_KEY ?? "", Accept: "application/json" },
