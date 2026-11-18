@@ -27,15 +27,37 @@ export function readTranslateLang(): TranslateLang {
   return TRANSLATE_LANGS.some((l) => l.code === code) ? (code as TranslateLang) : "en";
 }
 
+/**
+ * Every domain/path variant a googtrans cookie may have been written with.
+ * Google's script writes its own copies (host-only, on the host, and on every
+ * parent domain), so clearing only some of them leaves the old language
+ * active after the reload.
+ */
+function cookieScopes(): string[] {
+  const parts = window.location.hostname.split(".");
+  const domains = [""];
+  for (let i = 0; i < parts.length - 1 || i === 0; i++) {
+    const d = parts.slice(i).join(".");
+    domains.push(`; domain=${d}`, `; domain=.${d}`);
+  }
+  const paths = new Set(["/"]);
+  const segments = window.location.pathname.split("/").filter(Boolean);
+  for (let i = 1; i <= segments.length; i++) paths.add(`/${segments.slice(0, i).join("/")}`);
+  return [...paths].flatMap((p) => domains.map((d) => `; path=${p}${d}`));
+}
+
 function setTranslateLang(code: TranslateLang) {
-  const host = window.location.hostname;
-  const domains = ["", `; domain=${host}`, `; domain=.${host.replace(/^www\./, "")}`];
-  for (const domain of domains) {
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domain}`;
+  const scopes = cookieScopes();
+  for (const scope of scopes) {
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT${scope}`;
   }
   if (code !== "en") {
+    const host = window.location.hostname;
     document.cookie = `googtrans=/en/${code}; path=/`;
     document.cookie = `googtrans=/en/${code}; path=/; domain=.${host.replace(/^www\./, "")}`;
+  } else if (readTranslateLang() !== "en") {
+    // A copy we could not delete is still there: neutralise it in place.
+    for (const scope of scopes) document.cookie = `googtrans=/en/en${scope}`;
   }
   window.location.reload();
 }
