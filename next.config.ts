@@ -69,6 +69,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    // srcset widths up to 4K; small sizes cover thumbnails and cards.
+    deviceSizes: [640, 1080, 1600, 2400, 3840],
+    imageSizes: [96, 160, 256, 384, 480],
+    qualities: [70],
+    minimumCacheTTL: 2678400,
   },
   async redirects() {
     // Pages replaced by the 2026-11 site structure (docs/decisions.md D7).

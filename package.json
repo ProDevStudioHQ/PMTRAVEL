@@ -13,7 +13,8 @@
     "verify:data": "node scripts/verify-data.mjs",
     "check:budget": "node scripts/check-budget.mjs",
     "check:a11y": "node scripts/check-a11y.mjs",
-    "check:launch": "node scripts/check-launch.mjs"
+    "check:launch": "node scripts/check-launch.mjs",
+    "images:blur": "node scripts/gen-blur.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",

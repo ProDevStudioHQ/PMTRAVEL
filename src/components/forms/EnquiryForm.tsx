@@ -9,7 +9,7 @@
  */
 import { useActionState } from "react";
 import { usePathname } from "next/navigation";
-import { CheckCircle2, AlertCircle } from "lucide-react";
+import { CheckCircle2, AlertCircle, Clock } from "lucide-react";
 import { submitEnquiry } from "@/features/enquiry/actions";
 import { initialEnquiryState, type EnquiryKind, type EnquiryState } from "@/features/enquiry/options";
 import { buttonClasses } from "@/components/Button";
@@ -50,7 +50,7 @@ export function EnquiryForm({
 
   if (state.status === "success") {
     return (
-      <div role="status" className={`rounded-3xl border p-8 ${onDark ? "border-sand/20 bg-midnight-2 text-sand" : "border-line bg-white"}`}>
+      <div role="status" className={`rounded-card border p-8 ${onDark ? "border-sand/20 bg-midnight-2 text-sand" : "border-line bg-ivory"}`}>
         <CheckCircle2 aria-hidden="true" className="text-terracotta" size={32} strokeWidth={1.5} />
         <h3 className="t-h3 mt-4">{successTitle}</h3>
         <p className={`mt-3 ${onDark ? "text-sand/80" : "text-muted"}`}>{successBody}</p>
@@ -103,6 +103,12 @@ export function EnquiryForm({
         <button type="submit" disabled={pending} aria-disabled={pending} className={buttonClasses("primary", onDark ? "dark" : "light", "sm:min-w-56")}>
           <span>{pending ? "Sending…" : submitLabel}</span>
         </button>
+        {kind === "quote" ? (
+          <p className={`inline-flex items-center gap-2 text-sm font-medium ${onDark ? "text-sand" : "text-zellige"}`}>
+            <Clock aria-hidden="true" size={16} strokeWidth={1.75} />
+            We reply within 24 hours
+          </p>
+        ) : null}
         {footnote ? (
           <p className={`text-[0.8125rem] ${onDark ? "text-sand/70" : "text-muted"}`}>
             By sending, you agree to our{" "}

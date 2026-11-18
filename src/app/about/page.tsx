@@ -58,7 +58,7 @@ export default function AboutPage() {
               </div>
             </SectionHeading>
           </div>
-          <Reveal className="relative aspect-[4/5] overflow-hidden rounded-3xl lg:col-span-6">
+          <Reveal className="relative aspect-[4/5] overflow-hidden rounded-card lg:col-span-6">
             <SiteImage imageKey="d3-mice-bahia-palace" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
           </Reveal>
         </div>
@@ -77,7 +77,7 @@ export default function AboutPage() {
 
       <Section tone="midnight" aria-labelledby="facts">
         <SectionHeading id="facts" eyebrow="Company details" title="The facts" onDark />
-        <dl className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-sand/10 bg-sand/10 sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="mt-12 grid gap-px overflow-hidden rounded-card border border-sand/10 bg-sand/10 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { label: "Company", value: COMPANY.legalLine },
             { label: "Office", value: addressOneLine },

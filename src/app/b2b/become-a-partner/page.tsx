@@ -60,7 +60,7 @@ export default function BecomeAPartnerPage() {
               Tell us about your business. We reply by email from {COMPANY.email.b2b}.
             </SectionHeading>
           </div>
-          <div className="rounded-3xl border border-line bg-sand p-6 sm:p-10 lg:col-span-8">
+          <div className="rounded-card border border-line bg-sand p-6 sm:p-10 lg:col-span-8">
             <EnquiryForm
               kind="partner"
               fields={PARTNER_FIELDS}

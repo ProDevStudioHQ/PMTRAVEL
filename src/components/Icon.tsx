@@ -36,6 +36,7 @@ import {
   Utensils,
   type LucideIcon,
 } from "lucide-react";
+import { DoorIcon, LanternIcon, StarIcon } from "@/components/moroccan";
 
 /**
  * Icons are referenced by name in content data so the data stays
@@ -79,10 +80,21 @@ const ICONS = {
   utensils: Utensils,
 } satisfies Record<string, LucideIcon>;
 
-export type IconName = keyof typeof ICONS;
+/** Moroccan line icons drawn for this site (1.5px stroke, like the lucide set). */
+const MOROCCAN = {
+  door: DoorIcon,
+  lantern: LanternIcon,
+  star: StarIcon,
+};
+
+export type IconName = keyof typeof ICONS | keyof typeof MOROCCAN;
 
 export function Icon({ name, size = 22, className = "" }: { name: IconName; size?: number; className?: string }) {
-  const Component = ICONS[name];
+  if (name in MOROCCAN) {
+    const Custom = MOROCCAN[name as keyof typeof MOROCCAN];
+    return <Custom size={size} className={className} />;
+  }
+  const Component = ICONS[name as keyof typeof ICONS];
   return <Component aria-hidden="true" size={size} strokeWidth={1.5} className={className} />;
 }
 

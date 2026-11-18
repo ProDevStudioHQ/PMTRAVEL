@@ -497,7 +497,7 @@ export default function TasteOfMarrakechPage() {
             {VERSIONS.map((version) => (
               <li
                 key={version.name}
-                className={`flex flex-col rounded-3xl border p-7 ${
+                className={`flex flex-col rounded-card border p-7 ${
                   version.featured ? "border-red-600 bg-red-900" : "border-paper/12 bg-paper/[0.05]"
                 }`}
               >
@@ -596,7 +596,7 @@ export default function TasteOfMarrakechPage() {
       {/* MICE spin-off */}
       <section className="bg-paper-2">
         <Container className="py-16 lg:py-20">
-          <div className="grid gap-8 rounded-3xl border border-rule bg-paper p-6 sm:p-10 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center">
+          <div className="grid gap-8 rounded-card border border-rule bg-paper p-6 sm:p-10 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center">
             <span aria-hidden="true" className="flex size-16 items-center justify-center rounded-2xl bg-red-600 text-paper">
               <Presentation size={28} strokeWidth={1.75} />
             </span>
@@ -626,7 +626,7 @@ export default function TasteOfMarrakechPage() {
       {/* Final CTA */}
       <section className="bg-paper-2">
         <Container className="py-20 lg:py-28">
-          <div className="surface-deep relative isolate overflow-hidden rounded-[2rem] bg-red-900 px-6 py-14 text-paper sm:px-12 lg:px-16 lg:py-20">
+          <div className="surface-deep relative isolate overflow-hidden rounded-card bg-red-900 px-6 py-14 text-paper sm:px-12 lg:px-16 lg:py-20">
             {imageByKey("b3b-agafay-camp") ? (
               <>
                 <SiteImage imageKey="b3b-agafay-camp" fill sizes="(min-width: 1280px) 1056px, 100vw" className="-z-10 object-cover" />

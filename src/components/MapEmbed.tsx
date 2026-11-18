@@ -17,7 +17,7 @@ export function MapEmbed({ className = "" }: { className?: string }) {
   const show = clicked || consent === "all";
 
   return (
-    <div className={`relative aspect-[4/3] overflow-hidden rounded-3xl border border-line bg-sand-2 ${className}`}>
+    <div className={`relative aspect-[4/3] overflow-hidden rounded-card border border-line bg-sand-2 ${className}`}>
       {show ? (
         <iframe
           title="Map showing the PM Travel Agency office in Marrakech"

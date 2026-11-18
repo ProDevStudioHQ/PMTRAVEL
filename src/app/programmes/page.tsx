@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, BadgePercent, Headset, Package } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { CtaBanner, IconCards, PILL, SectionHeading, type IconItem } from "@/components/Modern";
+import { IconCards, PILL, SectionHeading, type IconItem } from "@/components/Modern";
 import { Section } from "@/components/Section";
+import { CtaBand } from "@/components/CtaBand";
 import { SiteImage } from "@/components/SiteImage";
 import { DestinationHero } from "@/features/destinations/DestinationPage";
 import { imageByKey } from "@/features/images/registry";
@@ -105,7 +106,7 @@ export default function ProgrammesPage() {
         <ul className="mt-10 grid gap-6 md:grid-cols-2">
           {PROGRAMMES.map((programme) => (
             <li key={programme.slug}>
-              <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-rule bg-paper transition-[border-color,box-shadow] duration-200 hover:border-red-600 hover:shadow-overlay">
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-card border border-rule bg-paper transition-[border-color,box-shadow] duration-200 hover:border-red-600 hover:shadow-overlay">
                 <div className="relative aspect-[16/10] bg-ink-900">
                   {imageByKey(programme.cardImage) ? (
                     <SiteImage
@@ -164,19 +165,7 @@ export default function ProgrammesPage() {
         </ul>
       </Section>
 
-      <Section tone="paper-2">
-        <CtaBanner
-          title="Looking for a programme we have not listed?"
-          imageKey="c7-ait-ben-haddou"
-          primary={{ href: RFQ_HREF, label: "Request a B2B quote" }}
-          secondary={{ href: "/contact", label: "Contact the office" }}
-        >
-          <p>
-            Tell us your market, your clients and the season. We build and cost
-            the ground programme for your dates.
-          </p>
-        </CtaBanner>
-      </Section>
+      <CtaBand title={`Looking for a programme we have not listed?`} body="Tell us your market, your clients and the season. We build and cost the ground programme for your dates." primaryLabel="Request a B2B quote" />
     </>
   );
 }

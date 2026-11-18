@@ -198,7 +198,7 @@ export function DestinationPage({
 
           <aside className="flex flex-col gap-6 self-start lg:sticky lg:top-24">
             {detail ? (
-              <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-paper-2 shadow-raised">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-card bg-paper-2 shadow-raised">
                 <SiteImage
                   imageKey={detail}
                   fill
@@ -328,7 +328,7 @@ export function DestinationPage({
       <FaqSection tone={faqTone} heading={faq.heading} faqs={faq.faqs} />
 
       <Section tone={closingTone}>
-        <div className="surface-deep relative isolate overflow-hidden rounded-3xl bg-red-900 px-6 py-12 text-paper sm:px-12 lg:py-16">
+        <div className="surface-deep relative isolate overflow-hidden rounded-card bg-red-900 px-6 py-12 text-paper sm:px-12 lg:py-16">
           {images?.hero && imageByKey(images.hero) ? (
             <>
               <SiteImage imageKey={images.hero} fill sizes="(min-width: 1280px) 1056px, 100vw" className="-z-10 object-cover" />

@@ -75,7 +75,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </div>
           </div>
           <aside className="lg:col-span-4" aria-label="Related pages">
-            <div className="sticky top-28 rounded-3xl border border-line bg-white p-7">
+            <div className="sticky top-28 rounded-card border border-line bg-ivory p-7">
               <h2 className="font-display text-xl">Read next</h2>
               <ul className="mt-4">
                 {article.links.map((l) => (

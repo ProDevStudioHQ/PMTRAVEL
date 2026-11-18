@@ -241,7 +241,7 @@ export function SiteHeader({ nav }: { nav: NavEntry[] }) {
 
 function ListPanel({ item, pathname }: { item: NavEntry; pathname: string }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-line bg-white p-2 text-ink shadow-overlay">
+    <div className="overflow-hidden rounded-2xl border border-line bg-ivory p-2 text-ink shadow-overlay">
       <ul>
         {item.menu!.items.map((link) => (
           <li key={link.href}>
@@ -268,7 +268,7 @@ function ListPanel({ item, pathname }: { item: NavEntry; pathname: string }) {
 
 function MegaPanel({ item, pathname }: { item: NavEntry; pathname: string }) {
   return (
-    <div className="mx-auto grid max-w-[calc(var(--container-site)-5rem)] grid-cols-12 gap-6 rounded-3xl border border-line bg-white p-6 text-ink shadow-overlay">
+    <div className="mx-auto grid max-w-[calc(var(--container-site)-5rem)] grid-cols-12 gap-6 rounded-card border border-line bg-ivory p-6 text-ink shadow-overlay">
       <div className="col-span-8">
         <p className="eyebrow px-4">For travel professionals</p>
         <ul className="mt-3 grid grid-cols-2 gap-1">

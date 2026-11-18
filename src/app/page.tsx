@@ -7,13 +7,14 @@ import { Section } from "@/components/Section";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
 import { Counter } from "@/components/motion/Counter";
-import { IconTile, ImageCard } from "@/components/cards";
-import { Icon } from "@/components/Icon";
+import { B2BServiceCard, IconTile } from "@/components/cards";
+import { LeisureCard } from "@/components/templates/LeisureCard";
+import { CarvedDivider } from "@/components/motion/CarvedDivider";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
 import { FaqSection } from "@/components/FaqSection";
 import { CtaBand } from "@/components/CtaBand";
 import { HOME_AUDIENCES, PARTNER_PROCESS } from "@/content/b2b";
-import { EXPERIENCES, leisureHref } from "@/content/leisure";
+import { EXPERIENCES } from "@/content/leisure";
 import { DMC_SERVICES, PARTNER_BENEFITS, TRADE_FAQS } from "@/content/home";
 import { PARTNER_HREF, RFQ_HREF, TRUST_POINTS } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
@@ -88,7 +89,7 @@ export default function HomePage() {
             </Reveal>
           ))}
           <Reveal as="li" delay={0.16}>
-            <Link href={PARTNER_HREF} className="card-lift group flex h-full flex-col justify-between rounded-3xl bg-terracotta-600 p-7 text-white">
+            <Link href={PARTNER_HREF} className="card-lift group flex h-full flex-col justify-between rounded-card bg-terracotta-600 p-7 text-white">
               <span className="font-display text-[1.5rem] leading-tight">Become a Partner</span>
               <span className="mt-6 text-sm text-white/90">Open a trade account and get our partner rates.</span>
               <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium">
@@ -107,20 +108,18 @@ export default function HomePage() {
             All DMC services <ArrowRight aria-hidden="true" size={18} className="arrow-slide" />
           </Link>
         </div>
-        <ul className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line lg:grid-cols-4">
-          {DMC_SERVICES.map((s) => (
-            <li key={s.title} className="flex flex-col gap-4 bg-white p-6 sm:p-8">
-              <span className="text-terracotta">
-                <Icon name={s.icon} size={26} />
-              </span>
-              <h3 className="font-display text-[1.125rem] leading-snug font-medium">{s.title}</h3>
-            </li>
+        <ul className="swipe-row mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {DMC_SERVICES.map((s, i) => (
+            <Reveal as="li" key={s.title} delay={(i % 4) * 0.08}>
+              <B2BServiceCard icon={s.icon} title={s.title} href={RFQ_HREF} />
+            </Reveal>
           ))}
         </ul>
       </Section>
 
       {/* 5. How partnership works */}
       <Section tone="sand" aria-labelledby="process">
+        <CarvedDivider className="mb-14" />
         <SectionHeading id="process" eyebrow="How partnership works" title="From brief to departure in four steps" align="center" />
         <ProcessTimeline steps={PARTNER_PROCESS} />
         <div className="mt-14 flex justify-center">
@@ -140,10 +139,10 @@ export default function HomePage() {
             Explore all experiences <ArrowRight aria-hidden="true" size={18} className="arrow-slide" />
           </Link>
         </div>
-        <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="swipe-row mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {EXPERIENCES.map((e, i) => (
             <Reveal as="li" key={e.slug} delay={(i % 3) * 0.08}>
-              <ImageCard href={leisureHref(e)} imageKey={e.heroImage} title={e.name} line={e.cardLine} aspect="aspect-[4/5] sm:aspect-[3/4]" />
+              <LeisureCard product={e} />
             </Reveal>
           ))}
         </ul>

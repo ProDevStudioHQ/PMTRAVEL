@@ -13,8 +13,9 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { FaqSection } from "@/components/FaqSection";
-import { CtaBanner, PILL, SectionHeading } from "@/components/Modern";
+import { PILL, SectionHeading } from "@/components/Modern";
 import { Section } from "@/components/Section";
+import { CtaBand } from "@/components/CtaBand";
 import { SiteImage } from "@/components/SiteImage";
 import { StatusChip } from "@/components/StatusChip";
 import { DestinationHero } from "@/features/destinations/DestinationPage";
@@ -103,7 +104,7 @@ export default async function ExcursionPage({ params }: Props) {
               ))}
             </ul>
           </div>
-          <aside className="self-start rounded-3xl border border-rule bg-paper-2 p-7">
+          <aside className="self-start rounded-card border border-rule bg-paper-2 p-7">
             <p className="text-sm font-semibold text-ink-900">Highlights</p>
             <ul className="mt-5 flex flex-col gap-3">
               {excursion.highlights.map((highlight) => (
@@ -135,7 +136,7 @@ export default async function ExcursionPage({ params }: Props) {
           ))}
         </ol>
         {imageByKey(excursion.cardImage) ? (
-          <div className="relative mt-6 aspect-[21/9] overflow-hidden rounded-3xl bg-ink-900">
+          <div className="relative mt-6 aspect-[21/9] overflow-hidden rounded-card bg-ink-900">
             <SiteImage imageKey={excursion.cardImage} fill sizes="(min-width: 1280px) 1056px, 100vw" className="object-cover" />
           </div>
         ) : null}
@@ -149,7 +150,7 @@ export default async function ExcursionPage({ params }: Props) {
             { icon: CirclePlus, title: "Upgrades", items: excursion.options, tone: "text-red-600" },
             { icon: Backpack, title: "What to bring", items: excursion.bring, tone: "text-ink-500" },
           ].map(({ icon: Icon, title, items, tone }) => (
-            <div key={title} className="rounded-3xl border border-rule bg-paper-2 p-7">
+            <div key={title} className="rounded-card border border-rule bg-paper-2 p-7">
               <p className="flex items-center gap-2 text-sm font-semibold text-red-600">
                 <Sparkles aria-hidden="true" size={16} />
                 {title}
@@ -174,7 +175,7 @@ export default async function ExcursionPage({ params }: Props) {
             { icon: UsersRound, title: "Ideal guests", items: excursion.idealFor, dark: false },
             { icon: Store, title: "Who sells it", items: excursion.buyers, dark: true },
           ].map(({ icon: Icon, title, items, dark }) => (
-            <div key={title} className={`rounded-3xl border p-7 ${dark ? "surface-deep border-red-900 bg-red-900 text-paper" : "border-rule bg-paper"}`}>
+            <div key={title} className={`rounded-card border p-7 ${dark ? "surface-deep border-red-900 bg-red-900 text-paper" : "border-rule bg-paper"}`}>
               <span aria-hidden="true" className={`flex size-12 items-center justify-center rounded-xl ${dark ? "bg-paper text-red-900" : "bg-red-600 text-paper"}`}>
                 <Icon size={22} strokeWidth={1.75} />
               </span>
@@ -226,16 +227,8 @@ export default async function ExcursionPage({ params }: Props) {
       <FaqSection heading="What agencies ask" faqs={excursion.faqs} tone="paper-2" />
 
       <Section>
-        <CtaBanner
-          title={`Sell ${excursion.name}`}
-          imageKey={excursion.heroImage}
-          primary={{ href: RFQ_HREF, label: "Request net rates" }}
-          secondary={{ href: `mailto:${COMPANY.email.b2b}`, label: "Email the operations desk" }}
-        >
-          <p>Tell us your market, the season and typical group size. We send net rates and booking conditions.</p>
-        </CtaBanner>
 
-        <div className="mt-20 flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-4">
           <h2 className="text-2xl font-bold tracking-tight text-ink-900">More B2B excursions</h2>
           <Link href="/excursions" className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-red-600">
             All excursions
@@ -273,6 +266,7 @@ export default async function ExcursionPage({ params }: Props) {
           ))}
         </ul>
       </Section>
+      <CtaBand title={`Sell ${excursion.name}`} body="Tell us your market, the season and typical group size. We send net rates and booking conditions." primaryLabel="Request net rates" whatsappMessage={`Hello, I'd like net rates for ${excursion.name}.`} />
     </>
   );
 }

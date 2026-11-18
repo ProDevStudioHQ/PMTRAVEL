@@ -108,7 +108,7 @@ export default function DestinationsPage() {
       <FaqSection heading="Questions about planning Morocco" faqs={FAQS} tone="paper-2" />
 
       <Section>
-        <div className="surface-deep rounded-3xl bg-red-900 px-6 py-12 text-paper sm:px-12 lg:py-16">
+        <div className="surface-deep rounded-card bg-red-900 px-6 py-12 text-paper sm:px-12 lg:py-16">
           <h2 className="max-w-[24ch] text-2xl font-bold tracking-tight text-paper">Send us the itinerary</h2>
           <p className="measure mt-5 text-lg text-paper/90">
             Draft itineraries are welcome, including rough ones. We will tell you

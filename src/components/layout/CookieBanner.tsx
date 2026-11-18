@@ -58,7 +58,7 @@ export function CookieBanner() {
     <div
       role="region"
       aria-label="Cookie notice"
-      className="fade-up fixed inset-x-4 bottom-4 z-50 rounded-2xl border border-line bg-white p-5 text-ink shadow-overlay sm:right-auto sm:left-6 sm:max-w-md"
+      className="fade-up fixed inset-x-4 bottom-4 z-50 rounded-2xl border border-line bg-ivory p-5 text-ink shadow-overlay sm:right-auto sm:left-6 sm:max-w-md"
     >
       <p className="text-sm">
         {en.cookies.message}{" "}

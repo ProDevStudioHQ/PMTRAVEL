@@ -10,10 +10,10 @@ const base =
   "group inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-[0.9375rem] font-medium leading-none transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, Record<Tone, string>> = {
-  // white on terracotta-600: 5.19:1
+  // white on terracotta 5.06:1, on the hover shade 6.89:1
   primary: {
-    light: "bg-terracotta-600 text-white hover:bg-midnight",
-    dark: "bg-terracotta-600 text-white hover:bg-sand hover:text-midnight",
+    light: "bg-terracotta-600 text-white shadow-raised hover:bg-terracotta-700",
+    dark: "bg-terracotta-600 text-white hover:bg-terracotta-700",
   },
   secondary: {
     light: "border border-midnight/25 text-midnight hover:border-midnight hover:bg-midnight hover:text-sand",

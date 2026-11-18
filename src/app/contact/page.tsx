@@ -115,7 +115,7 @@ export default function ContactPage() {
               We reply from {COMPANY.email.general}. For a costed programme, the B2B quote form is faster.
             </SectionHeading>
           </div>
-          <div className="rounded-3xl border border-line bg-sand p-6 sm:p-10 lg:col-span-8">
+          <div className="rounded-card border border-line bg-sand p-6 sm:p-10 lg:col-span-8">
             <EnquiryForm
               kind="contact"
               fields={CONTACT_FIELDS}

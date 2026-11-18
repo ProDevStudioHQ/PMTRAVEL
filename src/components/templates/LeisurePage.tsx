@@ -5,7 +5,7 @@ import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
-import { ImageCard } from "@/components/cards";
+import { LeisureCard } from "@/components/templates/LeisureCard";
 import { SiteImage } from "@/components/SiteImage";
 import { CtaBand } from "@/components/CtaBand";
 import { JsonLd } from "@/components/JsonLd";
@@ -51,7 +51,7 @@ export function LeisurePage({ product }: { product: LeisureProduct }) {
             </SectionHeading>
           </div>
           <Reveal className="lg:col-span-5">
-            <div className="rounded-3xl border border-line bg-white p-8">
+            <div className="rounded-card border border-line bg-ivory p-8">
               <h3 className="font-display text-xl">Highlights</h3>
               <ul className="mt-5 space-y-3">
                 {product.highlights.map((h) => (
@@ -66,7 +66,7 @@ export function LeisurePage({ product }: { product: LeisureProduct }) {
         </div>
         <ul className="mt-14 grid gap-4 sm:grid-cols-3">
           {product.galleryImages.map((key) => (
-            <li key={key} className="relative aspect-[4/3] overflow-hidden rounded-3xl">
+            <li key={key} className="relative aspect-[4/3] overflow-hidden rounded-card">
               <SiteImage imageKey={key} fill sizes="(min-width: 640px) 33vw, 100vw" className="object-cover" />
             </li>
           ))}
@@ -79,7 +79,7 @@ export function LeisurePage({ product }: { product: LeisureProduct }) {
           Illustrative only. Every programme is adapted to dates, pax and service level, and costed at net rates.
         </SectionHeading>
         {product.itineraries.map((it) => (
-          <Reveal key={it.title} className="mt-12 rounded-3xl border border-line bg-sand p-6 sm:p-10">
+          <Reveal key={it.title} className="mt-12 rounded-card border border-line bg-sand p-6 sm:p-10">
             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-baseline">
               <h3 className="t-h3">{it.title}</h3>
               <p className="eyebrow">{it.length}</p>
@@ -117,7 +117,7 @@ export function LeisurePage({ product }: { product: LeisureProduct }) {
           <div className="lg:col-span-7">
             <h3 className="t-h3">Ready-to-sell B2B products</h3>
             <p className="mt-2 text-muted">Fully written programmes and excursions you can white-label today.</p>
-            <ul className="mt-6 divide-y divide-line rounded-3xl border border-line bg-white">
+            <ul className="mt-6 divide-y divide-line rounded-card border border-line bg-ivory">
               {programmes.map((p) => (
                 <li key={p.slug}>
                   <Link href={programmeHref(p)} className="group flex items-center justify-between gap-4 p-5">
@@ -151,12 +151,12 @@ export function LeisurePage({ product }: { product: LeisureProduct }) {
 
       {/* Related */}
       <Section tone="white" aria-labelledby="related">
-        <SectionHeading id="related" eyebrow="You may also sell" title="Related" />
-        <ul className="mt-10 grid gap-5 sm:grid-cols-3">
-          {related.map((r) => (
-            <li key={r.slug}>
-              <ImageCard href={leisureHref(r)} imageKey={r.heroImage} title={r.name} line={r.cardLine} aspect="aspect-[4/3]" />
-            </li>
+        <SectionHeading id="related" eyebrow="You may also sell" title="Related products for your clients" />
+        <ul className="swipe-row mt-10 grid gap-5 sm:grid-cols-3">
+          {related.map((r, i) => (
+            <Reveal as="li" key={r.slug} delay={i * 0.08}>
+              <LeisureCard product={r} />
+            </Reveal>
           ))}
         </ul>
       </Section>

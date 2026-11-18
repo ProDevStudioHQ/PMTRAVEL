@@ -163,7 +163,7 @@ export function LanguageDropdown({ className = "", align = "right", up = false }
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: up ? -8 : 8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className={`absolute z-[70] w-48 ${up ? "bottom-full mb-2" : "top-full mt-2"} overflow-hidden rounded-2xl border border-line bg-white p-1.5 text-ink shadow-overlay ${align === "right" ? "right-0" : "left-0"}`}
+            className={`absolute z-[70] w-48 ${up ? "bottom-full mb-2" : "top-full mt-2"} overflow-hidden rounded-2xl border border-line bg-ivory p-1.5 text-ink shadow-overlay ${align === "right" ? "right-0" : "left-0"}`}
           >
             {TRANSLATE_LANGS.map((lang) => (
               <li key={lang.code}>

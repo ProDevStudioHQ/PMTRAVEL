@@ -44,7 +44,7 @@ export function SiteFooter() {
   const iconProps = { "aria-hidden": true, size: 20, strokeWidth: 1.5 } as const;
 
   return (
-    <footer className="on-dark surface-deep border-t border-gold/20 bg-midnight text-sand">
+    <footer className="on-dark surface-deep zellige-bg border-t border-gold/20 bg-midnight text-sand">
 
       {/* Brand + link columns */}
       <Container className="grid gap-12 pt-16 pb-12 sm:grid-cols-2 lg:grid-cols-12 lg:pt-20">

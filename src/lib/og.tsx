@@ -14,10 +14,10 @@ export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
 export const OG_ALT = "PM Travel Agency — Morocco DMC and ground handler in Marrakech";
 
-const MIDNIGHT = "#0e1a2b";
-const SAND = "#f6f1ea";
-const GOLD = "#c9a14a";
-const TERRACOTTA = "#d9875a";
+const MIDNIGHT = "#14213d"; // indigo
+const SAND = "#f4ebdd";
+const GOLD = "#c9973a";
+const TERRACOTTA = "#e59a72"; // terracotta-300, for text on indigo
 
 async function photo(imageKey: string) {
   const record = imageByKey(imageKey);

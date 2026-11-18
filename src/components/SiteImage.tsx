@@ -1,5 +1,9 @@
 import Image from "next/image";
 import { imageByKey, OPERATIONAL_SOURCES } from "@/features/images/registry";
+import { BLUR } from "@/features/images/blur";
+
+/** Delivered as AVIF/WebP at 640–3840w (next.config.ts); 70 keeps 4K sharp and light. */
+const QUALITY = 70;
 
 type SiteImageProps = {
   /** Key into the image record. An image with no record cannot be rendered. */
@@ -62,6 +66,10 @@ export function SiteImage({
     );
   }
 
+  // Lazy images fade in from a blurred 16px preview; the eager hero does not need one.
+  const blur = eager ? undefined : BLUR[record.src];
+  const placeholder = blur ? ({ placeholder: "blur", blurDataURL: blur } as const) : {};
+
   if (fill) {
     return (
       <Image
@@ -69,8 +77,10 @@ export function SiteImage({
         alt={record.alt}
         fill
         sizes={sizes}
+        quality={QUALITY}
         priority={eager}
         loading={eager ? undefined : "lazy"}
+        {...placeholder}
         className={className}
       />
     );
@@ -83,8 +93,10 @@ export function SiteImage({
       width={record.width}
       height={record.height}
       sizes={sizes}
+      quality={QUALITY}
       priority={eager}
       loading={eager ? undefined : "lazy"}
+      {...placeholder}
       className={className}
     />
   );

@@ -1,55 +1,67 @@
 @import "tailwindcss";
 
 /*
-  PM Travel Agency design system (2026-11 brand: Midnight, Sand, Terracotta, Gold).
-  Adopted in docs/decisions.md D7. This file is the ONLY place a hex value may appear.
+  PM Travel Agency design system, 2026-11 "Moroccan luxury" (docs/decisions.md D9):
+  terracotta, majorelle, gold, zellige, indigo on sand and ivory.
+  This file is the ONLY place a hex value may appear.
 
   Measured contrast (WCAG 2.x):
-    ink on sand 15.49 · sand on midnight 15.56 · muted on sand 4.74 · muted on white 5.33
-    white on terracotta-600 5.19 · sand on terracotta-600 4.62
-    terracotta-700 on sand 5.41 · terracotta-300 on midnight 6.30 · gold on midnight 7.23
-  The brand terracotta #C4622D measures 4.09 with white text, so it never carries
-  small text: filled buttons use terracotta-600, terracotta text on light uses -700.
-  Gold on sand is 2.15: decorative only (lines, icons beside a label), never text.
+    ink on sand 14.62 · ink on ivory 16.18 · muted on sand 6.25 · muted on ivory 6.9
+    white on terracotta 5.06 · white on terracotta-hover 6.89 · white on zellige 6.40
+    terracotta-700 on sand 5.83 · terracotta-300 on indigo 7.00
+    majorelle on ivory 7.17 · zellige on ivory 6.00 · gold-700 on ivory 5.00 · gastronomy-700 on ivory 5.10
+    ivory on indigo 14.96 · gold on indigo 6.06 · gold on indigo-2 5.24
+  Brand terracotta #B5502E on sand is 4.28, so small terracotta TEXT on light
+  surfaces (links, eyebrows) uses terracotta-700 (#96401F, the hover shade).
+  Gold is decoration only on light surfaces (2.47); as text it appears on indigo only.
 */
 @theme {
   --color-red-*: initial;
 
   /* ---- Brand ---- */
-  --color-midnight: #0e1a2b;
-  --color-midnight-2: #16263d;
-  --color-sand: #f6f1ea;
-  --color-sand-2: #ede4d7; /* decorative surface, no muted text on it */
+  --color-terracotta: #b5502e; /* primary buttons, icons, rules */
+  --color-terracotta-600: #b5502e; /* filled CTAs (white text 5.06) */
+  --color-terracotta-700: #96401f; /* hover, and terracotta text on light surfaces */
+  --color-terracotta-300: #e59a72; /* terracotta text on indigo */
+  --color-majorelle: #1f4fa8;
+  --color-gold: #c9973a; /* decoration only on light surfaces */
+  --color-gold-700: #8a6424; /* gold-family text on ivory/sand */
+  --color-zellige: #1e6b52; /* B2B badges, WhatsApp */
+  --color-gastronomy: #c8742b;
+  --color-gastronomy-700: #9a5a1c;
+  --color-indigo: #14213d; /* footer, dark sections, header on scroll */
+  --color-indigo-2: #1c2c4f;
+  --color-ink: #1e1a17;
+  --color-muted: #5e544b;
+  --color-sand: #f4ebdd; /* page background */
+  --color-sand-2: #ede1cf;
+  --color-ivory: #fbf7f0; /* cards */
+  --color-clay: #e6d5c3; /* borders */
   --color-white: #ffffff;
-  --color-terracotta: #c4622d; /* brand: large display, icons, rules, hover fills */
-  --color-terracotta-600: #ad5327; /* filled CTAs */
-  --color-terracotta-700: #9e4a20; /* terracotta text on light surfaces */
-  --color-terracotta-300: #d9875a; /* terracotta text on midnight */
-  --color-gold: #c9a14a;
-  --color-ink: #1a1a1a;
-  --color-muted: #6b6b6b;
-  --color-line: rgb(26 26 26 / 0.1);
-  --color-whatsapp: #1f8f4e; /* icon-only button, 4.13 with white */
+  --color-line: #e6d5c3;
+  --color-whatsapp: #1e6b52;
   --color-linkedin: #0a66c2; /* LinkedIn brand blue, 5.7 with white */
 
-  /* ---- Legacy names, remapped so pages built before D7 adopt the new brand ---- */
-  --color-red-900: #0e1a2b;
-  --color-red-600: #ad5327;
-  --color-red-050: #faf6f1;
-  --color-ink-900: #1a1a1a;
-  --color-ink-500: #6b6b6b;
-  --color-paper: #f6f1ea;
-  --color-paper-2: #ffffff;
-  --color-rule: rgb(26 26 26 / 0.1);
+  /* ---- Earlier names, mapped onto this palette so every page re-skins ---- */
+  --color-midnight: #14213d;
+  --color-midnight-2: #1c2c4f;
+  --color-red-900: #14213d;
+  --color-red-600: #b5502e;
+  --color-red-050: #fbf7f0;
+  --color-ink-900: #1e1a17;
+  --color-ink-500: #5e544b;
+  --color-paper: #f4ebdd;
+  --color-paper-2: #fbf7f0;
+  --color-rule: #e6d5c3;
 
-  --color-status-verified: #23704a;
-  --color-status-progress: #9a5b00;
+  --color-status-verified: #1e6b52;
+  --color-status-progress: #8a6424;
 
   /* ---- Fonts ---- */
-  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: var(--font-cormorant), ui-serif, Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, Helvetica, Arial, sans-serif;
-  --font-evidence: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-evidence: var(--font-cormorant), ui-serif, Georgia, serif;
 
   /* ---- Type scale (legacy steps, still used by content pages) ---- */
   --text-xs: 0.8125rem;
@@ -60,21 +72,22 @@
   --text-base--line-height: 1.7;
   --text-lg: 1.25rem;
   --text-lg--line-height: 1.5;
-  --text-xl: 1.625rem;
+  --text-xl: 1.75rem;
   --text-xl--line-height: 1.2;
-  --text-2xl: 2.25rem;
+  --text-2xl: 2.375rem;
   --text-2xl--line-height: 1.1;
-  --text-3xl: 3.25rem;
+  --text-3xl: 3.5rem;
   --text-3xl--line-height: 1.05;
-  --text-4xl: 4.5rem;
+  --text-4xl: 4.75rem;
   --text-4xl--line-height: 1.02;
 
   --radius-control: 12px;
-  --radius-card: 20px;
+  --radius-card: 16px;
 
-  --shadow-raised: 0 1px 2px rgb(14 26 43 / 0.06), 0 4px 16px rgb(14 26 43 / 0.06);
-  --shadow-overlay: 0 8px 24px rgb(14 26 43 / 0.1), 0 24px 60px rgb(14 26 43 / 0.12);
-  --shadow-lift: 0 18px 40px -12px rgb(14 26 43 / 0.25);
+  --shadow-raised: 0 1px 2px rgb(91 58 41 / 0.06), 0 6px 18px -6px rgb(91 58 41 / 0.14);
+  --shadow-overlay: 0 8px 24px rgb(20 33 61 / 0.1), 0 24px 60px rgb(20 33 61 / 0.14);
+  --shadow-lift: 0 18px 40px -12px rgb(91 58 41 / 0.25);
+  --shadow-warm: 0 18px 40px -12px rgb(91 58 41 / 0.25);
 
   --container-site: 1280px;
 
@@ -107,8 +120,8 @@ body {
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: 500;
-    letter-spacing: -0.02em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     text-wrap: balance;
   }
   p {
@@ -116,34 +129,36 @@ body {
   }
 }
 
-/* ---- Fluid type ---- */
+/* ---- Fluid type ----
+   In a layer so utility classes (text-*, inline-flex…) can override them. */
+@layer components {
 .t-hero {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  font-size: clamp(2.75rem, 6vw, 5.75rem);
   line-height: 1.02;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 .t-h2 {
   font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 3.5rem);
-  line-height: 1.1;
+  line-height: 1.08;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 .t-h3 {
   font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2vw, 1.75rem);
-  line-height: 1.25;
-  font-weight: 500;
-  letter-spacing: -0.015em;
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.005em;
 }
 .eyebrow {
   display: inline-block;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   line-height: 1.4;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-terracotta-700);
@@ -153,7 +168,7 @@ body {
   color: var(--color-terracotta-300);
 }
 .measure {
-  max-width: 65ch;
+  max-width: 70ch;
 }
 .tabular {
   font-variant-numeric: tabular-nums lining-nums;
@@ -166,9 +181,27 @@ body {
   border: 0;
 }
 
-/* Section rhythm: 96px mobile-up to 140px desktop */
+/* Highlighted word in a title: italic terracotta serif (one per title). */
+.hl {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-terracotta-700);
+}
+.on-dark .hl,
+.surface-deep .hl {
+  color: var(--color-terracotta-300);
+}
+.surface-deep .surface-light .hl,
+.on-dark .surface-light .hl {
+  color: var(--color-terracotta-700);
+}
+
+}
+
+/* Section rhythm: 64px mobile to 120px desktop */
 .section-y {
-  padding-block: clamp(4.5rem, 9vw, 8.75rem);
+  padding-block: clamp(4rem, 9vw, 7.5rem);
 }
 
 /* ---- Focus ---- */
@@ -207,32 +240,38 @@ body {
 /* ---- Motion (CSS side). JS motion lives in Framer Motion components. ---- */
 
 /* Hero headline: word-by-word reveal, pure CSS so it never waits on JS (LCP). */
+/* Each word sits in a clipping mask (.w); its inner span slides up out of it, 60ms apart. */
 @keyframes word-in {
   from {
-    opacity: 0;
-    transform: translateY(0.45em);
+    transform: translateY(105%);
   }
   to {
-    opacity: 1;
     transform: none;
   }
 }
 .reveal-words > .w {
   display: inline-block;
-  animation: word-in 0.7s var(--ease-premium) both;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
 }
-.reveal-words > .w:nth-child(1) { animation-delay: 0.1s; }
-.reveal-words > .w:nth-child(2) { animation-delay: 0.16s; }
-.reveal-words > .w:nth-child(3) { animation-delay: 0.22s; }
-.reveal-words > .w:nth-child(4) { animation-delay: 0.28s; }
-.reveal-words > .w:nth-child(5) { animation-delay: 0.34s; }
-.reveal-words > .w:nth-child(6) { animation-delay: 0.4s; }
-.reveal-words > .w:nth-child(7) { animation-delay: 0.46s; }
-.reveal-words > .w:nth-child(8) { animation-delay: 0.52s; }
-.reveal-words > .w:nth-child(9) { animation-delay: 0.58s; }
-.reveal-words > .w:nth-child(10) { animation-delay: 0.64s; }
-.reveal-words > .w:nth-child(11) { animation-delay: 0.7s; }
-.reveal-words > .w:nth-child(n + 12) { animation-delay: 0.76s; }
+.reveal-words > .w > span {
+  display: inline-block;
+  animation: word-in 0.8s var(--ease-premium) both;
+}
+.reveal-words > .w:nth-child(1) > span { animation-delay: 0.10s; }
+.reveal-words > .w:nth-child(2) > span { animation-delay: 0.16s; }
+.reveal-words > .w:nth-child(3) > span { animation-delay: 0.22s; }
+.reveal-words > .w:nth-child(4) > span { animation-delay: 0.28s; }
+.reveal-words > .w:nth-child(5) > span { animation-delay: 0.34s; }
+.reveal-words > .w:nth-child(6) > span { animation-delay: 0.40s; }
+.reveal-words > .w:nth-child(7) > span { animation-delay: 0.46s; }
+.reveal-words > .w:nth-child(8) > span { animation-delay: 0.52s; }
+.reveal-words > .w:nth-child(9) > span { animation-delay: 0.58s; }
+.reveal-words > .w:nth-child(10) > span { animation-delay: 0.64s; }
+.reveal-words > .w:nth-child(11) > span { animation-delay: 0.70s; }
+.reveal-words > .w:nth-child(n + 12) > span { animation-delay: 0.76s; }
 
 @keyframes fade-up {
   from {
@@ -257,11 +296,11 @@ body {
     transform: scale(1);
   }
   to {
-    transform: scale(1.1);
+    transform: scale(1.08);
   }
 }
 .ken-burns {
-  animation: ken-burns 20s ease-out both;
+  animation: ken-burns 20s linear both;
   transform-origin: 50% 40%;
   will-change: transform;
 }
@@ -282,22 +321,110 @@ body {
   animation-play-state: paused;
 }
 
-/* Cards: lift, shadow and image zoom on hover */
+/* Cards: lift 6px, warm shadow, image zoom 1.05 and gold inner border on hover (300ms). */
 .card-lift {
+  position: relative;
   transition:
-    transform 0.4s var(--ease-premium),
-    box-shadow 0.4s var(--ease-premium);
+    transform 0.3s var(--ease-premium),
+    box-shadow 0.3s var(--ease-premium);
 }
 .card-lift .card-img {
-  transition: transform 0.7s var(--ease-premium);
+  transition: transform 0.6s var(--ease-premium);
+}
+/* 1px gold inner border, inset 8px: always shown on .gold-inset-on, on hover/focus for .card-lift */
+.card-lift::after,
+.gold-inset-on::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  z-index: 2;
+  border: 1px solid var(--color-gold);
+  border-radius: calc(var(--radius-card) - 6px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-premium);
+}
+.gold-inset-on {
+  position: relative;
+}
+.gold-inset-on::after,
+.card-lift:focus-visible::after {
+  opacity: 1;
 }
 @media (hover: hover) {
   .card-lift:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lift);
   }
+  .card-lift:hover::after {
+    opacity: 1;
+  }
   .card-lift:hover .card-img {
     transform: scale(1.05);
+  }
+}
+
+/* Arch-top image frame (riad doorway) */
+.arch {
+  border-radius: 999px 999px 16px 16px;
+}
+
+/* 8-point zellige star pattern in gold line work, 6% behind dark sections and the footer. */
+.zellige-bg {
+  position: relative;
+  isolation: isolate;
+}
+.zellige-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96' fill='none' stroke='%23C9973A' stroke-width='1.5'%3E%3Cpath d='M28.2 28.2h39.6v39.6H28.2z'/%3E%3Cpath d='M28.2 28.2h39.6v39.6H28.2z' transform='rotate(45 48 48)'/%3E%3Ccircle cx='48' cy='48' r='7'/%3E%3Cpath d='M0 0l20 20M96 0L76 20M0 96l20-20M96 96L76 76M48 0v8M48 88v8M0 48h8M88 48h8'/%3E%3C/svg%3E");
+  background-size: 96px 96px;
+}
+/* Corner-only variant (B2B service cards) */
+.zellige-corner::before {
+  inset: 0 0 auto auto;
+  width: 65%;
+  height: 75%;
+  opacity: 0.14;
+  -webkit-mask-image: radial-gradient(circle at 100% 0%, black, transparent 70%);
+  mask-image: radial-gradient(circle at 100% 0%, black, transparent 70%);
+}
+
+/* Decorative star: one turn every 120s */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin-slow {
+  animation: spin-slow 120s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+/* Mobile swipe row showing 1.2 cards; a normal grid from 640px up (grid columns set per use). */
+@media (max-width: 639px) {
+  .swipe-row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 80%;
+    grid-template-columns: none;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-inline: -1rem;
+    padding: 0.5rem 1rem 1rem;
+    scroll-padding-inline: 1rem;
+  }
+  .swipe-row::-webkit-scrollbar {
+    display: none;
+  }
+  .swipe-row > * {
+    scroll-snap-align: start;
   }
 }
 
@@ -365,12 +492,13 @@ details[open] .acc-body {
     scroll-behavior: auto !important;
   }
   .ken-burns,
-  .marquee-track {
+  .marquee-track,
+  .spin-slow {
     animation: none !important;
   }
 }
 
-/* Pages built before D7 set font-bold on headings; Fraunces reads best at 500–600. */
+/* Pages built before D7 set font-bold on headings; Cormorant reads best at 500–600. */
 h1.font-bold,
 h2.font-bold,
 h3.font-bold,
@@ -431,4 +559,21 @@ font[style] {
   html.translated-ltr .hide-when-translated {
     display: none !important;
   }
+}
+
+/* One closing band per page: the layout's default hides when the page renders its own. */
+body:has(main .cta-band) .site-cta {
+  display: none;
+}
+
+/* Cormorant sets about one step smaller than a text face: lift small serif headings. */
+.font-display.text-sm {
+  font-size: 1.0625rem;
+}
+.font-display.text-base {
+  font-size: 1.25rem;
+}
+.font-display.text-lg {
+  font-size: 1.4rem;
+  line-height: 1.3;
 }

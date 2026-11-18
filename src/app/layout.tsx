@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { FloatingWhatsApp, SiteFooter } from "@/components/layout/SiteFooter";
@@ -7,16 +7,19 @@ import { CookieBanner } from "@/components/layout/CookieBanner";
 import { GoogleTranslate } from "@/components/layout/GoogleTranslate";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { JsonLd } from "@/components/JsonLd";
+import { CtaBand } from "@/components/CtaBand";
 import { NAV } from "@/lib/nav";
 import { COMPANY, SITE_URL, whatsappLink } from "@/lib/company";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import { en } from "@/i18n/dictionaries/en";
 
-/** Headings: Fraunces, variable (one file covers 500–600, no optical-size axis to keep it small), self-hosted by next/font. */
-const fraunces = Fraunces({
+/** Titles: Cormorant Garamond 500–600, plus italic for the one highlighted word per title. Self-hosted by next/font. */
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
+  weight: ["500", "600"],
+  style: ["normal", "italic"],
   display: "swap",
-  variable: "--font-fraunces",
+  variable: "--font-cormorant",
 });
 
 /** Body and UI: Inter, variable. */
@@ -42,14 +45,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0e1a2b",
+  themeColor: "#14213d",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
       <body id="top">
         <a href="#main" className="skip-link">
           {en.nav.skip}
@@ -57,6 +60,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MotionProvider>
           <SiteHeader nav={NAV} />
           <main id="main">{children}</main>
+          {/* Default closing band; hidden by CSS when the page renders its own. */}
+          <div className="site-cta">
+            <CtaBand />
+          </div>
           <SiteFooter />
           <FloatingWhatsApp href={whatsappLink()} />
           <CookieBanner />

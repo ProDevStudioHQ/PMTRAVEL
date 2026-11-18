@@ -21,7 +21,7 @@ export function CategoryNav({ active }: { active?: string }) {
                 href={href}
                 aria-current={current ? "page" : undefined}
                 className={`inline-flex min-h-11 items-center rounded-full border px-5 text-sm transition-colors ${
-                  current ? "border-midnight bg-midnight text-sand" : "border-ink/15 bg-white hover:border-ink"
+                  current ? "border-midnight bg-midnight text-sand" : "border-ink/15 bg-ivory hover:border-ink"
                 }`}
               >
                 {c.name}
@@ -39,7 +39,7 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
     <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {articles.map((a, i) => (
         <Reveal as="li" key={a.slug} delay={(i % 3) * 0.08}>
-          <article className="card-lift group relative flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-white">
+          <article className="card-lift group relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-ivory">
             <div className="relative aspect-[16/10] overflow-hidden">
               <SiteImage imageKey={a.image} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="card-img object-cover" />
             </div>

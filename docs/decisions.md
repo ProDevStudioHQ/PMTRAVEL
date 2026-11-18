@@ -5,6 +5,49 @@ six months otherwise. Newest first.
 
 ---
 
+## D9 — "Modern Moroccan luxury" design system
+
+**Date:** 2026-11-18 · **Status:** accepted (business design-system brief, Nov 2026)
+
+Supersedes the D7 palette and fonts. Tokens live in globals.css; the old token
+names (midnight, red-*, paper…) are aliases onto the new values so every page
+re-skins without a rewrite.
+
+1. **Palette.** Terracotta #B5502E (buttons; hover #96401F), majorelle
+   #1F4FA8, gold #C9973A (decoration only), zellige #1E6B52 (B2B badges,
+   WhatsApp), indigo #14213D (footer, dark sections, header on scroll), ink
+   #1E1A17, sand #F4EBDD (page), ivory #FBF7F0 (cards), clay #E6D5C3 (borders).
+   **Contrast calls:** terracotta on sand is 4.28:1, so small terracotta *text*
+   (links, eyebrows, the highlighted title word) uses the hover shade #96401F
+   (5.83:1); buttons keep #B5502E (white 5.06:1). Gold on ivory is 2.47:1 and
+   gastronomy #C8742B 3.28:1, so the Luxury and Gastronomy category labels use
+   darker text shades (gold-700 #8A6424, 5.00:1; gastronomy-700 #9A5A1C,
+   5.10:1) beside a dot in the brand colour. Terracotta text on indigo uses
+   #E59A72 (7.00:1).
+2. **Fonts.** Cormorant Garamond 500–600 (+ italic for the highlighted word)
+   and Inter. Aref Ruqaa is not loaded until a page actually uses Arabic.
+3. **Highlight word.** Section, page and CTA titles set their last word in
+   italic terracotta automatically (`highlight()` in components/moroccan.tsx);
+   SectionHeading takes `highlight="word"` or `false` to override.
+4. **Moroccan details** are CSS or inline SVG, all aria-hidden: zellige
+   pattern (.zellige-bg) on dark sections, the CTA band and the footer only;
+   arch frames on experience cards; gold inner border on hover; carved
+   divider that draws on scroll; door, lantern and star line icons.
+5. **Cards.** Experience, Tour, B2B service and Proof cards (components/
+   cards.tsx). Proof testimonials stay "[ADD REAL DATA]" until a real,
+   approved quote exists. The home page keeps no proof section (removed
+   2026-11-18 at the business's request); proof cards are on /b2b.
+6. **Closing band.** The layout renders a default indigo CTA band before the
+   footer on every page; a page that renders its own `.cta-band` hides it
+   (`body:has(...)` in CSS). In-section CtaBanners on programme and excursion
+   pages became page-level bands with the same copy.
+7. **Quote form.** /request-a-quote uses the short field set; every quote form
+   states "We reply within 24 hours" (the business's own 24h claim, D7).
+8. **Images.** next/image at quality 70, AVIF then WebP, srcset 640–3840w;
+   lazy images show a 16px blur placeholder from `npm run images:blur`.
+
+---
+
 ## D8 — Machine translation via Google Translate (FR, ES, PT)
 
 **Date:** 2026-11-18 · **Status:** accepted (business chose "Automatic (Google)")

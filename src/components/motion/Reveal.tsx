@@ -1,7 +1,8 @@
 "use client";
 
 /**
- * Client Component: fade-up on scroll (once, 0.6s ease-out, 24px).
+ * Client Component: fade-up on scroll (once, 600ms, 24px, cubic-bezier(0.22,1,0.36,1)).
+ * Grids stagger items by 80ms through `delay`.
  * Renders a plain element for users who prefer reduced motion.
  */
 import { m, useReducedMotion } from "framer-motion";
@@ -27,7 +28,7 @@ export function Reveal({ children, className, delay = 0, as = "div" }: RevealPro
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-      transition={{ duration: 0.6, ease: "easeOut", delay }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay }}
     >
       {children}
     </Component>

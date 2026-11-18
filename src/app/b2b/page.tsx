@@ -6,13 +6,14 @@ import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
-import { IconTile } from "@/components/cards";
+import { IconTile, ProofCard } from "@/components/cards";
+import { CarvedDivider } from "@/components/motion/CarvedDivider";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
 import { FaqSection } from "@/components/FaqSection";
 import { CtaBand } from "@/components/CtaBand";
 import { AUDIENCES, PARTNER_PROCESS } from "@/content/b2b";
-import { PARTNER_BENEFITS, TRADE_FAQS } from "@/content/home";
-import { PARTNER_HREF, RFQ_HREF } from "@/lib/company";
+import { PARTNER_BENEFITS, TESTIMONIALS, TRADE_FAQS } from "@/content/home";
+import { PARTNER_HREF, RFQ_HREF, TRUST_POINTS } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
 
 export const metadata = pageMetadata({
@@ -51,7 +52,7 @@ export default function B2BPage() {
             </Reveal>
           ))}
           <Reveal as="li" delay={0.12}>
-            <Link href={PARTNER_HREF} className="card-lift group flex h-full flex-col justify-between rounded-3xl bg-terracotta-600 p-7 text-white">
+            <Link href={PARTNER_HREF} className="card-lift group flex h-full flex-col justify-between rounded-card bg-terracotta-600 p-7 text-white">
               <span className="font-display text-[1.5rem] leading-tight">Become a Partner</span>
               <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium">
                 Open a trade account <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
@@ -75,6 +76,21 @@ export default function B2BPage() {
       <Section tone="white" aria-labelledby="process">
         <SectionHeading id="process" eyebrow="How partnership works" title="From brief to departure" align="center" />
         <ProcessTimeline steps={PARTNER_PROCESS} />
+      </Section>
+
+      <Section tone="sand" aria-labelledby="proof">
+        <CarvedDivider className="mb-14" />
+        <SectionHeading id="proof" eyebrow="Proof" title="What partners can count on" highlight="count" align="center" />
+        <ul className="swipe-row mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {TRUST_POINTS.filter((p) => p.value !== null).map((p, i) => (
+            <Reveal as="li" key={p.caption} delay={i * 0.08}>
+              <ProofCard kind="figure" value={p.value!} prefix={p.prefix} suffix={p.suffix} caption={p.caption} />
+            </Reveal>
+          ))}
+          <Reveal as="li" delay={0.24}>
+            <ProofCard kind="quote" {...TESTIMONIALS[0]!} />
+          </Reveal>
+        </ul>
       </Section>
 
       <FaqSection eyebrow="Trade FAQ" heading="Questions from the trade" faqs={TRADE_FAQS} />

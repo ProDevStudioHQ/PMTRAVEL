@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Car, MapPin, Tag, UsersRound } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { CtaBanner, IconCards, PILL, SectionHeading, type IconItem } from "@/components/Modern";
+import { IconCards, PILL, SectionHeading, type IconItem } from "@/components/Modern";
 import { Section } from "@/components/Section";
+import { CtaBand } from "@/components/CtaBand";
 import { SiteImage } from "@/components/SiteImage";
 import { DestinationHero } from "@/features/destinations/DestinationPage";
 import { imageByKey } from "@/features/images/registry";
@@ -55,7 +56,7 @@ const LEVEL_STYLE = {
 
 function ExcursionCard({ excursion }: { excursion: Excursion }) {
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-rule bg-paper transition-[border-color,box-shadow] duration-200 hover:border-red-600 hover:shadow-overlay">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-card border border-rule bg-paper transition-[border-color,box-shadow] duration-200 hover:border-red-600 hover:shadow-overlay">
       <div className="relative aspect-[4/3] overflow-hidden bg-ink-900">
         {imageByKey(excursion.cardImage) ? (
           <SiteImage
@@ -151,16 +152,7 @@ export default function ExcursionsPage() {
         </div>
       </Section>
 
-      <Section>
-        <CtaBanner
-          title="Need an excursion we have not listed?"
-          imageKey="b4-atlas-imlil"
-          primary={{ href: RFQ_HREF, label: "Request net rates" }}
-          secondary={{ href: "/programmes", label: "See B2B programmes" }}
-        >
-          <p>Tell us what your clients want to do around Marrakech. We design and cost it for your dates and group size.</p>
-        </CtaBanner>
-      </Section>
+      <CtaBand title={`Need an excursion we have not listed?`} body="Tell us what your clients want to do around Marrakech. We design and cost it for your dates and group size." primaryLabel="Request net rates" />
     </>
   );
 }

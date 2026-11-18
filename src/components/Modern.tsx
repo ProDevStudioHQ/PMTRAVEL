@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { ArrowRight, type LucideIcon } from "lucide-react";
 import { SiteImage } from "@/components/SiteImage";
 import { imageByKey } from "@/features/images/registry";
+import { highlight } from "@/components/moroccan";
 
 /**
  * Shared building blocks for the redesigned content pages: pill actions, the
@@ -17,7 +18,7 @@ export const PILL = {
   /** Paper on a dark or photographic surface. */
   onDarkSolid: `${pillBase} bg-paper text-red-900 hover:bg-red-050`,
   onDarkOutline: `${pillBase} border border-paper/60 text-paper hover:bg-paper hover:text-ink-900`,
-  primary: `${pillBase} bg-red-600 text-paper shadow-raised hover:bg-red-900`,
+  primary: `${pillBase} bg-terracotta-600 text-white shadow-raised hover:bg-terracotta-700`,
   outline: `${pillBase} border border-ink-900/20 text-ink-900 hover:border-ink-900`,
 };
 
@@ -42,7 +43,7 @@ export function SectionHeading({ eyebrow, title, children, onDark = false, class
           onDark ? "text-paper" : "text-ink-900"
         }`}
       >
-        {title}
+        {highlight(title)}
       </h2>
       {children ? (
         <div className={`measure mt-5 flex flex-col gap-4 text-lg ${onDark ? "text-paper/85" : "text-ink-500"}`}>
@@ -136,7 +137,7 @@ export function IconCards({
 /** Long-form copy set on a card, with a larger first paragraph. */
 export function ProseCard({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col gap-5 rounded-3xl border border-rule bg-paper p-6 text-base text-ink-900 shadow-raised sm:p-10 [&>p:first-child]:text-lg">
+    <div className="flex flex-col gap-5 rounded-card border border-rule bg-paper p-6 text-base text-ink-900 shadow-raised sm:p-10 [&>p:first-child]:text-lg">
       {children}
     </div>
   );
@@ -178,7 +179,7 @@ export function CtaBanner({
 }) {
   const hasImage = imageKey ? Boolean(imageByKey(imageKey)) : false;
   return (
-    <div className="surface-deep relative isolate overflow-hidden rounded-[2rem] bg-red-900 px-6 py-14 text-paper sm:px-12 lg:px-16 lg:py-20">
+    <div className="surface-deep zellige-bg relative isolate overflow-hidden rounded-card bg-red-900 px-6 py-14 text-paper sm:px-12 lg:px-16 lg:py-20">
       {hasImage && imageKey ? (
         <>
           <SiteImage imageKey={imageKey} fill sizes="(min-width: 1280px) 1056px, 100vw" className="-z-10 object-cover" />
@@ -187,7 +188,7 @@ export function CtaBanner({
         </>
       ) : null}
       <h2 className="t-h2 max-w-[22ch] text-paper">
-        {title}
+        {highlight(title)}
       </h2>
       {children ? <div className="measure mt-5 text-lg text-paper/90">{children}</div> : null}
       <div className="mt-9 flex flex-wrap gap-3">

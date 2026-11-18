@@ -3,9 +3,9 @@ import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
-import { ImageCard } from "@/components/cards";
+import { LeisureCard } from "@/components/templates/LeisureCard";
 import { CtaBand } from "@/components/CtaBand";
-import { leisureHref, type LeisureProduct } from "@/content/leisure";
+import { type LeisureProduct } from "@/content/leisure";
 import { RFQ_HREF } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
 
@@ -35,10 +35,10 @@ export function LeisureHub({ eyebrow, title, standfirst, imageKey, path, label, 
         <SectionHeading id="list" eyebrow={label} title={listTitle}>
           {listIntro}
         </SectionHeading>
-        <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="swipe-row mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p, i) => (
             <Reveal as="li" key={p.slug} delay={(i % 3) * 0.08}>
-              <ImageCard href={leisureHref(p)} imageKey={p.heroImage} title={p.name} line={p.cardLine} />
+              <LeisureCard product={p} />
             </Reveal>
           ))}
         </ul>

@@ -16,8 +16,9 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { FaqSection } from "@/components/FaqSection";
-import { CtaBanner, PILL, SectionHeading } from "@/components/Modern";
+import { PILL, SectionHeading } from "@/components/Modern";
 import { Section } from "@/components/Section";
+import { CtaBand } from "@/components/CtaBand";
 import { SiteImage } from "@/components/SiteImage";
 import { StatusChip } from "@/components/StatusChip";
 import { DestinationHero } from "@/features/destinations/DestinationPage";
@@ -120,7 +121,7 @@ export default async function ProgrammePage({ params }: Props) {
             </ul>
           </div>
 
-          <aside className="self-start rounded-3xl border border-rule bg-paper-2 p-7">
+          <aside className="self-start rounded-card border border-rule bg-paper-2 p-7">
             <p className="text-sm font-semibold text-ink-900">The route</p>
             <ol className="mt-5 flex flex-col">
               {programme.route.map((stop, index) => (
@@ -216,7 +217,7 @@ export default async function ProgrammePage({ params }: Props) {
           ].map(({ icon: Icon, title, items }, index) => (
             <div
               key={title}
-              className={`rounded-3xl border p-7 ${index === 2 ? "surface-deep border-red-900 bg-red-900 text-paper" : "border-rule bg-paper-2"}`}
+              className={`rounded-card border p-7 ${index === 2 ? "surface-deep border-red-900 bg-red-900 text-paper" : "border-rule bg-paper-2"}`}
             >
               <span
                 aria-hidden="true"
@@ -241,7 +242,7 @@ export default async function ProgrammePage({ params }: Props) {
       {/* Included and options */}
       <Section tone="paper-2">
         <div className="grid gap-4 lg:grid-cols-2">
-          <div className="rounded-3xl border border-rule bg-paper p-7 sm:p-9">
+          <div className="rounded-card border border-rule bg-paper p-7 sm:p-9">
             <p className="flex items-center gap-2 text-sm font-semibold text-red-600">
               <Footprints aria-hidden="true" size={16} />
               Included in the ground programme
@@ -256,7 +257,7 @@ export default async function ProgrammePage({ params }: Props) {
             </ul>
             <p className="mt-5 text-sm text-ink-500">International flights are not included.</p>
           </div>
-          <div className="rounded-3xl border border-rule bg-paper p-7 sm:p-9">
+          <div className="rounded-card border border-rule bg-paper p-7 sm:p-9">
             <p className="flex items-center gap-2 text-sm font-semibold text-red-600">
               <Sparkles aria-hidden="true" size={16} />
               {programme.days ? "Upgrades and extensions" : "Sample combinations and upgrades"}
@@ -307,19 +308,8 @@ export default async function ProgrammePage({ params }: Props) {
       <FaqSection heading="What product managers ask" faqs={programme.faqs} tone="paper-2" />
 
       <Section>
-        <CtaBanner
-          title={`Add ${programme.name} to your portfolio`}
-          imageKey={programme.heroImage}
-          primary={{ href: RFQ_HREF, label: "Request the product sheet" }}
-          secondary={{ href: `mailto:${COMPANY.email.b2b}`, label: "Email the operations desk" }}
-        >
-          <p>
-            Tell us your market, the season and the group profile. We send the
-            product sheet and cost the programme for your dates.
-          </p>
-        </CtaBanner>
 
-        <div className="mt-20 flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-4">
           <h2 className="text-2xl font-bold tracking-tight text-ink-900">More B2B programmes</h2>
           <Link href="/programmes" className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-red-600">
             All programmes
@@ -356,6 +346,7 @@ export default async function ProgrammePage({ params }: Props) {
           ))}
         </ul>
       </Section>
+      <CtaBand title={`Add ${programme.name} to your portfolio`} body="Tell us your market, the season and the group profile. We send the product sheet and cost the programme for your dates." primaryLabel="Request the product sheet" whatsappMessage={`Hello, I'd like the product sheet for ${programme.name}.`} />
     </>
   );
 }

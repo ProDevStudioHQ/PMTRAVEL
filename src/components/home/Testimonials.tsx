@@ -16,7 +16,7 @@ export function Testimonials({ items }: { items: Testimonial[] }) {
   const go = (delta: number) => setIndex((i) => (i + delta + items.length) % items.length);
 
   return (
-    <div className="relative rounded-3xl border border-line bg-white p-8 sm:p-12" aria-roledescription="carousel" aria-label="Partner testimonials">
+    <div className="relative rounded-card border border-line bg-ivory p-8 sm:p-12" aria-roledescription="carousel" aria-label="Partner testimonials">
       <Quote aria-hidden="true" size={40} strokeWidth={1} className="text-gold" />
       <div aria-live="polite" className="min-h-48">
         <AnimatePresence mode="wait">

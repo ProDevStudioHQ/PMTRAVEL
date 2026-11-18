@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { RevealWords } from "@/components/PageHero";
 import { QuoteForm, QuoteFormInner } from "@/components/forms/QuoteForm";
 import { ButtonLink } from "@/components/Button";
+import { CtaBand } from "@/components/CtaBand";
 import { WhatsappIcon } from "@/components/Icon";
 import { COMPANY, RFQ_HREF, whatsappLink } from "@/lib/company";
 import { PARTNER_PROCESS } from "@/content/b2b";
@@ -35,13 +36,13 @@ export default function RequestQuotePage() {
 
       <section className="bg-sand">
         <Container className="grid gap-12 py-16 lg:grid-cols-12 lg:py-24">
-          <div className="rounded-3xl border border-line bg-white p-6 sm:p-10 lg:col-span-8">
+          <div className="rounded-card border border-line bg-ivory p-6 sm:p-10 lg:col-span-8">
             <Suspense fallback={<QuoteFormInner />}>
               <QuoteForm />
             </Suspense>
           </div>
           <aside className="space-y-6 lg:col-span-4" aria-label="What happens next">
-            <div className="rounded-3xl border border-line bg-white p-8">
+            <div className="rounded-card border border-line bg-ivory p-8">
               <h2 className="font-display text-xl">What happens next</h2>
               <ol className="mt-5 space-y-5">
                 {PARTNER_PROCESS.map((step, i) => (
@@ -55,7 +56,7 @@ export default function RequestQuotePage() {
                 ))}
               </ol>
             </div>
-            <div className="on-dark rounded-3xl bg-midnight p-8 text-sand">
+            <div className="on-dark rounded-card bg-midnight p-8 text-sand">
               <h2 className="font-display text-xl">Prefer to talk?</h2>
               <ul className="mt-5 space-y-3 text-sm text-sand/80">
                 <li className="flex gap-3">
@@ -81,6 +82,12 @@ export default function RequestQuotePage() {
           </aside>
         </Container>
       </section>
+      <CtaBand
+        title="Rather talk it through first?"
+        body="Call or message the operations desk, or visit the office in Marrakech. We are happy to shape the brief with you."
+        primaryLabel="Contact the office"
+        primaryHref="/contact"
+      />
     </>
   );
 }

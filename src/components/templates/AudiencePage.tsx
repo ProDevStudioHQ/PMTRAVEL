@@ -110,7 +110,7 @@ export function AudiencePage({ audience }: { audience: Audience }) {
               </ul>
             </div>
           </div>
-          <div className="rounded-3xl border border-line bg-sand p-6 sm:p-10 lg:col-span-8">
+          <div className="rounded-card border border-line bg-sand p-6 sm:p-10 lg:col-span-8">
             <EnquiryForm
               kind="quote"
               idPrefix={`quote-${audience.slug}`}

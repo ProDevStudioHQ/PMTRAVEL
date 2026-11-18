@@ -47,7 +47,7 @@ export function FaqSection({ heading, faqs, eyebrow = "FAQ", intro, tone = "sand
             {faqs.map((faq) => (
               <details key={faq.question} className="group border-b border-line">
                 <summary className="flex min-h-16 items-center justify-between gap-6 py-5 text-left">
-                  <h3 className="font-display text-[1.25rem] leading-snug font-medium text-ink">{faq.question}</h3>
+                  <h3 className="font-display text-[1.4rem] leading-snug font-semibold text-ink">{faq.question}</h3>
                   <span className="acc-icon grid size-9 shrink-0 place-items-center rounded-full border border-gold/60 text-terracotta-700">
                     <Plus aria-hidden="true" size={18} strokeWidth={1.5} />
                   </span>

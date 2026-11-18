@@ -121,7 +121,7 @@ export function ExcursionFinder({
           ))}
         </ul>
       ) : (
-        <div className="mt-4 flex flex-col items-start gap-4 rounded-3xl border border-dashed border-rule p-10">
+        <div className="mt-4 flex flex-col items-start gap-4 rounded-card border border-dashed border-rule p-10">
           <SearchX aria-hidden="true" size={28} strokeWidth={1.5} className="text-ink-500" />
           <p className="text-lg text-ink-900">No excursion matches all three filters.</p>
           <button

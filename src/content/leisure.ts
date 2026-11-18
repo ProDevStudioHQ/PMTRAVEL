@@ -22,6 +22,10 @@ export type SampleItinerary = {
 export type LeisureProduct = {
   kind: "experience" | "tour";
   slug: string;
+  /** Tours: stops of the sample route, shown on the tour card. */
+  route?: string[];
+  /** Tours: "Private", "Group" or "Private or group" badge. */
+  format?: string;
   name: string;
   menuBlurb: string;
   cardLine: string;
@@ -329,6 +333,8 @@ export const TOURS: LeisureProduct[] = [
   {
     kind: "tour",
     slug: "private-tours",
+    format: "Private",
+    route: ["Marrakech", "Merzouga", "Fès", "Chefchaouen"],
     name: "Private Tours",
     menuBlurb: "Private car, private guide, your clients' pace.",
     cardLine: "Private car and guide, at your clients' pace.",
@@ -371,6 +377,8 @@ export const TOURS: LeisureProduct[] = [
   {
     kind: "tour",
     slug: "group-tours",
+    format: "Group",
+    route: ["Casablanca", "Rabat", "Fès", "Marrakech"],
     name: "Group Tours",
     menuBlurb: "Coach tours and departures for groups of all sizes.",
     cardLine: "Coach circuits and departures for groups.",
@@ -412,6 +420,8 @@ export const TOURS: LeisureProduct[] = [
   {
     kind: "tour",
     slug: "family",
+    format: "Private or group",
+    route: ["Marrakech", "Atlas", "Agafay"],
     name: "Family",
     menuBlurb: "Kid-friendly pacing, camels, gardens and pools.",
     cardLine: "Easy pacing, camels, gardens and pools.",
@@ -452,6 +462,8 @@ export const TOURS: LeisureProduct[] = [
   {
     kind: "tour",
     slug: "honeymoon",
+    format: "Private",
+    route: ["Marrakech", "Agafay", "Essaouira"],
     name: "Honeymoon",
     menuBlurb: "Romantic riads, desert nights and the coast.",
     cardLine: "Romantic riads, desert nights and the coast.",
@@ -490,6 +502,7 @@ export const TOURS: LeisureProduct[] = [
   {
     kind: "tour",
     slug: "tailor-made",
+    format: "Private or group",
     name: "Tailor-Made",
     menuBlurb: "Built from scratch around your client's brief.",
     cardLine: "Built from scratch around your brief.",
@@ -526,6 +539,9 @@ export const TOURS: LeisureProduct[] = [
     related: ["private-tours", "luxury", "culture"],
   },
 ];
+
+/** "10 days / 9 nights" -> "10 days"; other lengths ("Evening", "Any length") unchanged. */
+export const productDays = (p: LeisureProduct) => p.itineraries[0]?.length.split(" / ")[0];
 
 export const experienceBySlug = (slug: string) => EXPERIENCES.find((e) => e.slug === slug);
 export const tourBySlug = (slug: string) => TOURS.find((t) => t.slug === slug);

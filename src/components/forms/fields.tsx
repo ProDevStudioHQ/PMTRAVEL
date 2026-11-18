@@ -23,7 +23,7 @@ const control = (invalid: boolean, onDark: boolean) =>
   `block w-full min-h-12 rounded-control border px-4 py-3 text-[0.9375rem] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-0 ${
     onDark
       ? "border-sand/25 bg-midnight-2 text-sand placeholder:text-sand/50 focus-visible:border-gold focus-visible:ring-gold/40"
-      : "border-ink/15 bg-white text-ink placeholder:text-muted/80 focus-visible:border-terracotta-600 focus-visible:ring-terracotta/30"
+      : "border-ink/15 bg-ivory text-ink placeholder:text-muted/80 focus-visible:border-terracotta-600 focus-visible:ring-terracotta/30"
   } ${invalid ? (onDark ? "border-terracotta-300" : "border-terracotta-700") : ""}`;
 
 type Props = {
@@ -78,7 +78,7 @@ export function FieldControl({ field, idPrefix, error, value, onDark = false }: 
                 key={option}
                 htmlFor={optionId}
                 className={`inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-4 text-sm transition-colors has-checked:border-terracotta-600 has-checked:bg-terracotta-600 has-checked:text-white has-focus-visible:ring-2 has-focus-visible:ring-terracotta/40 ${
-                  onDark ? "border-sand/25 text-sand" : "border-ink/15 bg-white text-ink"
+                  onDark ? "border-sand/25 text-sand" : "border-ink/15 bg-ivory text-ink"
                 }`}
               >
                 <input id={optionId} type="checkbox" name={field.name} value={option} defaultChecked={selected.includes(option)} className="sr-only" />

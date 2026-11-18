@@ -13,12 +13,12 @@ export const PARTNER_BENEFITS: { icon: IconName; title: string; body: string }[]
 ];
 
 export const DMC_SERVICES: { icon: IconName; title: string }[] = [
-  { icon: "hotel", title: "Accommodation contracting" },
+  { icon: "door", title: "Accommodation contracting" },
   { icon: "car", title: "Transfers & fleet" },
   { icon: "languages", title: "Licensed guides" },
   { icon: "mountain", title: "Excursions & activities" },
   { icon: "presentation", title: "MICE & events" },
-  { icon: "utensils", title: "Dining & gastronomy" },
+  { icon: "lantern", title: "Dining & gastronomy" },
   { icon: "plane-landing", title: "Meet & assist" },
   { icon: "clipboard-check", title: "Full ground handling" },
 ];
