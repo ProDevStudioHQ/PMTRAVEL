@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { checkCmsLive, type SiteSource } from "@/lib/cms";
+import { checkCmsLive } from "@/lib/cms";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
  * (Dokploy) and the CRM's dashboard light cannot hammer the CRM, and a slow
  * CRM can never make this endpoint slow enough to fail a container check.
  */
-let last: { at: number; cms: SiteSource } | null = null;
+let last: { at: number; cms: "ok" | "fallback" } | null = null;
 const TTL_MS = 30_000;
 
 /**
@@ -17,7 +17,7 @@ const TTL_MS = 30_000;
  * when the CRM is not: it is then serving cached pages and the fallback layout.
  */
 export async function GET() {
-  if (!last || Date.now() - last.at > TTL_MS) last = { at: Date.now(), cms: await checkCmsLive(3_000) };
+  if (!last || Date.now() - last.at > TTL_MS) last = { at: Date.now(), cms: (await checkCmsLive(3_000)) === "cms" ? "ok" : "fallback" };
   return NextResponse.json(
     { status: "ok", cms: last.cms, timestamp: new Date().toISOString() },
     { headers: { "Cache-Control": "no-store" } }
