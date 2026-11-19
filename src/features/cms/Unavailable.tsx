@@ -11,7 +11,7 @@ export async function Unavailable({ what = "These programmes", onDark = false }:
   const { settings } = await getSite();
   return (
     <div role="status" className={`rounded-card border p-8 ${onDark ? "border-sand/20 bg-midnight-2 text-sand" : "border-line bg-ivory"}`}>
-      <h3 className="t-h3">{what} are temporarily unavailable</h3>
+      <h2 className="t-h3">{what} are temporarily unavailable</h2>
       <p className={`mt-3 max-w-2xl ${onDark ? "text-sand/80" : "text-muted"}`}>
         Please try again in a few minutes, or message our operations desk and we will send you the details straight away.
       </p>

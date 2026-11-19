@@ -1,8 +1,8 @@
 import { Flag, Hotel, Mountain, Plane, UtensilsCrossed, Waves } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Agadir Resort and Golf Ground Operations",
   description:
     "Agadir for leisure and incentive groups: resort programmes, golf, beach and surf days, and excursions to Paradise Valley and Taroudant.",

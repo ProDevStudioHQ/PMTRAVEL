@@ -1,8 +1,8 @@
 import { Briefcase, Hotel, Landmark, Route, Ship, TrainFront } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Tangier Corporate and Group Operations",
   description:
     "Tangier for travel trade: Strait of Gibraltar crossings, industrial and company visits, high-speed rail connections and the city's kasbah and coast.",

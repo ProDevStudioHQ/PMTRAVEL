@@ -1,8 +1,8 @@
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { LegalPage } from "@/components/templates/LegalPage";
 import { COMPANY } from "@/lib/company";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Terms of Use",
   description:
     "Terms of use for the PM Travel Agency website. Proposals, bookings and services for trade partners are governed by the written terms in each confirmation.",

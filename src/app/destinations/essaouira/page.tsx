@@ -1,8 +1,8 @@
 import { Bus, CalendarDays, Footprints, Languages, Moon, UtensilsCrossed } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Essaouira Ground Operations",
   description:
     "Operating Essaouira from Marrakech: coach parking and drop-off, medina access on foot, wind, and whether a day trip is the right call.",

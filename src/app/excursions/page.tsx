@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Car, MapPin, Tag, UsersRound } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { IconCards, PILL, SectionHeading, type IconItem } from "@/components/Modern";
 import { Section } from "@/components/Section";
 import { CtaBand } from "@/components/CtaBand";
@@ -11,7 +11,7 @@ import { EXCURSIONS, excursionHref, type Excursion } from "@/features/excursions
 import { ExcursionFinder, type FinderItem } from "@/features/excursions/ExcursionFinder";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "B2B Excursions from Marrakech",
   description:
     "Day, half-day and evening excursions around Marrakech, Imlil, Ourika and Agafay for travel agencies: souks, treks, e-bike, quad, camels and camp dinners.",

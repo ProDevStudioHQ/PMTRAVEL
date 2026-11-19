@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Clock, FileText, Mail, MessageCircle } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { Container } from "@/components/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { RevealWords } from "@/components/PageHero";
@@ -11,7 +11,7 @@ import { WhatsappIcon } from "@/components/Icon";
 import { COMPANY, RFQ_HREF, whatsappLink } from "@/lib/company";
 import { PARTNER_PROCESS } from "@/content/b2b";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Request a B2B Quote | Morocco Net Rates",
   description:
     "Request a B2B quote for Morocco: send dates, pax, service level and destinations. Costed proposal at net rates within 24h for standard requests.",

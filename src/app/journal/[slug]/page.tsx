@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { seoFor } from "@/lib/page-seo";
 import { PageHero } from "@/components/PageHero";
 import { Container } from "@/components/Container";
 import { Section } from "@/components/Section";
@@ -22,7 +22,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const article = articleBySlug((await params).slug);
   if (!article) return {};
-  return pageMetadata({
+  return seoFor({
     title: article.seoTitle,
     description: article.description,
     path: `/journal/${article.slug}`,

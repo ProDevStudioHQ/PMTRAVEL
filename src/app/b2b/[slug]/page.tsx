@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { pageMetadata } from "@/lib/metadata";
+import { seoFor } from "@/lib/page-seo";
 import { AudiencePage } from "@/components/templates/AudiencePage";
 import { AUDIENCES, audienceBySlug } from "@/content/b2b";
 
@@ -13,7 +13,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const audience = audienceBySlug((await params).slug);
   if (!audience) return {};
-  return pageMetadata({ title: audience.seoTitle, description: audience.seoDescription, path: `/b2b/${audience.slug}` });
+  return seoFor({ title: audience.seoTitle, description: audience.seoDescription, path: `/b2b/${audience.slug}` });
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {

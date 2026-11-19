@@ -233,11 +233,24 @@ export interface LeadInput {
         "newsletter": { "enabled": boolean, "text": string | null },
         "copyright": string
       },
+      "pages": { [path: string]: PageOverride },   // added 2026-11-19
+      "images": { [imageKey: string]: Image },     // added 2026-11-19
       "updatedAt": string
     }
+    PageOverride = { "eyebrow": string | null, "title": string | null,
+                     "subtitle": string | null, "heroImage": Image | null,
+                     "seoTitle": string | null, "seoDescription": string | null }
     Notes: announcement is null outside its start/end dates.
            Nav items with autoSource are already expanded into children
            (e.g. Experiences -> Luxury, Adventure, ...).
+           pages (CRM Website -> Pages) is keyed by URL path ("/", "/about");
+           a null field keeps the page's own text. images (CRM Website ->
+           Images) replaces one of the website's own photos, keyed by its
+           image record key. Both are optional for the website: an older CRM
+           without them, or a malformed entry, leaves the built-in content.
+           The website lists what can be controlled at its public
+           GET /api/content-slots: { pages: {path,label,group}[],
+           images: {key,src,alt,width,height}[] }.
 
 5.2 GET /categories?section=EXPERIENCES|TOURS
     200: { "items": Category[] }

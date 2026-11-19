@@ -17,6 +17,8 @@ import { Evidence } from "@/components/Evidence";
 import { FaqSection, type Faq } from "@/components/FaqSection";
 import { Section } from "@/components/Section";
 import { SiteImage } from "@/components/SiteImage";
+import { CmsImage } from "@/features/cms/CmsImage";
+import { getPageOverride } from "@/lib/cms";
 import { destinationBySlug } from "@/features/destinations/registry";
 import { DestinationRail } from "@/features/images/DestinationRail";
 import { DESTINATION_PAGE_IMAGES } from "@/features/images/keys";
@@ -38,6 +40,8 @@ type DestinationHeroProps = {
   /** Headline figures shown as glass tiles under the actions. */
   stats?: { value: string; label: string }[];
   children?: ReactNode;
+  /** URL path the CRM override is keyed by (Website → Pages). Defaults to the last breadcrumb. */
+  path?: string;
 };
 
 /**
@@ -45,7 +49,7 @@ type DestinationHeroProps = {
  * foot holds paper text above 7:1 whatever the photograph does. Without an
  * image record it falls back to plain red-900.
  */
-export function DestinationHero({
+export async function DestinationHero({
   title,
   standfirst,
   imageKey,
@@ -53,14 +57,25 @@ export function DestinationHero({
   kicker = "Morocco",
   stats,
   children,
+  path,
 }: DestinationHeroProps) {
-  const hasImage = imageKey ? Boolean(imageByKey(imageKey)) : false;
+  // Anything set in the CRM for this page wins; empty fields keep the page's own text.
+  const o = await getPageOverride(path ?? trail?.at(-1)?.href);
+  if (o?.eyebrow) kicker = o.eyebrow;
+  if (o?.title) title = o.title;
+  if (o?.subtitle) standfirst = o.subtitle;
+  const cover = o?.heroImage ?? null;
+  const hasImage = cover ? true : imageKey ? Boolean(imageByKey(imageKey)) : false;
 
   return (
     <section className="surface-deep relative isolate overflow-hidden bg-red-900 text-paper">
-      {hasImage && imageKey ? (
+      {hasImage ? (
         <>
-          <SiteImage imageKey={imageKey} fill priority sizes="100vw" className="-z-10 object-cover" />
+          {cover ? (
+            <CmsImage image={cover} fill priority sizes="100vw" className="-z-10 object-cover" />
+          ) : imageKey ? (
+            <SiteImage imageKey={imageKey} fill priority sizes="100vw" className="-z-10 object-cover" />
+          ) : null}
           <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink-900/50" />
           <div
             aria-hidden="true"

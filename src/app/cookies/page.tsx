@@ -1,8 +1,8 @@
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { LegalPage } from "@/components/templates/LegalPage";
 import { COMPANY } from "@/lib/company";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Cookie Policy",
   description:
     "Cookie policy for the PM Travel Agency website: no advertising or tracking cookies, one local setting to remember your choice, Google Maps only after consent.",

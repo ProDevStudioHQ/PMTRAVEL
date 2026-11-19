@@ -11,7 +11,7 @@ import {
   Store,
   UsersRound,
 } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { seoFor } from "@/lib/page-seo";
 import { FaqSection } from "@/components/FaqSection";
 import { PILL, SectionHeading } from "@/components/Modern";
 import { Section } from "@/components/Section";
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const excursion = excursionBySlug(slug);
   if (!excursion) return {};
-  return pageMetadata({
+  return seoFor({
     title: excursion.seoTitle,
     description: excursion.seoDescription,
     path: excursionHref(excursion),

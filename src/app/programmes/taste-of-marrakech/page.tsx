@@ -17,7 +17,7 @@ import {
   UtensilsCrossed,
   type LucideIcon,
 } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { Container } from "@/components/Container";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
@@ -29,7 +29,7 @@ import { COMPANY, RFQ_HREF } from "@/lib/nav";
 
 const PATH = "/programmes/taste-of-marrakech";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Taste of Marrakech Culinary Programme",
   description:
     "A 7-night B2B culinary programme around Marrakech, Imlil, Ourika and Agafay: hands-on cooking, souks, mountains and curated dining.",

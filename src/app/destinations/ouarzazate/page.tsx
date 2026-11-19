@@ -1,8 +1,8 @@
 import { Clapperboard, Hotel, Landmark, Mountain, Route, Sun } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Ouarzazate Ground Operations",
   description:
     "Operating Ouarzazate: the Tizi n'Tichka crossing from Marrakech, film studio visits, kasbahs and placing the overnight in a southern circuit.",

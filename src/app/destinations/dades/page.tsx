@@ -1,8 +1,8 @@
 import { Car, Compass, Hotel, Mountain, Route, ShieldCheck } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Dades Valley and Gorges Ground Operations",
   description:
     "Operating the Dades Valley: the gorge road and its hairpins, vehicle choice, overnights in the gorge, walks and the seasons from roses to winter.",

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { PageHero } from "@/components/PageHero";
 import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
@@ -16,7 +16,7 @@ import { PARTNER_BENEFITS, TESTIMONIALS, TRADE_FAQS } from "@/content/home";
 import { PARTNER_HREF, RFQ_HREF, TRUST_POINTS } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "B2B Travel Morocco | DMC & Ground Handler",
   description:
     "B2B travel in Morocco: DMC and ground handling for travel agencies, tour operators, advisors, groups and MICE. Net rates, white-label and 24/7 support.",

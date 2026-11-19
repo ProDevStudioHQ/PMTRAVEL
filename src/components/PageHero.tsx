@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { Container } from "@/components/Container";
 import { Breadcrumbs, type Crumb } from "@/components/Breadcrumbs";
 import { SiteImage } from "@/components/SiteImage";
+import { CmsImage } from "@/features/cms/CmsImage";
+import { getPageOverride } from "@/lib/cms";
 
 export { RevealWords } from "@/components/RevealWords";
 import { RevealWords } from "@/components/RevealWords";
@@ -19,6 +21,8 @@ type PageHeroProps = {
   /** Full viewport height (home). Inner pages use a shorter banner. */
   full?: boolean;
   below?: ReactNode;
+  /** URL path the CRM override is keyed by (Website → Pages). Defaults to the last breadcrumb. */
+  path?: string;
 };
 
 /**
@@ -26,7 +30,13 @@ type PageHeroProps = {
  * slowly zooms (Ken Burns, transform only). The headline reveals word by word
  * in pure CSS, so it never waits for JavaScript.
  */
-export function PageHero({ eyebrow, title, standfirst, imageKey, media, trail, children, full = false, below }: PageHeroProps) {
+export async function PageHero({ eyebrow, title, standfirst, imageKey, media, trail, children, full = false, below, path }: PageHeroProps) {
+  // Anything set in the CRM for this page wins; empty fields keep the page's own text.
+  const o = await getPageOverride(path ?? trail?.at(-1)?.href);
+  if (o?.eyebrow) eyebrow = o.eyebrow;
+  if (o?.title) title = o.title;
+  if (o?.subtitle) standfirst = o.subtitle;
+  if (o?.heroImage) media = <CmsImage image={o.heroImage} fill priority sizes="100vw" className="object-cover" />;
   return (
     <section className={`on-dark surface-deep relative isolate overflow-hidden bg-midnight text-sand ${full ? "min-h-[100svh]" : "min-h-[70svh] lg:min-h-[78svh]"} flex flex-col`}>
       <div className="absolute inset-0 -z-10 overflow-hidden">

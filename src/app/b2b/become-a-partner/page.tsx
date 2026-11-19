@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { PageHero } from "@/components/PageHero";
 import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
@@ -11,7 +11,7 @@ import { FaqSection } from "@/components/FaqSection";
 import { PARTNER_BENEFITS } from "@/content/home";
 import { COMPANY, PARTNER_HREF } from "@/lib/company";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Become a Partner | Morocco DMC Trade Account",
   description:
     "Become a PM Travel Agency partner: open a trade account for net Morocco rates, white-label service, fast quotes, fam trips and a dedicated ops contact.",

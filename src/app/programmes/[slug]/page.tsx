@@ -14,7 +14,7 @@ import {
   TrendingUp,
   UsersRound,
 } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { seoFor } from "@/lib/page-seo";
 import { FaqSection } from "@/components/FaqSection";
 import { PILL, SectionHeading } from "@/components/Modern";
 import { Section } from "@/components/Section";
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const programme = programmeBySlug(slug);
   if (!programme) return {};
-  return pageMetadata({
+  return seoFor({
     title: programme.seoTitle,
     description: programme.seoDescription,
     path: programmeHref(programme),

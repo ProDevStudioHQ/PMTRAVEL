@@ -1,7 +1,7 @@
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { SectionHub } from "@/features/cms/SectionHub";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Morocco Tours for Agencies & Tour Operators",
   description:
     "Morocco tours for the travel trade: private tours, group tours, family holidays, honeymoons and tailor-made trips, costed at net rates and run locally.",

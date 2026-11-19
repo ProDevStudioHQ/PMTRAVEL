@@ -151,3 +151,26 @@ describe("lists", () => {
     expect(await getSitemap()).toBeNull();
   });
 });
+
+describe("CRM page and image overrides", () => {
+  it("accepts pages and images, filling missing fields with null", () => {
+    const parsed = SitePayloadSchema.parse({
+      ...fallback,
+      pages: { "/about": { title: "About PM Travel", heroImage: image } },
+      images: { "b1-marrakech-hero": image },
+    });
+    expect(parsed.pages?.["/about"]).toEqual({ eyebrow: null, title: "About PM Travel", subtitle: null, heroImage: image, seoTitle: null, seoDescription: null });
+    expect(parsed.images?.["b1-marrakech-hero"]?.url).toBe(image.url);
+  });
+
+  it("keeps the layout when the overrides are malformed (drops them instead)", () => {
+    const parsed = SitePayloadSchema.safeParse({ ...fallback, pages: { "/about": { title: 42 } }, images: "nope" });
+    expect(parsed.success).toBe(true);
+    expect(parsed.data?.pages).toBeUndefined();
+    expect(parsed.data?.images).toBeUndefined();
+  });
+
+  it("an older CRM without overrides still validates", () => {
+    expect(SitePayloadSchema.safeParse(fallback).success).toBe(true);
+  });
+});

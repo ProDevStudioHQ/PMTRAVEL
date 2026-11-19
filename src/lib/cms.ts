@@ -12,6 +12,7 @@
  * programmes return null / a typed result so the page decides what to show.
  */
 import "server-only";
+import { cache } from "react";
 import type { ZodType } from "zod";
 import fallbackSite from "@/content/fallback-site.json";
 import {
@@ -22,7 +23,7 @@ import {
   SitePayloadSchema,
   SitemapSchema,
 } from "@/lib/cms-schemas";
-import type { Category, Paginated, ProgrammeDetail, ProgrammeSummary, Section, SitePayload, SitemapEntry } from "@/types/cms";
+import type { Category, Image as CmsImageData, PageOverride, Paginated, ProgrammeDetail, ProgrammeSummary, Section, SitePayload, SitemapEntry } from "@/types/cms";
 
 export const CMS_TIMEOUT_MS = 5_000;
 export const CMS_REVALIDATE_SECONDS = 3600;
@@ -113,8 +114,13 @@ export type SiteSource = "cms" | "fallback";
 /** The bundled snapshot (src/content/fallback-site.json, refreshed by scripts/pull-fallback.mjs). */
 export const FALLBACK_SITE = fallbackSite as unknown as SitePayload;
 
-/** Layout data plus where it came from. Never throws. */
-export async function getSiteWithSource(): Promise<{ site: SitePayload; source: SiteSource }> {
+/**
+ * Layout data plus where it came from. Never throws. Memoised per request:
+ * every SiteImage and page header on a page asks for it.
+ */
+export const getSiteWithSource = cache(loadSiteWithSource);
+
+async function loadSiteWithSource(): Promise<{ site: SitePayload; source: SiteSource }> {
   if (!isCmsConfigured()) return { site: FALLBACK_SITE, source: "fallback" };
   try {
     const data = await cmsGet("/site", { tags: [CMS_TAGS.site] });
@@ -128,6 +134,19 @@ export async function getSiteWithSource(): Promise<{ site: SitePayload; source: 
 /** Header, top bar, navigation, footer and settings. Falls back to the local snapshot. */
 export async function getSite(): Promise<SitePayload> {
   return (await getSiteWithSource()).site;
+}
+
+/** The CRM's override for one page (by URL path), if any. */
+export async function getPageOverride(path: string | undefined): Promise<PageOverride | null> {
+  if (!path) return null;
+  const pages = (await getSite()).pages;
+  const key = path.length > 1 ? path.replace(/\/+$/, "") : path;
+  return pages?.[key] ?? null;
+}
+
+/** The CRM's replacement for one of the site's own photos, if any. */
+export async function getImageOverride(key: string): Promise<CmsImageData | null> {
+  return (await getSite()).images?.[key] ?? null;
 }
 
 /* ------------------------------------------------------------------ */

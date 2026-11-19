@@ -1,8 +1,8 @@
 import { Bus, Coffee, Languages, Mountain, Route, Snowflake } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Atlas Mountains Ground Operations",
   description:
     "Operating the Atlas from Marrakech: day trips versus crossings, vehicle class on the passes, winter conditions and group mobility.",

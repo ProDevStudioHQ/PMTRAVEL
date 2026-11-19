@@ -1,8 +1,8 @@
 import { Hotel, Languages, Lightbulb, Luggage, Route, UtensilsCrossed } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Fes Ground Operations",
   description:
     "Operating Fes for travel trade: medina access and luggage handling, guiding that holds a group together, and arriving by road from Marrakech.",

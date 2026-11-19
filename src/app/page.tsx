@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { PageHero } from "@/components/PageHero";
 import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
@@ -19,7 +19,7 @@ import { DMC_SERVICES, PARTNER_BENEFITS, TRADE_FAQS } from "@/content/home";
 import { PARTNER_HREF, RFQ_HREF, TRUST_POINTS } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Morocco DMC for Travel Agencies & Tour Operators | PM Travel Agency",
   absoluteTitle: true,
   description:
@@ -48,6 +48,7 @@ export default function HomePage() {
       {/* 1. Hero */}
       <PageHero
         full
+        path="/"
         eyebrow="Morocco DMC · Marrakech"
         title="Your Ground Partner in Morocco."
         imageKey="b1-marrakech-hero"

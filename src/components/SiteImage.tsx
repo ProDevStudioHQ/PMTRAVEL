@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { imageByKey, OPERATIONAL_SOURCES } from "@/features/images/registry";
 import { BLUR } from "@/features/images/blur";
+import { getImageOverride } from "@/lib/cms";
 
 /** Delivered as AVIF/WebP at 640–3840w (next.config.ts); 70 keeps 4K sharp and light. */
 const QUALITY = 70;
@@ -37,8 +38,12 @@ type SiteImageProps = {
  * Wraps next/image so width, height and alt text always come from the record,
  * which means no layout shift and no image without a described alternative.
  * Never use a plain <img> tag - verify:data fails the build on one.
+ *
+ * A photo replaced in the CRM (Website → Images) is shown instead of the
+ * record's file, in the same slot and size. The record stays the gatekeeper:
+ * only a recorded key can be replaced.
  */
-export function SiteImage({
+export async function SiteImage({
   imageKey,
   className = "",
   sizes = "(min-width: 1024px) 50vw, 100vw",
@@ -63,6 +68,20 @@ export function SiteImage({
   if (operational && !OPERATIONAL_SOURCES.includes(record.source)) {
     throw new Error(
       `Image "${imageKey}" is sourced from ${record.source} and cannot be used to depict PM Travel's own operation. Operational photography must be original.`
+    );
+  }
+
+  const replacement = await getImageOverride(imageKey);
+  if (replacement) {
+    const alt = replacement.alt.trim() || record.alt;
+    const blurUrl = !eager && replacement.blurDataUrl ? ({ placeholder: "blur", blurDataURL: replacement.blurDataUrl } as const) : {};
+    const loading = eager ? undefined : ("lazy" as const);
+    if (fill) {
+      return <Image src={replacement.url} alt={alt} fill sizes={sizes} quality={QUALITY} priority={eager} loading={loading} {...blurUrl} className={className} />;
+    }
+    // Keep the slot's shape (the record's size) so the layout never shifts.
+    return (
+      <Image src={replacement.url} alt={alt} width={record.width} height={record.height} sizes={sizes} quality={QUALITY} priority={eager} loading={loading} {...blurUrl} className={`object-cover ${className}`} />
     );
   }
 

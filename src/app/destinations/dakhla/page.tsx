@@ -1,8 +1,8 @@
 import { Plane, ShieldCheck, Ship, Tent, UtensilsCrossed, Wind } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Dakhla Kitesurf and Incentive Operations",
   description:
     "Operating Dakhla: flight-led logistics, kitesurfing on the lagoon, wind and tide planning, eco-lodges and distinctive incentive programmes.",

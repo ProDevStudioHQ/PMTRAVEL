@@ -1,8 +1,8 @@
 import { Car, ClipboardList, Route, ShieldCheck, Tent, ThermometerSun } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Merzouga Ground Operations",
   description:
     "Operating Merzouga from Marrakech: whether two days or three, camp transfer arrangements, heat and season, and what to verify at a camp.",

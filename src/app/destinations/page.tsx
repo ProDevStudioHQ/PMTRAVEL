@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { Evidence } from "@/components/Evidence";
 import { FaqSection } from "@/components/FaqSection";
 import { Section, SectionIntro } from "@/components/Section";
@@ -10,7 +10,7 @@ import { DestinationRail } from "@/features/images/DestinationRail";
 import { DESTINATIONS_HUB_HERO } from "@/features/images/keys";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Morocco MICE Destinations & Experiences",
   description:
     "From the desert to the imperial cities: the Moroccan destinations PM Travel operates for corporate events, incentives and group travel.",

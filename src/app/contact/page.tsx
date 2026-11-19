@@ -1,5 +1,5 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { PageHero } from "@/components/PageHero";
 import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
@@ -11,7 +11,7 @@ import { WhatsappIcon } from "@/components/Icon";
 import { COMPANY, RFQ_HREF, addressOneLine, whatsappLink } from "@/lib/company";
 import { en } from "@/i18n/dictionaries/en";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Contact Our Marrakech Office",
   description:
     "Contact PM Travel Agency in Marrakech: phone and WhatsApp +212 762 455 472, b2b@pm-travelagency.com, office on Rue Ibn Battouta. Mon–Fri 9–18, Sat 9–13.",

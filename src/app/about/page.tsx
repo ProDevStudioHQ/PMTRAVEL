@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { PageHero } from "@/components/PageHero";
 import { ButtonLink } from "@/components/Button";
 import { Section } from "@/components/Section";
@@ -12,7 +12,7 @@ import { COMPANY, CREDENTIALS, PARTNER_HREF, RFQ_HREF, addressOneLine } from "@/
 import type { IconName } from "@/components/Icon";
 import { en } from "@/i18n/dictionaries/en";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "About Us | Marrakech DMC & Ground Handler",
   description:
     "About PM Travel Agency by Prestige Majestic Projects & Events: a Marrakech-based Morocco DMC working only with travel agencies, operators and MICE planners.",

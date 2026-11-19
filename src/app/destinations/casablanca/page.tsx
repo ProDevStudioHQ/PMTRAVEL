@@ -1,8 +1,8 @@
 import { Briefcase, Building2, Bus, Landmark, Plane, TrainFront } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Casablanca Business and MICE Operations",
   description:
     "Casablanca for travel trade and corporate groups: airport arrivals at Mohammed V, conference logistics, city traffic and onward rail connections.",

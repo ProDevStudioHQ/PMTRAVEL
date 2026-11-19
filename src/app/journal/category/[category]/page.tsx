@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { pageMetadata } from "@/lib/metadata";
+import { seoFor } from "@/lib/page-seo";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { ArticleGrid, CategoryNav } from "@/components/templates/JournalList";
@@ -15,7 +15,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
   const category = categoryBySlug((await params).category);
   if (!category) return {};
-  return pageMetadata({
+  return seoFor({
     title: `${category.name} | Journal`,
     description: `${category.description} Articles for travel agencies, tour operators and MICE planners from our Morocco DMC team in Marrakech.`,
     path: `/journal/category/${category.slug}`,

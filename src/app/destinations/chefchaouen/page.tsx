@@ -1,8 +1,8 @@
 import { Camera, Footprints, Hotel, Luggage, Mountain, Route } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Chefchaouen Ground Operations",
   description:
     "Operating Chefchaouen: medina access on foot, luggage and porterage, small walking groups, respectful photography and placing it in a northern circuit.",

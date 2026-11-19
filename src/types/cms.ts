@@ -98,7 +98,21 @@ export interface SitePayload {
     newsletter: { enabled: boolean; text: string | null };
     copyright: string;
   };
+  /** Page header and search snippet overrides, keyed by URL path ("/", "/about"). */
+  pages?: Record<string, PageOverride>;
+  /** Replacements for the site's own photos, keyed by image record key. */
+  images?: Record<string, Image>;
   updatedAt: string;
+}
+
+/** Null fields keep what the page itself says. */
+export interface PageOverride {
+  eyebrow: string | null;
+  title: string | null;
+  subtitle: string | null;
+  heroImage: Image | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
 }
 
 // 4.7 Category

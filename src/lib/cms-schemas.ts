@@ -85,6 +85,19 @@ export const SiteSettingsSchema = z.object({
   seo: z.object({ title: z.string(), description: z.string(), ogImage: ImageSchema.nullable() }),
 });
 
+/**
+ * CRM override of one page's header and search snippet, keyed by URL path.
+ * Every field is optional: null keeps what the page itself says.
+ */
+export const PageOverrideSchema = z.object({
+  eyebrow: nullableString.optional().default(null),
+  title: nullableString.optional().default(null),
+  subtitle: nullableString.optional().default(null),
+  heroImage: ImageSchema.nullable().optional().default(null),
+  seoTitle: nullableString.optional().default(null),
+  seoDescription: nullableString.optional().default(null),
+});
+
 export const SitePayloadSchema = z.object({
   settings: SiteSettingsSchema,
   topBar: z.object({
@@ -108,6 +121,10 @@ export const SitePayloadSchema = z.object({
     newsletter: z.object({ enabled: z.boolean(), text: nullableString }),
     copyright: z.string(),
   }),
+  // Added after the first contract version, so an older CRM may not send them.
+  // A bad entry must not take the whole layout down: it is dropped instead.
+  pages: z.record(z.string(), PageOverrideSchema).optional().catch(undefined),
+  images: z.record(z.string(), ImageSchema).optional().catch(undefined),
   updatedAt: z.string(),
 });
 

@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -6,7 +6,7 @@ import { Gallery, type GalleryItem } from "@/components/Gallery";
 import { CtaBand } from "@/components/CtaBand";
 import { IMAGES, OPERATIONAL_SOURCES } from "@/features/images/registry";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Gallery | Morocco Destinations & Experiences",
   description:
     "Photo gallery of the Morocco we operate: Marrakech medina and palaces, Agafay desert, the High Atlas, Sahara dunes at Merzouga, Fes, Essaouira and more.",

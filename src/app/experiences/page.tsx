@@ -1,7 +1,7 @@
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { SectionHub } from "@/features/cms/SectionHub";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Morocco Experiences for Travel Professionals",
   description:
     "Signature Morocco experiences to sell to your clients: luxury, adventure, culture, wellness, gastronomy and private moments, operated by our Marrakech DMC.",

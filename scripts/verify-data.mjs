@@ -186,12 +186,14 @@ const pageFiles = sourceFiles.filter((file) => file.endsWith("page.tsx"));
 
 for (const file of pageFiles) {
   const contents = readFileSync(file, "utf8");
-  const metadataBlock = contents.match(/export const metadata[\s\S]*?^\}\)?;/m)?.[0];
+  // `generateMetadata = cmsPageMetadata({...})` is the same static input with
+  // the CRM's search snippet applied at request time (src/lib/page-seo.ts).
+  const metadataBlock = contents.match(/export const (?:metadata|generateMetadata = cmsPageMetadata)[\s\S]*?^\}\)?;/m)?.[0];
   if (!metadataBlock) continue; // generateMetadata pages are checked at build
 
   // og:url must come from the same path as the canonical. pageMetadata() sets
   // both; a hand-built metadata object inherits the layout's and gets it wrong.
-  if (!metadataBlock.includes("pageMetadata(")) {
+  if (!metadataBlock.includes("pageMetadata(") && !metadataBlock.includes("cmsPageMetadata(")) {
     fail(file, "builds metadata by hand; use pageMetadata() so og:url matches the canonical");
   }
 

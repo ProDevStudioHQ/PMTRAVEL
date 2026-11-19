@@ -1,8 +1,8 @@
 import { Building2, Landmark, Languages, ShieldCheck, TrainFront, UtensilsCrossed } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Rabat MICE and Delegation Operations",
   description:
     "Rabat for delegations, congresses and corporate groups: official appointments, protocol and access, and the capital's UNESCO-listed heritage.",

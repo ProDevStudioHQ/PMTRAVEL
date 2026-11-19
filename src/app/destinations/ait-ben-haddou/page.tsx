@@ -1,8 +1,8 @@
 import { Clapperboard, Footprints, Landmark, Route, Sun, UtensilsCrossed } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Aït Ben Haddou Visits and Excursions",
   description:
     "Operating a visit to the UNESCO-listed ksar of Aït Ben Haddou: the climb, heat and timing, film heritage, and staging it from Ouarzazate or Marrakech.",

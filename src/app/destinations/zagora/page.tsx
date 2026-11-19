@@ -1,8 +1,8 @@
 import { Compass, Landmark, Route, ShieldCheck, Sun, Tent } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Zagora Desert Ground Operations",
   description:
     "Operating Zagora and the Draa valley: a desert night closer to Marrakech, what it offers compared with Merzouga, the road through Agdz and camp logistics.",

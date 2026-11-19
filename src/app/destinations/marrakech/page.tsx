@@ -1,8 +1,8 @@
 import { Compass, Hotel, Languages, PlaneLanding, Users, UtensilsCrossed } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Marrakech Ground Operations",
   description:
     "Marrakech ground handling for travel trade: arrivals, riad access, medina logistics, guiding and group movement, run from our Gueliz office.",

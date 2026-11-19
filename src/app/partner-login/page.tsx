@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Lock } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { Container } from "@/components/Container";
 import { SiteImage } from "@/components/SiteImage";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { partnerLogin } from "@/features/enquiry/actions";
 import { LOGIN_HREF, PARTNER_HREF } from "@/lib/company";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Partner Login",
   description:
     "Partner login for PM Travel Agency trade partners: access your Morocco net rates, files and documents. New to PM Travel Agency? Request partner access online.",

@@ -1,11 +1,11 @@
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { ArticleGrid, CategoryNav } from "@/components/templates/JournalList";
 import { CtaBand } from "@/components/CtaBand";
 import { ARTICLES } from "@/content/journal";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Journal | Morocco Trade Guides & Insights",
   description:
     "The PM Travel Agency journal: practical Morocco guides for travel agencies, tour operators and MICE planners — briefs, destinations, incentives and white-label.",

@@ -1,8 +1,8 @@
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { LegalPage } from "@/components/templates/LegalPage";
 import { COMPANY, addressOneLine } from "@/lib/company";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Privacy Policy",
   description:
     "How PM Travel Agency collects and uses personal data sent through this website: quote requests, partner applications, contact messages and newsletter sign-ups.",

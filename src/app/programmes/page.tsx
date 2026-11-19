@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, BadgePercent, Headset, Package } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { IconCards, PILL, SectionHeading, type IconItem } from "@/components/Modern";
 import { Section } from "@/components/Section";
 import { CtaBand } from "@/components/CtaBand";
@@ -10,7 +10,7 @@ import { imageByKey } from "@/features/images/registry";
 import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
 import { RFQ_HREF } from "@/lib/nav";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "B2B Programmes for Morocco",
   description:
     "Ready-to-contract Morocco programmes for travel agencies and tour operators, with B2B net rates and a dedicated operations team.",

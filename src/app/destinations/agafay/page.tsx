@@ -1,8 +1,8 @@
 import { Bus, MapPinned, RotateCcw, ShieldCheck, Sparkles, UtensilsCrossed } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import { cmsPageMetadata } from "@/lib/page-seo";
 import { DestinationPage } from "@/features/destinations/DestinationPage";
 
-export const metadata = pageMetadata({
+export const generateMetadata = cmsPageMetadata({
   title: "Agafay Ground Operations and Events",
   description:
     "Operating Agafay from Marrakech: transfer waves, coach limits, wind and wet-weather planning, and what to verify before booking a camp.",
