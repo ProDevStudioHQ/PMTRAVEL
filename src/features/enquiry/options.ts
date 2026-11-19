@@ -39,6 +39,6 @@ export type EnquiryKind = "quote" | "partner" | "contact" | "newsletter" | "pdf"
 export type EnquiryState =
   | { status: "idle" }
   | { status: "error"; message: string; fieldErrors?: Record<string, string>; values?: Record<string, string | string[]>; attempt: number }
-  | { status: "success"; reference: string; attempt: number };
+  | { status: "success"; reference: string; attempt: number; message?: string };
 
 export const initialEnquiryState: EnquiryState = { status: "idle" };

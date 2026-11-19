@@ -16,6 +16,7 @@ import { buttonClasses } from "@/components/Button";
 import { WhatsappIcon } from "@/components/Icon";
 import { whatsappLink } from "@/lib/company";
 import { FieldControl, type FieldConfig } from "@/components/forms/fields";
+import { Turnstile } from "@/components/forms/Turnstile";
 import Link from "next/link";
 
 type Props = {
@@ -47,12 +48,15 @@ export function EnquiryForm({
 }: Props) {
   const [state, formAction, pending] = useActionState(action, initialEnquiryState);
   const pathname = usePathname();
+  // Lead forms (sent to the CRM) carry consent and the captcha; Partner Login does not.
+  const isLead = action === submitEnquiry;
 
   if (state.status === "success") {
     return (
       <div role="status" className={`rounded-card border p-8 ${onDark ? "border-sand/20 bg-midnight-2 text-sand" : "border-line bg-ivory"}`}>
         <CheckCircle2 aria-hidden="true" className="text-terracotta" size={32} strokeWidth={1.5} />
         <h3 className="t-h3 mt-4">{successTitle}</h3>
+        {state.message ? <p className={`mt-3 font-medium ${onDark ? "text-sand" : "text-ink"}`}>{state.message}</p> : null}
         <p className={`mt-3 ${onDark ? "text-sand/80" : "text-muted"}`}>{successBody}</p>
         <p className="mt-4 text-sm">
           Your reference: <strong className="tabular">{state.reference}</strong>
@@ -97,25 +101,45 @@ export function EnquiryForm({
         {fields.map((field) => (
           <FieldControl key={field.name} field={field} idPrefix={idPrefix} error={errors[field.name]} value={values[field.name]} onDark={onDark} />
         ))}
+        {isLead ? (
+          <div className="sm:col-span-2">
+            <label htmlFor={`${idPrefix}-consent`} className={`flex items-start gap-3 text-sm ${onDark ? "text-sand/85" : "text-ink"}`}>
+              <input
+                id={`${idPrefix}-consent`}
+                name="consent"
+                type="checkbox"
+                required
+                defaultChecked={state.status === "error" && !errors.consent && Boolean(state.values)}
+                aria-invalid={errors.consent ? true : undefined}
+                aria-describedby={errors.consent ? `${idPrefix}-consent-error` : undefined}
+                className="mt-0.5 size-5 shrink-0 accent-terracotta-600"
+              />
+              <span>
+                I agree to the{" "}
+                <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+                  privacy policy
+                </Link>{" "}
+                and to being contacted about this request. (required)
+              </span>
+            </label>
+            {errors.consent ? (
+              <p id={`${idPrefix}-consent-error`} className={`mt-1.5 text-[0.8125rem] font-medium ${onDark ? "text-terracotta-300" : "text-terracotta-700"}`}>
+                {errors.consent}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+        {isLead ? <Turnstile onDark={onDark} error={errors.captcha} /> : null}
       </div>
 
       <div className={`mt-8 flex flex-col gap-4 sm:flex-row sm:items-center ${compact ? "mt-5" : ""}`}>
         <button type="submit" disabled={pending} aria-disabled={pending} className={buttonClasses("primary", onDark ? "dark" : "light", "sm:min-w-56")}>
           <span>{pending ? "Sending…" : submitLabel}</span>
         </button>
-        {kind === "quote" ? (
+        {kind === "quote" && footnote ? (
           <p className={`inline-flex items-center gap-2 text-sm font-medium ${onDark ? "text-sand" : "text-zellige"}`}>
             <Clock aria-hidden="true" size={16} strokeWidth={1.75} />
             We reply within 24 hours
-          </p>
-        ) : null}
-        {footnote ? (
-          <p className={`text-[0.8125rem] ${onDark ? "text-sand/70" : "text-muted"}`}>
-            By sending, you agree to our{" "}
-            <Link href="/privacy" className="underline underline-offset-2">
-              privacy policy
-            </Link>
-            .
           </p>
         ) : null}
       </div>

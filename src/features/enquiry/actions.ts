@@ -1,11 +1,13 @@
 "use server";
 
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { randomBytes } from "node:crypto";
 import { getDb, isDatabaseConfigured } from "@/features/rfq/db";
 import { enquiries } from "@/features/rfq/schema";
 import { clientIpFrom, hashIp, rateLimit } from "@/features/rfq/rate-limit";
-import { COMPANY } from "@/lib/company";
+import { COMPANY, SITE_URL } from "@/lib/company";
+import { getSite } from "@/lib/cms";
+import { UTM_COOKIE, isCrmLeadsConfigured, mapCrmFieldErrors, parseUtmCookie, sendLeadToCrm, toLeadInput } from "./crm";
 import { SCHEMAS } from "./validation";
 import { isEmailConfigured, sendAcknowledgement, sendEnquiryNotification } from "./email";
 import type { EnquiryKind, EnquiryState } from "./options";
@@ -22,7 +24,13 @@ function reference(kind: EnquiryKind) {
   return `PM${PREFIX[kind]}-${yymm}-${suffix}`;
 }
 
-const SKIP = new Set(["kind", "website_url", "path"]);
+const SKIP = new Set(["kind", "website_url", "path", "consent", "cf-turnstile-response"]);
+
+/** "Thank you — We reply within 24 hours", with the promise edited in the CRM settings. */
+async function thankYou() {
+  const promise = (await getSite()).settings.quoteReplyPromise.trim();
+  return promise ? `Thank you — ${promise}` : "Thank you — we will be in touch shortly.";
+}
 
 /** FormData to a plain object; the destinations checkbox group becomes an array. */
 function toObject(formData: FormData) {
@@ -68,17 +76,56 @@ export async function submitEnquiry(previous: EnquiryState, formData: FormData):
   }
 
   const parsed = schema.safeParse(values);
-  if (!parsed.success) {
+  const consent = formData.get("consent") === "on";
+  if (!parsed.success || !consent) {
     const fieldErrors: Record<string, string> = {};
-    for (const issue of parsed.error.issues) {
+    for (const issue of parsed.success ? [] : parsed.error.issues) {
       const key = String(issue.path[0] ?? "form");
       fieldErrors[key] ??= issue.message;
     }
+    if (!consent) fieldErrors.consent = "Please accept the privacy policy to send this form.";
     return { status: "error", message: "Please check the highlighted fields.", fieldErrors, values, attempt };
   }
 
   const data = parsed.data as Record<string, unknown>;
   const ref = reference(kind);
+
+  // 0. The CRM is the system of record for leads (docs/api-contract.md 6.1).
+  //    It verifies the captcha, rate-limits per hashed IP and notifies the team.
+  //    If it cannot be reached, the local store-then-email path below takes the
+  //    lead instead, so an outage never loses one.
+  if (kind !== "newsletter" && isCrmLeadsConfigured()) {
+    const captchaToken = String(formData.get("cf-turnstile-response") ?? "");
+    if (process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY && !captchaToken) {
+      return { status: "error", message: "Please complete the security check, then send again.", fieldErrors: { captcha: "Please complete the security check." }, values, attempt };
+    }
+    const lead = toLeadInput(kind, data, {
+      pageUrl: `${SITE_URL}${sourcePath && sourcePath.startsWith("/") ? sourcePath : "/"}`,
+      visitorIp: clientIpFrom(requestHeaders),
+      captchaToken,
+      utm: parseUtmCookie((await cookies()).get(UTM_COOKIE)?.value),
+      reference: ref,
+    });
+    const result = lead ? await sendLeadToCrm(lead) : null;
+    if (result?.status === "created") {
+      console.info(`Enquiry ${ref}: sent to CRM as ${result.id}`);
+      return { status: "success", reference: ref, attempt, message: await thankYou() };
+    }
+    if (result?.status === "invalid") {
+      const fieldErrors = mapCrmFieldErrors(kind, result.fields);
+      const message = fieldErrors.captcha ?? fieldErrors.form ?? "Please check the highlighted fields.";
+      return { status: "error", message, fieldErrors, values, attempt };
+    }
+    if (result?.status === "rate_limited") {
+      return {
+        status: "error",
+        message: `You have sent several requests in a few minutes. Please wait a little and try again, or email ${COMPANY.email.b2b}.`,
+        values,
+        attempt,
+      };
+    }
+    if (result?.status === "failed") console.error(`Enquiry ${ref}: CRM unavailable (${result.reason}); using the local fallback`);
+  }
   const canStore = isDatabaseConfigured();
   const canEmail = isEmailConfigured();
 
@@ -136,7 +183,7 @@ export async function submitEnquiry(previous: EnquiryState, formData: FormData):
     return { status: "error", message: `Something went wrong. Please email ${COMPANY.email.b2b}.`, values, attempt };
   }
 
-  return { status: "success", reference: ref, attempt };
+  return { status: "success", reference: ref, attempt, ...(kind === "newsletter" ? {} : { message: await thankYou() }) };
 }
 
 /**

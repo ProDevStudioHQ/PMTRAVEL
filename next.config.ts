@@ -56,7 +56,8 @@ const securityHeaders = [
        * to dynamic rendering for another reason. See docs/decisions.md.
        */
       // Google Translate (loaded only after a visitor picks FR/ES/PT; docs/decisions.md D8).
-      "script-src 'self' 'unsafe-inline' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
+      // Cloudflare Turnstile on lead forms (loaded only on pages with a form): script, iframe and its API calls.
+      "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
       /*
        * style-src allows inline styles because next/image sets positioning
        * and object-fit through a style attribute on every rendered image.
@@ -71,11 +72,11 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
       "img-src 'self' data: https://fonts.gstatic.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com https://www.google.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "connect-src 'self' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
+      "connect-src 'self' https://challenges.cloudflare.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
       "form-action 'self'",
       "frame-ancestors 'self'", // Google Translate frames this page; other sites still cannot
       // Google Maps on /contact only, loaded after consent or a click (MapEmbed).
-      "frame-src 'self' https://www.google.com https://maps.google.com https://translate.google.com",
+      "frame-src 'self' https://challenges.cloudflare.com https://www.google.com https://maps.google.com https://translate.google.com",
       "worker-src 'self'",
       "manifest-src 'self'",
       "media-src 'self'",
@@ -108,6 +109,8 @@ const nextConfig: NextConfig = {
       { source: "/how-we-work", destination: "/b2b", permanent: true },
       { source: "/styleguide", destination: "/", permanent: true },
       { source: "/become-a-partner", destination: "/b2b/become-a-partner", permanent: true },
+      // The CRM seed's "Request a Quote" button pointed here; the page is /request-a-quote.
+      { source: "/b2b/request-a-quote", destination: "/request-a-quote", permanent: true },
     ];
   },
   async headers() {

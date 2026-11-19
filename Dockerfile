@@ -27,6 +27,10 @@ RUN mkdir -p /app/public
 # time so the two cannot drift apart.
 ARG NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+# Cloudflare Turnstile site key (public). Baked into the form bundle, so it is a
+# build argument too. Empty = no captcha widget (the CRM then rejects leads in production).
+ARG NEXT_PUBLIC_CAPTCHA_SITE_KEY=
+ENV NEXT_PUBLIC_CAPTCHA_SITE_KEY=$NEXT_PUBLIC_CAPTCHA_SITE_KEY
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # NEXT_PUBLIC_SITE_URL is baked into the client bundle and into every canonical
