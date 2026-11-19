@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const revalidateTag = vi.fn();
-vi.mock("next/cache", () => ({ revalidateTag: (...args: unknown[]) => revalidateTag(...args) }));
+const revalidatePath = vi.fn();
+vi.mock("next/cache", () => ({ revalidateTag: (...args: unknown[]) => revalidateTag(...args), revalidatePath: (...args: unknown[]) => revalidatePath(...args) }));
 
 import { isAllowedTag, parseRevalidateBody, secretsMatch } from "@/lib/revalidate";
 import { POST } from "@/app/api/revalidate/route";
@@ -69,6 +70,7 @@ describe("POST /api/revalidate", () => {
     expect(typeof body.now).toBe("number");
     expect(revalidateTag).toHaveBeenCalledWith("programmes", "max");
     expect(revalidateTag).toHaveBeenCalledWith("programme:imperial-cities", "max");
+    expect(revalidatePath).toHaveBeenCalledWith("/", "layout");
   });
 
   it("refuses everything when the secret is not configured", async () => {

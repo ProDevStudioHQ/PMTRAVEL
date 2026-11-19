@@ -45,25 +45,47 @@ export function AnnouncementStrip({ announcement, collapsed }: { announcement: A
   );
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^\+?[\d\s().-]{7,}$/;
+
+/**
+ * Editors often add a phone number or address as a plain "Text" item. Treat a
+ * text item that is clearly an email or a phone number as one, so it gets the
+ * right icon and link.
+ */
+function kindOf(item: TopBarItem): TopBarItem["type"] {
+  if (item.type !== "TEXT") return item.type;
+  const v = (item.value || item.label || "").trim();
+  if (EMAIL_RE.test(v)) return "EMAIL";
+  if (PHONE_RE.test(v) && v.replace(/\D/g, "").length >= 7) return "PHONE";
+  return "TEXT";
+}
+
 function hrefFor(item: TopBarItem): string | null {
-  const given = safeHref(item.url);
+  const type = kindOf(item);
+  const raw = (item.url ?? "").trim();
+  // "name@example.com" typed as the link: make it a mail link.
+  if (raw && EMAIL_RE.test(raw)) return `mailto:${raw}`;
+  const given = safeHref(raw);
   if (given) return given;
-  if (!item.value) return null;
-  if (item.type === "PHONE") return telHref(item.value);
-  if (item.type === "WHATSAPP") return waHref(item.value);
-  if (item.type === "EMAIL") return `mailto:${item.value}`;
+  const value = item.value || (type !== "TEXT" ? item.label : null);
+  if (!value) return null;
+  if (type === "PHONE") return telHref(value);
+  if (type === "WHATSAPP") return waHref(value);
+  if (type === "EMAIL") return `mailto:${value.trim()}`;
   return null;
 }
 
 function ItemIcon({ item }: { item: TopBarItem }) {
-  if (item.type === "PHONE") return <Phone aria-hidden="true" size={14} className="text-gold" />;
-  if (item.type === "WHATSAPP")
+  const type = kindOf(item);
+  if (type === "PHONE") return <Phone aria-hidden="true" size={14} className="text-gold" />;
+  if (type === "WHATSAPP")
     return (
       <span className="text-gold">
         <WhatsappIcon size={14} />
       </span>
     );
-  if (item.type === "EMAIL") return <Mail aria-hidden="true" size={14} className="text-gold" />;
+  if (type === "EMAIL") return <Mail aria-hidden="true" size={14} className="text-gold" />;
   if (isIconName(item.icon)) return <Icon name={item.icon} size={14} className="text-gold" />;
   if (item.type === "LINK") return <ArrowUpRight aria-hidden="true" size={14} className="text-gold" />;
   return null;
@@ -79,12 +101,13 @@ function TopBarEntry({ item }: { item: TopBarItem }) {
     );
   }
   const href = hrefFor(item);
+  const type = kindOf(item);
   // Phone numbers and addresses are never machine-translated.
-  const noTranslate = item.type === "PHONE" || item.type === "EMAIL" || item.type === "WHATSAPP";
+  const noTranslate = type === "PHONE" || type === "EMAIL" || type === "WHATSAPP";
   const content = (
     <>
       <ItemIcon item={item} />
-      <span className={item.type === "EMAIL" ? "max-sm:sr-only" : undefined}>{item.label}</span>
+      <span className={type === "EMAIL" ? "max-sm:sr-only" : undefined}>{item.label}</span>
     </>
   );
   const cls = `${visibility} ${noTranslate ? "notranslate " : ""}min-h-9 items-center gap-2 whitespace-nowrap hover:text-sand`;

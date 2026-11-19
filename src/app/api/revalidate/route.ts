@@ -10,7 +10,7 @@
  * version keeps being served instead of an error.
  */
 import { NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { parseRevalidateBody, secretsMatch } from "@/lib/revalidate";
 
 export const dynamic = "force-dynamic";
@@ -36,6 +36,11 @@ export async function POST(req: Request) {
   }
 
   for (const tag of parsed.tags) revalidateTag(tag, "max");
+  // Pages rendered while the CRM could not be read (e.g. during the Docker
+  // build, which has no API key) hold the fallback layout and carry no CRM tags,
+  // so the tags above would never reach them. Every page shares the root layout,
+  // which reads the site data, so refresh them all; the site is small.
+  revalidatePath("/", "layout");
   const now = Date.now();
   console.info(`[revalidate] ${new Date(now).toISOString()} tags=${parsed.tags.join(",")}`);
   return NextResponse.json({ revalidated: true, tags: parsed.tags, now }, { headers: { "Cache-Control": "no-store" } });
