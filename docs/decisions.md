@@ -5,6 +5,49 @@ six months otherwise. Newest first.
 
 ---
 
+## D10 — Header, footer, Experiences and Tours come from the PM Travel CRM
+
+**Date:** 2026-11-19 · **Status:** accepted (SOP 2 of 2, website side; contract in docs/api-contract.md)
+
+1. **Source of truth.** Top bar, announcement, navigation, buttons, footer,
+   site settings, Experiences/Tours categories and programmes are edited in
+   the CRM and read through `src/lib/cms.ts` (server-only, Zod-validated,
+   5 s timeout, cache tags per contract section 8, 1 h safety-net revalidate).
+   The CRM calls `POST /api/revalidate` after each change; tags are
+   revalidated with the `"max"` profile, so a CRM outage during a refresh keeps
+   serving the previous page instead of an error.
+2. **Never down with the CRM.** The layout falls back to
+   `src/content/fallback-site.json`, refreshed from the CRM before every build
+   (`scripts/pull-fallback.mjs`, keeps the old file if the CRM is unreachable).
+   Lists show a "temporarily unavailable" block with WhatsApp; a programme with
+   no cached copy throws to its `error.tsx` (errors are never cached).
+3. **Hand-written category pages stay.** `/experiences/luxury` etc. keep their
+   written content and photography and gain the CRM programme grid. A
+   category that exists only in the CRM gets a generic page. Category pages
+   render on demand because they read `?page=`; their data is still cached.
+4. **Offer schema, narrowly.** The evidence rule bans `Offer` because we had no
+   prices to back it. A programme price is now published by the business in
+   the CRM (`showPrice`), so `programmeTripSchema()` adds an Offer only when the
+   CRM sends a price, and `verify:data` allows `"@type": "Offer"` in
+   `src/lib/schema.ts` only.
+5. **CRM rich text.** `overviewHtml` is rendered as HTML. It is sanitised by the
+   CRM to p, br, strong, em, u, ul, ol, li, h3, h4, blockquote and a; this is
+   the first non-developer HTML on the site (see D2: revisit the CSP if the
+   whitelist ever grows to include anything that can carry script).
+   Every CRM URL (nav, footer, top bar, socials) passes `safeHref()`, which
+   allows only site paths, http(s), mailto: and tel:.
+6. **Leads.** Quote, partner, contact and PDF-request forms go to CRM
+   `/leads` from the Server Action; the CRM verifies Turnstile, rate-limits
+   and notifies. If the CRM cannot be reached, the existing store-then-email
+   path takes the lead (PDF requests are stored as `quote` with
+   `request: "Programme PDF"`, no migration). The newsletter stays local.
+   Every lead form has a required consent checkbox. UTM parameters are kept
+   30 days in a first-party cookie set by `src/proxy.ts` (first touch).
+7. **Company facts.** The layout reads phones, emails, address and hours from
+   the CRM. Page bodies (contact page, CTA bands, schema) still read
+   `src/lib/company.ts`; keep the two in step until those pages move to the CRM.
+
+---
 ## D9 — "Modern Moroccan luxury" design system
 
 **Date:** 2026-11-18 · **Status:** accepted (business design-system brief, Nov 2026)

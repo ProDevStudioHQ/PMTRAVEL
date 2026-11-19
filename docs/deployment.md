@@ -114,7 +114,26 @@ S3_BUCKET=
 S3_ACCESS_KEY_ID=
 S3_SECRET_ACCESS_KEY=
 IP_HASH_SALT=<a long random string>
+
+# CRM connection (docs/api-contract.md section 2) - same values as the CRM.
+CRM_API_URL=https://crm.pm-travelagency.com/api/public/v1
+CRM_API_KEY=<= WEBSITE_API_KEY in the CRM>
+CRM_PREVIEW_KEY=<= WEBSITE_PREVIEW_KEY in the CRM>
+CRM_LEADS_KEY=<= WEBSITE_LEADS_KEY in the CRM>
+REVALIDATE_SECRET=<= WEBSITE_REVALIDATE_SECRET in the CRM>
 ```
+
+Build arguments (baked into the build, so set them under Dokploy's *Build
+Arguments*, not only as environment variables):
+
+```
+NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com
+NEXT_PUBLIC_CAPTCHA_SITE_KEY=<Cloudflare Turnstile site key>
+```
+
+The CRM keys are not needed at build time. Without them the build uses the
+bundled `src/content/fallback-site.json` and fetches CRM content at runtime.
+`/api/health` reports `"cms": "ok"` once the runtime keys work.
 
 `IP_HASH_SALT` must be set in production. Rate limiting and audit records hash
 the client IP rather than storing it, and an unset salt falls back to a known

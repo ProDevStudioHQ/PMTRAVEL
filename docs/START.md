@@ -1,5 +1,10 @@
 # PM Travel website — start here
 
+> **November 2026: connected to the PM Travel CRM — read docs/decisions.md D10
+> and docs/api-contract.md.** Header, top bar, footer, Experiences/Tours
+> categories and programmes are edited in the CRM, not in this repository.
+> `npm test` runs the CRM connection's unit tests.
+
 > **November 2026 rebuild — read docs/decisions.md D7 first.** It supersedes the
 > palette, fonts, motion budget and "never published" contact rules below. Phone,
 > WhatsApp and hours are now confirmed and live in src/lib/company.ts. The
