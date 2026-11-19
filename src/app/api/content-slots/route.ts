@@ -17,6 +17,7 @@ import { DESTINATIONS } from "@/features/destinations/registry";
 import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
 import { EXCURSIONS, excursionHref } from "@/features/excursions/data";
 import { IMAGES } from "@/features/images/registry";
+import { EDITABLE_SECTIONS } from "@/content/home-sections";
 
 export const dynamic = "force-static";
 
@@ -59,5 +60,11 @@ export function GET() {
 
   const images = IMAGES.map((i) => ({ key: i.key, src: i.src, alt: i.alt, width: i.width, height: i.height }));
 
-  return NextResponse.json({ pages: unique, images }, { headers: { "Access-Control-Allow-Origin": "*" } });
+  // Page sections: texts and cards the CRM can edit, with today's content as the starting point.
+  const sections = EDITABLE_SECTIONS.map((sec) => ({
+    ...sec,
+    defaults: { ...sec.defaults, cards: sec.defaults.cards.map((c) => ({ ...c, imageSrc: c.imageKey ? (IMAGES.find((i) => i.key === c.imageKey)?.src ?? null) : null })) },
+  }));
+
+  return NextResponse.json({ pages: unique, images, sections }, { headers: { "Access-Control-Allow-Origin": "*" } });
 }

@@ -102,7 +102,27 @@ export interface SitePayload {
   pages?: Record<string, PageOverride>;
   /** Replacements for the site's own photos, keyed by image record key. */
   images?: Record<string, Image>;
+  /** Page section edits, keyed "path#sectionId" ("/#who"). */
+  sections?: Record<string, SectionOverride>;
   updatedAt: string;
+}
+
+export interface SectionOverrideCard {
+  title: string;
+  body: string;
+  icon: string | null;
+  imageKey: string | null;
+  image: Image | null;
+  href: string | null;
+}
+
+/** Texts: null = the site's text, "" = hidden. cards: null = the site's cards. */
+export interface SectionOverride {
+  hidden: boolean;
+  eyebrow: string | null;
+  title: string | null;
+  intro: string | null;
+  cards: SectionOverrideCard[] | null;
 }
 
 /** Null fields keep what the page itself says. */

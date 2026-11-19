@@ -98,6 +98,27 @@ export const PageOverrideSchema = z.object({
   seoDescription: nullableString.optional().default(null),
 });
 
+/**
+ * CRM edit of one page section (Website → Page sections), keyed "path#id".
+ * Texts: null keeps the site's text, "" hides it. cards: null keeps the
+ * site's cards, otherwise the list replaces them (add / remove / reorder).
+ */
+export const SectionCardSchema = z.object({
+  title: z.string(),
+  body: z.string().default(""),
+  icon: nullableString.optional().default(null),
+  imageKey: nullableString.optional().default(null),
+  image: ImageSchema.nullable().optional().default(null),
+  href: nullableString.optional().default(null),
+});
+export const SectionOverrideSchema = z.object({
+  hidden: z.boolean().default(false),
+  eyebrow: nullableString.optional().default(null),
+  title: nullableString.optional().default(null),
+  intro: nullableString.optional().default(null),
+  cards: z.array(SectionCardSchema).nullable().optional().default(null),
+});
+
 export const SitePayloadSchema = z.object({
   settings: SiteSettingsSchema,
   topBar: z.object({
@@ -125,6 +146,7 @@ export const SitePayloadSchema = z.object({
   // A bad entry must not take the whole layout down: it is dropped instead.
   pages: z.record(z.string(), PageOverrideSchema).optional().catch(undefined),
   images: z.record(z.string(), ImageSchema).optional().catch(undefined),
+  sections: z.record(z.string(), SectionOverrideSchema).optional().catch(undefined),
   updatedAt: z.string(),
 });
 

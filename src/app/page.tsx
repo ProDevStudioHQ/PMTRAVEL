@@ -7,17 +7,17 @@ import { Section } from "@/components/Section";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
 import { Counter } from "@/components/motion/Counter";
-import { B2BServiceCard, IconTile } from "@/components/cards";
+import { B2BServiceCard, IconTile, TourCard } from "@/components/cards";
 import { LeisureCard } from "@/components/templates/LeisureCard";
 import { CarvedDivider } from "@/components/motion/CarvedDivider";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
 import { FaqSection } from "@/components/FaqSection";
 import { CtaBand } from "@/components/CtaBand";
-import { HOME_AUDIENCES, PARTNER_PROCESS } from "@/content/b2b";
+import { isIconName, type IconName } from "@/components/Icon";
+import { CmsImage } from "@/features/cms/CmsImage";
 import { EXPERIENCES } from "@/content/leisure";
-import { DMC_SERVICES, PARTNER_BENEFITS, TRADE_FAQS } from "@/content/home";
 import { PARTNER_HREF, RFQ_HREF, TRUST_POINTS } from "@/lib/company";
-import { en } from "@/i18n/dictionaries/en";
+import { getSection, type ResolvedCard } from "@/lib/sections";
 
 export const generateMetadata = cmsPageMetadata({
   title: "Morocco DMC for Travel Agencies & Tour Operators | PM Travel Agency",
@@ -27,133 +27,191 @@ export const generateMetadata = cmsPageMetadata({
   path: "/",
 });
 
-function TrustStrip() {
+const CARD_SIZES = "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 80vw";
+const iconOf = (c: ResolvedCard, fallback: IconName): IconName => (isIconName(c.icon) ? c.icon : fallback);
+
+function TrustStrip({ cards, custom }: { cards: ResolvedCard[]; custom: boolean }) {
   return (
     <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-sand/15 bg-sand/15 backdrop-blur-sm sm:grid-cols-4">
-      {TRUST_POINTS.map((point) => (
-        <li key={point.caption} className="bg-midnight/55 px-5 py-4">
-          <p className="font-display text-xl text-sand sm:text-2xl">
-            {point.value !== null ? <Counter value={point.value} prefix={point.prefix} suffix={point.suffix} /> : point.text}
-          </p>
-          <p className="mt-1 text-xs tracking-wide text-sand/75">{point.caption}</p>
-        </li>
-      ))}
+      {custom
+        ? cards.map((c, i) => (
+            <li key={`${c.title}-${i}`} className="bg-midnight/55 px-5 py-4">
+              <p className="font-display text-xl text-sand sm:text-2xl">{c.title}</p>
+              <p className="mt-1 text-xs tracking-wide text-sand/75">{c.body}</p>
+            </li>
+          ))
+        : TRUST_POINTS.map((point) => (
+            <li key={point.caption} className="bg-midnight/55 px-5 py-4">
+              <p className="font-display text-xl text-sand sm:text-2xl">
+                {point.value !== null ? <Counter value={point.value} prefix={point.prefix} suffix={point.suffix} /> : point.text}
+              </p>
+              <p className="mt-1 text-xs tracking-wide text-sand/75">{point.caption}</p>
+            </li>
+          ))}
     </ul>
   );
 }
 
-export default function HomePage() {
+/*
+ * Every section reads its texts and cards through getSection(): the built-in
+ * content in src/content/home-sections.ts with the CRM's edits applied
+ * (Website → Page sections). Markup and design are unchanged.
+ */
+export default async function HomePage() {
+  const [hero, trust, who, benefits, services, process, experiences, faq, cta] = await Promise.all([
+    getSection("/", "hero"),
+    getSection("/", "trust"),
+    getSection("/", "who"),
+    getSection("/", "benefits"),
+    getSection("/", "services"),
+    getSection("/", "process"),
+    getSection("/", "experiences"),
+    getSection("/", "faq"),
+    getSection("/", "cta"),
+  ]);
   return (
     <>
       {/* 1. Hero */}
       <PageHero
         full
         path="/"
-        eyebrow="Morocco DMC · Marrakech"
-        title="Your Ground Partner in Morocco."
+        eyebrow={hero.eyebrow ?? ""}
+        title={hero.title ?? ""}
         imageKey="b1-marrakech-hero"
-        standfirst="We design and operate Morocco programmes for travel agencies, tour operators, advisors and MICE planners — net rates, white-label service and one local team from arrival to departure."
-        below={<TrustStrip />}
+        standfirst={hero.intro ?? undefined}
+        below={trust.hidden || !trust.cards.length ? undefined : <TrustStrip cards={trust.cards} custom={trust.customCards} />}
       >
-        <ButtonLink href={RFQ_HREF} tone="dark" arrow>
-          {en.cta.b2bQuote}
-        </ButtonLink>
-        <ButtonLink href={PARTNER_HREF} variant="secondary" tone="dark">
-          {en.cta.partner}
-        </ButtonLink>
+        {hero.cards
+          .filter((b) => b.href)
+          .map((b, i) => (
+            <ButtonLink key={`${b.title}-${i}`} href={b.href!} tone="dark" variant={i === 0 ? undefined : "secondary"} arrow={i === 0}>
+              {b.title}
+            </ButtonLink>
+          ))}
       </PageHero>
 
       {/* 2. Who we work with */}
-      <Section tone="sand" aria-labelledby="who">
-        <SectionHeading id="who" eyebrow="Who we work with" title="Built for the travel trade">
-          One Marrakech team for every kind of travel professional selling Morocco.
-        </SectionHeading>
-        <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {HOME_AUDIENCES.map((a, i) => (
-            <Reveal as="li" key={a.slug} delay={i * 0.06}>
-              <IconTile icon={a.icon} title={a.name} body={a.cardLine} href={`/b2b/${a.slug}`} />
-            </Reveal>
-          ))}
-        </ul>
-      </Section>
+      {who.hidden ? null : (
+        <Section tone="sand" aria-labelledby="who">
+          <SectionHeading id="who" eyebrow={who.eyebrow ?? undefined} title={who.title ?? ""}>
+            {who.intro}
+          </SectionHeading>
+          <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {who.cards.map((c, i) => (
+              <Reveal as="li" key={`${c.title}-${i}`} delay={i * 0.06}>
+                <IconTile icon={iconOf(c, "users")} title={c.title} body={c.body || undefined} href={c.href ?? undefined} />
+              </Reveal>
+            ))}
+          </ul>
+        </Section>
+      )}
 
       {/* 3. What partners get */}
-      <Section tone="midnight" aria-labelledby="benefits">
-        <SectionHeading id="benefits" eyebrow="What partners get" title="Everything a ground partner should be" onDark>
-          Net rates, your brand, fast proposals and a team that answers — before, during and after the trip.
-        </SectionHeading>
-        {/* 8 benefits + the partner card fill a clean 3 x 3 grid. */}
-        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {PARTNER_BENEFITS.map((b, i) => (
-            <Reveal as="li" key={b.title} delay={(i % 3) * 0.08}>
-              <IconTile icon={b.icon} title={b.title} body={b.body} onDark />
+      {benefits.hidden ? null : (
+        <Section tone="midnight" aria-labelledby="benefits">
+          <SectionHeading id="benefits" eyebrow={benefits.eyebrow ?? undefined} title={benefits.title ?? ""} onDark>
+            {benefits.intro}
+          </SectionHeading>
+          {/* 8 benefits + the partner card fill a clean 3 x 3 grid. */}
+          <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {benefits.cards.map((c, i) => (
+              <Reveal as="li" key={`${c.title}-${i}`} delay={(i % 3) * 0.08}>
+                <IconTile icon={iconOf(c, "shield-check")} title={c.title} body={c.body || undefined} onDark />
+              </Reveal>
+            ))}
+            <Reveal as="li" delay={0.16}>
+              <Link href={PARTNER_HREF} className="card-lift group flex h-full flex-col justify-between rounded-card bg-terracotta-600 p-7 text-white">
+                <span className="font-display text-[1.5rem] leading-tight">Become a Partner</span>
+                <span className="mt-6 text-sm text-white/90">Open a trade account and get our partner rates.</span>
+                <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium">
+                  Apply now <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
+                </span>
+              </Link>
             </Reveal>
-          ))}
-          <Reveal as="li" delay={0.16}>
-            <Link href={PARTNER_HREF} className="card-lift group flex h-full flex-col justify-between rounded-card bg-terracotta-600 p-7 text-white">
-              <span className="font-display text-[1.5rem] leading-tight">Become a Partner</span>
-              <span className="mt-6 text-sm text-white/90">Open a trade account and get our partner rates.</span>
-              <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium">
-                Apply now <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
-              </span>
-            </Link>
-          </Reveal>
-        </ul>
-      </Section>
+          </ul>
+        </Section>
+      )}
 
       {/* 4. DMC services */}
-      <Section tone="white" aria-labelledby="services">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <SectionHeading id="services" eyebrow="DMC services" title="Every ground service, one local team" />
-          <Link href="/b2b/dmc-services" className="group inline-flex min-h-11 items-center gap-2 font-medium text-terracotta-700">
-            All DMC services <ArrowRight aria-hidden="true" size={18} className="arrow-slide" />
-          </Link>
-        </div>
-        <ul className="swipe-row mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {DMC_SERVICES.map((s, i) => (
-            <Reveal as="li" key={s.title} delay={(i % 4) * 0.08}>
-              <B2BServiceCard icon={s.icon} title={s.title} href={RFQ_HREF} />
-            </Reveal>
-          ))}
-        </ul>
-      </Section>
+      {services.hidden ? null : (
+        <Section tone="white" aria-labelledby="services">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <SectionHeading id="services" eyebrow={services.eyebrow ?? undefined} title={services.title ?? ""} />
+            <Link href="/b2b/dmc-services" className="group inline-flex min-h-11 items-center gap-2 font-medium text-terracotta-700">
+              All DMC services <ArrowRight aria-hidden="true" size={18} className="arrow-slide" />
+            </Link>
+          </div>
+          <ul className="swipe-row mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {services.cards.map((c, i) => (
+              <Reveal as="li" key={`${c.title}-${i}`} delay={(i % 4) * 0.08}>
+                <B2BServiceCard icon={iconOf(c, "clipboard-check")} title={c.title} href={c.href ?? RFQ_HREF} />
+              </Reveal>
+            ))}
+          </ul>
+        </Section>
+      )}
 
       {/* 5. How partnership works */}
-      <Section tone="sand" aria-labelledby="process">
-        <CarvedDivider className="mb-14" />
-        <SectionHeading id="process" eyebrow="How partnership works" title="From brief to departure in four steps" align="center" />
-        <ProcessTimeline steps={PARTNER_PROCESS} />
-        <div className="mt-14 flex justify-center">
-          <ButtonLink href={RFQ_HREF} arrow>
-            Send your brief
-          </ButtonLink>
-        </div>
-      </Section>
+      {process.hidden ? null : (
+        <Section tone="sand" aria-labelledby="process">
+          <CarvedDivider className="mb-14" />
+          <SectionHeading id="process" eyebrow={process.eyebrow ?? undefined} title={process.title ?? ""} align="center" />
+          <ProcessTimeline steps={process.cards.map((c) => ({ title: c.title, body: c.body }))} />
+          <div className="mt-14 flex justify-center">
+            <ButtonLink href={RFQ_HREF} arrow>
+              Send your brief
+            </ButtonLink>
+          </div>
+        </Section>
+      )}
 
       {/* 6. Signature experiences */}
-      <Section tone="white" aria-labelledby="experiences">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <SectionHeading id="experiences" eyebrow="Signature experiences" title="What your clients will remember">
-            The product we build into your programmes, from palace stays to desert nights.
-          </SectionHeading>
-          <Link href="/experiences" className="group inline-flex min-h-11 items-center gap-2 font-medium text-terracotta-700">
-            Explore all experiences <ArrowRight aria-hidden="true" size={18} className="arrow-slide" />
-          </Link>
-        </div>
-        <ul className="swipe-row mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {EXPERIENCES.map((e, i) => (
-            <Reveal as="li" key={e.slug} delay={(i % 3) * 0.08}>
-              <LeisureCard product={e} />
-            </Reveal>
-          ))}
-        </ul>
-      </Section>
+      {experiences.hidden ? null : (
+        <Section tone="white" aria-labelledby="experiences">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <SectionHeading id="experiences" eyebrow={experiences.eyebrow ?? undefined} title={experiences.title ?? ""}>
+              {experiences.intro}
+            </SectionHeading>
+            <Link href="/experiences" className="group inline-flex min-h-11 items-center gap-2 font-medium text-terracotta-700">
+              Explore all experiences <ArrowRight aria-hidden="true" size={18} className="arrow-slide" />
+            </Link>
+          </div>
+          <ul className="swipe-row mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {experiences.customCards
+              ? experiences.cards.map((c, i) => (
+                  <Reveal as="li" key={`${c.title}-${i}`} delay={(i % 3) * 0.08}>
+                    <TourCard
+                      href={c.href ?? "/experiences"}
+                      imageKey={c.imageKey ?? "b1-marrakech-hero"}
+                      media={c.image ? <CmsImage image={c.image} fill sizes={CARD_SIZES} className="card-img object-cover" /> : undefined}
+                      title={c.title}
+                      line={c.body}
+                      cta="Discover"
+                    />
+                  </Reveal>
+                ))
+              : EXPERIENCES.map((e, i) => (
+                  <Reveal as="li" key={e.slug} delay={(i % 3) * 0.08}>
+                    <LeisureCard product={e} />
+                  </Reveal>
+                ))}
+          </ul>
+        </Section>
+      )}
 
       {/* 7. Trade FAQ */}
-      <FaqSection eyebrow="Trade FAQ" heading="Questions travel professionals ask us" faqs={TRADE_FAQS} intro="Anything else? Ask the ops desk on WhatsApp." />
+      {faq.hidden || !faq.cards.length ? null : (
+        <FaqSection
+          eyebrow={faq.eyebrow ?? ""}
+          heading={faq.title ?? ""}
+          faqs={faq.cards.map((c) => ({ question: c.title, answer: c.body }))}
+          intro={faq.intro ?? undefined}
+        />
+      )}
 
       {/* 8. Final CTA */}
-      <CtaBand />
+      {/* Hidden: an empty .cta-band marker still suppresses the layout's default band (globals.css). */}
+      {cta.hidden ? <div className="cta-band hidden" aria-hidden="true" /> : <CtaBand title={cta.title ?? undefined} body={cta.intro ?? ""} />}
     </>
   );
 }

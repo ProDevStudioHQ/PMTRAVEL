@@ -85,11 +85,14 @@ export function TourCard({
   sizes = "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 80vw",
   headingLevel = "h3",
   media,
+  cta = "View itinerary",
 }: {
   href: string;
   imageKey: string;
   /** A ready-made image (CRM cover) in place of the record image. */
   media?: ReactNode;
+  /** Link text at the bottom of the card. */
+  cta?: string;
   title: string;
   /** e.g. "8 days" */
   days?: string;
@@ -133,7 +136,7 @@ export function TourCard({
           <p className="mt-2 text-[0.9375rem] text-muted">{line}</p>
         ) : null}
         <span className={`${CTA} text-terracotta-700`}>
-          View itinerary <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
+          {cta} <ArrowRight aria-hidden="true" size={16} className="arrow-slide" />
         </span>
       </div>
     </Link>

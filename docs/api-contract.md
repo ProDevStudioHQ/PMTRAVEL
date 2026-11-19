@@ -235,6 +235,7 @@ export interface LeadInput {
       },
       "pages": { [path: string]: PageOverride },   // added 2026-11-19
       "images": { [imageKey: string]: Image },     // added 2026-11-19
+      "sections": { ["path#sectionId"]: SectionOverride }, // added 2026-11-19
       "updatedAt": string
     }
     PageOverride = { "eyebrow": string | null, "title": string | null,
@@ -248,9 +249,14 @@ export interface LeadInput {
            Images) replaces one of the website's own photos, keyed by its
            image record key. Both are optional for the website: an older CRM
            without them, or a malformed entry, leaves the built-in content.
+           sections (CRM Website -> Page sections), e.g. "/#who":
+             { hidden, eyebrow, title, intro: string | null ("" = hide),
+               cards: [{ title, body, icon, imageKey, image: Image | null,
+                         href }] | null (null = the website's cards) }.
            The website lists what can be controlled at its public
            GET /api/content-slots: { pages: {path,label,group}[],
-           images: {key,src,alt,width,height}[] }.
+           images: {key,src,alt,width,height}[], sections: SectionSlot[] }
+           (each section with its texts, card fields and today's content).
 
 5.2 GET /categories?section=EXPERIENCES|TOURS
     200: { "items": Category[] }
