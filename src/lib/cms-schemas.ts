@@ -147,6 +147,11 @@ export const SitePayloadSchema = z.object({
   pages: z.record(z.string(), PageOverrideSchema).optional().catch(undefined),
   images: z.record(z.string(), ImageSchema).optional().catch(undefined),
   sections: z.record(z.string(), SectionOverrideSchema).optional().catch(undefined),
+  // Website → Colours. Values are re-checked as #rrggbb before use (src/lib/theme.ts).
+  theme: z
+    .object({ palette: z.record(z.string(), z.string()).optional(), areas: z.record(z.string(), z.string()).optional() })
+    .optional()
+    .catch(undefined),
   updatedAt: z.string(),
 });
 

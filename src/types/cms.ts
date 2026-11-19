@@ -104,6 +104,8 @@ export interface SitePayload {
   images?: Record<string, Image>;
   /** Page section edits, keyed "path#sectionId" ("/#who"). */
   sections?: Record<string, SectionOverride>;
+  /** Website → Colours: brand colours and area colours as #rrggbb. */
+  theme?: { palette?: Record<string, string>; areas?: Record<string, string> };
   updatedAt: string;
 }
 

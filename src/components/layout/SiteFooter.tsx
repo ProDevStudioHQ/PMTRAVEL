@@ -81,7 +81,7 @@ export function SiteFooter({ site }: { site: SitePayload }) {
   const columnGrid = footer.columns.length >= 4 ? "lg:grid-cols-4" : footer.columns.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2";
 
   return (
-    <footer className="on-dark surface-deep zellige-bg border-t border-gold/20 bg-midnight text-sand">
+    <footer className="site-footer on-dark surface-deep zellige-bg border-t border-gold/20 bg-midnight text-sand">
       {/* Brand + link columns */}
       <Container className="grid gap-12 pt-16 pb-12 lg:grid-cols-12 lg:pt-20">
         <div className="lg:col-span-4">

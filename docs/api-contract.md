@@ -236,6 +236,8 @@ export interface LeadInput {
       "pages": { [path: string]: PageOverride },   // added 2026-11-19
       "images": { [imageKey: string]: Image },     // added 2026-11-19
       "sections": { ["path#sectionId"]: SectionOverride }, // added 2026-11-19
+      "theme": { "palette": { [key]: "#rrggbb" },          // added 2026-11-19
+                 "areas":   { [key]: "#rrggbb" } },
       "updatedAt": string
     }
     PageOverride = { "eyebrow": string | null, "title": string | null,
@@ -253,6 +255,9 @@ export interface LeadInput {
              { hidden, eyebrow, title, intro: string | null ("" = hide),
                cards: [{ title, body, icon, imageKey, image: Image | null,
                          href }] | null (null = the website's cards) }.
+           theme (CRM Website -> Colours): brand colours and top bar /
+           menu bar / footer colours; the website writes only known keys
+           with #rrggbb values (src/lib/theme.ts).
            The website lists what can be controlled at its public
            GET /api/content-slots: { pages: {path,label,group}[],
            images: {key,src,alt,width,height}[], sections: SectionSlot[] }

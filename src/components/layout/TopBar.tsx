@@ -140,7 +140,7 @@ export function TopBar({ items, collapsed }: { items: TopBarItem[]; collapsed: b
   const mobileCount = items.filter((i) => i.showOnMobile).length;
   return (
     <div
-      className={`relative z-10 border-b border-sand/10 transition-[max-height,opacity] duration-300 ${mobileCount === 0 ? "hidden lg:block" : ""} ${
+      className={`site-topbar relative z-10 border-b border-sand/10 transition-[max-height,opacity] duration-300 ${mobileCount === 0 ? "hidden lg:block" : ""} ${
         collapsed ? "pointer-events-none max-h-0 overflow-hidden opacity-0" : "max-h-10 overflow-visible opacity-100"
       }`}
     >

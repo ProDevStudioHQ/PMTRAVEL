@@ -18,6 +18,7 @@ import { PROGRAMMES, programmeHref } from "@/features/programmes/data";
 import { EXCURSIONS, excursionHref } from "@/features/excursions/data";
 import { IMAGES } from "@/features/images/registry";
 import { EDITABLE_SECTIONS } from "@/content/home-sections";
+import { AREAS, PALETTE } from "@/lib/theme";
 
 export const dynamic = "force-static";
 
@@ -66,5 +67,11 @@ export function GET() {
     defaults: { ...sec.defaults, cards: sec.defaults.cards.map((c) => ({ ...c, imageSrc: c.imageKey ? (IMAGES.find((i) => i.key === c.imageKey)?.src ?? null) : null })) },
   }));
 
-  return NextResponse.json({ pages: unique, images, sections }, { headers: { "Access-Control-Allow-Origin": "*" } });
+  // Website → Colours: what can be recoloured, with the design's own colours.
+  const colors = {
+    palette: PALETTE.map(({ key, label, hint, default: value }) => ({ key, label, hint, default: value })),
+    areas: AREAS.map(({ key, label, hint, default: value }) => ({ key, label, hint, default: value })),
+  };
+
+  return NextResponse.json({ pages: unique, images, sections, colors }, { headers: { "Access-Control-Allow-Origin": "*" } });
 }

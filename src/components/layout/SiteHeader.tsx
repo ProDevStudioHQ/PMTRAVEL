@@ -118,7 +118,7 @@ export function SiteHeader({ nav, buttons, topBar, contact, logo = null }: Heade
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 text-sand transition-[transform,background-color,box-shadow] duration-300 ease-out ${
+        className={`site-header fixed inset-x-0 top-0 z-50 text-sand transition-[transform,background-color,box-shadow] duration-300 ease-out ${
           hidden && !mobileOpen && open === null ? "-translate-y-full" : "translate-y-0"
         } ${solid ? "bg-midnight/90 shadow-[0_1px_0_rgb(201_161_74/0.25)] backdrop-blur-md" : "bg-linear-to-b from-midnight/70 to-transparent"}`}
       >
@@ -126,7 +126,7 @@ export function SiteHeader({ nav, buttons, topBar, contact, logo = null }: Heade
         {topBar.enabled && topBar.items.length > 0 ? <TopBar items={topBar.items} collapsed={scrolled} /> : null}
 
         {/* Main bar */}
-        <div className="mx-auto flex h-[72px] max-w-site items-center justify-between gap-6 px-4 sm:px-6 lg:px-10">
+        <div className="site-header-bar mx-auto flex h-[72px] max-w-site items-center justify-between gap-6 px-4 sm:px-6 lg:px-10">
           <Logo image={logo} />
 
           <nav ref={navRef} aria-label="Main" className="hidden xl:block">

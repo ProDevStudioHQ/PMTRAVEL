@@ -1,3 +1,4 @@
+import { themeCss } from "@/lib/theme";
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
@@ -78,6 +79,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
       <body id="top">
+        {/* Website → Colours (CRM). Only whitelisted variables and #rrggbb values, see src/lib/theme.ts. */}
+        {themeCss(site.theme) ? <style id="cms-theme" dangerouslySetInnerHTML={{ __html: themeCss(site.theme) }} /> : null}
         <a href="#main" className="skip-link">
           {en.nav.skip}
         </a>
