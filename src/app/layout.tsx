@@ -83,7 +83,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </a>
         {preview ? <PreviewBanner /> : null}
         <MotionProvider>
-          <SiteHeader nav={toNavEntries(site.nav.items)} buttons={toNavButtons(site.nav.buttons)} topBar={site.topBar} contact={contact} />
+          <SiteHeader nav={toNavEntries(site.nav.items)} buttons={toNavButtons(site.nav.buttons)} topBar={site.topBar} contact={contact} logo={site.settings.logoDark ?? site.settings.logo} />
           <main id="main">{children}</main>
           {/* Default closing band; hidden by CSS when the page renders its own. */}
           <div className="site-cta">

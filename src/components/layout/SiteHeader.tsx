@@ -27,6 +27,8 @@ type HeaderProps = {
   buttons: NavButton[];
   topBar: SitePayload["topBar"];
   contact: SiteContact;
+  /** CRM logo for dark backgrounds, if one is uploaded. */
+  logo?: SitePayload["settings"]["logo"];
 };
 
 /** OUTLINE buttons appear from md, PRIMARY from sm; the mobile menu always lists both. */
@@ -39,7 +41,7 @@ const SOLID_ROUTES = new Set(["/partner-login"]);
 
 const isActive = (pathname: string, href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`));
 
-export function SiteHeader({ nav, buttons, topBar, contact }: HeaderProps) {
+export function SiteHeader({ nav, buttons, topBar, contact, logo = null }: HeaderProps) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -125,7 +127,7 @@ export function SiteHeader({ nav, buttons, topBar, contact }: HeaderProps) {
 
         {/* Main bar */}
         <div className="mx-auto flex h-[72px] max-w-site items-center justify-between gap-6 px-4 sm:px-6 lg:px-10">
-          <Logo />
+          <Logo image={logo} />
 
           <nav ref={navRef} aria-label="Main" className="hidden xl:block">
             <ul className="flex items-center gap-0.5">
@@ -221,7 +223,7 @@ export function SiteHeader({ nav, buttons, topBar, contact }: HeaderProps) {
         </div>
       </header>
 
-      <MobileMenu nav={nav} buttons={buttons} contact={contact} open={mobileOpen} onClose={() => setMobileOpen(false)} pathname={pathname} />
+      <MobileMenu nav={nav} buttons={buttons} contact={contact} logo={logo} open={mobileOpen} onClose={() => setMobileOpen(false)} pathname={pathname} />
     </>
   );
 }

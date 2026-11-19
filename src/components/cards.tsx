@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, Quote } from "lucide-react";
 import { SiteImage } from "@/components/SiteImage";
 import { Icon, type IconName } from "@/components/Icon";
@@ -36,9 +37,12 @@ export function ExperienceCard({
   line,
   sizes = "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 80vw",
   headingLevel = "h3",
+  media,
 }: {
   href: string;
   imageKey: string;
+  /** A ready-made image (CRM cover) in place of the record image. */
+  media?: ReactNode;
   category: Category;
   categoryLabel: string;
   title: string;
@@ -51,7 +55,7 @@ export function ExperienceCard({
   return (
     <Link href={href} className="card-lift group flex h-full flex-col rounded-card bg-ivory p-3 shadow-raised">
       <div className="arch relative aspect-[4/5] overflow-hidden bg-clay">
-        <SiteImage imageKey={imageKey} fill sizes={sizes} className="card-img object-cover" />
+        {media ?? <SiteImage imageKey={imageKey} fill sizes={sizes} className="card-img object-cover" />}
       </div>
       <div className="flex flex-1 flex-col px-3 pt-5 pb-3">
         <p className={`eyebrow inline-flex items-center gap-2 ${tone.text}`}>
@@ -80,9 +84,12 @@ export function TourCard({
   line,
   sizes = "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 80vw",
   headingLevel = "h3",
+  media,
 }: {
   href: string;
   imageKey: string;
+  /** A ready-made image (CRM cover) in place of the record image. */
+  media?: ReactNode;
   title: string;
   /** e.g. "8 days" */
   days?: string;
@@ -100,7 +107,7 @@ export function TourCard({
   return (
     <Link href={href} className="card-lift group flex h-full flex-col overflow-hidden rounded-card bg-ivory shadow-raised">
       <div className="relative aspect-[4/3] overflow-hidden bg-clay">
-        <SiteImage imageKey={imageKey} fill sizes={sizes} className="card-img object-cover" />
+        {media ?? <SiteImage imageKey={imageKey} fill sizes={sizes} className="card-img object-cover" />}
         <div className="absolute top-4 left-4 z-[3] flex flex-wrap gap-2">
           {days ? <span className="rounded-full bg-ivory/95 px-3 py-1 text-xs font-medium text-ink shadow-raised">{days}</span> : null}
           {format ? <span className={`rounded-full px-3 py-1 text-xs font-medium text-white shadow-raised ${group ? "bg-indigo" : "bg-zellige"}`}>{format}</span> : null}

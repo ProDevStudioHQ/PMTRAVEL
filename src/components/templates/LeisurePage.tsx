@@ -23,7 +23,7 @@ function must<T>(value: T | undefined, what: string): T {
 }
 
 /** Template for every /experiences/[slug] and /tours/[slug] page. */
-export function LeisurePage({ product, cmsProgrammes }: { product: LeisureProduct; cmsProgrammes?: ReactNode }) {
+export function LeisurePage({ product, cmsProgrammes, heroMedia }: { product: LeisureProduct; cmsProgrammes?: ReactNode; heroMedia?: ReactNode }) {
   const path = leisureHref(product);
   const hub = product.kind === "experience" ? { href: "/experiences", label: "Experiences" } : { href: "/tours", label: "Tours" };
   const programmes = product.programmes.map((s) => must(programmeBySlug(s), `programme ${s}`));
@@ -33,7 +33,7 @@ export function LeisurePage({ product, cmsProgrammes }: { product: LeisureProduc
 
   return (
     <>
-      <PageHero eyebrow={product.eyebrow} title={product.h1} standfirst={product.standfirst} imageKey={product.heroImage} trail={[hub, { href: path, label: product.name }]}>
+      <PageHero eyebrow={product.eyebrow} title={product.h1} standfirst={product.standfirst} imageKey={product.heroImage} media={heroMedia} trail={[hub, { href: path, label: product.name }]}>
         <ButtonLink href={quoteHref} tone="dark" arrow>
           {en.cta.requestThis}
         </ButtonLink>

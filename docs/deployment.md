@@ -129,7 +129,11 @@ Arguments*, not only as environment variables):
 ```
 NEXT_PUBLIC_SITE_URL=https://pm-travelagency.com
 NEXT_PUBLIC_CAPTCHA_SITE_KEY=<Cloudflare Turnstile site key>
+CRM_API_URL=<same value as the runtime variable>
 ```
+
+`CRM_API_URL` is needed at build time too: it adds the CRM's host to the
+images allowed by next.config.ts. Without it every CRM photo and logo fails.
 
 The CRM keys are not needed at build time. Without them the build uses the
 bundled `src/content/fallback-site.json` and fetches CRM content at runtime.

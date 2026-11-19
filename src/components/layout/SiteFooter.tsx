@@ -85,7 +85,7 @@ export function SiteFooter({ site }: { site: SitePayload }) {
       {/* Brand + link columns */}
       <Container className="grid gap-12 pt-16 pb-12 lg:grid-cols-12 lg:pt-20">
         <div className="lg:col-span-4">
-          <Logo />
+          <Logo image={settings.logoDark ?? settings.logo} />
           <p className="mt-5 max-w-sm text-sm text-sand/70">{footer.aboutText}</p>
           {socials.length > 0 ? (
             <ul className="mt-6 flex flex-wrap gap-3" aria-label="Social media">

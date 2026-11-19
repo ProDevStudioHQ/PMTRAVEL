@@ -1,6 +1,7 @@
 import { LeisureHub } from "@/components/templates/LeisureHub";
 import { LeisureCard } from "@/components/templates/LeisureCard";
 import { CategoryCard } from "@/features/cms/CategoryCard";
+import { CmsImage } from "@/features/cms/CmsImage";
 import { ProgrammesSection } from "@/features/cms/ProgrammesSection";
 import { SECTIONS, localCategory, type SectionKey } from "@/features/cms/sections";
 import { getCategories, getProgrammes } from "@/lib/cms";
@@ -31,7 +32,14 @@ export async function SectionHub({ sectionKey, copy }: { sectionKey: SectionKey;
     const local = localCategory(sectionKey, category.slug);
     return {
       key: category.slug,
-      node: local ? <LeisureCard product={local} /> : <CategoryCard category={category} href={`/${cfg.segment}/${category.slug}`} />,
+      node: local ? (
+        <LeisureCard
+          product={local}
+          media={category.cover ? <CmsImage image={category.cover} fill sizes="(max-width: 768px) 85vw, 33vw" className="card-img object-cover" /> : undefined}
+        />
+      ) : (
+        <CategoryCard category={category} href={`/${cfg.segment}/${category.slug}`} />
+      ),
     };
   });
   // Hand-written categories always stay listed: their pages exist whatever the CRM says.

@@ -15,10 +15,11 @@ import { LanguageDropdown } from "@/components/layout/LanguageDropdown";
 import { NavAnchor } from "@/components/layout/NavAnchor";
 import { en } from "@/i18n/dictionaries/en";
 import type { NavButton, NavEntry, SiteContact } from "@/lib/site-layout";
+import type { Image as CmsImageData } from "@/types/cms";
 
-type Props = { nav: NavEntry[]; buttons: NavButton[]; contact: SiteContact; open: boolean; onClose: () => void; pathname: string };
+type Props = { nav: NavEntry[]; buttons: NavButton[]; contact: SiteContact; logo?: CmsImageData | null; open: boolean; onClose: () => void; pathname: string };
 
-export function MobileMenu({ nav, buttons, contact, open, onClose, pathname }: Props) {
+export function MobileMenu({ nav, buttons, contact, logo = null, open, onClose, pathname }: Props) {
   const [expanded, setExpanded] = useState<string | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -52,7 +53,7 @@ export function MobileMenu({ nav, buttons, contact, open, onClose, pathname }: P
           className="on-dark fixed inset-0 z-[60] flex flex-col bg-midnight text-sand xl:hidden"
         >
           <div className="flex h-[72px] shrink-0 items-center justify-between px-4 sm:px-6">
-            <Logo onClick={onClose} />
+            <Logo onClick={onClose} image={logo} />
             <button
               ref={closeRef}
               type="button"

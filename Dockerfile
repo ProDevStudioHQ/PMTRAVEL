@@ -31,6 +31,11 @@ ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 # build argument too. Empty = no captcha widget (the CRM then rejects leads in production).
 ARG NEXT_PUBLIC_CAPTCHA_SITE_KEY=
 ENV NEXT_PUBLIC_CAPTCHA_SITE_KEY=$NEXT_PUBLIC_CAPTCHA_SITE_KEY
+# The CRM's public API URL. next.config.ts allows images from this host, and
+# that list is fixed at build time, so it must be a build argument as well as a
+# runtime variable. Not a secret (the API keys are runtime-only).
+ARG CRM_API_URL=
+ENV CRM_API_URL=$CRM_API_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # NEXT_PUBLIC_SITE_URL is baked into the client bundle and into every canonical

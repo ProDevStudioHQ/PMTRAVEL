@@ -84,7 +84,11 @@ export async function CategoryRoute({ sectionKey, slug, page }: { sectionKey: Se
   );
 
   // Page 1 of a hand-written category: the full written page with the CRM grid inside it.
-  if (local && page === 1) return <LeisurePage product={local} cmsProgrammes={programmes} />;
+  // A cover set in the CRM replaces the built-in photograph.
+  if (local && page === 1) {
+    const heroMedia = category?.cover ? <CmsImage image={category.cover} fill priority sizes="100vw" className="object-cover" /> : undefined;
+    return <LeisurePage product={local} cmsProgrammes={programmes} heroMedia={heroMedia} />;
+  }
 
   return (
     <CmsCategoryPage sectionKey={sectionKey} category={category} name={name} page={page} unavailable={!local && !category}>
