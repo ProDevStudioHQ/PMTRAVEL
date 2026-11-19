@@ -41,6 +41,7 @@ const PHONE_PATTERNS = [
 const PHONE_ALLOWED = [PHONE_SOURCE, join("src", "app", "contact", "page.tsx")];
 
 // 2. Schema types we can never back with real data.
+const OFFER_SOURCE = join("src", "lib", "schema.ts");
 const FORBIDDEN_SCHEMA = [
   '"@type": "Review"',
   '"@type": "AggregateRating"',
@@ -70,6 +71,10 @@ for (const file of sourceFiles) {
     }
   }
   for (const needle of FORBIDDEN_SCHEMA) {
+    // Offer is allowed in one place: programmeTripSchema() in src/lib/schema.ts,
+    // which emits it only for a price the business published in the CRM
+    // (docs/decisions.md D10). Everywhere else it stays forbidden.
+    if (needle === '"@type": "Offer"' && file === OFFER_SOURCE) continue;
     if (withoutComments.includes(needle)) {
       fail(file, `contains forbidden schema "${needle}"`);
     }

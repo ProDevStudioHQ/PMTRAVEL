@@ -10,7 +10,10 @@ import { SCHEMAS } from "./validation";
 import { isEmailConfigured, sendAcknowledgement, sendEnquiryNotification } from "./email";
 import type { EnquiryKind, EnquiryState } from "./options";
 
-const PREFIX: Record<EnquiryKind, string> = { quote: "Q", partner: "P", contact: "C", newsletter: "N" };
+const PREFIX: Record<EnquiryKind, string> = { quote: "Q", partner: "P", contact: "C", newsletter: "N", pdf: "D" };
+
+/** The local enquiries table predates PDF requests; they are stored as quotes, marked in their data. */
+const STORED_KIND = { quote: "quote", partner: "partner", contact: "contact", newsletter: "newsletter", pdf: "quote" } as const;
 
 function reference(kind: EnquiryKind) {
   const now = new Date();
@@ -54,7 +57,7 @@ export async function submitEnquiry(previous: EnquiryState, formData: FormData):
 
   const requestHeaders = await headers();
   const ipHash = hashIp(clientIpFrom(requestHeaders));
-  const limit = rateLimit(kind === "quote" || kind === "partner" ? "rfq" : "contact", ipHash);
+  const limit = rateLimit(kind === "quote" || kind === "partner" || kind === "pdf" ? "rfq" : "contact", ipHash);
   if (!limit.allowed) {
     return {
       status: "error",
@@ -98,9 +101,9 @@ export async function submitEnquiry(previous: EnquiryState, formData: FormData):
         .insert(enquiries)
         .values({
           reference: ref,
-          kind,
+          kind: STORED_KIND[kind],
           email: String(data.email),
-          data,
+          data: kind === "pdf" ? { ...data, request: "Programme PDF" } : data,
           sourcePath,
           sourceIpHash: ipHash,
           userAgent: requestHeaders.get("user-agent")?.slice(0, 500) ?? null,

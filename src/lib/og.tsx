@@ -27,8 +27,23 @@ async function photo(imageKey: string) {
   return `data:image/jpeg;base64,${resized.toString("base64")}`;
 }
 
-export async function ogImage({ title, eyebrow, imageKey }: { title: string; eyebrow: string; imageKey: string }) {
-  const src = await photo(imageKey);
+/** A CRM image, fetched and cropped like a local one. Null on any failure. */
+async function remotePhoto(url: string) {
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) return null;
+    const resized = await sharp(Buffer.from(await res.arrayBuffer()))
+      .resize(OG_SIZE.width, OG_SIZE.height, { fit: "cover", position: "attention" })
+      .jpeg({ quality: 78 })
+      .toBuffer();
+    return `data:image/jpeg;base64,${resized.toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
+
+export async function ogImage({ title, eyebrow, imageKey, imageUrl }: { title: string; eyebrow: string; imageKey: string; imageUrl?: string | null }) {
+  const src = (imageUrl ? await remotePhoto(imageUrl) : null) ?? (await photo(imageKey));
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: MIDNIGHT }}>

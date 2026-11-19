@@ -2,8 +2,10 @@ import { COMPANY, SITE_URL } from "@/lib/company";
 import type { Crumb } from "@/components/Breadcrumbs";
 
 /**
- * JSON-LD builders. Every object is developer-authored data, never user input.
- * Never Review, AggregateRating or Offer: we have no data to back them.
+ * JSON-LD builders. Every object is developer-authored data or validated CRM
+ * data, never visitor input. Never Review or AggregateRating: we have no data
+ * to back them. Offer appears only in programmeTripSchema(), for a price the
+ * business chose to publish in the CRM (docs/decisions.md D10).
  */
 
 export const ORG_ID = `${SITE_URL}/#organization`;
@@ -140,5 +142,36 @@ export function serviceSchema(s: { name: string; description: string; path: stri
     provider: { "@id": ORG_ID },
     areaServed: { "@type": "Country", name: "Morocco" },
     audience: { "@type": "BusinessAudience", audienceType: "Travel trade" },
+  };
+}
+
+/**
+ * TouristTrip for a CRM programme. The Offer is added only when the CRM sends
+ * a price (the business ticked "show price"), so the schema never states a
+ * price the page does not show.
+ */
+export function programmeTripSchema(p: {
+  name: string;
+  description: string;
+  path: string;
+  image?: string;
+  days: { name: string; description: string }[];
+  price: { from: number; currency: string } | null;
+}) {
+  return {
+    ...touristTripSchema({ name: p.name, description: p.description, path: p.path, itinerary: p.days }),
+    ...(p.image ? { image: p.image } : {}),
+    ...(p.price
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: p.price.from.toFixed(2),
+            priceCurrency: p.price.currency,
+            url: `${SITE_URL}${p.path}`,
+            availability: "https://schema.org/InStock",
+            offeredBy: { "@id": ORG_ID },
+          },
+        }
+      : {}),
   };
 }

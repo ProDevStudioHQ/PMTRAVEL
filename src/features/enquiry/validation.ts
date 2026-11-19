@@ -5,6 +5,8 @@ import { ANNUAL_PAX, BUSINESS_TYPES, QUOTE_DESTINATIONS, SERVICE_LEVELS } from "
 const req = (label: string, max = 200) =>
   z.string().trim().min(2, `Enter ${label}.`).max(max, `Keep ${label} under ${max} characters.`);
 const opt = (max = 500) => z.string().trim().max(max).optional().or(z.literal(""));
+/** A CRM programme slug carried in a hidden field. */
+const slug = z.string().trim().regex(/^[a-z0-9-]{0,160}$/, "Invalid programme.").optional().or(z.literal(""));
 const email = z.string().trim().toLowerCase().email("Enter a valid email address, like name@agency.com.").max(320);
 const phone = z
   .string()
@@ -28,6 +30,7 @@ export const quoteSchema = z.object({
   budget: opt(100),
   notes: opt(4000),
   product: opt(200),
+  programmeSlug: slug,
 });
 
 export const partnerSchema = z.object({
@@ -58,4 +61,14 @@ export const newsletterSchema = z.object({
   company: opt(200),
 });
 
-export const SCHEMAS = { quote: quoteSchema, partner: partnerSchema, contact: contactSchema, newsletter: newsletterSchema } as const;
+export const pdfRequestSchema = z.object({
+  name: req("your name"),
+  company: opt(200),
+  email,
+  whatsapp: phone,
+  message: opt(2000),
+  product: opt(200),
+  programmeSlug: slug,
+});
+
+export const SCHEMAS = { quote: quoteSchema, partner: partnerSchema, contact: contactSchema, newsletter: newsletterSchema, pdf: pdfRequestSchema } as const;

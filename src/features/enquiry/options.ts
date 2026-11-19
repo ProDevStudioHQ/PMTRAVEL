@@ -33,7 +33,8 @@ export const QUOTE_DESTINATIONS = [
 
 export const ANNUAL_PAX = ["Under 50", "50–200", "200–500", "500–1,000", "1,000+", "Not sure yet"] as const;
 
-export type EnquiryKind = "quote" | "partner" | "contact" | "newsletter";
+/** "pdf": a programme PDF request (programme pages, PDF access "on request"). */
+export type EnquiryKind = "quote" | "partner" | "contact" | "newsletter" | "pdf";
 
 export type EnquiryState =
   | { status: "idle" }

@@ -61,3 +61,12 @@ export const NEWSLETTER_FIELDS: FieldConfig[] = [
   { name: "email", label: "Work email", type: "email", required: true, autoComplete: "email" },
   { name: "company", label: "Company", type: "text", autoComplete: "organization" },
 ];
+
+/** Programme PDF request (programme pages where the PDF is "on request"). */
+export const PDF_REQUEST_FIELDS: FieldConfig[] = [
+  { name: "name", label: "Your name", type: "text", required: true, autoComplete: "name" },
+  { name: "company", label: "Agency / company", type: "text", autoComplete: "organization" },
+  { name: "email", label: "Email", type: "email", required: true, autoComplete: "email" },
+  { name: "whatsapp", label: "WhatsApp", type: "tel", autoComplete: "tel" },
+  { name: "message", label: "Anything we should know?", type: "textarea", rows: 3, placeholder: "Dates, pax, the market you sell to…" },
+];

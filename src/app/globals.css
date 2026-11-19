@@ -583,3 +583,55 @@ body:has(main .cta-band) .site-cta {
 body:has(.site-announcement) #main {
   padding-top: 2.25rem;
 }
+
+/* CRM rich text (programme overviewHtml). The CRM allows only p, br, strong,
+   em, u, ul, ol, li, h3, h4, blockquote and a. */
+.cms-prose {
+  max-width: 68ch;
+  color: var(--color-ink);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+.cms-prose > * + * {
+  margin-top: 1em;
+}
+.cms-prose h3,
+.cms-prose h4 {
+  font-family: var(--font-display, inherit);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-top: 1.6em;
+}
+.cms-prose h3 {
+  font-size: 1.5rem;
+}
+.cms-prose h4 {
+  font-size: 1.25rem;
+}
+.cms-prose ul,
+.cms-prose ol {
+  padding-left: 1.25em;
+}
+.cms-prose ul {
+  list-style: disc;
+}
+.cms-prose ol {
+  list-style: decimal;
+}
+.cms-prose li + li {
+  margin-top: 0.35em;
+}
+.cms-prose li::marker {
+  color: var(--color-terracotta-700);
+}
+.cms-prose a {
+  color: var(--color-terracotta-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cms-prose blockquote {
+  border-left: 2px solid var(--color-gold);
+  padding-left: 1.25em;
+  font-style: italic;
+  color: var(--color-muted);
+}

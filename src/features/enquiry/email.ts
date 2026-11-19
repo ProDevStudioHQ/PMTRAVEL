@@ -27,6 +27,7 @@ const SUBJECTS: Record<EnquiryKind, string> = {
   partner: "Partner application",
   contact: "Contact message",
   newsletter: "Trade newsletter sign-up",
+  pdf: "Programme PDF request",
 };
 
 const LABELS: Record<string, string> = {
@@ -46,6 +47,7 @@ const LABELS: Record<string, string> = {
   budget: "Budget per person",
   notes: "Notes",
   product: "Requested product",
+  programmeSlug: "Programme (CRM slug)",
   country: "Country",
   website: "Website",
   licence: "IATA / licence no.",
