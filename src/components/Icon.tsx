@@ -165,5 +165,28 @@ export function XIcon({ size = 20 }: { size?: number }) {
   );
 }
 
+/** Tripadvisor: a simple two-eyed owl mark. */
+export function TripadvisorIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+      <path d="M3 8.5h4.2M16.8 8.5H21M7.2 8.5c1.4-1.2 3-1.8 4.8-1.8s3.4.6 4.8 1.8" strokeLinecap="round" />
+      <circle cx="7" cy="13" r="3.6" />
+      <circle cx="17" cy="13" r="3.6" />
+      <circle cx="7" cy="13" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="17" cy="13" r="1.2" fill="currentColor" stroke="none" />
+      <path d="m10.6 14.2 1.4 2.3 1.4-2.3" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/** Viator: a bold V mark. */
+export function ViatorIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 4.5h4.3l4.7 10.4 4.7-10.4H21l-7.2 15h-3.6L3 4.5Z" />
+    </svg>
+  );
+}
+
 /** True when `name` is one of the icons above (CRM data names icons by string). */
 export const isIconName = (name: string | null | undefined): name is IconName => !!name && (name in ICONS || name in MOROCCAN);

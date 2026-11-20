@@ -8,7 +8,7 @@ import {
   PinterestIcon,
   TiktokIcon,
   WhatsappIcon,
-  XIcon,
+  XIcon, TripadvisorIcon, ViatorIcon,
   YoutubeIcon,
 } from "@/components/Icon";
 import { Logo } from "@/components/layout/Logo";
@@ -65,6 +65,8 @@ const SOCIAL: Record<SocialLink["platform"], { name: string; icon: ReactNode; cl
   TIKTOK: { name: "TikTok", icon: <TiktokIcon size={20} />, className: "bg-ink" },
   PINTEREST: { name: "Pinterest", icon: <PinterestIcon size={20} />, className: "bg-terracotta-700" },
   X: { name: "X", icon: <XIcon size={18} />, className: "bg-ink" },
+  TRIPADVISOR: { name: "Tripadvisor", icon: <TripadvisorIcon size={22} />, className: "bg-[#00875a]" },
+  VIATOR: { name: "Viator", icon: <ViatorIcon size={18} />, className: "bg-[#186b6d]" },
 };
 
 const linkClass = "underline-offset-4 hover:text-gold hover:underline";

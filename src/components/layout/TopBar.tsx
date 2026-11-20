@@ -5,7 +5,7 @@
  */
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Mail, Phone } from "lucide-react";
-import { Icon, WhatsappIcon, isIconName } from "@/components/Icon";
+import { Icon, TripadvisorIcon, ViatorIcon, WhatsappIcon, isIconName } from "@/components/Icon";
 import { LanguageDropdown } from "@/components/layout/LanguageDropdown";
 import { isExternal, safeHref, telHref, waHref } from "@/lib/site-layout";
 import type { Announcement, AnnouncementColor, TopBarItem } from "@/types/cms";
@@ -73,6 +73,8 @@ function hrefFor(item: TopBarItem): string | null {
   if (type === "PHONE") return telHref(value);
   if (type === "WHATSAPP") return waHref(value);
   if (type === "EMAIL") return `mailto:${value.trim()}`;
+  // Tripadvisor / Viator: the profile address may be typed as the value.
+  if (type === "TRIPADVISOR" || type === "VIATOR") return safeHref(value.trim());
   return null;
 }
 
@@ -86,6 +88,18 @@ function ItemIcon({ item }: { item: TopBarItem }) {
       </span>
     );
   if (type === "EMAIL") return <Mail aria-hidden="true" size={14} className="text-gold" />;
+  if (type === "TRIPADVISOR")
+    return (
+      <span className="text-gold">
+        <TripadvisorIcon size={16} />
+      </span>
+    );
+  if (type === "VIATOR")
+    return (
+      <span className="text-gold">
+        <ViatorIcon size={13} />
+      </span>
+    );
   if (isIconName(item.icon)) return <Icon name={item.icon} size={14} className="text-gold" />;
   if (item.type === "LINK") return <ArrowUpRight aria-hidden="true" size={14} className="text-gold" />;
   return null;

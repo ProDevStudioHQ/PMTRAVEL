@@ -43,7 +43,7 @@ export interface NavItem {
 // 4.4 Top bar
 export interface TopBarItem {
   id: string;
-  type: "PHONE" | "WHATSAPP" | "EMAIL" | "TEXT" | "LINK" | "LANGUAGE_SWITCH";
+  type: "PHONE" | "WHATSAPP" | "EMAIL" | "TEXT" | "LINK" | "LANGUAGE_SWITCH" | "TRIPADVISOR" | "VIATOR";
   label: string;
   value: string | null;
   url: string | null;
@@ -65,7 +65,7 @@ export interface FooterColumn {
   links: Link[];
 }
 export interface SocialLink {
-  platform: "INSTAGRAM" | "LINKEDIN" | "FACEBOOK" | "TIKTOK" | "YOUTUBE" | "PINTEREST" | "X";
+  platform: "INSTAGRAM" | "LINKEDIN" | "FACEBOOK" | "TIKTOK" | "YOUTUBE" | "PINTEREST" | "X" | "TRIPADVISOR" | "VIATOR";
   url: string;
 }
 

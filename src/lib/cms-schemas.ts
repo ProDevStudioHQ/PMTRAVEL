@@ -54,9 +54,13 @@ export const NavItemSchema: z.ZodType<NavItemShape> = z.lazy(() =>
   })
 );
 
+export const SOCIAL_PLATFORMS = ["INSTAGRAM", "LINKEDIN", "FACEBOOK", "TIKTOK", "YOUTUBE", "PINTEREST", "X", "TRIPADVISOR", "VIATOR"] as const;
+type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
+
 export const TopBarItemSchema = z.object({
   id: z.string(),
-  type: z.enum(["PHONE", "WHATSAPP", "EMAIL", "TEXT", "LINK", "LANGUAGE_SWITCH"]),
+  // An item type from a newer CRM shows as a plain link rather than failing the whole layout.
+  type: z.enum(["PHONE", "WHATSAPP", "EMAIL", "TEXT", "LINK", "LANGUAGE_SWITCH", "TRIPADVISOR", "VIATOR"]).catch("LINK"),
   label: z.string(),
   value: nullableString,
   url: nullableString,
@@ -130,12 +134,10 @@ export const SitePayloadSchema = z.object({
   footer: z.object({
     aboutText: z.string(),
     columns: z.array(z.object({ id: z.string(), title: z.string(), links: z.array(LinkSchema) })),
-    socials: z.array(
-      z.object({
-        platform: z.enum(["INSTAGRAM", "LINKEDIN", "FACEBOOK", "TIKTOK", "YOUTUBE", "PINTEREST", "X"]),
-        url: z.string().min(1),
-      })
-    ),
+    // A platform this site does not know yet is dropped, not allowed to fail the whole layout.
+    socials: z
+      .array(z.object({ platform: z.string(), url: z.string().min(1) }))
+      .transform((list) => list.filter((s): s is { platform: SocialPlatform; url: string } => (SOCIAL_PLATFORMS as readonly string[]).includes(s.platform))),
     legalLinks: z.array(LinkSchema),
     showContactBlock: z.boolean(),
     showMap: z.boolean(),
