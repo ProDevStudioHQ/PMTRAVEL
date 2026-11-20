@@ -11,9 +11,15 @@ import { createHash } from "node:crypto";
  * becomes a proven need rather than a guess.
  */
 
+/**
+ * Counted per sent form (not per attempt: a form refused for a missing field
+ * does not count). Generous enough for a real agent writing a few messages;
+ * the CRM keeps its own limit as well.
+ */
 export const LIMITS = {
-  rfq: { max: 5, windowMs: 60 * 60 * 1000 },
-  contact: { max: 3, windowMs: 60 * 60 * 1000 },
+  rfq: { max: 10, windowMs: 60 * 60 * 1000 },
+  contact: { max: 10, windowMs: 60 * 60 * 1000 },
+  newsletter: { max: 5, windowMs: 60 * 60 * 1000 },
   auth: { max: 10, windowMs: 60 * 60 * 1000 },
 } as const;
 
@@ -72,10 +78,16 @@ export function hashIp(ip: string): string {
  * left-most entry is the client; the rest are proxies.
  */
 export function clientIpFrom(headers: Headers): string {
+  // Behind Cloudflare, this is the visitor; x-forwarded-for may start with a Cloudflare address.
+  const cf = headers.get("cf-connecting-ip")?.trim();
+  if (cf) return cf;
   const forwarded = headers.get("x-forwarded-for");
   if (forwarded) {
     const first = forwarded.split(",")[0]?.trim();
     if (first) return first;
   }
-  return headers.get("x-real-ip")?.trim() ?? "unknown";
+  return headers.get("x-real-ip")?.trim() || UNKNOWN_IP;
 }
+
+/** No address could be read. Never rate-limited as one bucket: that would block every visitor together. */
+export const UNKNOWN_IP = "unknown";

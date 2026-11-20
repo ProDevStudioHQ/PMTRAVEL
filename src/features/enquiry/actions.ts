@@ -4,7 +4,7 @@ import { cookies, headers } from "next/headers";
 import { randomBytes } from "node:crypto";
 import { getDb, isDatabaseConfigured } from "@/features/rfq/db";
 import { enquiries } from "@/features/rfq/schema";
-import { clientIpFrom, hashIp, rateLimit } from "@/features/rfq/rate-limit";
+import { UNKNOWN_IP, clientIpFrom, hashIp, rateLimit } from "@/features/rfq/rate-limit";
 import { COMPANY, SITE_URL } from "@/lib/company";
 import { getSite } from "@/lib/cms";
 import { UTM_COOKIE, isCrmLeadsConfigured, mapCrmFieldErrors, parseUtmCookie, sendLeadToCrm, toLeadInput } from "./crm";
@@ -64,16 +64,8 @@ export async function submitEnquiry(previous: EnquiryState, formData: FormData):
   }
 
   const requestHeaders = await headers();
-  const ipHash = hashIp(clientIpFrom(requestHeaders));
-  const limit = rateLimit(kind === "quote" || kind === "partner" || kind === "pdf" ? "rfq" : "contact", ipHash);
-  if (!limit.allowed) {
-    return {
-      status: "error",
-      message: `Too many submissions from this connection. Please try again later, or email ${COMPANY.email.b2b}.`,
-      values,
-      attempt,
-    };
-  }
+  const visitorIp = clientIpFrom(requestHeaders);
+  const ipHash = hashIp(visitorIp);
 
   const parsed = schema.safeParse(values);
   const consent = formData.get("consent") === "on";
@@ -85,6 +77,20 @@ export async function submitEnquiry(previous: EnquiryState, formData: FormData):
     }
     if (!consent) fieldErrors.consent = "Please accept the privacy policy to send this form.";
     return { status: "error", message: "Please check the highlighted fields.", fieldErrors, values, attempt };
+  }
+
+  // Counted only once the form is valid, so correcting a mistake never uses up the allowance.
+  if (visitorIp !== UNKNOWN_IP) {
+    const limit = rateLimit(kind === "newsletter" ? "newsletter" : kind === "contact" ? "contact" : "rfq", ipHash);
+    if (!limit.allowed) {
+      const minutes = Math.max(1, Math.ceil(limit.retryAfterSeconds / 60));
+      return {
+        status: "error",
+        message: `You have already sent several messages. Please try again in ${minutes} minute${minutes === 1 ? "" : "s"}, or email ${COMPANY.email.b2b} directly.`,
+        values,
+        attempt,
+      };
+    }
   }
 
   const data = parsed.data as Record<string, unknown>;
