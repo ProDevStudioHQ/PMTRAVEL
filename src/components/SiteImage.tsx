@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { imageByKey, OPERATIONAL_SOURCES } from "@/features/images/registry";
 import { BLUR } from "@/features/images/blur";
-import { getImageOverride } from "@/lib/cms";
+import { getImageOverride, isImageHidden } from "@/lib/cms";
 
 /** Delivered as AVIF/WebP at 640–3840w (next.config.ts); 70 keeps 4K sharp and light. */
 const QUALITY = 70;
@@ -71,17 +71,21 @@ export async function SiteImage({
     );
   }
 
+  // Hidden in the CRM: nothing is shown. The empty marker lets the CRM's
+  // Images screen still find the photo on this page, so it can be shown again.
+  if (await isImageHidden(imageKey)) return <span hidden data-image-key={imageKey} data-image-hidden="" />;
+
   const replacement = await getImageOverride(imageKey);
   if (replacement) {
     const alt = replacement.alt.trim() || record.alt;
     const blurUrl = !eager && replacement.blurDataUrl ? ({ placeholder: "blur", blurDataURL: replacement.blurDataUrl } as const) : {};
     const loading = eager ? undefined : ("lazy" as const);
     if (fill) {
-      return <Image src={replacement.url} alt={alt} fill sizes={sizes} quality={QUALITY} priority={eager} loading={loading} {...blurUrl} className={className} />;
+      return <Image data-image-key={imageKey} src={replacement.url} alt={alt} fill sizes={sizes} quality={QUALITY} priority={eager} loading={loading} {...blurUrl} className={className} />;
     }
     // Keep the slot's shape (the record's size) so the layout never shifts.
     return (
-      <Image src={replacement.url} alt={alt} width={record.width} height={record.height} sizes={sizes} quality={QUALITY} priority={eager} loading={loading} {...blurUrl} className={`object-cover ${className}`} />
+      <Image data-image-key={imageKey} src={replacement.url} alt={alt} width={record.width} height={record.height} sizes={sizes} quality={QUALITY} priority={eager} loading={loading} {...blurUrl} className={`object-cover ${className}`} />
     );
   }
 
@@ -92,6 +96,7 @@ export async function SiteImage({
   if (fill) {
     return (
       <Image
+        data-image-key={imageKey}
         src={record.src}
         alt={record.alt}
         fill
@@ -107,6 +112,7 @@ export async function SiteImage({
 
   return (
     <Image
+      data-image-key={imageKey}
       src={record.src}
       alt={record.alt}
       width={record.width}

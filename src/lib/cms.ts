@@ -149,6 +149,11 @@ export async function getImageOverride(key: string): Promise<CmsImageData | null
   return (await getSite()).images?.[key] ?? null;
 }
 
+/** True when the CRM hid this photo (Website → Images → Hide). */
+export async function isImageHidden(key: string): Promise<boolean> {
+  return (await getSite()).hiddenImages?.includes(key) ?? false;
+}
+
 /* ------------------------------------------------------------------ */
 /* Categories and programme lists                                      */
 /* ------------------------------------------------------------------ */

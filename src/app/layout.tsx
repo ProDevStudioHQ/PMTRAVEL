@@ -10,6 +10,8 @@ import { MotionProvider } from "@/components/motion/MotionProvider";
 import { JsonLd } from "@/components/JsonLd";
 import { CtaBand } from "@/components/CtaBand";
 import { PreviewBanner } from "@/components/layout/PreviewBanner";
+import { ChatButton } from "@/components/layout/ChatButton";
+import { PageGallery } from "@/components/layout/PageGallery";
 import { draftMode } from "next/headers";
 import { getSite } from "@/lib/cms";
 import { siteContact, toNavButtons, toNavEntries } from "@/lib/site-layout";
@@ -87,12 +89,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {preview ? <PreviewBanner /> : null}
         <MotionProvider>
           <SiteHeader nav={toNavEntries(site.nav.items)} buttons={toNavButtons(site.nav.buttons)} topBar={site.topBar} contact={contact} logo={site.settings.logoDark ?? site.settings.logo} />
-          <main id="main">{children}</main>
+          <main id="main">
+            {children}
+            {/* Website → Images (CRM): extra photos added to this page. */}
+            <PageGallery galleries={site.pageGalleries ?? {}} />
+          </main>
           {/* Default closing band; hidden by CSS when the page renders its own. */}
           <div className="site-cta">
             <CtaBand />
           </div>
           <SiteFooter site={site} />
+          <ChatButton email={contact.emailB2b || COMPANY.email.b2b} whatsappHref={contact.whatsappHref} />
           <FloatingWhatsApp href={contact.whatsappHref} />
           <CookieBanner />
           <GoogleTranslate />

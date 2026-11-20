@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Gallery, type GalleryItem } from "@/components/Gallery";
 import { CtaBand } from "@/components/CtaBand";
 import { IMAGES, OPERATIONAL_SOURCES } from "@/features/images/registry";
+import { getSite } from "@/lib/cms";
 
 export const generateMetadata = cmsPageMetadata({
   title: "Gallery | Morocco Destinations & Experiences",
@@ -16,15 +17,21 @@ export const generateMetadata = cmsPageMetadata({
 /** Venue and conference photos are left out: they are service illustrations, not destinations. */
 const EXCLUDE = new Set(["d1-mice-conference-hall"]);
 
-export default function GalleryPage() {
-  const items: GalleryItem[] = IMAGES.filter((img) => !EXCLUDE.has(img.key)).map((img) => ({
-    key: img.key,
-    src: img.src,
-    width: img.width,
-    height: img.height,
-    alt: img.alt,
-    location: img.location,
-  }));
+export default async function GalleryPage() {
+  // Photos hidden in the CRM are left out; replaced ones show the CRM's photo.
+  const site = await getSite();
+  const hidden = new Set(site.hiddenImages ?? []);
+  const items: GalleryItem[] = IMAGES.filter((img) => !EXCLUDE.has(img.key) && !hidden.has(img.key)).map((img) => {
+    const r = site.images?.[img.key];
+    return {
+      key: img.key,
+      src: r?.url ?? img.src,
+      width: r?.width || img.width,
+      height: r?.height || img.height,
+      alt: r?.alt.trim() || img.alt,
+      location: img.location,
+    };
+  });
   const credited = IMAGES.filter((img) => !OPERATIONAL_SOURCES.includes(img.source));
 
   return (

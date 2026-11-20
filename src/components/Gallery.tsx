@@ -56,6 +56,7 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
               className="group relative block w-full overflow-hidden rounded-2xl"
             >
               <Image
+                data-image-key={item.key}
                 src={item.src}
                 alt={item.alt}
                 width={item.width}

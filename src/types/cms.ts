@@ -102,6 +102,10 @@ export interface SitePayload {
   pages?: Record<string, PageOverride>;
   /** Replacements for the site's own photos, keyed by image record key. */
   images?: Record<string, Image>;
+  /** Image keys hidden from the site (Website → Images → Hide). */
+  hiddenImages?: string[];
+  /** Extra photos shown at the bottom of a page, keyed by URL path ("/", "/tours"). */
+  pageGalleries?: Record<string, Image[]>;
   /** Page section edits, keyed "path#sectionId" ("/#who"). */
   sections?: Record<string, SectionOverride>;
   /** Website → Colours: brand colours and area colours as #rrggbb. */

@@ -235,6 +235,8 @@ export interface LeadInput {
       },
       "pages": { [path: string]: PageOverride },   // added 2026-11-19
       "images": { [imageKey: string]: Image },     // added 2026-11-19
+      "hiddenImages": string[],                    // added 2026-11-20: image keys taken off the site
+      "pageGalleries": { [path: string]: Image[] }, // added 2026-11-20: extra photos at the bottom of a page
       "sections": { ["path#sectionId"]: SectionOverride }, // added 2026-11-19
       "theme": { "palette": { [key]: "#rrggbb" },          // added 2026-11-19
                  "areas":   { [key]: "#rrggbb" } },
